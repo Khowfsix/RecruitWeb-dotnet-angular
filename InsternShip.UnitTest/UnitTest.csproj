@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InsternShip.Api\InsternShip.Api.csproj" />
+    <ProjectReference Include="..\InsternShip.Api\Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

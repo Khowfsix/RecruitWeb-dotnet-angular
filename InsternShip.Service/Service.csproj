@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InsternShip.Common\InsternShip.Common.csproj" />
-    <ProjectReference Include="..\InsternShip.Data\InsternShip.Data.csproj" />
+    <ProjectReference Include="..\InsternShip.Common\Common.csproj" />
+    <ProjectReference Include="..\InsternShip.Data\Data.csproj" />
   </ItemGroup>
 
 </Project>
