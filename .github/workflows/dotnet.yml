@@ -20,8 +20,8 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: Restore dependencies
-        run: \Api dotnet restore
+        run: cd api && dotnet restore
       - name: Build
-        run: \Api dotnet build --no-restore
+        run: dotnet build --no-restore
       - name: Test
-        run: \Api dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity normal
