@@ -9,7 +9,7 @@ using MailKit.Net.Smtp;
 using SendGrid.Helpers.Mail;
 using System.ComponentModel.DataAnnotations;
 using MailKit.Security;
-using Data.Models;
+
 
 namespace Service.Services
 {

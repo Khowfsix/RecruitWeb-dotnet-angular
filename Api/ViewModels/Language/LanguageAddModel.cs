@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Data.ViewModels.Language
+namespace Api.ViewModels.Language
 {
     public class LanguageAddModel
     {

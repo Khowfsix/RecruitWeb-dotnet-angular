@@ -1,4 +1,4 @@
-using Data.ViewModels.Language;
+using Api.ViewModels.Language;
 
 namespace Service.Interfaces
 {

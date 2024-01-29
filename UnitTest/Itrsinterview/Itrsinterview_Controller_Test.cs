@@ -1,8 +1,8 @@
 ﻿using Api.Controllers;
 using Data.Entities;
-using Data.ViewModels.Itrsinterview;
-using Data.ViewModels.Room;
-using Data.ViewModels.Shift;
+using Api.ViewModels.Itrsinterview;
+using Api.ViewModels.Room;
+using Api.ViewModels.Shift;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

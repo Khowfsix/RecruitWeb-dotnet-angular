@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
 using Data.Entities;
-using Data.ViewModels.Cv;
+using Api.ViewModels.Cv;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

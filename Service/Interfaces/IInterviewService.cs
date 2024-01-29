@@ -1,5 +1,5 @@
-﻿using Data.Models;
-using Data.ViewModels.Interview;
+﻿
+using Api.ViewModels.Interview;
 
 namespace Service.Interfaces;
 

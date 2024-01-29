@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.SecurityQuestion;
+﻿using Api.ViewModels.SecurityQuestion;
 using System;
 using System.Collections.Generic;
 using System.Linq;

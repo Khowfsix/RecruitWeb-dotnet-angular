@@ -1,5 +1,5 @@
-﻿using Data.ViewModels.Candidate;
-using Data.ViewModels.Event;
+﻿using Api.ViewModels.Candidate;
+using Api.ViewModels.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Data.ViewModels.CandidateJoinEvent
+namespace Api.ViewModels.CandidateJoinEvent
 {
     public class CandidateJoinEventViewModel
     {

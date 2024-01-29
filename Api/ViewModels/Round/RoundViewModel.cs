@@ -1,6 +1,6 @@
-﻿using Data.ViewModels.Question;
+﻿using Api.ViewModels.Question;
 
-namespace Data.ViewModels.Round
+namespace Api.ViewModels.Round
 {
     public class RoundViewModel
     {

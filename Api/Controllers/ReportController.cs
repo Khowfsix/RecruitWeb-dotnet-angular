@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.ViewModels.Candidate;
-using Data.ViewModels.Report;
+using Api.ViewModels.Candidate;
+using Api.ViewModels.Report;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

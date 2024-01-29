@@ -1,4 +1,4 @@
-using Data.ViewModels.Recruiter;
+using Api.ViewModels.Recruiter;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

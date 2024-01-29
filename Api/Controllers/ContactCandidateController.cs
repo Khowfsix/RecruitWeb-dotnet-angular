@@ -1,5 +1,5 @@
 ﻿using Data.Entities;
-using Data.ViewModels.ContactEmail;
+using Api.ViewModels.ContactEmail;
 using Service.Models;
 using Service.Services;
 using Microsoft.AspNetCore.Authorization;

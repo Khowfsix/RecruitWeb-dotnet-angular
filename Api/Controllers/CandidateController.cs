@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Candidate;
+﻿using Api.ViewModels.Candidate;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

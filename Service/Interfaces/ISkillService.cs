@@ -1,5 +1,5 @@
-﻿using Data.Models;
-using Data.ViewModels.Skill;
+﻿
+using Api.ViewModels.Skill;
 
 namespace Service.Interfaces
 {

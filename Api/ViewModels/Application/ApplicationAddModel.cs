@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.Application
+﻿namespace Api.ViewModels.Application
 {
     public class ApplicationAddModel
     {

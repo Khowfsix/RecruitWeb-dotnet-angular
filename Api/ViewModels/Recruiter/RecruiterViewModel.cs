@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.Recruiter
+﻿namespace Api.ViewModels.Recruiter
 {
     public class RecruiterViewModel
     {

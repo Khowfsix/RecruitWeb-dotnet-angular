@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.Round
+﻿namespace Api.ViewModels.Round
 {
     public class RoundAddModel
     {

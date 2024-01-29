@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.SuccessfulCadidate;
+
+using Api.ViewModels.SuccessfulCadidate;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 

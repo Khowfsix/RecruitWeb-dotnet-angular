@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.Shift
+﻿namespace Api.ViewModels.Shift
 {
     public class ShiftViewModel
     {

@@ -1,4 +1,4 @@
-using Data.ViewModels.Room;
+using Api.ViewModels.Room;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,5 @@
-﻿using Data.Models;
-using Data.ViewModels.SuccessfulCadidate;
+﻿
+using Api.ViewModels.SuccessfulCadidate;
 
 namespace Service.Interfaces
 {

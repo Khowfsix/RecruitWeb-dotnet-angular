@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.ViewModels;
-using Data.ViewModels.Candidate;
+using Api.ViewModels;
+using Api.ViewModels.Candidate;
 
 namespace Service.Interfaces
 {

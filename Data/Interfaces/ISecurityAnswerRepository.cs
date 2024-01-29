@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.Models;
-using Data.ViewModels.SecurityAnswer;
+
+using Api.ViewModels.SecurityAnswer;
 
 namespace Data.Interfaces
 {

@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Round;
+﻿using Api.ViewModels.Round;
 
 namespace Service.Interfaces
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.CategoryQuestion
+namespace Api.ViewModels.CategoryQuestion
 {
     public class CategoryQuestionAddModel
     {

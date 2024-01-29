@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Shift;
+﻿using Api.ViewModels.Shift;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

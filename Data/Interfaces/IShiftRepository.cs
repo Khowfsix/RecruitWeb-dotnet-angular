@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.Models;
-using Data.ViewModels.Shift;
+
+using Api.ViewModels.Shift;
 using System.Data.SqlTypes;
 
 namespace Data.Interfaces

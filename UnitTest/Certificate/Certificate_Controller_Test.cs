@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
 using Data.Entities;
-using Data.ViewModels.Certificate;
+using Api.ViewModels.Certificate;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

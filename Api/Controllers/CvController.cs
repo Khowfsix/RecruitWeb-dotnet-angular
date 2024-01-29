@@ -1,6 +1,6 @@
 using Data.Entities;
-using Data.ViewModels.Cv;
-using Data.ViewModels.UploadFileFromForm;
+using Api.ViewModels.Cv;
+using Api.ViewModels.UploadFileFromForm;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

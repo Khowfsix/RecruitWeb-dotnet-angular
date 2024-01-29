@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.BlackList
+﻿namespace Api.ViewModels.BlackList
 {
     public class BlackListUpdateModel
     {

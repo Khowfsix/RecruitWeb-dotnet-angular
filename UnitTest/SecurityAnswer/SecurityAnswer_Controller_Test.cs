@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
 using Data.Entities;
-using Data.ViewModels.SecurityAnswer;
+using Api.ViewModels.SecurityAnswer;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

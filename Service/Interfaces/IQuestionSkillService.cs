@@ -1,4 +1,4 @@
-using Data.ViewModels.QuestionSkill;
+using Api.ViewModels.QuestionSkill;
 
 namespace Service.Interfaces
 {

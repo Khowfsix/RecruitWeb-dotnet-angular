@@ -1,4 +1,4 @@
-using Data.ViewModels.Itrsinterview;
+using Api.ViewModels.Itrsinterview;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

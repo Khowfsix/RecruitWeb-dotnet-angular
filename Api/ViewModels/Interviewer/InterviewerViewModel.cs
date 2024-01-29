@@ -1,4 +1,4 @@
-namespace Data.ViewModels.Interviewer
+namespace Api.ViewModels.Interviewer
 {
     public class InterviewerViewModel
     {

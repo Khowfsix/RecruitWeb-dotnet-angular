@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.Models;
-using Data.ViewModels.Report;
+
+using Api.ViewModels.Report;
 
 namespace Data.Interfaces
 {

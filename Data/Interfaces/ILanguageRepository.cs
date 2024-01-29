@@ -1,7 +1,7 @@
 using Data.Entities;
 using Microsoft.Identity.Client;
-using Data.Models;
-using Data.ViewModels.Language;
+
+using Api.ViewModels.Language;
 
 namespace Data.Interfaces
 {

@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.SuccessfulCadidate
+﻿namespace Api.ViewModels.SuccessfulCadidate
 {
     public class SuccessfulCadidateUpdateModel
     {

@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.CategoryQuestion;
+﻿using Api.ViewModels.CategoryQuestion;
 
 namespace Service.Interfaces
 {

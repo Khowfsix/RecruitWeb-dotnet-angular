@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.CategoryQuestion
+﻿namespace Api.ViewModels.CategoryQuestion
 {
     public class CategoryQuestionUpdateModel
     {

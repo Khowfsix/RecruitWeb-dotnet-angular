@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.CvHasSkill;
+﻿using Api.ViewModels.CvHasSkill;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

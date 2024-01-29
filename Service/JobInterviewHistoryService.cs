@@ -1,8 +1,7 @@
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.Application;
-using Service.Interfaces;
+
 using Microsoft.AspNetCore.Identity;
+using Service.Interfaces;
 
 namespace Service
 {

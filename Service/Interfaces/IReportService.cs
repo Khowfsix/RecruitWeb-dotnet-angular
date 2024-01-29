@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Report;
+﻿using Api.ViewModels.Report;
 
 namespace Service.Interfaces
 {

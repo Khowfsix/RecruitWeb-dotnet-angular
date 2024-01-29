@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Certificate;
+﻿using Api.ViewModels.Certificate;
 
 namespace Service.Interfaces
 {

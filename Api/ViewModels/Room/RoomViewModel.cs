@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.Room
+namespace Api.ViewModels.Room
 {
     public class RoomViewModel
     {

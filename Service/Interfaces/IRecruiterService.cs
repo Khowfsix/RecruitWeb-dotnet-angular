@@ -1,5 +1,5 @@
-using Data.Models;
-using Data.ViewModels.Recruiter;
+
+using Api.ViewModels.Recruiter;
 
 namespace Service.Interfaces;
 

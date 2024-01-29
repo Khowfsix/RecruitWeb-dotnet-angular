@@ -1,7 +1,7 @@
-﻿using Data.ViewModels.Certificate;
+﻿using Api.ViewModels.Certificate;
 using Microsoft.AspNetCore.Http;
 
-namespace Data.ViewModels.Cv
+namespace Api.ViewModels.Cv
 {
     public class CvAddModel
     {

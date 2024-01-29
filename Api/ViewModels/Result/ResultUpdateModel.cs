@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.Result
+namespace Api.ViewModels.Result
 {
     public class ResultUpdateModel
     {

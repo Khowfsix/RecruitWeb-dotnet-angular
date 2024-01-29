@@ -1,4 +1,4 @@
-using Data.ViewModels.Event;
+using Api.ViewModels.Event;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

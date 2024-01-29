@@ -1,5 +1,5 @@
-using Data.Models;
-using Data.ViewModels.Itrsinterview;
+
+using Api.ViewModels.Itrsinterview;
 
 namespace Service.Interfaces;
 

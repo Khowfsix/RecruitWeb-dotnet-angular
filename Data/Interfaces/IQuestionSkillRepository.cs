@@ -1,6 +1,6 @@
 using Data.Entities;
-using Data.Models;
-using Data.ViewModels.QuestionSkill;
+
+using Api.ViewModels.QuestionSkill;
 
 namespace Data.Interfaces
 {

@@ -1,11 +1,11 @@
-using Data.Models;
-using Data.ViewModels.Application;
-using Data.ViewModels.Interviewer;
-using Data.ViewModels.Itrsinterview;
-using Data.ViewModels.Recruiter;
-using Data.ViewModels.Round;
 
-namespace Data.ViewModels.Interview
+using Api.ViewModels.Application;
+using Api.ViewModels.Interviewer;
+using Api.ViewModels.Itrsinterview;
+using Api.ViewModels.Recruiter;
+using Api.ViewModels.Round;
+
+namespace Api.ViewModels.Interview
 {
     public class InterviewViewModel
     {

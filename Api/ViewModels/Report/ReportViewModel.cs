@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.Report
+namespace Api.ViewModels.Report
 {
     public class ReportUpdateModel
     {

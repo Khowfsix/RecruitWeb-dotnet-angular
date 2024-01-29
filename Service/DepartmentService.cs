@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.Department;
+
+using Api.ViewModels.Department;
 using Service.Interfaces;
 
 namespace Service

@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
 using Data.Entities;
-using Data.ViewModels.Result;
+using Api.ViewModels.Result;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

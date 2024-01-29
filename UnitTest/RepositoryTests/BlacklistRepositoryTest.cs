@@ -1,6 +1,6 @@
 using Data;
 using Data.Interfaces;
-using Data.Models;
+
 using Data.Repositories;
 using FakeItEasy;
 using Microsoft.EntityFrameworkCore.InMemory;
@@ -9,7 +9,7 @@ using Service.Interfaces;
 using Data.Entities;
 using AutoMapper;
 using Data.Mapping;
-using Data.ViewModels.BlackList;
+using Api.ViewModels.BlackList;
 
 namespace UnitTest.RepositoryTests
 {

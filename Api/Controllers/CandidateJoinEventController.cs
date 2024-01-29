@@ -1,5 +1,5 @@
 ﻿using Data.Entities;
-using Data.ViewModels.CandidateJoinEvent;
+using Api.ViewModels.CandidateJoinEvent;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

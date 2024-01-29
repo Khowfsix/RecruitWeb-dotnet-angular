@@ -1,4 +1,4 @@
-namespace Data.ViewModels.Itrsinterview;
+namespace Api.ViewModels.Itrsinterview;
 
 public class ItrsinterviewUpdateModel
 {

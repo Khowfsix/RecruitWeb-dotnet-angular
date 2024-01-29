@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.Skill
+﻿namespace Api.ViewModels.Skill
 {
     public class SkillUpdateModel
     {

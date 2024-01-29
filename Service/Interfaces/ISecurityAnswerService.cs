@@ -1,5 +1,5 @@
-﻿using Data.Models;
-using Data.ViewModels.SecurityAnswer;
+﻿
+using Api.ViewModels.SecurityAnswer;
 
 namespace Service.Interfaces
 {

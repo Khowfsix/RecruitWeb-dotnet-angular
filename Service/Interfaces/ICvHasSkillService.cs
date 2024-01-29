@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.CvHasSkill;
+﻿using Api.ViewModels.CvHasSkill;
 
 namespace Service.Interfaces
 {

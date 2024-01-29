@@ -1,5 +1,5 @@
-﻿using Data.Models;
-using Data.ViewModels.Shift;
+﻿
+using Api.ViewModels.Shift;
 
 namespace Service.Interfaces
 {

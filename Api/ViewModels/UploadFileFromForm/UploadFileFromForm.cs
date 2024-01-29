@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.UploadFileFromForm
+namespace Api.ViewModels.UploadFileFromForm
 {
     public class UploadFileFromForm
     {

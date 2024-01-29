@@ -1,11 +1,11 @@
-using Data.Models;
-using Data.ViewModels.Department;
-using Data.ViewModels.Language;
-using Data.ViewModels.Recruiter;
-using Data.ViewModels.Requirement;
+
+using Api.ViewModels.Department;
+using Api.ViewModels.Language;
+using Api.ViewModels.Recruiter;
+using Api.ViewModels.Requirement;
 using System.ComponentModel.DataAnnotations;
 
-namespace Data.ViewModels.Position
+namespace Api.ViewModels.Position
 {
     public class PositionViewModel
     {

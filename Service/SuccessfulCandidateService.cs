@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.SuccessfulCadidate;
+
+using Api.ViewModels.SuccessfulCadidate;
 using Service.Interfaces;
 
 namespace Service

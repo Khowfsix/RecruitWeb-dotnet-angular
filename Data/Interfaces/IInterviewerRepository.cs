@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.Models;
-using Data.ViewModels.Interviewer;
+
+using Api.ViewModels.Interviewer;
 
 namespace Data.Interfaces;
 

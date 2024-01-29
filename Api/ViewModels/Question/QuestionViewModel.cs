@@ -1,8 +1,8 @@
-using Data.ViewModels.CategoryQuestion;
+using Api.ViewModels.CategoryQuestion;
 using System;
 using System.Collections.Generic;
 
-namespace Data.ViewModels.Question;
+namespace Api.ViewModels.Question;
 
 public class QuestionViewModel
 {

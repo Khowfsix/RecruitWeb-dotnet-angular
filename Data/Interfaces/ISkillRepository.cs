@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.Models;
-using Data.ViewModels.Skill;
+
+using Api.ViewModels.Skill;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using Data.Models;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Data.ViewModels.CandidateJoinEvent
+namespace Api.ViewModels.CandidateJoinEvent
 {
     public class CandidateJoinEventAddModel
     {

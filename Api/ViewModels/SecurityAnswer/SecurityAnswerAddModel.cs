@@ -1,5 +1,5 @@
 ﻿
-namespace Data.ViewModels.SecurityAnswer
+namespace Api.ViewModels.SecurityAnswer
 {
     public class SecurityAnswerAddModel
     {

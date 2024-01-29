@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Skill;
+﻿using Api.ViewModels.Skill;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

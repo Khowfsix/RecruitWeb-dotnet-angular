@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Requirement;
+﻿using Api.ViewModels.Requirement;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

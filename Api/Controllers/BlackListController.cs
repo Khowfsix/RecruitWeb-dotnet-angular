@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.BlackList;
+﻿using Api.ViewModels.BlackList;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

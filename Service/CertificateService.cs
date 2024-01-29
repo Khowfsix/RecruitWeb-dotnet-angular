@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.Certificate;
+
+using Api.ViewModels.Certificate;
 using Service.Interfaces;
 
 namespace Service

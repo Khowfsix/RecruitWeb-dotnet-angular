@@ -1,6 +1,6 @@
 using Data;
 using Data.Interfaces;
-using Data.Models;
+
 using Data.Repositories;
 using FakeItEasy;
 using Microsoft.EntityFrameworkCore.InMemory;
@@ -8,7 +8,7 @@ using Service;
 using Service.Interfaces;
 using Data.Entities;
 using AutoMapper;
-using Data.ViewModels.SuccessfulCadidate;
+using Api.ViewModels.SuccessfulCadidate;
 using Data.Mapping;
 
 namespace UnitTest.RepositoryTests

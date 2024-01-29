@@ -1,4 +1,4 @@
-using Data.ViewModels.Interviewer;
+using Api.ViewModels.Interviewer;
 
 namespace Service.Interfaces;
 

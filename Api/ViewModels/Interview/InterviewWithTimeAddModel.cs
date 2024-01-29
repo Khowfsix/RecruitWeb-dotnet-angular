@@ -1,7 +1,7 @@
-using Data.Models;
-using Data.ViewModels.Itrsinterview;
 
-namespace Data.ViewModels.Interview
+using Api.ViewModels.Itrsinterview;
+
+namespace Api.ViewModels.Interview
 {
     public class InterviewWithTimeAddModel
     {

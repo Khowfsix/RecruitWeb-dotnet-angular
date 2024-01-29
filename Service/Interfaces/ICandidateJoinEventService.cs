@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.CandidateJoinEvent;
+﻿using Api.ViewModels.CandidateJoinEvent;
 
 namespace Service.Interfaces
 {

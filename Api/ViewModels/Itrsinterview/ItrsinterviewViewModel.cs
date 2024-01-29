@@ -1,7 +1,7 @@
-using Data.ViewModels.Room;
-using Data.ViewModels.Shift;
+using Api.ViewModels.Room;
+using Api.ViewModels.Shift;
 
-namespace Data.ViewModels.Itrsinterview;
+namespace Api.ViewModels.Itrsinterview;
 
 public class ItrsinterviewViewModel
 {

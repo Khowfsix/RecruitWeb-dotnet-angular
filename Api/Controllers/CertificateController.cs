@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Certificate;
+﻿using Api.ViewModels.Certificate;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

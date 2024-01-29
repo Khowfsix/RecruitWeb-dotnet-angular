@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
 
-namespace Data.ViewModels
+namespace Api.ViewModels
 {
     public class WebUserViewModel
     {

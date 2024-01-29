@@ -1,4 +1,4 @@
-using Data.ViewModels.Language;
+using Api.ViewModels.Language;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

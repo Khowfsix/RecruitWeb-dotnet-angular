@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.Certificate;
-using Data.ViewModels.Cv;
-using Data.ViewModels.Skill;
+
+using Api.ViewModels.Certificate;
+using Api.ViewModels.Cv;
+using Api.ViewModels.Skill;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 

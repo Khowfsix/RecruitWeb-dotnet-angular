@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.SecurityQuestion;
+
+using Api.ViewModels.SecurityQuestion;
 using Service.Interfaces;
 
 namespace Service

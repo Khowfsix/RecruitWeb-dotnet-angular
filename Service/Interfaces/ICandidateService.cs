@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Candidate;
+﻿using Api.ViewModels.Candidate;
 
 namespace Service.Interfaces
 {

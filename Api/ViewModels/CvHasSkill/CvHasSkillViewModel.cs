@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.CvHasSkill
+namespace Api.ViewModels.CvHasSkill
 {
     public class CvHasSkillViewModel
     {

@@ -1,5 +1,5 @@
 ﻿using Api.Controllers;
-using Data.ViewModels.Skill;
+using Api.ViewModels.Skill;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

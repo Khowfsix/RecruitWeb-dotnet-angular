@@ -1,6 +1,6 @@
-using Data.ViewModels.Candidate;
-using Data.ViewModels.Certificate;
-using Data.ViewModels.Skill;
+using Api.ViewModels.Candidate;
+using Api.ViewModels.Certificate;
+using Api.ViewModels.Skill;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.Cv
+namespace Api.ViewModels.Cv
 {
     public class CvViewModel
     {

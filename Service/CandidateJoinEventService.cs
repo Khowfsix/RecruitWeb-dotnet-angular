@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.CandidateJoinEvent;
+
+using Api.ViewModels.CandidateJoinEvent;
 using Service.Interfaces;
 
 namespace Service

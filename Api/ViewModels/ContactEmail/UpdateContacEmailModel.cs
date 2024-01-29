@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.ContactEmail
+namespace Api.ViewModels.ContactEmail
 {
     public class UpdateContacEmailModel
     {

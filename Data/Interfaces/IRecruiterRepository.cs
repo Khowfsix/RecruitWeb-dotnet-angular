@@ -1,6 +1,6 @@
 using Data.Entities;
-using Data.Models;
-using Data.ViewModels.Recruiter;
+
+using Api.ViewModels.Recruiter;
 
 namespace Data.Interfaces;
 

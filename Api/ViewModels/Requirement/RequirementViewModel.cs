@@ -1,12 +1,12 @@
-﻿using Data.ViewModels.Position;
-using Data.ViewModels.Skill;
+﻿using Api.ViewModels.Position;
+using Api.ViewModels.Skill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.ViewModels.Requirement
+namespace Api.ViewModels.Requirement
 {
     public class RequirementViewModel
     {

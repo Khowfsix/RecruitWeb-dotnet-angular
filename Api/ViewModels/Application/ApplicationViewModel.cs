@@ -1,7 +1,7 @@
-using Data.ViewModels.Cv;
-using Data.ViewModels.Position;
+using Api.ViewModels.Cv;
+using Api.ViewModels.Position;
 
-namespace Data.ViewModels.Application
+namespace Api.ViewModels.Application
 {
     public class ApplicationViewModel
     {

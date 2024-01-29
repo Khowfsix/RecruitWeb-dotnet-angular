@@ -1,4 +1,4 @@
-using Data.ViewModels.Position;
+using Api.ViewModels.Position;
 
 namespace Service.Interfaces
 {

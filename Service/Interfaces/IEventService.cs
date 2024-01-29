@@ -1,4 +1,4 @@
-using Data.ViewModels.Event;
+using Api.ViewModels.Event;
 
 namespace Service.Interfaces;
 

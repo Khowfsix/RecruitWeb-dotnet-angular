@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Data.Entities;
-using Data.Models;
-using Data.ViewModels;
-using Data.ViewModels.Application;
-using Data.ViewModels.Candidate;
-using Data.ViewModels.Interview;
-using Data.ViewModels.Interviewer;
-using Data.ViewModels.Recruiter;
-using Data.ViewModels.SuccessfulCadidate;
+
+using Api.ViewModels;
+using Api.ViewModels.Application;
+using Api.ViewModels.Candidate;
+using Api.ViewModels.Interview;
+using Api.ViewModels.Interviewer;
+using Api.ViewModels.Recruiter;
+using Api.ViewModels.SuccessfulCadidate;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

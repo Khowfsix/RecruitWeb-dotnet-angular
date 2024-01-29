@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Data.ViewModels.Application;
+namespace Api.ViewModels.Application;
 
 public class ApplicationHistoryViewModel
 {

@@ -1,6 +1,6 @@
-using Data.ViewModels.Itrsinterview;
+using Api.ViewModels.Itrsinterview;
 
-namespace Data.ViewModels.Interview
+namespace Api.ViewModels.Interview
 {
     public class InterviewUpdateModel
     {

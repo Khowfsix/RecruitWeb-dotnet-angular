@@ -1,4 +1,4 @@
-﻿namespace Data.ViewModels.Position
+﻿namespace Api.ViewModels.Position
 {
     public class PositionAddModel
     {

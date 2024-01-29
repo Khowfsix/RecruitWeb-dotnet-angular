@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Room;
+﻿using Api.ViewModels.Room;
 
 namespace Service.Interfaces
 {

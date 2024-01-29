@@ -1,6 +1,6 @@
 ﻿using Common.ExportExcel;
 using Data.Entities;
-using Data.ViewModels;
+using Api.ViewModels;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

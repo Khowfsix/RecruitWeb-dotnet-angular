@@ -1,4 +1,4 @@
-namespace Data.ViewModels.QuestionSkill;
+namespace Api.ViewModels.QuestionSkill;
 
 public class QuestionSkillUpdateModel
 {

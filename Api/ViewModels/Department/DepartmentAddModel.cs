@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Data.ViewModels.Department
+namespace Api.ViewModels.Department
 {
     public class DepartmentAddModel
     {

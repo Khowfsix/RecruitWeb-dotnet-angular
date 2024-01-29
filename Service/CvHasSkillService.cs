@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.CvHasSkill;
+
+using Api.ViewModels.CvHasSkill;
 using Service.Interfaces;
 
 namespace Service

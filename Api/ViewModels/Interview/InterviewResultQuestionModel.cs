@@ -1,6 +1,6 @@
-using Data.ViewModels.Round;
+using Api.ViewModels.Round;
 
-namespace Data.ViewModels.Interview
+namespace Api.ViewModels.Interview
 {
     public class InterviewResultQuestionModel
     {

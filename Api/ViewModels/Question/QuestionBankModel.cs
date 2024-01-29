@@ -1,6 +1,6 @@
-using Data.ViewModels.CategoryQuestion;
+using Api.ViewModels.CategoryQuestion;
 
-namespace Data.ViewModels.Question;
+namespace Api.ViewModels.Question;
 
 public class CategoryQuestionBankModel
 {

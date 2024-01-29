@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.BlackList;
+﻿using Api.ViewModels.BlackList;
 
 namespace Service.Interfaces
 {

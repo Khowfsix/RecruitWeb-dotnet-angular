@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.SuccessfulCadidate;
+﻿using Api.ViewModels.SuccessfulCadidate;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

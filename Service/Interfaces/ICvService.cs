@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.Cv;
+﻿using Api.ViewModels.Cv;
 using Microsoft.AspNetCore.Http;
 
 namespace Service.Interfaces

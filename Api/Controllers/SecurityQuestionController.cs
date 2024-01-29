@@ -1,4 +1,4 @@
-﻿using Data.ViewModels.SecurityQuestion;
+﻿using Api.ViewModels.SecurityQuestion;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

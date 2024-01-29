@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
 using Data.Entities;
-using Data.ViewModels.Room;
+using Api.ViewModels.Room;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

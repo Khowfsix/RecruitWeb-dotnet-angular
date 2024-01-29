@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using Data.Models;
-using Data.ViewModels.Round;
+
+using Api.ViewModels.Round;
 using System;
 using System.Collections.Generic;
 using System.Linq;

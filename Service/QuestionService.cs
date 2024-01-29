@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.Question;
+
+using Api.ViewModels.Question;
 using Service.Interfaces;
 
 namespace Service

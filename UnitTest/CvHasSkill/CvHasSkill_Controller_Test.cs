@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
 using Data.Entities;
-using Data.ViewModels.CvHasSkill;
+using Api.ViewModels.CvHasSkill;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

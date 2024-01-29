@@ -1,8 +1,8 @@
 using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.Application;
+
+using Api.ViewModels.Application;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories

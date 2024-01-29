@@ -1,5 +1,5 @@
 ﻿using Data.Entities;
-using Data.ViewModels.SuccessfulCadidate;
+using Api.ViewModels.SuccessfulCadidate;
 using Service.Interfaces;
 using Service.Models;
 using Service.Services;

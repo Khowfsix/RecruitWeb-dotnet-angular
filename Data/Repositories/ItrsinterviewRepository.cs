@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
-using Data.Models;
-using Data.ViewModels.Itrsinterview;
+
+using Api.ViewModels.Itrsinterview;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Drawing2D;
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Data.ViewModels.CandidateJoinEvent
+namespace Api.ViewModels.CandidateJoinEvent
 {
     public class CandidateJoinEventUpdateModel
     {
