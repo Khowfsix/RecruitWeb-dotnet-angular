@@ -1,4 +1,4 @@
-﻿namespace Api.Models.Admin
+﻿namespace Api.ViewModels.Admin
 {
     public class UpdateProfileModel
     {

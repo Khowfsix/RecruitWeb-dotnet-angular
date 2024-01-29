@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api.Models.Authentication.LogIn
+namespace Api.ViewModels.Authentication.LogIn
 {
     public class ChangePasswordModel
     {

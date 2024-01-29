@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Api.Models.Admin;
-using Api.Models.Authentication.LogIn;
-using Api.Models.Authentication.SignUp;
 using Data.Entities;
 using Data.Models;
 using Service.Interfaces;
@@ -15,6 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Api.ViewModels.Admin;
+using Api.ViewModels.Authentication.LogIn;
+using Api.ViewModels.Authentication.SignUp;
 
 namespace Api.Controllers
 {
