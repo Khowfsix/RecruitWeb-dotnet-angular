@@ -1,5 +1,4 @@
 ﻿using Data.Entities;
-
 using Api.ViewModels.Application;
 
 namespace Data.Interfaces

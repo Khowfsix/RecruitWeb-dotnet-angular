@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,47 +8,34 @@ namespace Data.Repositories
     public class RequirementRepository : Repository<Requirement>, IRequirementRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public RequirementRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RequirementModel>> GetAllRequirement()
+        public async Task<IEnumerable<Requirement>> GetAllRequirement()
         {
-            var listData = new List<RequirementModel>();
-
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<RequirementModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
-        public async Task<RequirementModel> SaveRequirement(RequirementModel request)
+        public async Task<Requirement> SaveRequirement(Requirement request)
         {
-            var report = _mapper.Map<Requirement>(request);
-            report.RequirementId = Guid.NewGuid();
+            request.RequirementId = Guid.NewGuid();
 
-            Entities.Add(report);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<RequirementModel>(report);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateRequirement(RequirementModel request, Guid requestId)
+        public async Task<bool> UpdateRequirement(Requirement request, Guid requestId)
         {
-            var report = _mapper.Map<Requirement>(request);
-            report.RequirementId = requestId;
+            request.RequirementId = requestId;
 
-            Entities.Update(report);
+            Entities.Update(request);
             _uow.SaveChanges();
 
             return await Task.FromResult(true);
@@ -69,15 +55,15 @@ namespace Data.Repositories
             return await Task.FromResult(true);
         }
 
-        public async Task<List<RequirementModel>> GetRequirementsByPositionId(Guid positionId)
+        public async Task<List<Requirement>> GetRequirementsByPositionId(Guid positionId)
         {
             var requirementList = Entities.AsAsyncEnumerable();
-            List<RequirementModel> result = new();
+            List<Requirement> result = new();
             await foreach (var requirement in requirementList)
             {
                 if (requirement.PositionId == positionId)
                 {
-                    result.Add(_mapper.Map<RequirementModel>(requirement));
+                    result.Add(requirement);
                 }
             }
             return result;

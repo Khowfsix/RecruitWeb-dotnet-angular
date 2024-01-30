@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,59 +8,42 @@ namespace Data.Repositories
     public class RoundRepository : Repository<Round>, IRoundRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public RoundRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoundModel>> GetAllRounds(string? request)
+        public async Task<IEnumerable<Round>> GetAllRounds(string? request)
         {
-            var listDatas = new List<RoundModel>();
             if (string.IsNullOrEmpty(request))
             {
                 var datas = await Entities.ToListAsync();
-                foreach (var data in datas)
-                {
-                    var obj = _mapper.Map<RoundModel>(data);
-                    listDatas.Add(obj);
-                }
-                return listDatas;
+                return datas;
             }
             else
             {
-                var datas = await Entities.Where(r => r.InterviewId.ToString().Contains(request)).Take(10).ToListAsync();
-                foreach (var data in datas)
-                {
-                    var obj = _mapper.Map<RoundModel>(data);
-                    listDatas.Add(obj);
-                }
-                return listDatas;
+                var datas = await Entities.Where(r => r.InterviewId.ToString().Contains(request)).Take(10).ToListAsync()
+                return datas;
             }
         }
 
-        public async Task<RoundModel> SaveRound(RoundModel request)
+        public async Task<Round> SaveRound(Round request)
         {
-            var round = _mapper.Map<Round>(request);
-            round.RoundId = Guid.NewGuid();
+            request.RoundId = Guid.NewGuid();
 
-            Entities.Add(round);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<RoundModel>(round);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateRound(RoundModel request, Guid requestId)
+        public async Task<bool> UpdateRound(Round request, Guid requestId)
         {
-            var round = _mapper.Map<Round>(request);
-            round.RoundId = requestId;
+            request.RoundId = requestId;
 
-            Entities.Update(round);
+            Entities.Update(request);
             _uow.SaveChanges();
 
             return await Task.FromResult(true);

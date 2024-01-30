@@ -1,38 +1,25 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.SuccessfulCadidate;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Data.Repositories
 {
     public class SuccessfulCadidateRepository : Repository<SuccessfulCadidate>, ISuccessfulCadidateRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public SuccessfulCadidateRepository(RecruitmentWebContext dbContext,
-            IUnitOfWork uow,
-            IMapper mapper) : base(dbContext)
+            IUnitOfWork uow) : base(dbContext)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SuccessfulCadidateModel>> GetAllSuccessfulCadidates(string? request)
+        public async Task<IEnumerable<SuccessfulCadidate>> GetAllSuccessfulCadidates(string? request)
         {
-            var listDatas = new List<SuccessfulCadidateModel>();
             if (string.IsNullOrEmpty(request))
             {
                 var datas = await Entities.Take(10).ToListAsync();
-                foreach (var data in datas)
-                {
-                    var obj = _mapper.Map<SuccessfulCadidateModel>(data);
-                    listDatas.Add(obj);
-                }
-                return listDatas;
+                return datas;
             }
             else
             {
@@ -40,34 +27,27 @@ namespace Data.Repositories
                     s => s.Candidate.User.FullName.Contains(request) ||
                          s.Position.PositionName.Contains(request)
                     ).Take(10).ToListAsync();
-                foreach (var data in datas)
-                {
-                    var obj = _mapper.Map<SuccessfulCadidateModel>(data);
-                    listDatas.Add(obj);
-                }
-                return listDatas;
+                return datas;
             }
         }
 
-        public async Task<SuccessfulCadidateModel> SaveSuccessfulCadidate(SuccessfulCadidateModel request)
+        public async Task<SuccessfulCadidate> SaveSuccessfulCadidate(SuccessfulCadidate request)
         {
-            var round = _mapper.Map<SuccessfulCadidate>(request);
-            round.SuccessfulCadidateId = Guid.NewGuid();
+            request.SuccessfulCadidateId = Guid.NewGuid();
 
-            Entities.Add(round);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<SuccessfulCadidateModel>(round);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateSuccessfulCadidate(SuccessfulCadidateModel request, Guid requestId)
+        public async Task<bool> UpdateSuccessfulCadidate(SuccessfulCadidate request, Guid requestId)
         {
-            var round = _mapper.Map<SuccessfulCadidate>(request);
-            round.SuccessfulCadidateId = requestId;
+            request.SuccessfulCadidateId = requestId;
 
-            Entities.Add(round);
+            Entities.Add(request);
             _uow.SaveChanges();
+
             return await Task.FromResult(true);
         }
 

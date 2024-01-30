@@ -78,7 +78,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         // => optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection");
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+        // => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

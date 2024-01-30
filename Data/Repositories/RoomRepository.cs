@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,47 +8,34 @@ namespace Data.Repositories
     public class RoomRepository : Repository<Room>, IRoomRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public RoomRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoomModel>> GetAllRoom()
+        public async Task<IEnumerable<Room>> GetAllRoom()
         {
-            var listData = new List<RoomModel>();
-
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<RoomModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
-        public async Task<RoomModel> SaveRoom(RoomModel request)
+        public async Task<Room> SaveRoom(Room request)
         {
-            var report = _mapper.Map<Room>(request);
-            report.RoomId = Guid.NewGuid();
+            request.RoomId = Guid.NewGuid();
 
-            Entities.Add(report);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<RoomModel>(report);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateRoom(RoomModel request, Guid requestId)
+        public async Task<bool> UpdateRoom(Room request, Guid requestId)
         {
-            var report = _mapper.Map<Room>(request);
-            report.RoomId = requestId;
+            request.RoomId = requestId;
 
-            Entities.Update(report);
+            Entities.Update(request);
             _uow.SaveChanges();
 
             return await Task.FromResult(true);
@@ -68,10 +54,10 @@ namespace Data.Repositories
 
             return await Task.FromResult(true);
         }
-        public async Task<RoomModel> GetRoomById(Guid id)
+        public async Task<Room> GetRoomById(Guid id)
         {
             var entity = await Entities.FindAsync(id);
-            return entity is not null ? _mapper.Map<RoomModel>(entity) : null;
+            return entity;
         }
     }
 }
