@@ -19,7 +19,7 @@ public class InterviewerController : BaseAPIController
     {
         //if (departmentId != null)
         //{
-        //    var response = await _interviewerService.getInterviewersInDepartment((Guid)departmentId);
+        //    var response = await _interviewerService.GetInterviewersInDepartment((Guid)departmentId);
         //}
         if (id != null)
         {
@@ -33,7 +33,7 @@ public class InterviewerController : BaseAPIController
 
         else if (departmentId != null)
         {
-            var response = await _interviewerService.getInterviewersInDepartment((Guid)departmentId);
+            var response = await _interviewerService.GetInterviewersInDepartment((Guid)departmentId);
 
             if (response != null)
             {

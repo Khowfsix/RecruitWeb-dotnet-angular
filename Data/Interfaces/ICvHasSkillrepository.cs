@@ -1,21 +1,21 @@
-
+using Data.Entities;
 
 namespace Data.Interfaces
 {
     public interface ICvHasSkillrepository
     {
-        Task<IEnumerable<CvHasSkillModel>> GetAllCvHasSkillService(string? request);
+        Task<IEnumerable<CvHasSkill>> GetAllCvHasSkillService(string? request);
 
-        Task<CvHasSkillModel> SaveCvHasSkillService(CvHasSkillModel request);
+        Task<CvHasSkill> SaveCvHasSkillService(CvHasSkill request);
 
-        Task<bool> UpdateCvHasSkillService(CvHasSkillModel request, Guid requestId);
+        Task<bool> UpdateCvHasSkillService(CvHasSkill request, Guid requestId);
 
         Task<bool> DeleteCvHasSkillService(Guid requestId);
 
-        Task<IList<SkillModel>> GetSkill(Guid Cvid);
+        Task<IList<Skill>> GetSkill(Guid Cvid);
 
-        Task<IList<CvModel>> GetCv(Guid skillId);
+        Task<IList<Cv>> GetCv(Guid skillId);
 
-        Task<List<CvHasSkillModel>> GetAllSkillsFromOneCV(Guid Cvid);
+        Task<List<CvHasSkill>> GetAllSkillsFromOneCV(Guid Cvid);
     }
 }

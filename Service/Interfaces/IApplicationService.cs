@@ -1,22 +1,23 @@
-﻿using Api.ViewModels.Application;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IApplicationService
     {
-        Task<IEnumerable<ApplicationViewModel>> GetAllApplications();
+        Task<IEnumerable<ApplicationModel>> GetAllApplications();
 
-        Task<IEnumerable<ApplicationViewModel>> GetAllApplicationsOfPosition(Guid? positionId, string? status, string? priority);
+        Task<IEnumerable<ApplicationModel>> GetAllApplicationsOfPosition(Guid? positionId, string? status, string? priority);
 
-        Task<IEnumerable<ApplicationHistoryViewModel>> GetApplicationHistory(Guid candidateId);
+        //todo: return ApplicationHistoryViewModel
+        Task<IEnumerable<ApplicationModel>> GetApplicationHistory(Guid candidateId);
 
-        Task<ApplicationViewModel?> GetApplicationById(Guid ApplicationId);
+        Task<ApplicationModel?> GetApplicationById(Guid ApplicationId);
 
-        Task<IEnumerable<ApplicationViewModel>> GetApplicationsWithStatus(string status, string priority);
+        Task<IEnumerable<ApplicationModel>> GetApplicationsWithStatus(string status, string priority);
 
-        Task<ApplicationViewModel> SaveApplication(ApplicationAddModel requestId);
+        Task<ApplicationModel> SaveApplication(ApplicationModel requestId);
 
-        Task<bool> UpdateApplication(ApplicationUpdateModel request, Guid applicationId);
+        Task<bool> UpdateApplication(ApplicationModel request, Guid applicationId);
 
         Task<bool> UpdateStatusApplication(Guid applicationId, string? Candidate_Status, string? Company_Status);
 

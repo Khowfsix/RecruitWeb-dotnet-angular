@@ -1,26 +1,25 @@
 using Data.Entities;
 
-
 namespace Data.Interfaces
 {
     public interface ICvRepository : IRepository<Cv>
     {
-        Task<IEnumerable<CvModel>> GetAllCv(string? request);
+        Task<IEnumerable<Cv>> GetAllCv(string? request);
 
-        Task<IEnumerable<CvModel>> GetAllUserCv(string userId);
+        Task<IEnumerable<Cv>> GetAllUserCv(string userId);
 
-        Task<(bool, CvModel)> SaveCv(CvModel request);
+        Task<(bool, Cv)> SaveCv(Cv request);
 
-        Task<bool> UpdateCv(CvModel request, Guid requestId);
+        Task<bool> UpdateCv(Cv request, Guid requestId);
 
         Task<bool> DeleteCv(Guid requestId);
 
-        Task<IEnumerable<CvModel>> GetForeignKey(Guid requestId);
+        Task<IEnumerable<Cv>> GetForeignKey(Guid requestId);
 
-        Task<List<CvModel>> GetCvsByCandidateId(Guid candidateId);
+        Task<List<Cv>> GetCvsByCandidateId(Guid candidateId);
 
-        Task<CvModel> GetCVById(Guid id);
+        Task<Cv> GetCVById(Guid id);
 
-        //Task<CvModel> GetCVByIdNoTracking(Guid id);
+        //Task<Cv> GetCVByIdNoTracking(Guid id);
     }
 }

@@ -1,14 +1,14 @@
-﻿using Api.ViewModels.Certificate;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ICertificateService
     {
-        Task<IEnumerable<CertificateViewModel>> GetAllCertificate(string? request);
+        Task<IEnumerable<CertificateModel>> GetAllCertificate(string? request);
 
-        Task<CertificateViewModel> SaveCertificate(CertificateAddModel request);
+        Task<CertificateModel> SaveCertificate(CertificateModel request);
 
-        Task<bool> UpdateCertificate(CertificateUpdateModel request, Guid requestId);
+        Task<bool> UpdateCertificate(CertificateModel request, Guid requestId);
 
         Task<bool> DeleteCertificate(Guid requestId);
     }

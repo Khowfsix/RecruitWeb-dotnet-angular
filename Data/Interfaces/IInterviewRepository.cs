@@ -5,18 +5,18 @@ namespace Data.Interfaces;
 
 public interface IInterviewRepository : IRepository<Interview>
 {
-    Task<IEnumerable<InterviewModel>> GetAllInterview();
+    Task<IEnumerable<Interview>> GetAllInterview();
 
-    Task<InterviewModel?> GetInterviewById(Guid id);
+    Task<Interview?> GetInterviewById(Guid id);
 
-    Task<InterviewModel?> GetInterviewById_NoInclude(Guid id);
+    Task<Interview?> GetInterviewById_NoInclude(Guid id);
 
-    Task<IEnumerable<InterviewModel>> GetInterviewOfInterviewer(Guid id);
+    Task<IEnumerable<Interview>> GetInterviewOfInterviewer(Guid id);
 
-    Task<InterviewModel?> SaveInterview(InterviewModel request);
+    Task<Interview?> SaveInterview(Interview request);
 
-    //Task<bool> CreateInterviewWithApplication(InterviewModel interviewRequest, Guid applicationRequest);
-    Task<bool> UpdateInterview(InterviewModel request, Guid requestId);
+    //Task<bool> CreateInterviewWithApplication(Interview interviewRequest, Guid applicationRequest);
+    Task<bool> UpdateInterview(Interview request, Guid requestId);
 
     Task<bool> DeleteInterview(Guid requestId);
 

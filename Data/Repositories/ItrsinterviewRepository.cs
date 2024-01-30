@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Itrsinterview;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing.Drawing2D;
 
 namespace Data.Repositories;
 
@@ -81,7 +78,6 @@ public class ItrsinterviewRepository : Repository<Itrsinterview>, IItrsinterview
         }
         catch (Exception e)
         {
-            // TODO: Return an object with error message
             Console.WriteLine(e.Message);
             _uow.RollbackTransaction();
             _uow.Dispose();
@@ -124,7 +120,6 @@ public class ItrsinterviewRepository : Repository<Itrsinterview>, IItrsinterview
         }
         catch (Exception e)
         {
-            // TODO: Return an object with error message
             Console.WriteLine(e.Message);
             return await Task.FromResult(false);
         }

@@ -1,17 +1,17 @@
-﻿
+﻿using Data.Entities;
 
 namespace Data.Interfaces
 {
     public interface ICertificateRepository
     {
-        Task<IEnumerable<CertificateModel>> GetAllCertificate(string? request);
+        Task<IEnumerable<Certificate>> GetAllCertificate(string? request);
 
-        Task<CertificateModel> SaveCertificate(CertificateModel request);
+        Task<Certificate> SaveCertificate(Certificate request);
 
-        Task<bool> UpdateCertificate(CertificateModel request, Guid requestId);
+        Task<bool> UpdateCertificate(Certificate request, Guid requestId);
 
         Task<bool> DeleteCertificate(Guid requestId);
 
-        Task<IEnumerable<CertificateModel>> GetForeignKey(Guid requestId);
+        Task<IEnumerable<Certificate>> GetForeignKey(Guid requestId);
     }
 }

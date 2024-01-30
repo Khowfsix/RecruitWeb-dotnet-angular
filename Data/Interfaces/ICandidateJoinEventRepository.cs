@@ -1,19 +1,19 @@
-﻿
+﻿using Data.Entities;
 
 namespace Data.Interfaces
 {
     public interface ICandidateJoinEventRepository
     {
-        Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents();
+        Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEvents();
 
-        Task<CandidateJoinEventModel> SaveCandidateJoinEvent(CandidateJoinEventModel request);
+        Task<CandidateJoinEvent> SaveCandidateJoinEvent(CandidateJoinEvent request);
 
-        Task<bool> UpdateCandidateJoinEvent(CandidateJoinEventModel request, Guid requestId);
+        Task<bool> UpdateCandidateJoinEvent(CandidateJoinEvent request, Guid requestId);
 
         Task<bool> DeleteCandidateJoinEvent(Guid requestId);
 
-        Task<IEnumerable<CandidateJoinEventModel>> JoinEventDetail(Guid id);
+        Task<IEnumerable<CandidateJoinEvent>> JoinEventDetail(Guid id);
 
-        Task<IEnumerable<CandidateJoinEventModel>> GetCandidatesSortedByJoinEventCount();
+        Task<IEnumerable<CandidateJoinEvent>> GetCandidatesSortedByJoinEventCount();
     }
 }

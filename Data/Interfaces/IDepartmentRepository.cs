@@ -1,14 +1,14 @@
-﻿
+﻿using Data.Entities;
 
 namespace Data.Interfaces
 {
     public interface IDepartmentRepository
     {
-        Task<IEnumerable<DepartmentModel>> GetAllDepartment(string? request);
+        Task<IEnumerable<Department>> GetAllDepartment(string? request);
 
-        Task<DepartmentModel> SaveDepartment(DepartmentModel request);
+        Task<Department> SaveDepartment(Department request);
 
-        Task<bool> UpdateDepartment(DepartmentModel request, Guid requestId);
+        Task<bool> UpdateDepartment(Department request, Guid requestId);
 
         Task<bool> DeleteDepartment(Guid requestId);
     }

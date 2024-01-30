@@ -1,7 +1,4 @@
-﻿
-using Api.ViewModels.Interview;
-
-namespace Service.Interfaces;
+﻿namespace Service.Interfaces;
 
 public interface IInterviewService
 {

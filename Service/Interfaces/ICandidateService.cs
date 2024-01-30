@@ -1,21 +1,21 @@
-﻿using Api.ViewModels.Candidate;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ICandidateService
     {
-        Task<IEnumerable<CandidateViewModel>> GetAllCandidates();
+        Task<IEnumerable<CandidateModel>> GetAllCandidates();
 
-        Task<CandidateViewModel> SaveCandidate(CandidateAddModel request);
+        Task<CandidateModel> SaveCandidate(CandidateModel request);
 
-        Task<bool> UpdateCandidate(CandidateUpdateModel request, Guid requestId);
+        Task<bool> UpdateCandidate(CandidateModel request, Guid requestId);
 
         Task<bool> DeleteCandidate(Guid requestId);
 
-        Task<ProfileViewModel?> GetProfile(Guid candidateId);
+        Task<ProfileModel?> GetProfile(Guid candidateId);
 
-        Task<CandidateViewModel> FindById(Guid id);
+        Task<CandidateModel> FindById(Guid id);
 
-        Task<CandidateViewModel> GetCandidateByUserId(string id);
+        Task<CandidateModel> GetCandidateByUserId(string id);
     }
 }

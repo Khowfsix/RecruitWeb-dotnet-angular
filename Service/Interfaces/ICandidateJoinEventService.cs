@@ -1,19 +1,19 @@
-﻿using Api.ViewModels.CandidateJoinEvent;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ICandidateJoinEventService
     {
-        Task<IEnumerable<CandidateJoinEventViewModel>> GetAllCandidateJoinEvents();
+        Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents();
 
-        Task<CandidateJoinEventViewModel> SaveCandidateJoinEvent(CandidateJoinEventAddModel request);
+        Task<CandidateJoinEventModel> SaveCandidateJoinEvent(CandidateJoinEventModel request);
 
-        Task<bool> UpdateCandidateJoinEvent(CandidateJoinEventUpdateModel request, Guid requestId);
+        Task<bool> UpdateCandidateJoinEvent(CandidateJoinEventModel request, Guid requestId);
 
         Task<bool> DeleteCandidateJoinEvent(Guid requestId);
 
-        Task<IEnumerable<CandidateJoinedEvent>> JoinEventDetail(Guid id);
+        Task<IEnumerable<CandidateJoinEventModel>> JoinEventDetail(Guid id);
 
-        Task<IEnumerable<CandidateJoinEventViewModel>> GetCandidatesSortedByJoinEventCount();
+        Task<IEnumerable<CandidateJoinEventModel>> GetCandidatesSortedByJoinEventCount();
     }
 }

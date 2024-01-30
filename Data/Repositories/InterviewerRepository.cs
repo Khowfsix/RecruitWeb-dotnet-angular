@@ -50,7 +50,6 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
-            // TODO: Return an object with error message
             Console.WriteLine(e.Message);
             //return await Task.FromResult(false);
             return null!;
@@ -92,14 +91,13 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
         //}
         //catch (Exception e)
         //{
-        //    // TODO: Return an object with error message
         //    Console.WriteLine(e.Message);
         //}
 
         return await Task.FromResult(true);
     }
 
-    public async Task<IEnumerable<InterviewerModel>> getInterviewersInDepartment(Guid deparmentId)
+    public async Task<IEnumerable<InterviewerModel>> GetInterviewersInDepartment(Guid deparmentId)
     {
         var listData = new List<InterviewerModel>();
 

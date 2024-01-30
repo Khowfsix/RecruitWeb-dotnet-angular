@@ -51,7 +51,6 @@ public class RecruiterRepository : Repository<Recruiter>, IRecruiterRepository
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
-            // TODO: Return an object with error message
             Console.WriteLine(e.Message);
             return null!;
         }
@@ -93,7 +92,6 @@ public class RecruiterRepository : Repository<Recruiter>, IRecruiterRepository
         //}
         //catch (Exception e)
         //{
-        //    // TODO: Return an object with error message
         //    Console.WriteLine(e.Message);
         //}
         return await Task.FromResult(true);

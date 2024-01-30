@@ -1,18 +1,18 @@
-using Api.ViewModels.Interviewer;
+using Service.Models;
 
 namespace Service.Interfaces;
 
 public interface IInterviewerService
 {
-    Task<IEnumerable<InterviewerViewModel>> GetAllInterviewer();
+    Task<IEnumerable<InterviewerModel>> GetAllInterviewer();
 
-    Task<InterviewerViewModel?> GetInterviewerById(Guid id);
+    Task<InterviewerModel?> GetInterviewerById(Guid id);
 
-    Task<IEnumerable<InterviewerViewModel?>> getInterviewersInDepartment(Guid departmentId);
+    Task<IEnumerable<InterviewerModel?>> GetInterviewersInDepartment(Guid departmentId);
 
-    Task<InterviewerViewModel> SaveInterviewer(InterviewerAddModel addModel);
+    Task<InterviewerModel> SaveInterviewer(InterviewerModel addModel);
 
-    Task<bool> UpdateInterviewer(InterviewerUpdateModel interviewerModel, Guid interviewerModelId);
+    Task<bool> UpdateInterviewer(InterviewerModel interviewerModel, Guid interviewerModelId);
 
     Task<bool> DeleteInterviewer(Guid interviewerModelId);
 }

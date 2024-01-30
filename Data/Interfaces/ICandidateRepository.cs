@@ -1,22 +1,23 @@
-﻿
-
+﻿using Data.Entities;
 
 namespace Data.Interfaces
 {
     public interface ICandidateRepository
     {
-        Task<IEnumerable<CandidateModel>> GetAllCandidates();
+        Task<IEnumerable<Candidate>> GetAllCandidates();
 
-        Task<CandidateModel> SaveCandidate(CandidateModel request);
+        Task<Candidate> SaveCandidate(Candidate request);
 
-        Task<bool> UpdateCandidate(CandidateModel request, Guid requestId);
+        Task<bool> UpdateCandidate(Candidate request, Guid requestId);
 
         Task<bool> DeleteCandidate(Guid requestId);
 
-        Task<CandidateModel?> GetCandidateByUserId(string userId);
+        Task<Candidate?> GetCandidateByUserId(string userId);
 
-        Task<ProfileModel?> GetProfile(Guid candidateId);
+        // todo: profile?
+        // candidate map to profile
+        Task<Candidate?> GetProfile(Guid candidateId);
 
-        Task<CandidateModel> FindById(Guid id);
+        Task<Candidate> FindById(Guid id);
     }
 }

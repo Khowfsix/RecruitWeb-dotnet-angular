@@ -1,14 +1,14 @@
-﻿using Api.ViewModels.CvHasSkill;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ICvHasSkillService
     {
-        Task<IEnumerable<CvHasSkillViewModel>> GetAllCvHasSkillService(string? request);
+        Task<IEnumerable<CvHasSkillModel>> GetAllCvHasSkillService(string? request);
 
-        Task<CvHasSkillViewModel> SaveCvHasSkillService(CvHasSkillAddModel request);
+        Task<CvHasSkillModel> SaveCvHasSkillService(CvHasSkillModel request);
 
-        Task<bool> UpdateCvHasSkillService(CvHasSkillUpdateModel request, Guid requestId);
+        Task<bool> UpdateCvHasSkillService(CvHasSkillModel request, Guid requestId);
 
         Task<bool> DeleteCvHasSkillService(Guid requestId);
     }

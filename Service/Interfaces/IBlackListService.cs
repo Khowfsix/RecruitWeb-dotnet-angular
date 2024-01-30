@@ -1,14 +1,14 @@
-﻿using Api.ViewModels.BlackList;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IBlacklistService
     {
-        Task<IEnumerable<BlacklistViewModel>> GetAllBlackLists();
+        Task<IEnumerable<BlacklistModel>> GetAllBlackLists();
 
-        Task<BlacklistViewModel> SaveBlackList(BlackListAddModel request);
+        Task<BlacklistModel> SaveBlackList(BlacklistModel request);
 
-        Task<bool> UpdateBlackList(BlackListUpdateModel request, Guid requestId);
+        Task<bool> UpdateBlackList(BlacklistModel request, Guid requestId);
 
         Task<bool> DeleteBlackList(Guid requestId);
     }

@@ -49,7 +49,6 @@ public class EventRepository : Repository<Event>, IEventRepository
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
-            // TODO: Return an object with error message
             Console.WriteLine(e.Message);
             //return await Task.FromResult(false);
             return null!;
@@ -96,7 +95,6 @@ public class EventRepository : Repository<Event>, IEventRepository
         //}
         //catch (Exception e)
         //{
-        //    // TODO: Return an object with error message
         //    Console.WriteLine(e.Message);
         //}
         return await Task.FromResult(true);

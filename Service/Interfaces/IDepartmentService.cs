@@ -1,14 +1,14 @@
-﻿using Api.ViewModels.Department;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IDepartmentService
     {
-        Task<IEnumerable<DepartmentViewModel>> GetAllDepartment(string? request);
+        Task<IEnumerable<DepartmentModel>> GetAllDepartment(string? request);
 
-        Task<DepartmentViewModel> SaveDepartment(DepartmentAddModel request);
+        Task<DepartmentModel> SaveDepartment(DepartmentModel request);
 
-        Task<bool> UpdateDepartment(DepartmentUpdateModel request, Guid requestId);
+        Task<bool> UpdateDepartment(DepartmentModel request, Guid requestId);
 
         Task<bool> DeleteDepartment(Guid requestId);
     }

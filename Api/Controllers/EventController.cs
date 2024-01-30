@@ -1,7 +1,7 @@
 using Api.ViewModels.Event;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
 
 namespace Api.Controllers;
 [Authorize]
@@ -39,7 +39,6 @@ public class EventController : BaseAPIController
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SaveEvent(EventAddModel request)
     {
-        // TODO: Should return 201 Created if success
         var response = await _EventService.SaveEvent(request);
         if (response != null)
         {

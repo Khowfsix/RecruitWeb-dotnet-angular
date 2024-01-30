@@ -1,23 +1,23 @@
-﻿using Api.ViewModels.Cv;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ICvService
     {
-        Task<IEnumerable<CvViewModel>> GetAllCv(string? request);
+        Task<IEnumerable<CvModel>> GetAllCv(string? request);
 
-        Task<IEnumerable<CvViewModel>> GetAllUserCv(string userId);
+        Task<IEnumerable<CvModel>> GetAllUserCv(string userId);
 
-        Task<CvViewModel> SaveCv(CvAddModel request);
+        Task<CvModel> SaveCv(CvModel request);
 
-        Task<bool> UpdateCv(CvUpdateModel request, Guid requestId);
+        Task<bool> UpdateCv(CvModel request, Guid requestId);
 
         Task<bool> DeleteCv(Guid requestId);
 
-        Task<IEnumerable<CvViewModel>> GetCvsOfCandidate(Guid candidateId);
+        Task<IEnumerable<CvModel>> GetCvsOfCandidate(Guid candidateId);
 
-        Task<CvViewModel> GetCvById(Guid requestId);
+        Task<CvModel> GetCvById(Guid requestId);
 
         Task<bool> UploadCvPdf(IFormFile? CvFile, Guid Cvid);
     }

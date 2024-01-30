@@ -35,7 +35,7 @@ public class InterviewerService : IInterviewerService
         return data.Select(item => _mapper.Map<InterviewerViewModel>(item)).ToList();
     }
 
-    public async Task<IEnumerable<InterviewerViewModel>> getInterviewersInDepartment(Guid departmentId)
+    public async Task<IEnumerable<InterviewerViewModel>> GetInterviewersInDepartment(Guid departmentId)
     {
         var modelDatas = await _interviewerRepository.GetAllInterviewer();
 

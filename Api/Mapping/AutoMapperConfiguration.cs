@@ -29,6 +29,7 @@ using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
 using Data.Entities;
+using Service.Models;
 
 
 
@@ -314,6 +315,10 @@ namespace Data.Mapping
             CreateMap<WebUser, UserViewModel>().ReverseMap();
             CreateMap<WebUser, WebUserViewModel>().ReverseMap();
             CreateMap<WebUser, ProfileViewModel>().ReverseMap();
+
+
+            CreateMap<WebUser, UserModel>().ReverseMap();
+            CreateMap<WebUser, WebUserModel>().ReverseMap();
             #endregion WebUser
         }
     }

@@ -1,16 +1,16 @@
-using Api.ViewModels.Event;
+using Service.Models;
 
 namespace Service.Interfaces;
 
 public interface IEventService
 {
-    Task<IEnumerable<EventViewModel>> GetAllEvent();
+    Task<IEnumerable<EventModel>> GetAllEvent();
 
-    Task<EventViewModel> GetEventById(Guid id);
+    Task<EventModel> GetEventById(Guid id);
 
-    Task<EventViewModel> SaveEvent(EventAddModel viewModel);
+    Task<EventModel> SaveEvent(EventModel viewModel);
 
-    Task<bool> UpdateEvent(EventUpdateModel eventModel, Guid eventModelId);
+    Task<bool> UpdateEvent(EventModel eventModel, Guid eventModelId);
 
     Task<bool> DeleteEvent(Guid eventModelId);
 }

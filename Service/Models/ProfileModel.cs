@@ -1,6 +1,4 @@
-﻿using Data.Entities;
-
-namespace Data.Model;
+﻿namespace Service.Models;
 
 public class ProfileModel
 {
