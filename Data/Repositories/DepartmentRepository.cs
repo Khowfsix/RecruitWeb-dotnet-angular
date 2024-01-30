@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +8,10 @@ namespace Data.Repositories
     public class DepartmentRepository : Repository<Department>, IDepartmentRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
-        public DepartmentRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+        public DepartmentRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         public async Task<bool> DeleteDepartment(Guid requestId)
@@ -40,23 +35,20 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<DepartmentModel>> GetAllDepartment(string? request)
+        public async Task<IEnumerable<Department>> GetAllDepartment(string? request)
         {
             try
             {
-                var listData = new List<DepartmentModel>();
+                var listData = new List<Department>();
                 if (string.IsNullOrEmpty(request))
                 {
-                    var data = await Entities
-                        .ToListAsync();
-                    listData = _mapper.Map<List<DepartmentModel>>(data);
+                    listData = await Entities.ToListAsync();
                 }
                 else
                 {
-                    var data = await Entities
+                    listData = await Entities
                         .Where(rp => rp.DepartmentName.Contains(request))
                         .ToListAsync();
-                    listData = _mapper.Map<List<DepartmentModel>>(data);
                 }
 
                 return listData;
@@ -67,39 +59,36 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<DepartmentModel> SaveDepartment(DepartmentModel request)
+        public async Task<Department> SaveDepartment(Department request)
         {
             try
             {
-                var department = _mapper.Map<Department>(request);
-                department.DepartmentId = Guid.NewGuid();
+                request.DepartmentId = Guid.NewGuid();
 
-                Entities.Add(department);
+                Entities.Add(request);
                 _uow.SaveChanges();
 
-                var response = _mapper.Map<DepartmentModel>(department);
-                return await Task.FromResult(response);
+                return await Task.FromResult(request);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                return null!;
             }
         }
 
-        public async Task<bool> UpdateDepartment(DepartmentModel request, Guid requestId)
+        public async Task<bool> UpdateDepartment(Department request, Guid requestId)
         {
             try
             {
-                var department = _mapper.Map<Department>(request);
-                department.DepartmentId = requestId;
+                request.DepartmentId = requestId;
 
-                Entities.Update(department);
+                Entities.Update(request);
                 _uow.SaveChanges();
                 return await Task.FromResult(true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                return await Task.FromResult(false);
             }
         }
     }

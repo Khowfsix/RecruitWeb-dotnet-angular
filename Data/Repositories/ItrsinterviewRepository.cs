@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,70 +7,49 @@ namespace Data.Repositories;
 public class ItrsinterviewRepository : Repository<Itrsinterview>, IItrsinterviewRepository
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
 
-    public ItrsinterviewRepository(RecruitmentWebContext context,
-        IUnitOfWork uow,
-        IMapper mapper) : base(context)
+    public ItrsinterviewRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
     {
         _uow = uow;
-        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ItrsinterviewModel>> GetAllItrsinterview()
+    public async Task<IEnumerable<Itrsinterview>> GetAllItrsinterview()
     {
-        var listData = new List<ItrsinterviewModel>();
-
-        var data = await Entities
+        var listDatas = await Entities
             .Include(i => i.Room)
             .Include(i => i.Shift)
             .ToListAsync();
-        foreach (var item in data)
-        {
-            var obj = _mapper.Map<ItrsinterviewModel>(item);
-            listData.Add(obj);
-        }
 
-        return listData;
+        return listDatas;
     }
 
-    public async Task<IEnumerable<ItrsinterviewModel>> GetAllItrsinterview_NoInclude()
+    public async Task<IEnumerable<Itrsinterview>> GetAllItrsinterview_NoInclude()
     {
-        var listData = new List<ItrsinterviewModel>();
-
-        var data = await Entities
+        var listData = await Entities
             .AsNoTracking()
             .ToListAsync();
-        foreach (var item in data)
-        {
-            var obj = _mapper.Map<ItrsinterviewModel>(item);
-            listData.Add(obj);
-        }
 
         return listData;
     }
 
-    public async Task<ItrsinterviewModel?> GetItrsinterviewById(Guid id)
+    public async Task<Itrsinterview?> GetItrsinterviewById(Guid id)
     {
         var item = await Entities
             .Include(i => i.Room)
             .Include(i => i.Shift)
             .Where(i => i.ItrsinterviewId.Equals(id))
             .FirstOrDefaultAsync();
-        if (item is null) return null;
-        var data = _mapper.Map<ItrsinterviewModel>(item);
-        return data;
+
+        return item is not null ? item : null;
     }
 
-    public async Task<ItrsinterviewModel?> SaveItrsinterview(ItrsinterviewModel request, Guid interviewerId)
+    public async Task<Itrsinterview?> SaveItrsinterview(Itrsinterview request, Guid interviewerId)
     {
-        var obj = _mapper.Map<Itrsinterview>(request);
-        var newId = Guid.NewGuid();
-        obj.ItrsinterviewId = newId;
+        request.ItrsinterviewId = Guid.NewGuid();
 
         _uow.BeginTransaction();
 
-        Entities.Add(obj);
+        Entities.Add(request);
         try
         {
             _uow.SaveChanges();
@@ -86,15 +64,13 @@ public class ItrsinterviewRepository : Repository<Itrsinterview>, IItrsinterview
         }
         _uow.CommitTransaction();
 
-        var response = _mapper.Map<ItrsinterviewModel>(obj);
-        return await Task.FromResult(response);
+        return await Task.FromResult(request);
     }
 
-    public async Task<bool> UpdateItrsinterview(ItrsinterviewModel request, Guid requestId)
+    public async Task<bool> UpdateItrsinterview(Itrsinterview request, Guid requestId)
     {
-        var obj = _mapper.Map<Itrsinterview>(request);
-        obj.ItrsinterviewId = requestId;
-        Entities.Update(obj);
+        request.ItrsinterviewId = requestId;
+        Entities.Update(request);
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
@@ -106,14 +82,14 @@ public class ItrsinterviewRepository : Repository<Itrsinterview>, IItrsinterview
 
     public async Task<bool> DeleteItrsinterview(Guid requestId)
     {
-        var entity = await Entities.FirstOrDefaultAsync(x => x.ItrsinterviewId == requestId);
-        if (entity == null)
-        {
-            return await Task.FromResult(false);
-        }
-
         try
         {
+            var entity = await Entities.FirstOrDefaultAsync(x => x.ItrsinterviewId == requestId);
+            if (entity == null)
+            {
+                return await Task.FromResult(false);
+            }
+
             Entities.Remove(entity);
             _uow.SaveChanges();
             return await Task.FromResult(true);
@@ -123,6 +99,5 @@ public class ItrsinterviewRepository : Repository<Itrsinterview>, IItrsinterview
             Console.WriteLine(e.Message);
             return await Task.FromResult(false);
         }
-        //return await Task.FromResult(false);
     }
 }

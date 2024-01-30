@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -8,26 +7,19 @@ namespace Data.Repositories
 {
     public class CvRepository : Repository<Cv>, ICvRepository
     {
-        #region mapping
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
         private readonly ICandidateRepository _candidateRepository;
         private readonly IUploadFileRepository _uploadFileRepository;
-        #endregion
 
-        #region Constructor
         public CvRepository(RecruitmentWebContext context,
             IUnitOfWork uow,
-            IMapper mapper,
             ICandidateRepository candidateRepository,
             IUploadFileRepository uploadFileRepository) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
             _candidateRepository = candidateRepository;
             _uploadFileRepository = uploadFileRepository;
         }
-        #endregion
 
         public async Task<bool> DeleteCv(Guid requestId)
         {
@@ -35,10 +27,7 @@ namespace Data.Repositories
             {
                 var cv = GetById(requestId);
                 if (cv == null)
-                    throw new ArgumentNullException(nameof(cv));
-
-                if (cv.IsDeleted)
-                    return false;
+                    return await Task.FromResult(false);
 
                 cv.IsDeleted = true;
 
@@ -53,40 +42,32 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<CvModel> GetCVById(Guid id)
+        public async Task<Cv> GetCVById(Guid id)
         {
             var cv = Entities
                 .AsNoTracking()
                 .Include(c => c.Candidate)
                 .Where(c => c.Cvid == id)
-                .FirstOrDefault();
-            var data = _mapper.Map<CvModel>(cv);
-            return data;
+                .FirstOrDefaultAsync();
+
+            if (cv == null) return null!;
+            return await cv!;
         }
 
-        public async Task<IEnumerable<CvModel>> GetAllCv(string? request)
+        public async Task<IEnumerable<Cv>> GetAllCv(string? request)
         {
             try
             {
-                var listData = new List<CvModel>();
+                var listData = new List<Cv>();
                 if (string.IsNullOrEmpty(request))
                 {
-                    var data = await Entities.ToListAsync();
-                    foreach (var item in data)
-                    {
-                        var obj = _mapper.Map<CvModel>(item);
-                        listData.Add(obj);
-                    }
+                    listData = await Entities.ToListAsync();
                 }
                 else
                 {
-                    var data = await Entities
+                    listData = await Entities
                         .Where(rp => rp.CvName.Contains(request))
                         .ToListAsync();
-
-                    var resp = _mapper.Map<List<CvModel>>(data);
-
-                    return resp;
                 }
                 return listData;
             }
@@ -96,14 +77,13 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<(bool, CvModel)> SaveCv(CvModel request)
+        public async Task<(bool, Cv)> SaveCv(Cv request)
         {
             try
             {
                 request.Cvid = Guid.NewGuid();
-                var cv = _mapper.Map<Cv>(request);
 
-                var result = Entities.Add(cv);
+                var result = Entities.Add(request);
                 _uow.SaveChanges();
 
                 return (await Task.FromResult(true), request);
@@ -114,16 +94,15 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<bool> UpdateCv(CvModel request, Guid requestId)
+        public async Task<bool> UpdateCv(Cv request, Guid requestId)
         {
             try
             {
                 var cvPdf_old = Entities.AsNoTracking().Where(c => c.Cvid == requestId).FirstOrDefault();
 
-                var cv = _mapper.Map<Cv>(request);
-                Entities.Update(cv);
+                Entities.Update(request);
 
-                if (cvPdf_old != null && (cvPdf_old.CvPdf.Trim() != "" || cvPdf_old.CvPdf != null))
+                if (cvPdf_old != null && (cvPdf_old.CvPdf!.Trim() != "" || cvPdf_old.CvPdf != null))
                 {
                     var del = _uploadFileRepository.DeleteFileAsync(cvPdf_old.CvPdf);
                 }
@@ -138,38 +117,32 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CvModel>> GetForeignKey(Guid requestId)
+        public async Task<IEnumerable<Cv>> GetForeignKey(Guid requestId)
         {
             var data = await Entities
                 .Where(x => x.CandidateId == requestId)
                 .Where(x => x.IsDeleted == false)
                 .ToListAsync();
 
-            var resp = _mapper.Map<List<CvModel>>(data);
-
-            return resp;
+            return data;
         }
 
-        public async Task<List<CvModel>> GetCvsByCandidateId(Guid candidateId)
+        public async Task<List<Cv>> GetCvsByCandidateId(Guid candidateId)
         {
             var cvList = await Entities
                         .Where(cv => cv.CandidateId == candidateId)
-                        .Select(
-                            cv => _mapper.Map<CvModel>(cv)
-                        ).ToListAsync();
+                        .ToListAsync();
             return cvList;
         }
 
-        public async Task<IEnumerable<CvModel>> GetAllUserCv(string userId)
+        public async Task<IEnumerable<Cv>> GetAllUserCv(string userId)
         {
             var candidate = await _candidateRepository.GetCandidateByUserId(userId);
             var data = await Entities
-                .Where(x => x.CandidateId == candidate.CandidateId)
+                .Where(x => x.CandidateId == candidate!.CandidateId)
                 .ToListAsync();
 
-            var resp = _mapper.Map<IEnumerable<CvModel>>(data);
-
-            return resp;
+            return data;
         }
     }
 }

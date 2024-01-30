@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -9,43 +8,32 @@ namespace Data.Repositories;
 public class EventRepository : Repository<Event>, IEventRepository
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
 
-    public EventRepository(RecruitmentWebContext context,
-        IUnitOfWork uow,
-        IMapper mapper) : base(context)
+    public EventRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
     {
         _uow = uow;
-        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<EventModel>> GetAllEvent()
+    public async Task<IEnumerable<Event>> GetAllEvent()
     {
-        var listData = new List<EventModel>();
+        var listDatas = await Entities
+            .Where(iDel => iDel.IsDeleted == false)
+            .ToListAsync();
 
-        var data = await Entities.ToListAsync();
-        foreach (var item in data)
-        {
-            //if (item.IsDeleted) continue;
-            var obj = _mapper.Map<EventModel>(item);
-            listData.Add(obj);
-        }
-        return listData;
+        return listDatas;
     }
 
-    public async Task<EventModel> GetEventById(Guid id)
+    public async Task<Event> GetEventById(Guid id)
     {
         var item = await Entities.FindAsync(id);
-        if (item is null or { IsDeleted: true }) return null;
-        var data = _mapper.Map<EventModel>(item);
-        return data;
+        if (item is null or { IsDeleted: true }) return null!;
+        return item;
     }
 
-    public async Task<EventModel> SaveEvent(EventModel request)
+    public async Task<Event> SaveEvent(Event request)
     {
-        var obj = _mapper.Map<Event>(request);
-        obj.EventId = Guid.NewGuid();
-        Entities.Add(obj);
+        request.EventId = Guid.NewGuid();
+        Entities.Add(request);
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
@@ -54,21 +42,24 @@ public class EventRepository : Repository<Event>, IEventRepository
             return null!;
         }
 
-        var response = _mapper.Map<EventModel>(obj);
-        return await Task.FromResult(response);
+        return await Task.FromResult(request);
     }
 
-    public async Task<bool> UpdateEvent(EventModel request, Guid requestId)
+    public async Task<bool> UpdateEvent(Event request, Guid requestId)
     {
-        var entity = await Entities.AsNoTracking().FirstOrDefaultAsync(x => x.EventId == requestId);
-        if (entity is null or { IsDeleted: true })
+        try
         {
-            return await Task.FromResult(false);
+            var entity = await Entities.AsNoTracking().FirstOrDefaultAsync(x => x.EventId == requestId);
+            if (entity is null or { IsDeleted: true })
+            {
+                return await Task.FromResult(false);
+            }
+
+            request.EventId = requestId;
+            Entities.Update(request);
+
+            _uow.SaveChanges();
         }
-        var obj = _mapper.Map<Event>(request);
-        obj.EventId = requestId;
-        Entities.Update(obj);
-        try { _uow.SaveChanges(); }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
@@ -79,24 +70,23 @@ public class EventRepository : Repository<Event>, IEventRepository
 
     public async Task<bool> DeleteEvent(Guid requestId)
     {
-        var entity = await Entities.FirstOrDefaultAsync(x => x.EventId == requestId);
-        if (entity is null or { IsDeleted: true })
+        try
         {
-            return await Task.FromResult(false);
-        }
+            var entity = await Entities.FirstOrDefaultAsync(x => x.EventId == requestId);
+            if (entity is null or { IsDeleted: true })
+            {
+                return await Task.FromResult(false);
+            }
 
-        entity.IsDeleted = true;
-        Entities.Update(entity);
-        _uow.SaveChanges();
-        //try
-        //{
-        //    Entities.Remove(entity);
-        //    _uow.SaveChanges();
-        //}
-        //catch (Exception e)
-        //{
-        //    Console.WriteLine(e.Message);
-        //}
-        return await Task.FromResult(true);
+            entity.IsDeleted = true;
+            Entities.Update(entity);
+            _uow.SaveChanges();
+
+            return await Task.FromResult(true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -10,14 +9,11 @@ namespace Data.Repositories
     public class CandidateRepository : Repository<Candidate>, ICandidateRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public CandidateRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         public async Task<bool> DeleteCandidate(Guid candidateId)
@@ -26,8 +22,8 @@ namespace Data.Repositories
             {
                 var candidate = GetById(candidateId);
                 if (candidate == null)
-                    throw new ArgumentNullException(nameof(candidate));
-                //Entities.Remove(candidate);
+                    return await Task.FromResult(false);
+
                 candidate.IsDeleted = true;
                 Entities.Update(candidate);
 
@@ -40,66 +36,52 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CandidateModel>> GetAllCandidates()
+        public async Task<IEnumerable<Candidate>> GetAllCandidates()
         {
-            var listData = new List<CandidateModel>();
-
-            var data = await Entities.Include(x => x.User).ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<CandidateModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.Include(x => x.User).ToListAsync();
             return listData;
         }
 
-        public async Task<CandidateModel> FindById(Guid id)
+        public async Task<Candidate> FindById(Guid id)
         {
             var entity = await Entities
                 .Include(c => c.User)
                 .Where(x => x.CandidateId == id)
                 .FirstOrDefaultAsync();
 
-            var model = _mapper.Map<CandidateModel>(entity);
-
-            return model;
+            return entity;
         }
 
-        public async Task<CandidateModel?> GetCandidateByUserId(string userId)
+        public async Task<Candidate?> GetCandidateByUserId(string userId)
         {
             var data = await Entities
                 .Where(x => x.UserId == userId)
                 .Include(x => x.User)
                 .FirstOrDefaultAsync();
 
-            var resp = _mapper.Map<CandidateModel>(data);
-
-            return resp;
+            return data;
         }
 
-        public async Task<ProfileModel?> GetProfile(Guid candidateId)
+        public async Task<Candidate?> GetProfile(Guid candidateId)
         {
             var profile = GetById(candidateId);
             if (profile is not null)
             {
-                var obj = _mapper.Map<ProfileModel>(profile);
-                return obj;
+                return profile;
             }
             else return null;
         }
 
-        public async Task<CandidateModel> SaveCandidate(CandidateModel request)
+        public async Task<Candidate> SaveCandidate(Candidate request)
         {
             try
             {
-                var candidate = _mapper.Map<Candidate>(request);
-                candidate.CandidateId = Guid.NewGuid();
+                request.CandidateId = Guid.NewGuid();
 
-                Entities.Add(candidate);
+                Entities.Add(request);
                 _uow.SaveChanges();
 
-                var response = _mapper.Map<CandidateModel>(candidate);
-                return await Task.FromResult(response);
+                return await Task.FromResult(request);
             }
             catch (Exception ex)
             {
@@ -107,19 +89,19 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<bool> UpdateCandidate(CandidateModel request, Guid requestId)
+        public async Task<bool> UpdateCandidate(Candidate request, Guid requestId)
         {
             try
             {
-                var candidate = _mapper.Map<Candidate>(request);
-                candidate.CandidateId = requestId;
-                Entities.Update(candidate);
+                request.CandidateId = requestId;
+                Entities.Update(request);
                 _uow.SaveChanges();
                 return await Task.FromResult(true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                //throw new Exception(ex.Message);
+                return await Task.FromResult(false);
             }
         }
     }

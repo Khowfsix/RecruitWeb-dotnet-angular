@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -9,21 +8,15 @@ namespace Data.Repositories;
 public class InterviewRepository : Repository<Interview>, IInterviewRepository
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
 
-    public InterviewRepository(RecruitmentWebContext context,
-        IUnitOfWork uow,
-        IMapper mapper) : base(context)
+    public InterviewRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
     {
         _uow = uow;
-        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<InterviewModel>> GetAllInterview()
+    public async Task<IEnumerable<Interview>> GetAllInterview()
     {
-        var listData = new List<InterviewModel>();
-
-        var data = await Entities
+        var listDatas = await Entities
             .Include(i => i.Itrsinterview)
                 .ThenInclude(t => t.Room)
             .Include(i => i.Itrsinterview)
@@ -38,17 +31,11 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
             .Include(i => i.Rounds)
                 .ThenInclude(r => r.Question)
             .ToListAsync();
-        foreach (var item in data)
-        {
-            //if (item.IsDeleted) continue;
-            var obj = _mapper.Map<InterviewModel>(item);
-            listData.Add(obj);
-        }
 
-        return listData;
+        return listDatas;
     }
 
-    public async Task<InterviewModel?> GetInterviewById(Guid id)
+    public async Task<Interview?> GetInterviewById(Guid id)
     {
         var item = await Entities
             .Where(i => i.InterviewId.Equals(id))
@@ -67,32 +54,25 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                 .ThenInclude(r => r.Question)
             .AsNoTracking()
             .FirstOrDefaultAsync();
-        if (item is null)
-            return null;
 
-        var result = _mapper.Map<InterviewModel>(item);
-        return result;
+        return item is not null ? item : null;
     }
 
-    public async Task<InterviewModel?> GetInterviewById_NoInclude(Guid id)
+    public async Task<Interview?> GetInterviewById_NoInclude(Guid id)
     {
         var item = await Entities
             .Where(i => i.InterviewId.Equals(id))
             .AsNoTracking()
             .FirstOrDefaultAsync();
-        if (item is null)
-            return null;
 
-        var result = _mapper.Map<InterviewModel>(item);
-        return result;
+        return item is not null ? item : null;
     }
 
-    public async Task<InterviewModel?> SaveInterview(InterviewModel request)
+    public async Task<Interview?> SaveInterview(Interview request)
     {
-        var interview = _mapper.Map<Interview>(request);
-        interview.InterviewId = Guid.NewGuid();
+        request.InterviewId = Guid.NewGuid();
 
-        Entities.Add(interview);
+        Entities.Add(request);
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
@@ -100,18 +80,16 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
             return null!;
         }
 
-        var response = _mapper.Map<InterviewModel>(interview);
-        return await Task.FromResult(response);
+        return await Task.FromResult(request);
     }
 
-    public async Task<bool> UpdateInterview(InterviewModel request, Guid requestId)
+    public async Task<bool> UpdateInterview(Interview request, Guid requestId)
     {
         try
         {
-            var interview = _mapper.Map<Interview>(request);
-            interview.InterviewId = requestId;
+            request.InterviewId = requestId;
 
-            Entities.Update(interview);
+            Entities.Update(request);
             _uow.SaveChanges();
             return await Task.FromResult(true);
         }
@@ -124,33 +102,29 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
 
     public async Task<bool> DeleteInterview(Guid requestId)
     {
-        var entity = await Entities.FirstOrDefaultAsync(x => x.InterviewId == requestId);
-        if (entity is null or { IsDeleted: true })
+        try
         {
-            return await Task.FromResult(false);
+            var entity = await Entities.FirstOrDefaultAsync(x => x.InterviewId == requestId);
+            if (entity is null or { IsDeleted: true })
+            {
+                return await Task.FromResult(false);
+            }
+
+            entity.IsDeleted = true;
+            Entities.Update(entity);
+            _uow.SaveChanges();
+
+            return await Task.FromResult(true);
         }
-        entity.IsDeleted = true;
-        Entities.Update(entity);
-        _uow.SaveChanges();
-
-        //try
-        //{
-        //    Entities.Remove(entity);
-        //    _uow.SaveChanges();
-        //}
-        //catch (Exception e)
-        //{
-        //    Console.WriteLine(e.Message);
-        //}
-
-        return await Task.FromResult(true);
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
-    public async Task<IEnumerable<InterviewModel>> GetInterviewOfInterviewer(Guid id)
+    public async Task<IEnumerable<Interview>> GetInterviewOfInterviewer(Guid id)
     {
-        var listData = new List<InterviewModel>();
-
-        var data = await Entities.Where(i => i.InterviewerId.Equals(id))
+        var listDatas = await Entities.Where(i => i.InterviewerId.Equals(id))
             .Where(i => i.InterviewId.Equals(id))
             .Include(i => i.Itrsinterview)
                 .ThenInclude(t => t!.Room)
@@ -167,14 +141,8 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                 .ThenInclude(r => r.Question)
             .AsNoTracking()
             .ToListAsync();
-        foreach (var item in data)
-        {
-            if (item.IsDeleted) continue;
-            var obj = _mapper.Map<InterviewModel>(item);
-            listData.Add(obj);
-        }
 
-        return listData;
+        return listDatas;
     }
 
     public async Task<IEnumerable<Interview>> InterviewReport(DateTime fromDate, DateTime toDate)

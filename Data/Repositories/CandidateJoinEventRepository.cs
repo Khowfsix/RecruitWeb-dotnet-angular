@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -8,52 +7,43 @@ namespace Data.Repositories
 {
     public class CandidateJoinEventRepository : Repository<CandidateJoinEvent>, ICandidateJoinEventRepository
     {
-        private readonly List<CandidateJoinEventModel> _candidateJoinEvents = new List<CandidateJoinEventModel>();
-        private RecruitmentWebContext _context;
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public CandidateJoinEventRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
-            _context = context;
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents()
+        public async Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEvents()
         {
-            var listData = new List<CandidateJoinEventModel>();
-
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<CandidateJoinEventModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
-        public async Task<CandidateJoinEventModel> SaveCandidateJoinEvent(CandidateJoinEventModel request)
+        public async Task<CandidateJoinEvent> SaveCandidateJoinEvent(CandidateJoinEvent request)
         {
-            var candidateJoinEvent = _mapper.Map<CandidateJoinEvent>(request);
-            candidateJoinEvent.CandidateJoinEventId = Guid.NewGuid();
+            request.CandidateJoinEventId = Guid.NewGuid();
 
-            Entities.Add(candidateJoinEvent);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<CandidateJoinEventModel>(candidateJoinEvent);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateCandidateJoinEvent(CandidateJoinEventModel request, Guid requestId)
+        public async Task<bool> UpdateCandidateJoinEvent(CandidateJoinEvent request, Guid requestId)
         {
-            var candidateJoinEvent = _mapper.Map<CandidateJoinEvent>(request);
-            candidateJoinEvent.CandidateJoinEventId = requestId;
-            Entities.Update(candidateJoinEvent);
-            _uow.SaveChanges();
-            return await Task.FromResult(true);
+            try
+            {
+                request.CandidateJoinEventId = requestId;
+                Entities.Update(request);
+                _uow.SaveChanges();
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
         }
 
         public async Task<bool> DeleteCandidateJoinEvent(Guid requestId)
@@ -62,9 +52,11 @@ namespace Data.Repositories
             {
                 var candidateJoinEvent = GetById(requestId);
                 if (candidateJoinEvent == null)
-                    throw new ArgumentNullException(nameof(candidateJoinEvent));
+                    return await Task.FromResult(false);
+
                 Entities.Remove(candidateJoinEvent);
                 _uow.SaveChanges();
+
                 return await Task.FromResult(true);
             }
             catch (Exception ex)
@@ -73,7 +65,7 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CandidateJoinEventModel>> JoinEventDetail(Guid candidateId)
+        public async Task<IEnumerable<CandidateJoinEvent>> JoinEventDetail(Guid candidateId)
         {
             try
             {
@@ -83,14 +75,7 @@ namespace Data.Repositories
                     .Include(c => c.Candidate.User)
                     .ToListAsync();
 
-                List<CandidateJoinEventModel> modelList = new List<CandidateJoinEventModel>();
-
-                foreach (var item in listData)
-                {
-                    var obj = _mapper.Map<CandidateJoinEventModel>(item);
-                    modelList.Add(obj);
-                }
-                return modelList;
+                return listData;
             }
             catch (Exception)
             {
@@ -98,9 +83,9 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CandidateJoinEventModel>> GetCandidatesSortedByJoinEventCount()
+        public async Task<IEnumerable<CandidateJoinEvent>> GetCandidatesSortedByJoinEventCount()
         {
-            return await Task.FromResult(_candidateJoinEvents.ToList());
+            return await Task.FromResult(Entities.ToList());
         }
     }
 }

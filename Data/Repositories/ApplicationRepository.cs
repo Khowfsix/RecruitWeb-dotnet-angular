@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,40 +7,38 @@ namespace Data.Repositories
     public class ApplicationRepository : Repository<Application>, IApplicationRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
-        public ApplicationRepository(RecruitmentWebContext context, IUnitOfWork uow, IMapper mapper)
+        public ApplicationRepository(RecruitmentWebContext context, IUnitOfWork uow)
             : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         public async Task<bool> DeleteApplication(Guid applicationId)
         {
-            var application = GetById(applicationId);
-            if (application == null)
-                throw new ArgumentNullException(nameof(application));
-            //Entities.Remove(department);
-            application.IsDeleted = true;
-            Entities.Update(application);
+            try
+            {
+                var application = GetById(applicationId);
+                if (application == null)
+                    return await Task.FromResult(false);
 
-            _uow.SaveChanges();
-            return await Task.FromResult(true);
+                application.IsDeleted = true;
+                Entities.Update(application);
+
+                _uow.SaveChanges();
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
         }
 
         public async Task<IEnumerable<Application>> GetAllApplications()
         {
-            var listData = new List<Application>();
-
-            var data = await Entities.Include(a => a.Position)
+            var listData = await Entities.Include(a => a.Position)
                                      .Include(a => a.Cv)
                                      .ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<Application>(item);
-                listData.Add(obj);
-            }
             return listData;
         }
 
@@ -49,15 +46,13 @@ namespace Data.Repositories
         {
             try
             {
-                var application = _mapper.Map<Application>(request);
-                application.ApplicationId = Guid.NewGuid();
+                request.ApplicationId = Guid.NewGuid();
 
                 //application.PositionId = request.Position.PositionId;
-                Entities.Add(application);
+                Entities.Add(request);
                 _uow.SaveChanges();
 
-                var response = _mapper.Map<Application>(application);
-                return await Task.FromResult(response);
+                return await Task.FromResult(request);
             }
             catch (Exception ex)
             {
@@ -69,45 +64,29 @@ namespace Data.Repositories
         {
             try
             {
-                var application = _mapper.Map<Application>(request);
-                application.ApplicationId = requestId;
+                request.ApplicationId = requestId;
 
                 //application.PositionId = request.Position.PositionId;
                 //application.Cvid = request.Cv.Cvid;
 
-                Entities.Update(application);
+                Entities.Update(request);
                 _uow.SaveChanges();
 
                 return await Task.FromResult(true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //throw new Exception(ex.Message);
                 return await Task.FromResult(false);
             }
         }
 
-        public async Task<IEnumerable<Application>> GetApplicationHistory(
-            Guid Cvid
-        )
+        public async Task<IEnumerable<Application>> GetApplicationHistory(Guid Cvid)
         {
             var data = await Entities
                 .Where(entity => entity.Cvid == Cvid)
                 .Include(entity => entity.Position)
                 .OrderByDescending(entity => entity.DateTime)
-                .Select(
-                    entity =>
-                        new Application
-                        {
-                            ApplicationId = entity.ApplicationId,
-                            Position = entity.Position.PositionName,
-                            Cvid = entity.Cvid,
-                            PositionId = entity.PositionId,
-                            DateTime = entity.DateTime,
-                            Candidate_status = entity.Company_Status,
-                            Priority = entity.Priority,
-                        }
-                )
                 .ToListAsync();
             return data;
         }
@@ -121,8 +100,7 @@ namespace Data.Repositories
                                      .FirstOrDefaultAsync();
             if (data != null)
             {
-                var obj = _mapper.Map<Application>(data);
-                return obj;
+                return data;
             }
 
             return null;
@@ -133,16 +111,10 @@ namespace Data.Repositories
             string priority
         )
         {
-            var listData = new List<Application>();
-
-            var data = await Entities
-                .Where(a => a.Company_Status.Contains(status) && a.Priority.Contains(priority))
+            var listData = await Entities
+                .Where(a => a.Company_Status!.Contains(status) && a.Priority!.Contains(priority))
                 .ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<Application>(item);
-                listData.Add(obj);
-            }
+
             return listData;
         }
 

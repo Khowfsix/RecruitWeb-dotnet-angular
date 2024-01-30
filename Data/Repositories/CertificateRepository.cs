@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +8,10 @@ namespace Data.Repositories
     public class CertificateRepository : Repository<Certificate>, ICertificateRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
-        public CertificateRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+        public CertificateRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         public async Task<bool> DeleteCertificate(Guid requestId)
@@ -25,9 +20,11 @@ namespace Data.Repositories
             {
                 var certificate = GetById(requestId);
                 if (certificate == null)
-                    throw new ArgumentNullException(nameof(certificate));
+                    return await Task.FromResult(false);
+
                 Entities.Remove(certificate);
                 _uow.SaveChanges();
+
                 return await Task.FromResult(true);
             }
             catch (Exception ex)
@@ -36,36 +33,20 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CertificateModel>> GetAllCertificate(string? request)
+        public async Task<IEnumerable<Certificate>> GetAllCertificate(string? request)
         {
             try
             {
-                var listData = new List<CertificateModel>();
+                var listData = new List<Certificate>();
                 if (string.IsNullOrEmpty(request))
                 {
-                    var data = await Entities.ToListAsync();
-                    foreach (var item in data)
-                    {
-                        var obj = _mapper.Map<CertificateModel>(item);
-                        listData.Add(obj);
-                    }
+                    listData = await Entities.ToListAsync();
                 }
                 else
                 {
-                    var data = await Entities
+                    listData = await Entities
                         .Where(rp => rp.CertificateName.Contains(request))
-                        .Select(rp => new CertificateModel
-                        {
-                            CertificateId = rp.CertificateId,
-                            CertificateName = rp.CertificateName,
-                            Description = rp.Description,
-                            OrganizationName = rp.OrganizationName,
-                            DateEarned = rp.DateEarned,
-                            ExpirationDate = rp.ExpirationDate,
-                            Cvid = rp.Cvid,
-                            //IsDeleted = rp.IsDeleted,
-                        }).ToListAsync();
-                    return data;
+                        .ToListAsync();
                 }
                 return listData;
             }
@@ -75,43 +56,38 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CertificateModel>> GetForeignKey(Guid requestId)
+        public async Task<IEnumerable<Certificate>> GetForeignKey(Guid requestId)
         {
             var data = await Entities
                 .Where(x => x.Cvid == requestId)
                 .ToListAsync();
 
-            var resp = _mapper.Map<IEnumerable<CertificateModel>>(data);
-
-            return resp;
+            return data;
         }
 
-        public async Task<CertificateModel> SaveCertificate(CertificateModel request)
+        public async Task<Certificate> SaveCertificate(Certificate request)
         {
             try
             {
-                var certificate = _mapper.Map<Certificate>(request);
-                certificate.CertificateId = Guid.NewGuid();
+                request.CertificateId = Guid.NewGuid();
 
-                Entities.Add(certificate);
+                Entities.Add(request);
                 _uow.SaveChanges();
 
-                var response = _mapper.Map<CertificateModel>(certificate);
-                return await Task.FromResult(response);
+                return await Task.FromResult(request);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null!;
             }
         }
 
-        public async Task<bool> UpdateCertificate(CertificateModel request, Guid requestId)
+        public async Task<bool> UpdateCertificate(Certificate request, Guid requestId)
         {
             try
             {
-                var certificate = _mapper.Map<Certificate>(request);
-                certificate.CertificateId = requestId;
-                Entities.Update(certificate);
+                request.CertificateId = requestId;
+                Entities.Update(request);
                 _uow.SaveChanges();
                 return await Task.FromResult(true);
             }

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +8,10 @@ namespace Data.Repositories
     public class CvHasSkillRepository : Repository<CvHasSkill>, ICvHasSkillrepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
-        public CvHasSkillRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+        public CvHasSkillRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         public async Task<bool> DeleteCvHasSkillService(Guid requestId)
@@ -25,8 +20,10 @@ namespace Data.Repositories
             {
                 var cvHasSkill = GetById(requestId);
                 if (cvHasSkill == null)
-                    throw new ArgumentNullException(nameof(cvHasSkill));
+                    return await Task.FromResult(false);
+
                 Entities.Remove(cvHasSkill);
+
                 _uow.SaveChanges();
                 return await Task.FromResult(true);
             }
@@ -36,19 +33,18 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CvHasSkillModel>> GetAllCvHasSkillService(string? request)
+        public async Task<IEnumerable<CvHasSkill>> GetAllCvHasSkillService(string? request)
         {
             try
             {
-                var listData = new List<CvHasSkillModel>();
+                var listData = new List<CvHasSkill>();
                 if (string.IsNullOrEmpty(request))
                 {
-                    var data = await Entities.ToListAsync();
-                    foreach (var item in data)
-                    {
-                        var obj = _mapper.Map<CvHasSkillModel>(item);
-                        listData.Add(obj);
-                    }
+                    listData = await Entities.ToListAsync();
+                }
+                else
+                {
+                    listData = await Entities.Where(c => c.Skill.SkillName.Equals(request)).ToListAsync();
                 }
                 return listData;
             }
@@ -58,7 +54,7 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IList<CvModel>> GetCv(Guid skillId)
+        public async Task<IList<Cv>> GetCv(Guid skillId)
         {
             var data = await Entities
                 .Where(x => x.SkillId == skillId)
@@ -66,12 +62,10 @@ namespace Data.Repositories
                 .Select(x => x.Cv)
                 .ToListAsync();
 
-            var resp = _mapper.Map<List<CvModel>>(data);
-
-            return resp;
+            return data;
         }
 
-        public async Task<IList<SkillModel>> GetSkill(Guid Cvid)
+        public async Task<IList<Skill>> GetSkill(Guid Cvid)
         {
             var data = await Entities
                 .Where(x => x.Cvid == Cvid)
@@ -79,23 +73,19 @@ namespace Data.Repositories
                 .Select(x => x.Skill)
                 .ToListAsync();
 
-            var resp = _mapper.Map<List<SkillModel>>(data);
-
-            return resp;
+            return data;
         }
 
-        public async Task<CvHasSkillModel> SaveCvHasSkillService(CvHasSkillModel request)
+        public async Task<CvHasSkill> SaveCvHasSkillService(CvHasSkill request)
         {
             try
             {
-                var cvHasSkill = _mapper.Map<CvHasSkill>(request);
-                cvHasSkill.CvSkillsId = Guid.NewGuid();
+                request.CvSkillsId = Guid.NewGuid();
 
-                Entities.Add(cvHasSkill);
+                Entities.Add(request);
                 _uow.SaveChanges();
 
-                var response = _mapper.Map<CvHasSkillModel>(cvHasSkill);
-                return await Task.FromResult(response);
+                return await Task.FromResult(request);
             }
             catch (Exception ex)
             {
@@ -103,13 +93,12 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<bool> UpdateCvHasSkillService(CvHasSkillModel request, Guid requestId)
+        public async Task<bool> UpdateCvHasSkillService(CvHasSkill request, Guid requestId)
         {
             try
             {
-                var cvHasSkill = _mapper.Map<CvHasSkill>(request);
-                cvHasSkill.CvSkillsId = requestId;
-                Entities.Update(cvHasSkill);
+                request.CvSkillsId = requestId;
+                Entities.Update(request);
                 _uow.SaveChanges();
                 return await Task.FromResult(true);
             }
@@ -119,15 +108,15 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<List<CvHasSkillModel>> GetAllSkillsFromOneCV(Guid Cvid)
+        public async Task<List<CvHasSkill>> GetAllSkillsFromOneCV(Guid Cvid)
         {
             var cvHasSkillList = Entities.AsAsyncEnumerable();
-            List<CvHasSkillModel> result = new();
+            List<CvHasSkill> result = new();
             await foreach (var skill in cvHasSkillList)
             {
                 if (skill.Cvid == Cvid)
                 {
-                    result.Add(_mapper.Map<CvHasSkillModel>(skill));
+                    result.Add(skill);
                 }
             }
             return result;

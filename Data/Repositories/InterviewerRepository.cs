@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -9,44 +8,30 @@ namespace Data.Repositories;
 public class InterviewerRepository : Repository<Interviewer>, IInterviewerRepository
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
 
-    public InterviewerRepository(RecruitmentWebContext context,
-        IUnitOfWork uow,
-        IMapper mapper) : base(context)
+    public InterviewerRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
     {
         _uow = uow;
-        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<InterviewerModel>> GetAllInterviewer()
+    public async Task<IEnumerable<Interviewer>> GetAllInterviewer()
     {
-        var listData = new List<InterviewerModel>();
-
-        var data = await Entities.Include(x => x.User).ToListAsync();
-        foreach (var item in data)
-        {
-            //if (item.IsDeleted) continue;
-            var obj = _mapper.Map<InterviewerModel>(item);
-            listData.Add(obj);
-        }
-        return listData;
+        var listDatas = await Entities.Include(x => x.User).ToListAsync();
+        return listDatas;
     }
 
-    public async Task<InterviewerModel?> GetInterviewerById(Guid id)
+    public async Task<Interviewer?> GetInterviewerById(Guid id)
     {
         var item = await Entities.Include(x => x.User).Where(x => x.InterviewerId == id).FirstOrDefaultAsync();
-        //if (item is null or { IsDeleted: true }) return null;
-        var data = _mapper.Map<InterviewerModel>(item);
-        return data;
+        if (item is null or { IsDeleted: true }) return null;
+        return item;
     }
 
-    public async Task<InterviewerModel> SaveInterviewer(InterviewerModel request)
+    public async Task<Interviewer> SaveInterviewer(Interviewer request)
     {
-        var interviewer = _mapper.Map<Interviewer>(request);
-        interviewer.InterviewerId = Guid.NewGuid();
+        request.InterviewerId = Guid.NewGuid();
 
-        Entities.Add(interviewer);
+        Entities.Add(request);
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
@@ -55,15 +40,13 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
             return null!;
         }
 
-        var response = _mapper.Map<InterviewerModel>(interviewer);
-        return await Task.FromResult(response);
+        return await Task.FromResult(request);
     }
 
-    public async Task<bool> UpdateInterviewer(InterviewerModel request, Guid requestId)
+    public async Task<bool> UpdateInterviewer(Interviewer request, Guid requestId)
     {
-        var interviewer = _mapper.Map<Interviewer>(request);
-        interviewer.InterviewerId = requestId;
-        Entities.Update(interviewer);
+        request.InterviewerId = requestId;
+        Entities.Update(request);
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {
@@ -75,39 +58,32 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
 
     public async Task<bool> DeleteInterviewer(Guid requestId)
     {
-        var entity = await Entities.FirstOrDefaultAsync(x => x.InterviewerId == requestId);
-        if (entity is null or { IsDeleted: true })
+        try
         {
-            return await Task.FromResult(false);
+            var entity = await Entities.FirstOrDefaultAsync(x => x.InterviewerId == requestId);
+            if (entity is null or { IsDeleted: true })
+            {
+                return await Task.FromResult(false);
+            }
+            entity.IsDeleted = true;
+            Entities.Update(entity);
+            _uow.SaveChanges();
+
+            return await Task.FromResult(true);
         }
-        entity.IsDeleted = true;
-        Entities.Update(entity);
-        _uow.SaveChanges();
-
-        //try
-        //{
-        //    Entities.Remove(entity);
-        //    _uow.SaveChanges();
-        //}
-        //catch (Exception e)
-        //{
-        //    Console.WriteLine(e.Message);
-        //}
-
-        return await Task.FromResult(true);
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
-    public async Task<IEnumerable<InterviewerModel>> GetInterviewersInDepartment(Guid deparmentId)
+    public async Task<IEnumerable<Interviewer>> GetInterviewersInDepartment(Guid deparmentId)
     {
-        var listData = new List<InterviewerModel>();
+        var listDatas = await Entities.Include(x => x.User)
+            .Where(i => i.DepartmentId.Equals(deparmentId))
+            .Where(iDel => iDel.IsDeleted == false)
+            .ToListAsync();
 
-        var data = await Entities.Include(x => x.User).Where(i => i.DepartmentId.Equals(deparmentId)).ToListAsync();
-        foreach (var item in data)
-        {
-            //if (item.IsDeleted) continue;
-            var obj = _mapper.Map<InterviewerModel>(item);
-            listData.Add(obj);
-        }
-        return listData;
+        return listDatas;
     }
 }

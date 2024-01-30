@@ -1,13 +1,12 @@
-
-using Api.ViewModels.Itrsinterview;
+using Service.Models;
 
 namespace Service.Interfaces;
 
 public interface IItrsinterviewService
 {
-    Task<IEnumerable<ItrsinterviewViewModel>> GetAllItrsinterview();
-    Task<ItrsinterviewViewModel?> GetItrsinterviewById(Guid id);
-    Task<ItrsinterviewViewModel?> SaveItrsinterview(ItrsinterviewAddModel viewModel, Guid interviewerId);
-    Task<bool> UpdateItrsinterview(ItrsinterviewUpdateModel itrsinterviewModel, Guid itrsinterviewModelId, Guid interviewerId);
+    Task<IEnumerable<ItrsinterviewModel>> GetAllItrsinterview();
+    Task<ItrsinterviewModel?> GetItrsinterviewById(Guid id);
+    Task<ItrsinterviewModel?> SaveItrsinterview(ItrsinterviewModel viewModel, Guid interviewerId);
+    Task<bool> UpdateItrsinterview(ItrsinterviewModel itrsinterviewModel, Guid itrsinterviewModelId, Guid interviewerId);
     Task<bool> DeleteItrsinterview(Guid itrsinterviewModelId);
 }

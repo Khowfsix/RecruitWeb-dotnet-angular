@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,60 +8,62 @@ namespace Data.Repositories
     public class BlackListRepository : Repository<BlackList>, IBlacklistRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
-        public BlackListRepository(RecruitmentWebContext context, IUnitOfWork uow, IMapper mapper)
-            : base(context)
+        public BlackListRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         public async Task<bool> DeleteBlackList(Guid blacklistId)
         {
-            var blacklist = GetById(blacklistId);
-            if (blacklist == null)
-                throw new ArgumentNullException(nameof(blacklist));
+            try
+            {
+                var blacklist = GetById(blacklistId);
+                if (blacklist == null)
+                    return await Task.FromResult(false);
 
-            blacklist.IsDeleted = true;
-            Entities.Update(blacklist);
+                blacklist.IsDeleted = true;
+                Entities.Update(blacklist);
 
-            _uow.SaveChanges();
-            return await Task.FromResult(true);
+                _uow.SaveChanges();
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public async Task<IEnumerable<BlacklistModel>> GetAllBlackLists()
+        public async Task<IEnumerable<BlackList>> GetAllBlackLists()
         {
-            var listData = new List<BlacklistModel>();
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<BlacklistModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
-        public async Task<BlacklistModel> SaveBlackList(BlacklistModel request)
+        public async Task<BlackList> SaveBlackList(BlackList request)
         {
-            var blacklist = _mapper.Map<BlackList>(request);
-            blacklist.BlackListId = Guid.NewGuid();
+            request.BlackListId = Guid.NewGuid();
 
-            Entities.Add(blacklist);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<BlacklistModel>(blacklist);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateBlackList(BlacklistModel request, Guid requestId)
+        public async Task<bool> UpdateBlackList(BlackList request, Guid requestId)
         {
-            var blacklist = _mapper.Map<BlackList>(request);
-            blacklist.BlackListId = requestId;
-            Entities.Update(blacklist);
-            _uow.SaveChanges();
+            try
+            {
+                request.BlackListId = requestId;
+                Entities.Update(request);
+                _uow.SaveChanges();
 
-            return await Task.FromResult(true);
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
         }
 
         public async Task<bool> CheckIsInBlackList(Guid candidateId)

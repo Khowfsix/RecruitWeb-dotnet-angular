@@ -1,27 +1,21 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
-    public class CategoryQuestionRepository
-        : Repository<CategoryQuestion>,
-            ICategoryQuestionRepository
+    public class CategoryQuestionRepository : Repository<CategoryQuestion>, ICategoryQuestionRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public CategoryQuestionRepository(
             RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper
+            IUnitOfWork uow
         )
             : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         public async Task<bool> DeleteCategoryQuestion(Guid requestId)
@@ -35,33 +29,27 @@ namespace Data.Repositories
                     _uow.SaveChanges();
                     return await Task.FromResult(true);
                 }
-                throw new ArgumentNullException(nameof(categoryQuestion));
+
+                return await Task.FromResult(false);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
-        public async Task<IEnumerable<CategoryQuestionModel>> GetAllCategoryQuestions()
+        public async Task<IEnumerable<CategoryQuestion>> GetAllCategoryQuestions()
         {
-            var listData = new List<CategoryQuestionModel>();
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<CategoryQuestionModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
-        public async Task<CategoryQuestionModel?> GetCategoryQuestionById(Guid id)
+        public async Task<CategoryQuestion?> GetCategoryQuestionById(Guid id)
         {
             try
             {
                 var categoryQuestion = GetById(id);
-                var data = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
-                return data;
+                return categoryQuestion is not null ? categoryQuestion : null!;
             }
             catch (Exception ex)
             {
@@ -69,9 +57,7 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CategoryQuestionModel>> GetCategoryQuestionsByName(
-            string keyword
-        )
+        public async Task<IEnumerable<CategoryQuestion>> GetCategoryQuestionsByName(string keyword)
         {
             try
             {
@@ -83,7 +69,7 @@ namespace Data.Repositories
                     )
                     .Select(
                         cq =>
-                            new CategoryQuestionModel
+                            new CategoryQuestion
                             {
                                 CategoryQuestionId = cq.CategoryQuestionId,
                                 CategoryQuestionName = cq.CategoryQuestionName,
@@ -99,7 +85,7 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<CategoryQuestionModel>> GetCategoryQuestionsByWeight(
+        public async Task<IEnumerable<CategoryQuestion>> GetCategoryQuestionsByWeight(
             double weight
         )
         {
@@ -109,7 +95,7 @@ namespace Data.Repositories
                     .Where(cq => cq.Weight == weight)
                     .Select(
                         cq =>
-                            new CategoryQuestionModel
+                            new CategoryQuestion
                             {
                                 CategoryQuestionId = cq.CategoryQuestionId,
                                 CategoryQuestionName = cq.CategoryQuestionName,
@@ -134,7 +120,7 @@ namespace Data.Repositories
                 )
                 .Select(
                     cq =>
-                        new CategoryQuestionModel
+                        new CategoryQuestion
                         {
                             CategoryQuestionId = cq.CategoryQuestionId,
                             CategoryQuestionName = cq.CategoryQuestionName,
@@ -148,27 +134,23 @@ namespace Data.Repositories
                 return Guid.Empty;
         }
 
-        public async Task<CategoryQuestionModel> SaveCategoryQuestion(CategoryQuestionModel categoryQuestion)
+        public async Task<CategoryQuestion> SaveCategoryQuestion(CategoryQuestion categoryQuestion)
         {
-            var cateQuestion = _mapper.Map<CategoryQuestion>(categoryQuestion);
-            cateQuestion.CategoryQuestionId = Guid.NewGuid();
+            categoryQuestion.CategoryQuestionId = Guid.NewGuid();
 
-            Entities.Add(cateQuestion);
+            Entities.Add(categoryQuestion);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<CategoryQuestionModel>(cateQuestion);
-            return await Task.FromResult(response);
+            return await Task.FromResult(categoryQuestion);
         }
 
         public async Task<bool> UpdateCategoryQuestion(
-            CategoryQuestionModel categoryQuestion,
+            CategoryQuestion categoryQuestion,
             Guid categoryQuestionId
         )
         {
-            //var cateQuest = Entities.First()
-            var cateQuestion = _mapper.Map<CategoryQuestion>(categoryQuestion);
-            cateQuestion.CategoryQuestionId = categoryQuestionId;
-            Entities.Update(cateQuestion);
+            categoryQuestion.CategoryQuestionId = categoryQuestionId;
+            Entities.Update(categoryQuestion);
             _uow.SaveChanges();
             return await Task.FromResult(true);
         }
