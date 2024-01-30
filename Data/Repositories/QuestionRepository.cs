@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -9,54 +8,43 @@ namespace Data.Repositories
     public class QuestionRepository : Repository<Question>, IQuestionRepository
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
         public QuestionRepository(IUnitOfWork unitOfWork,
-            RecruitmentWebContext context,
-            IMapper mapper) : base(context)
+            RecruitmentWebContext context) : base(context)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<QuestionModel> AddQuestion(QuestionModel entity)
+        public async Task<Question> AddQuestion(Question entity)
         {
             //throw new NotImplementedException();
 
             /*------------------------------*/
             // Adds mapped entity to db from given model.
             /*------------------------------*/
-            var obj = _mapper.Map<Question>(entity);
-            obj.QuestionId = Guid.NewGuid();
+            entity.QuestionId = Guid.NewGuid();
 
-            await Entities.AddAsync(obj);
+            await Entities.AddAsync(entity);
             _unitOfWork.SaveChanges();
-            return await Task.FromResult(_mapper.Map<QuestionModel>(obj));
+            return await Task.FromResult(entity);
         }
 
-        public async Task<List<QuestionModel>> GetAllQuestions()
+        public async Task<List<Question>> GetAllQuestions()
         {
             /*------------------------------*/
             // Finds all of question entities asynchronously in db.
             // Returns a list of found questions in db.
             /*------------------------------*/
             var questionList = await Entities.Include(q => q.CategoryQuestion).ToListAsync();
-            var resultList = new List<QuestionModel>();
-
-            foreach (Question question in questionList)
-            {
-                var data = _mapper.Map<QuestionModel>(question);
-                resultList.Add(data);
-            }
-            return resultList;
+            return questionList;
         }
 
-        public async Task<List<QuestionModel>> GetListQuestions(Guid id)
+        public async Task<List<Question>> GetListQuestions(Guid id)
         {
-            var listData = new List<QuestionModel>();
+            var listData = new List<Question>();
             listData = await Entities.Include(q => q.CategoryQuestion)
             .Where(cq => cq.CategoryQuestionId == id)
-            .Select(cq => new QuestionModel
+            .Select(cq => new Question
             {
                 QuestionId = cq.QuestionId,
                 QuestionString = cq.QuestionString,
@@ -65,7 +53,7 @@ namespace Data.Repositories
             return listData;
         }
 
-        public async Task<QuestionModel> GetQuestion(Guid? id)
+        public async Task<Question> GetQuestion(Guid? id)
         {
             /*------------------------------*/
             // Finds the first position entity that has the id asynchronously in db.
@@ -76,31 +64,31 @@ namespace Data.Repositories
 
             // if (foundQuestion is not null)
             // {
-            //     var data = _mapper.Map<QuestionModel>(foundQuestion);
+            //     var data = _mapper.Map<Question>(foundQuestion);
             //     return data;
             // }
             // return null;
 
             /*------------------------------*/
-            //Returns a QuestionModel mapped from foundQuestion if it is in db. Otherwise, return null.
-            return foundQuestion is not null ? _mapper.Map<QuestionModel>(foundQuestion) : null;
+            //Returns a Question mapped from foundQuestion if it is in db. Otherwise, return null.
+            return foundQuestion;
             /*------------------------------*/
         }
 
-        public async Task<List<QuestionModel>> GetQuestionsByName(string keyword)
+        public async Task<List<Question>> GetQuestionsByName(string keyword)
         {
             // var listData = new List<Question>();
             // listData = await Entities
             // .Where(cq => cq.QuestionString.Contains(keyword))
             // .ToListAsync();
 
-            //var response = new List<QuestionModel>();
+            //var response = new List<Question>();
 
             // if (listData != null)
             // {
             //     foreach(var item in listData)
             //     {
-            //         var obj = _mapper.Map<QuestionModel>(item);
+            //         var obj = _mapper.Map<Question>(item);
             //         response.Add(obj);
             //     }
             // }
@@ -117,15 +105,7 @@ namespace Data.Repositories
                     .Include(q => q.CategoryQuestion)
                     .Where(cq => cq.QuestionString.ToLower().Contains(keyword.ToLower().Trim()))
                     .ToListAsync();
-
-            var resultList = new List<QuestionModel>();
-
-            foreach (var item in listData)
-            {
-                var obj = _mapper.Map<QuestionModel>(item);
-                resultList.Add(obj);
-            }
-            return resultList;
+            return listData;
             /*------------------------------*/
         }
 
@@ -151,18 +131,16 @@ namespace Data.Repositories
             return await Task.FromResult(false);
         }
 
-        public async Task<bool> UpdateQuestion(QuestionModel entity, Guid id)
+        public async Task<bool> UpdateQuestion(Question entity, Guid id)
         {
             /*------------------------------*/
             // If id is not found in db, return false. Else, update and return true.
             if (await Entities.AnyAsync(l => l.QuestionId.Equals(id)) is false)
                 return await Task.FromResult(false);
-            /*------------------------------*/
+            
+            entity.QuestionId = id;
 
-            var updatedQuestion = _mapper.Map<Question>(entity);
-            updatedQuestion.QuestionId = id;
-
-            Entities.Update(updatedQuestion);
+            Entities.Update(entity);
             _unitOfWork.SaveChanges();
             return await Task.FromResult(true);
         }

@@ -1,15 +1,13 @@
 ﻿using Data.Entities;
 
-using Api.ViewModels.Requirement;
-
 namespace Data.Interfaces
 {
     public interface IRequirementRepository : IRepository<Requirement>
     {
-        Task<IEnumerable<RequirementModel>> GetAllRequirement();
-        Task<RequirementModel> SaveRequirement(RequirementModel request);
-        Task<bool> UpdateRequirement(RequirementModel request, Guid requestId);
+        Task<IEnumerable<Requirement>> GetAllRequirement();
+        Task<Requirement> SaveRequirement(Requirement request);
+        Task<bool> UpdateRequirement(Requirement request, Guid requestId);
         Task<bool> DeleteRequirement(Guid requestId);
-        Task<List<RequirementModel>> GetRequirementsByPositionId(Guid positionId);
+        Task<List<Requirement>> GetRequirementsByPositionId(Guid positionId);
     }
 }

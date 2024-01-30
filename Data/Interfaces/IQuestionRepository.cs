@@ -1,22 +1,20 @@
 using Data.Entities;
 
-using Api.ViewModels.Question;
-
 namespace Data.Interfaces
 {
     public interface IQuestionRepository : IRepository<Question>
     {
-        Task<List<QuestionModel>> GetAllQuestions();
+        Task<List<Question>> GetAllQuestions();
 
-        Task<QuestionModel> GetQuestion(Guid? id);
-        Task<List<QuestionModel>> GetListQuestions(Guid id);
+        Task<Question> GetQuestion(Guid? id);
+        Task<List<Question>> GetListQuestions(Guid id);
 
         //Task<List<CategoryQuestionModel>> GetAllQuestionCategories();
-        Task<QuestionModel> AddQuestion(QuestionModel question);
+        Task<Question> AddQuestion(Question question);
 
-        Task<bool> UpdateQuestion(QuestionModel question, Guid id);
+        Task<bool> UpdateQuestion(Question question, Guid id);
 
         Task<bool> RemoveQuestion(Guid id);
-        Task<List<QuestionModel>> GetQuestionsByName(string keyword);
+        Task<List<Question>> GetQuestionsByName(string keyword);
     }
 }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -9,44 +8,32 @@ namespace Data.Repositories;
 public class RecruiterRepository : Repository<Recruiter>, IRecruiterRepository
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
 
     public RecruiterRepository(RecruitmentWebContext context,
-        IUnitOfWork uow,
-        IMapper mapper) : base(context)
+        IUnitOfWork uow) : base(context)
     {
         _uow = uow;
-        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<RecruiterModel>> GetAllRecruiter()
+    public async Task<IEnumerable<Recruiter>> GetAllRecruiter()
     {
-        var listData = new List<RecruiterModel>();
-
-        var data = await Entities.Include(x => x.User).ToListAsync();
-        foreach (var item in data)
-        {
-            //if (item.IsDeleted) continue;
-            RecruiterModel obj = _mapper.Map<RecruiterModel>(item);
-            listData.Add(obj);
-        }
-
+        var listData = await Entities.Include(x => x.User).ToListAsync();
         return listData;
     }
 
-    public async Task<RecruiterModel?> GetRecruiterById(Guid id)
+    public async Task<Recruiter?> GetRecruiterById(Guid id)
     {
-        var item = await Entities.Include(x => x.User).Where(r => r.RecruiterId == id).FirstOrDefaultAsync();
+        var item = await Entities.Include(x => x.User).Where(r => r.RecruiterId == id)
+            .FirstOrDefaultAsync();
         if (item is null) return null;
-        return _mapper.Map<RecruiterModel>(item);
+        return item;
     }
 
-    public async Task<RecruiterModel?> SaveRecruiter(RecruiterModel request)
+    public async Task<Recruiter?> SaveRecruiter(Recruiter entity)
     {
-        Recruiter obj = _mapper.Map<Recruiter>(request);
-        obj.RecruiterId = Guid.NewGuid();
+        entity.RecruiterId = Guid.NewGuid();
 
-        Entities.Add(obj);
+        Entities.Add(entity);
         _uow.SaveChanges();
         try { _uow.SaveChanges(); }
         catch (Exception e)
@@ -54,17 +41,14 @@ public class RecruiterRepository : Repository<Recruiter>, IRecruiterRepository
             Console.WriteLine(e.Message);
             return null!;
         }
-
-        var response = _mapper.Map<RecruiterModel>(obj);
-        return await Task.FromResult(response);
+        return await Task.FromResult(entity);
     }
 
-    public async Task<bool> UpdateRecruiter(RecruiterModel request, Guid requestId)
+    public async Task<bool> UpdateRecruiter(Recruiter request, Guid requestId)
     {
-        Recruiter obj = _mapper.Map<Recruiter>(request);
-        obj.RecruiterId = requestId;
+        request.RecruiterId = requestId;
 
-        Entities.Update(obj);
+        Entities.Update(request);
         try { _uow.SaveChanges(); }
         catch (Exception e)
         {

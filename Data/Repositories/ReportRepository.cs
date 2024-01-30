@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,47 +8,34 @@ namespace Data.Repositories
     public class ReportRepository : Repository<Report>, IReportRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public ReportRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ReportModel>> GetAllReport()
+        public async Task<IEnumerable<Report>> GetAllReport()
         {
-            var listData = new List<ReportModel>();
-
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<ReportModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
-        public async Task<ReportModel> SaveReport(ReportModel request)
+        public async Task<Report> SaveReport(Report request)
         {
-            var report = _mapper.Map<Report>(request);
-            report.ReportId = Guid.NewGuid();
+            request.ReportId = Guid.NewGuid();
 
-            Entities.Add(report);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<ReportModel>(report);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateReport(ReportModel request, Guid requestId)
+        public async Task<bool> UpdateReport(Report request, Guid requestId)
         {
-            var report = _mapper.Map<Report>(request);
-            report.ReportId = requestId;
+            request.ReportId = requestId;
 
-            Entities.Update(report);
+            Entities.Update(request);
             _uow.SaveChanges();
 
             return await Task.FromResult(true);

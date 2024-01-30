@@ -1,19 +1,12 @@
 ﻿using Data.Entities;
 
-using Api.ViewModels.Round;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Data.Interfaces
 {
     public interface IRoundRepository : IRepository<Round>
     {
-        Task<IEnumerable<RoundModel>> GetAllRounds(string? request);
-        Task<RoundModel> SaveRound(RoundModel request);
-        Task<bool> UpdateRound(RoundModel request, Guid requestId);
+        Task<IEnumerable<Round>> GetAllRounds(string? request);
+        Task<Round> SaveRound(Round request);
+        Task<bool> UpdateRound(Round request, Guid requestId);
         Task<bool> DeleteRound(Guid requestId);
     }
 }

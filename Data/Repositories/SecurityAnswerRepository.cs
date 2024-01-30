@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
-using Api.ViewModels.SecurityAnswer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
@@ -10,47 +8,34 @@ namespace Data.Repositories
     public class SecurityAnswerRepository : Repository<SecurityAnswer>, ISecurityAnswerRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public SecurityAnswerRepository(RecruitmentWebContext context,
-            IUnitOfWork uow,
-            IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SecurityAnswerModel>> GetAllSecurityAnswers()
+        public async Task<IEnumerable<SecurityAnswer>> GetAllSecurityAnswers()
         {
-            var listData = new List<SecurityAnswerModel>();
-
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<SecurityAnswerModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
-        public async Task<SecurityAnswerModel> SaveSecurityAnswer(SecurityAnswerModel request)
+        public async Task<SecurityAnswer> SaveSecurityAnswer(SecurityAnswer request)
         {
-            var report = _mapper.Map<SecurityAnswer>(request);
-            report.SecurityAnswerId = Guid.NewGuid();
+            request.SecurityAnswerId = Guid.NewGuid();
 
-            Entities.Add(report);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<SecurityAnswerModel>(report);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateSecurityAnswer(SecurityAnswerModel request, Guid requestId)
+        public async Task<bool> UpdateSecurityAnswer(SecurityAnswer request, Guid requestId)
         {
-            var report = _mapper.Map<SecurityAnswer>(request);
             request.SecurityAnswerId = requestId;
 
-            Entities.Update(report);
+            Entities.Update(request);
             _uow.SaveChanges();
 
             return await Task.FromResult(true);

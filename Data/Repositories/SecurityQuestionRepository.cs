@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,38 +8,27 @@ namespace Data.Repositories
     public class SecurityQuestionRepository : Repository<SecurityQuestion>, ISecurityQuestionRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public SecurityQuestionRepository
             (RecruitmentWebContext context,
-        IUnitOfWork uow,
-        IMapper mapper) : base(context)
+            IUnitOfWork uow) : base(context)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<SecurityQuestionModel> AddSecurityQuestion(SecurityQuestionModel request)
+        public async Task<SecurityQuestion> AddSecurityQuestion(SecurityQuestion request)
         {
-            var securityQuestion = _mapper.Map<SecurityQuestion>(request);
-            securityQuestion.SecurityQuestionId = Guid.NewGuid();
-            Entities.Add(securityQuestion);
+            request.SecurityQuestionId = Guid.NewGuid();
+
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<SecurityQuestionModel>(securityQuestion);
-
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<List<SecurityQuestionModel>> GetSecurityQuestion()
+        public async Task<List<SecurityQuestion>> GetSecurityQuestion()
         {
-            var listData = new List<SecurityQuestionModel>();
-            var data = await Entities.ToListAsync();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<SecurityQuestionModel>(item);
-                listData.Add(obj);
-            }
+            var listData = await Entities.ToListAsync();
             return listData;
         }
 
@@ -56,12 +44,13 @@ namespace Data.Repositories
             throw new ArgumentNullException(nameof(data));
         }
 
-        public async Task<bool> UpdateSecurityQuestion(SecurityQuestionModel request, Guid requestId)
+        public async Task<bool> UpdateSecurityQuestion(SecurityQuestion request, Guid requestId)
         {
-            var data = _mapper.Map<SecurityQuestion>(request);
-            data.SecurityQuestionId = requestId;
-            Entities.Update(data);
+            request.SecurityQuestionId = requestId;
+            
+            Entities.Update(request);
             _uow.SaveChanges();
+
             return await Task.FromResult(true);
         }
     }

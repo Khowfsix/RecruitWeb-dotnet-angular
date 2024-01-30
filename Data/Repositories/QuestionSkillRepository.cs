@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -9,43 +8,33 @@ namespace Data.Repositories
     public class QuestionSkillRepository : Repository<QuestionSkill>, IQuestionSkillRepository
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
         public QuestionSkillRepository(RecruitmentWebContext context,
-            IUnitOfWork unitOfWork,
-            IMapper mapper) : base(context)
+            IUnitOfWork unitOfWork) : base(context)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<QuestionSkillModel> AddQuestionSkill(QuestionSkillModel questionSkill)
+        public async Task<QuestionSkill> AddQuestionSkill(QuestionSkill questionSkill)
         {
             /*------------------------------*/
             // Adds mapped entity to db from given model.
             /*------------------------------*/
-            var newQuesSkill = _mapper.Map<QuestionSkill>(questionSkill);
-            newQuesSkill.QuestionSkillsId = Guid.NewGuid();
+            questionSkill.QuestionSkillsId = Guid.NewGuid();
 
-            Entities.Add(newQuesSkill);
+            Entities.Add(questionSkill);
             _unitOfWork.SaveChanges();
-            return await Task.FromResult(_mapper.Map<QuestionSkillModel>(newQuesSkill));
+            return await Task.FromResult(questionSkill);
         }
 
-        public async Task<List<QuestionSkillModel>> GetAllQuestionSkills()
+        public async Task<List<QuestionSkill>> GetAllQuestionSkills()
         {
             /*------------------------------*/
             // Finds all of questionSkill entities asynchronously in db.
             // Returns a list of found questionSkills in db.
             /*------------------------------*/
             var questionSkillList = await Entities.ToListAsync();
-            var resultList = new List<QuestionSkillModel>();
-            foreach (var question in questionSkillList)
-            {
-                var data = _mapper.Map<QuestionSkillModel>(question);
-                resultList.Add(data);
-            }
-            return resultList;
+            return questionSkillList;
         }
 
         public async Task<bool> RemoveQuestionSkill(Guid id)
@@ -66,7 +55,7 @@ namespace Data.Repositories
             return false;
         }
 
-        public async Task<bool> UpdateQuestionSkill(QuestionSkillModel questionSkill, Guid id)
+        public async Task<bool> UpdateQuestionSkill(QuestionSkill questionSkill, Guid id)
         {
             /*------------------------------*/
             // If id is not found in db, return false. Else, update and return true.
@@ -74,10 +63,9 @@ namespace Data.Repositories
                 return await Task.FromResult(false);
             /*------------------------------*/
 
-            var updatedData = _mapper.Map<QuestionSkill>(questionSkill);
-            updatedData.QuestionSkillsId = id;
+            questionSkill.QuestionSkillsId = id;
 
-            Entities.Update(updatedData);
+            Entities.Update(questionSkill);
             _unitOfWork.SaveChanges();
 
             return await Task.FromResult(true);

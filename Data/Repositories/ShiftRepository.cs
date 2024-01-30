@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Interfaces;
 
-using Api.ViewModels.Shift;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
@@ -10,60 +8,43 @@ namespace Data.Repositories
     public class ShiftRepository : Repository<Shift>, IShiftRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
         public ShiftRepository(RecruitmentWebContext dbContext,
-            IUnitOfWork uow,
-            IMapper mapper) : base(dbContext)
+            IUnitOfWork uow) : base(dbContext)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ShiftModel>> GetAllShifts(int? request)
+        public async Task<IEnumerable<Shift>> GetAllShifts(int? request)
         {
-            var listDatas = new List<ShiftModel>();
             if (request == null)
             {
                 var datas = await Entities.Take(10).ToListAsync();
-                foreach (var data in datas)
-                {
-                    var obj = _mapper.Map<ShiftModel>(data);
-                    listDatas.Add(obj);
-                }
-                return listDatas;
+                return datas;
             }
             else
             {
                 var datas = await Entities.Where(s => s.ShiftTimeStart == request || s.ShiftTimeEnd == request)
                                           .Take(10).ToListAsync();
-                foreach (var data in datas)
-                {
-                    var obj = _mapper.Map<ShiftModel>(data);
-                    listDatas.Add(obj);
-                }
-                return listDatas;
+                return datas;
             }
         }
 
-        public async Task<ShiftModel> SaveShift(ShiftModel request)
+        public async Task<Shift> SaveShift(Shift request)
         {
-            var round = _mapper.Map<Shift>(request);
-            round.ShiftId = Guid.NewGuid();
+            request.ShiftId = Guid.NewGuid();
 
-            Entities.Add(round);
+            Entities.Add(request);
             _uow.SaveChanges();
 
-            var response = _mapper.Map<ShiftModel>(round);
-            return await Task.FromResult(response);
+            return await Task.FromResult(request);
         }
 
-        public async Task<bool> UpdateShift(ShiftModel request, Guid requestId)
+        public async Task<bool> UpdateShift(Shift request, Guid requestId)
         {
-            var round = _mapper.Map<Shift>(request);
-            round.ShiftId = requestId;
+            request.ShiftId = requestId;
 
-            Entities.Update(round);
+            Entities.Update(request);
             _uow.SaveChanges();
 
             return await Task.FromResult(true);
