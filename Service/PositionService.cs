@@ -1,8 +1,8 @@
 using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Position;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,51 +17,47 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<PositionViewModel> AddPosition(PositionAddModel position)
+        public async Task<PositionModel> AddPosition(PositionModel position)
         {
-            var data = _mapper.Map<PositionModel>(position);
+            var data = _mapper.Map<Position>(position);
             var response = await _positionRepository.AddPosition(data);
-            return _mapper.Map<PositionViewModel>(response);
+            return _mapper.Map<PositionModel>(response);
         }
 
-        public async Task<List<PositionViewModel>> GetAllPositions(Guid? departmentId)
+        public async Task<List<PositionModel>> GetAllPositions(Guid? departmentId)
         {
-            var modelDatas = await _positionRepository.GetAllPositions();
-            List<PositionViewModel> list = new List<PositionViewModel>();
+            var entityDatas = await _positionRepository.GetAllPositions();
+            List<PositionModel> list = new List<PositionModel>();
             if (departmentId == null)
             {
-                foreach (var item in modelDatas)
+                foreach (var item in entityDatas)
                 {
-                    list.Add(_mapper.Map<PositionViewModel>(item));
+                    list.Add(_mapper.Map<PositionModel>(item));
                 }
             }
             else
             {
-                foreach (var item in modelDatas)
+                foreach (var item in entityDatas)
                 {
                     if (item.DepartmentId.Equals(departmentId))
                     {
-                        list.Add(_mapper.Map<PositionViewModel>(item));
+                        list.Add(_mapper.Map<PositionModel>(item));
                     }
                 }
             }
             return list;
         }
 
-        public async Task<PositionViewModel> GetPositionById(Guid id)
+        public async Task<PositionModel> GetPositionById(Guid id)
         {
             var data = await _positionRepository.GetPositionById(id);
-            return _mapper.Map<PositionViewModel>(data);
+            return _mapper.Map<PositionModel>(data);
         }
 
-        public async Task<List<PositionViewModel>> GetPositionByName(string name)
+        public async Task<List<PositionModel>> GetPositionByName(string name)
         {
-            var data = await _positionRepository.GetPositionByName(name);
-            List<PositionViewModel> resultList = new();
-            foreach (var result in data)
-            {
-                resultList.Add(_mapper.Map<PositionViewModel>(result));
-            }
+            var entityDatas = await _positionRepository.GetPositionByName(name);
+            List<PositionModel> resultList = _mapper.Map<List<PositionModel>>(entityDatas);
             return resultList;
         }
 
@@ -70,9 +66,9 @@ namespace Service
             return await _positionRepository.RemovePosition(position);
         }
 
-        public async Task<bool> UpdatePosition(PositionUpdateModel position, Guid positionId)
+        public async Task<bool> UpdatePosition(PositionModel position, Guid positionId)
         {
-            var data = _mapper.Map<PositionModel>(position);
+            var data = _mapper.Map<Position>(position);
             return await _positionRepository.UpdatePosition(data, positionId);
         }
     }

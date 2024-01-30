@@ -2,7 +2,7 @@ using Api.ViewModels.CategoryQuestion;
 using System;
 using System.Collections.Generic;
 
-namespace Data.Models;
+namespace Service.Models;
 
 public class QuestionModel
 {

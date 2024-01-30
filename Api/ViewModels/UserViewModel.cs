@@ -1,6 +1,4 @@
-﻿using Data.Entities;
-
-namespace Api.ViewModels
+﻿namespace Api.ViewModels
 {
     public class UserViewModel
     {

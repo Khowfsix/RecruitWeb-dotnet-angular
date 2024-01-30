@@ -5,15 +5,15 @@ namespace Data.Interfaces
 {
     public interface IPositionRepository : IRepository<Position>
     {
-        Task<List<PositionModel>> GetAllPositions();
+        Task<List<Position>> GetAllPositions();
 
-        Task<PositionModel> GetPositionById(Guid id);
+        Task<Position?> GetPositionById(Guid id);
 
-        Task<List<PositionModel>> GetPositionByName(string name);
+        Task<List<Position>> GetPositionByName(string name);
 
-        Task<PositionModel> AddPosition(PositionModel position);
+        Task<Position> AddPosition(Position position);
 
-        Task<bool> UpdatePosition(PositionModel position, Guid positionId);
+        Task<bool> UpdatePosition(Position position, Guid positionId);
 
         Task<bool> RemovePosition(Guid positionId);
     }

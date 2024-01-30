@@ -1,25 +1,23 @@
 ﻿using Data.Entities;
 
-using Api.ViewModels.Application;
-
 namespace Data.Interfaces
 {
     public interface IApplicationRepository
     {
-        Task<IEnumerable<ApplicationModel>> GetAllApplications();
+        Task<IEnumerable<Application>> GetAllApplications();
 
-        Task<IEnumerable<ApplicationHistoryViewModel>> GetApplicationHistory(Guid Cvid);
+        Task<IEnumerable<Application>> GetApplicationHistory(Guid Cvid);
 
-        Task<ApplicationModel?> GetApplicationById(Guid ApplicationId);
+        Task<Application?> GetApplicationById(Guid ApplicationId);
 
-        Task<IEnumerable<ApplicationModel>> GetApplicationsWithStatus(
+        Task<IEnumerable<Application>> GetApplicationsWithStatus(
             string status,
             string priority
         );
 
-        Task<ApplicationModel> SaveApplication(ApplicationModel request);
+        Task<Application> SaveApplication(Application request);
 
-        Task<bool> UpdateApplication(ApplicationModel request, Guid requestId);
+        Task<bool> UpdateApplication(Application request, Guid requestId);
 
         Task<bool> DeleteApplication(Guid applicationId);
 

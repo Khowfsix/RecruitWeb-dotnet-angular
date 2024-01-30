@@ -1,6 +1,5 @@
 ﻿using Data.Entities;
-using Api.ViewModels;
-using Api.ViewModels.Candidate;
+using Service.Models;
 
 namespace Service.Interfaces
 {
@@ -24,7 +23,7 @@ namespace Service.Interfaces
 
         Task<Guid?> GetCandidateId(string userId);
 
-        Task<IEnumerable<ProfileViewModel>> GetUsersInBlacklist();
+        Task<IEnumerable<CandidateModel>> GetUsersInBlacklist();
 
         Task<IEnumerable<UserViewModel>> GetAllCandidate();
 
@@ -40,7 +39,7 @@ namespace Service.Interfaces
 
         Task<IEnumerable<WebUser>> GetAllUsers();
 
-        Task<ProfileViewModel> GetUserInBlacklistById(string userId);
+        Task<CandidateModel> GetUserInBlacklistById(string userId);
 
         Task<bool> BrowsePassInterview(Guid interviewId);
 

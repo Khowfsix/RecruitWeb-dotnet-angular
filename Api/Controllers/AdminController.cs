@@ -1,11 +1,11 @@
-﻿using Data.Entities;
-using Api.ViewModels.SuccessfulCadidate;
-using Service.Interfaces;
-using Service.Models;
-using Service.Services;
+﻿using Api.ViewModels.SuccessfulCadidate;
+using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
+using Service.Services;
 
 namespace Api.Controllers
 {

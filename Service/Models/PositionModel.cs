@@ -1,8 +1,4 @@
-using Data.Entities;
-using System;
-using System.Collections.Generic;
-
-namespace Data.Models;
+namespace Service.Models;
 
 public class PositionModel
 {
@@ -21,10 +17,10 @@ public class PositionModel
     public DateTime? EndDate { get; set; }
 
     public Guid DepartmentId { get; set; }
-    public DepartmentModel Department { get; set; }
+    public DepartmentModel? Department { get; set; }
 
     public Guid LanguageId { get; set; }
-    public LanguageModel Language { get; set; }
+    public LanguageModel? Language { get; set; }
 
     public Guid RecruiterId { get; set; }
     public RecruiterModel Recruiter { get; set; } = null!;

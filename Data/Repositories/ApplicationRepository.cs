@@ -1,8 +1,6 @@
 using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Application;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
@@ -32,22 +30,22 @@ namespace Data.Repositories
             return await Task.FromResult(true);
         }
 
-        public async Task<IEnumerable<ApplicationModel>> GetAllApplications()
+        public async Task<IEnumerable<Application>> GetAllApplications()
         {
-            var listData = new List<ApplicationModel>();
+            var listData = new List<Application>();
 
             var data = await Entities.Include(a => a.Position)
                                      .Include(a => a.Cv)
                                      .ToListAsync();
             foreach (var item in data)
             {
-                var obj = _mapper.Map<ApplicationModel>(item);
+                var obj = _mapper.Map<Application>(item);
                 listData.Add(obj);
             }
             return listData;
         }
 
-        public async Task<ApplicationModel> SaveApplication(ApplicationModel request)
+        public async Task<Application> SaveApplication(Application request)
         {
             try
             {
@@ -58,7 +56,7 @@ namespace Data.Repositories
                 Entities.Add(application);
                 _uow.SaveChanges();
 
-                var response = _mapper.Map<ApplicationModel>(application);
+                var response = _mapper.Map<Application>(application);
                 return await Task.FromResult(response);
             }
             catch (Exception ex)
@@ -67,7 +65,7 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<bool> UpdateApplication(ApplicationModel request, Guid requestId)
+        public async Task<bool> UpdateApplication(Application request, Guid requestId)
         {
             try
             {
@@ -89,7 +87,7 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<ApplicationHistoryViewModel>> GetApplicationHistory(
+        public async Task<IEnumerable<Application>> GetApplicationHistory(
             Guid Cvid
         )
         {
@@ -99,10 +97,10 @@ namespace Data.Repositories
                 .OrderByDescending(entity => entity.DateTime)
                 .Select(
                     entity =>
-                        new ApplicationHistoryViewModel
+                        new Application
                         {
                             ApplicationId = entity.ApplicationId,
-                            PositionName = entity.Position.PositionName,
+                            Position = entity.Position.PositionName,
                             Cvid = entity.Cvid,
                             PositionId = entity.PositionId,
                             DateTime = entity.DateTime,
@@ -114,7 +112,7 @@ namespace Data.Repositories
             return data;
         }
 
-        public async Task<ApplicationModel?> GetApplicationById(Guid ApplicationId)
+        public async Task<Application?> GetApplicationById(Guid ApplicationId)
         {
             var data = await Entities.Include(a => a.Position)
                                      .Include(a => a.Cv)
@@ -123,26 +121,26 @@ namespace Data.Repositories
                                      .FirstOrDefaultAsync();
             if (data != null)
             {
-                var obj = _mapper.Map<ApplicationModel>(data);
+                var obj = _mapper.Map<Application>(data);
                 return obj;
             }
 
             return null;
         }
 
-        public async Task<IEnumerable<ApplicationModel>> GetApplicationsWithStatus(
+        public async Task<IEnumerable<Application>> GetApplicationsWithStatus(
             string status,
             string priority
         )
         {
-            var listData = new List<ApplicationModel>();
+            var listData = new List<Application>();
 
             var data = await Entities
                 .Where(a => a.Company_Status.Contains(status) && a.Priority.Contains(priority))
                 .ToListAsync();
             foreach (var item in data)
             {
-                var obj = _mapper.Map<ApplicationModel>(item);
+                var obj = _mapper.Map<Application>(item);
                 listData.Add(obj);
             }
             return listData;

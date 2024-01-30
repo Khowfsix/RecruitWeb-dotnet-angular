@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
 
-namespace Data.Models
+namespace Service.Models
 {
     public class CandidateModel
     {

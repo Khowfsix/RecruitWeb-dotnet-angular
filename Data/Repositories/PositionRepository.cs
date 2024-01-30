@@ -1,4 +1,3 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -9,31 +8,25 @@ namespace Data.Repositories
     public class PositionRepository : Repository<Position>, IPositionRepository
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+
 
         public PositionRepository(RecruitmentWebContext context,
-            IUnitOfWork unitOfWork,
-            IMapper mapper) : base(context)
+            IUnitOfWork unitOfWork) : base(context)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<PositionModel> AddPosition(PositionModel position)
+        public async Task<Position> AddPosition(Position position)
         {
-            /*------------------------------*/
-            // Adds mapped entity to db from given model.
-            /*------------------------------*/
-            var obj = _mapper.Map<Position>(position);
-            obj.PositionId = Guid.NewGuid();
+            position.PositionId = Guid.NewGuid();
 
-            Entities.Add(obj);
+            Entities.Add(position);
             _unitOfWork.SaveChanges();
 
-            return await Task.FromResult(_mapper.Map<PositionModel>(obj));
+            return await Task.FromResult(position);
         }
 
-        public async Task<List<PositionModel>> GetAllPositions()
+        public async Task<List<Position>> GetAllPositions()
         {
             /*------------------------------*/
             // Finds all of position entities asynchronously in db.
@@ -45,11 +38,11 @@ namespace Data.Repositories
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .ToListAsync();
-            var resultListWithName = _mapper.Map<List<PositionModel>>(positionListWithName);
-            return resultListWithName;
+
+            return positionListWithName;
         }
 
-        public async Task<PositionModel> GetPositionById(Guid id)
+        public async Task<Position?> GetPositionById(Guid id)
         {
             /*------------------------------*/
             // Finds the first position entity that has the id asynchronously in db.
@@ -63,20 +56,13 @@ namespace Data.Repositories
                 .Include(o => o.Recruiter)
                 .FirstOrDefaultAsync();
 
-            // if (position is not null)
-            // {
-            //     var obj = _mapper.Map<PositionModel>(position);
-            //     return obj;
-            // }
-            // else return null;
-
             /*------------------------------*/
             // Returns mapped model of the found position. If position is not found, return null.
-            return position is not null ? _mapper.Map<PositionModel>(position) : null;
             /*------------------------------*/
+            return position is not null ? position : null;
         }
 
-        public async Task<List<PositionModel>> GetPositionByName(string name)
+        public async Task<List<Position>> GetPositionByName(string name)
         {
             /*------------------------------*/
             // Finds all of position entities that contain name parameter asynchronously in db.
@@ -84,32 +70,25 @@ namespace Data.Repositories
             /*------------------------------*/
 
             var positionList = await Entities
-                .Where(p => p.PositionName.ToLower().Contains(name.ToLower().Trim()))
+                .Where(p => p.PositionName!.ToLower()
+                                          .Contains(name.ToLower().Trim()))
                 .Include(o => o.Requirements)
                 .Include(o => o.Department)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .ToListAsync();
-            var resultList = new List<PositionModel>();
 
-            foreach (var position in positionList)
-            {
-                var data = _mapper.Map<PositionModel>(position);
-                resultList.Add(data);
-            }
-            return resultList;
+            return positionList;
         }
 
         public async Task<bool> RemovePosition(Guid positionId)
         {
             try
             {
-                //var position = GetById(positionId);
-
                 /*------------------------------*/
                 // Finds asynchronously and removes entity with matched id in db.
                 var position = await Entities.FindAsync(positionId);
-                /*------------------------------*/
+
 
                 if (position == null)
                 {
@@ -117,7 +96,6 @@ namespace Data.Repositories
                     //throw new ArgumentNullException(nameof(position));
                 }
 
-                //Entities.Remove(position);
                 position.IsDeleted = true;
                 Entities.Update(position);
 
@@ -130,18 +108,15 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<bool> UpdatePosition(PositionModel position, Guid positionId)
+        public async Task<bool> UpdatePosition(Position position, Guid positionId)
         {
             /*------------------------------*/
             // If id is not found in db, return false. Else, update in db and return true.
             if (await Entities.AnyAsync(l => l.PositionId.Equals(positionId)) is false)
                 return await Task.FromResult(false);
-            /*------------------------------*/
 
-            var updateData = _mapper.Map<Position>(position);
-            updateData.PositionId = positionId;
 
-            Entities.Update(updateData);
+            Entities.Update(position);
             _unitOfWork.SaveChanges();
 
             return await Task.FromResult(true);
