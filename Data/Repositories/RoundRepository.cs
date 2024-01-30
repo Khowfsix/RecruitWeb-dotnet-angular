@@ -24,7 +24,7 @@ namespace Data.Repositories
             }
             else
             {
-                var datas = await Entities.Where(r => r.InterviewId.ToString().Contains(request)).Take(10).ToListAsync()
+                var datas = await Entities.Where(r => r.InterviewId.ToString().Contains(request)).Take(10).ToListAsync();
                 return datas;
             }
         }
