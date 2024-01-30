@@ -1,21 +1,19 @@
-using Api.ViewModels.Language;
+using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ILanguageService
     {
-        Task<LanguageViewModel> AddLanguage(LanguageAddModel createdLanguage);
+        Task<LanguageModel> AddLanguage(LanguageModel createdLanguage);
 
-        Task<bool> UpdateLanguage(LanguageUpdateModel createdLanguage, Guid id);
+        Task<bool> UpdateLanguage(LanguageModel createdLanguage, Guid id);
 
         Task<bool> RemoveLanguage(Guid id);
 
-        Task<List<LanguageViewModel>> GetAllLanguages();
+        Task<List<LanguageModel>> GetAllLanguages();
 
-        Task<LanguageViewModel> GetLanguage(Guid id);
+        Task<LanguageModel> GetLanguage(Guid id);
 
-        Task<List<LanguageViewModel>> GetLanguage(string name);
-
-        //Task<bool> LanguageExists(Guid id);
+        Task<List<LanguageModel>> GetLanguage(string name);
     }
 }

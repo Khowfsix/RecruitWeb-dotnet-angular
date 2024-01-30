@@ -1,8 +1,8 @@
 using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Language;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,11 +17,11 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<LanguageViewModel> AddLanguage(LanguageAddModel createdLanguage)
+        public async Task<LanguageModel> AddLanguage(LanguageModel createdLanguage)
         {
-            var data = _mapper.Map<LanguageModel>(createdLanguage);
-            var response = await _languageRepository.AddLanguage(data);
-            return _mapper.Map<LanguageViewModel>(response);
+            var entityData = _mapper.Map<Language>(createdLanguage);
+            var response = await _languageRepository.AddLanguage(entityData);
+            return _mapper.Map<LanguageModel>(response);
         }
 
         public async Task<bool> RemoveLanguage(Guid id)
@@ -29,37 +29,30 @@ namespace Service
             return await _languageRepository.RemoveLanguage(id);
         }
 
-        public async Task<List<LanguageViewModel>> GetAllLanguages()
+        public async Task<List<LanguageModel>> GetAllLanguages()
         {
-            var modelDatas = await _languageRepository.GetAllLanguages();
-            List<LanguageViewModel> list = new();
-            foreach (var item in modelDatas)
-            {
-                list.Add(_mapper.Map<LanguageViewModel>(item));
-            }
-            return list;
+            var entityDatas = await _languageRepository.GetAllLanguages();
+            var listModelDatas = _mapper.Map<List<LanguageModel>>(entityDatas);
+            return listModelDatas;
         }
 
-        public async Task<LanguageViewModel> GetLanguage(Guid id)
+        public async Task<LanguageModel> GetLanguage(Guid id)
         {
-            var data = await _languageRepository.GetLanguage(id);
-            return _mapper.Map<LanguageViewModel>(data);
+            var entityData = await _languageRepository.GetLanguage(id);
+            var modelDatas = _mapper.Map<LanguageModel>(entityData);
+            return modelDatas;
         }
 
-        public async Task<List<LanguageViewModel>> GetLanguage(string name)
+        public async Task<List<LanguageModel>> GetLanguage(string name)
         {
-            var modelDatas = await _languageRepository.GetLanguage(name);
-            List<LanguageViewModel> list = new List<LanguageViewModel>();
-            foreach (var item in modelDatas)
-            {
-                list.Add(_mapper.Map<LanguageViewModel>(item));
-            }
-            return list;
+            var entityDatas = await _languageRepository.GetLanguage(name);
+            var modelDatas = _mapper.Map<List<LanguageModel>>(entityDatas);
+            return modelDatas;
         }
 
-        public async Task<bool> UpdateLanguage(LanguageUpdateModel createdLanguage, Guid id)
+        public async Task<bool> UpdateLanguage(LanguageModel createdLanguage, Guid id)
         {
-            var data = _mapper.Map<LanguageModel>(createdLanguage);
+            var data = _mapper.Map<Language>(createdLanguage);
             return await _languageRepository.UpdateLanguage(data, id);
         }
     }

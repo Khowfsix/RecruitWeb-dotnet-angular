@@ -1,54 +1,53 @@
-using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Data.Repositories
 {
     public class LanguageRepository : Repository<Language>, ILanguageRepository
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public LanguageRepository(RecruitmentWebContext context,
-            IUnitOfWork unitOfWork,
-            IMapper mapper) : base(context)
+        public LanguageRepository(RecruitmentWebContext context, IUnitOfWork unitOfWork) : base(context)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<LanguageModel> AddLanguage(LanguageModel createdLanguage)
+        public async Task<Language> AddLanguage(Language createdLanguage)
         {
             /*------------------------------*/
             // Adds mapped entity to db from given model.
             /*------------------------------*/
-            var obj = _mapper.Map<Language>(createdLanguage);
-            obj.LanguageId = Guid.NewGuid();
-
-            Entities.Add(obj);
-            _unitOfWork.SaveChanges();
-            return await Task.FromResult(_mapper.Map<LanguageModel>(obj));
+            try
+            {
+                createdLanguage.LanguageId = Guid.NewGuid();
+                Entities.Add(createdLanguage);
+                _unitOfWork.SaveChanges();
+                return await Task.FromResult(createdLanguage);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> RemoveLanguage(Guid id)
         {
             try
             {
-                //var language = GetById(id);
-
                 /*------------------------------*/
                 // Finds asynchronously and removes entity with matched id in db.
                 var language = await Entities.FindAsync(id);
                 /*------------------------------*/
 
                 if (language == null)
-                    throw new ArgumentNullException(nameof(language));
+                    return await Task.FromResult(false);
 
-                Entities.Remove(language);
-                //language.IsDeleted = true;
-                //Entities.Update(language);
+                language.IsDeleted = true;
+                Entities.Update(language);
+
                 _unitOfWork.SaveChanges();
                 return await Task.FromResult(true);
             }
@@ -58,37 +57,19 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<List<LanguageModel>> GetAllLanguages()
+        public async Task<List<Language>> GetAllLanguages()
         {
             /*------------------------------*/
             // Finds all of language entities asynchronously in db.
             // Returns a list of found entities.
             /*------------------------------*/
-            var LanguagesList = await Entities.ToListAsync();
-            var _list = new List<LanguageModel>();
+            var entityDatas = await Entities.ToListAsync();
 
-            foreach (var language in LanguagesList)
-            {
-                var obj = _mapper.Map<LanguageModel>(language);
-                _list.Add(obj);
-            }
-            return _list;
+            return !entityDatas.IsNullOrEmpty() ? entityDatas : new List<Language>();
         }
 
-        public async Task<LanguageModel> GetLanguage(Guid id)
+        public async Task<Language?> GetLanguage(Guid id)
         {
-            // IAsyncEnumerable<Language> LanguageList = Entities.AsAsyncEnumerable();
-            // LanguageModel result = new();
-            // await foreach (var language in LanguageList)
-            // {
-            //     if (language.LanguageId == id)
-            //     {
-            //         result = _mapper.Map<LanguageModel>(language);
-            //         break;
-            //     }
-            // }
-            // return result;
-
             /*------------------------------*/
             // Finds asynchronously and returns the first language with matched id in db.
             // Returns null if id is not matched.
@@ -97,58 +78,42 @@ namespace Data.Repositories
                     .FirstOrDefaultAsync();
 
             // Returns mapped model of the language if it is found. Otherwise, return null.
-            return language is not null ? _mapper.Map<LanguageModel>(language) : null;
-            /*------------------------------*/
+            return language is not null ? language : null;
         }
 
-        public async Task<List<LanguageModel>> GetLanguage(string name)
+        public async Task<List<Language>> GetLanguage(string name)
         {
-            // IAsyncEnumerable<Language> LanguagesList = Entities.AsAsyncEnumerable();
-            // var _list = new List<LanguageModel>();
-
-            // await foreach (var language in LanguagesList)
-            // {
-            //     if (language.LanguageName == name)
-            //     {
-            //         var obj = _mapper.Map<LanguageModel>(language);
-            //         _list.Add(obj);
-            //     }
-            // }
-            // return _list;
-
             /*------------------------------*/
             // Finds all of language entities that contain name parameter asynchronously in db.
             // Returns a list of models mapped from found entities if matched.
+            /*------------------------------*/
 
             var listLanguage = await Entities
                             .Where(l => l.LanguageName.ToLower().Contains(name.ToLower().Trim()))
                             .ToListAsync();
-
-            var resultList = new List<LanguageModel>();
-
-            foreach (var language in listLanguage)
-            {
-                resultList.Add(_mapper.Map<LanguageModel>(language));
-            }
-            return resultList;
-            /*------------------------------*/
+            return !listLanguage.IsNullOrEmpty() ? listLanguage : new List<Language>();
         }
 
-        public async Task<bool> UpdateLanguage(LanguageModel createdLanguage, Guid id)
+        public async Task<bool> UpdateLanguage(Language createdLanguage, Guid id)
         {
-            /*------------------------------*/
-            // If id is not found in db, return false. Else, update and return true.
-            if (await Entities.AnyAsync(l => l.LanguageId.Equals(id)) is false)
-                return false;
-            /*------------------------------*/
+            try
+            {
+                /*------------------------------*/
+                // If id is not found in db, return false. Else, update and return true.
+                if (await Entities.AnyAsync(l => l.LanguageId.Equals(id)) is false)
+                    return await Task.FromResult(false);
+                /*------------------------------*/
 
-            var newLanguage = _mapper.Map<Language>(createdLanguage);
-            newLanguage.LanguageId = id;
+                createdLanguage.LanguageId = id;
+                Entities.Update(createdLanguage);
 
-            Entities.Update(newLanguage);
-
-            _unitOfWork.SaveChanges();
-            return await Task.FromResult(true);
+                _unitOfWork.SaveChanges();
+                return await Task.FromResult(true);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
