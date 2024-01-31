@@ -39,23 +39,18 @@ namespace Service
         {
             // Get Cv thuộc về candidate
             var data = await _cvRepository.GetAllCv(request);
-
             var resp = _mapper.Map<IList<CvModel>>(data);
 
             foreach (var item in resp)
             {
                 // Tìm skills và gắn vào
                 var skills = await _cvHasSkillRepository.GetSkill(item.Cvid);
-
                 var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
-
                 item.Skills = skillVMs;
 
                 // Tìm certificates và gắn vào
                 var certificates = await _certificateRepository.GetForeignKey(item.Cvid);
-
                 var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
-
                 item.Certificates = certificateVMs;
             }
 

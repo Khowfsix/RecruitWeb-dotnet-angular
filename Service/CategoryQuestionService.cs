@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
 using Service.Interfaces;
 using Service.Models;
@@ -49,7 +50,7 @@ namespace Service
 
         public async Task<CategoryQuestionModel> SaveCategoryQuestion(CategoryQuestionModel categoryQuestion)
         {
-            var data = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
+            var data = _mapper.Map<CategoryQuestion>(categoryQuestion);
             var response = await _categoryQuestionRepository.SaveCategoryQuestion(data);
 
             return _mapper.Map<CategoryQuestionModel>(response);
@@ -57,7 +58,7 @@ namespace Service
 
         public async Task<bool> UpdateCategoryQuestion(CategoryQuestionModel categoryQuestion, Guid categoryQuestionId)
         {
-            var data = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
+            var data = _mapper.Map<CategoryQuestion>(categoryQuestion);
             return await _categoryQuestionRepository.UpdateCategoryQuestion(data, categoryQuestionId);
         }
     }

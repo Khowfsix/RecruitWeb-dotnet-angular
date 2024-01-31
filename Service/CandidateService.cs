@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
 
@@ -24,18 +26,14 @@ namespace Service
         public async Task<IEnumerable<CandidateModel>> GetAllCandidates()
         {
             var data = await _candidateRepository.GetAllCandidates();
-            List<CandidateModel> listData = new List<CandidateModel>();
-            foreach (var candidate in data)
-            {
-                var obj = _mapper.Map<CandidateModel>(candidate);
-                listData.Add(obj);
-            }
-            return listData;
+            if (!data.IsNullOrEmpty())
+                return _mapper.Map<IEnumerable<CandidateModel>>(data);
+            return null!;
         }
 
         public async Task<CandidateModel> SaveCandidate(CandidateModel request)
         {
-            var data = _mapper.Map<CandidateModel>(request);
+            var data = _mapper.Map<Candidate>(request);
             var response = await _candidateRepository.SaveCandidate(data);
 
             return _mapper.Map<CandidateModel>(response);
@@ -43,7 +41,7 @@ namespace Service
 
         public async Task<bool> UpdateCandidate(CandidateModel request, Guid requestId)
         {
-            var data = _mapper.Map<CandidateModel>(request);
+            var data = _mapper.Map<Candidate>(request);
             return await _candidateRepository.UpdateCandidate(data, requestId);
         }
 
@@ -56,9 +54,7 @@ namespace Service
         public async Task<CandidateModel> FindById(Guid id)
         {
             var model = await _candidateRepository.FindById(id);
-
             var viewmodel = _mapper.Map<CandidateModel>(model);
-
             return viewmodel;
         }
 
@@ -70,7 +66,7 @@ namespace Service
                 return candidateVM;
             else
             {
-                return null;
+                return null!;
             }
         }
     }

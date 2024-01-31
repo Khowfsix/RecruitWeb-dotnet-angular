@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
 using Service.Interfaces;
 using Service.Models;
@@ -29,7 +30,7 @@ namespace Service
 
         public async Task<BlacklistModel> SaveBlackList(BlacklistModel request)
         {
-            var data = _mapper.Map<BlacklistModel>(request);
+            var data = _mapper.Map<BlackList>(request);
             var response = await _blacklistRepository.SaveBlackList(data);
 
             return _mapper.Map<BlacklistModel>(response);
@@ -37,7 +38,7 @@ namespace Service
 
         public async Task<bool> UpdateBlackList(BlacklistModel request, Guid requestId)
         {
-            var data = _mapper.Map<BlacklistModel>(request);
+            var data = _mapper.Map<BlackList>(request);
             return await _blacklistRepository.UpdateBlackList(data, requestId);
         }
     }

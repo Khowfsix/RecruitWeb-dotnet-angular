@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
 
@@ -24,14 +26,9 @@ namespace Service
         public async Task<IEnumerable<DepartmentModel>> GetAllDepartment(string? request)
         {
             var data = await _departmentRepository.GetAllDepartment(request);
-            List<DepartmentModel> result = new List<DepartmentModel>();
-            if (data != null)
+            if (!data.IsNullOrEmpty())
             {
-                foreach (var item in data)
-                {
-                    var obj = _mapper.Map<DepartmentModel>(item);
-                    result.Add(obj);
-                }
+                List<DepartmentModel> result = _mapper.Map<List<DepartmentModel>>(data);
                 return result;
             }
             return null!;
@@ -39,14 +36,14 @@ namespace Service
 
         public async Task<DepartmentModel> SaveDepartment(DepartmentModel request)
         {
-            var data = _mapper.Map<DepartmentModel>(request);
+            var data = _mapper.Map<Department>(request);
             var response = await _departmentRepository.SaveDepartment(data);
             return _mapper.Map<DepartmentModel>(response);
         }
 
         public async Task<bool> UpdateDepartment(DepartmentModel request, Guid requestId)
         {
-            var data = _mapper.Map<DepartmentModel>(request);
+            var data = _mapper.Map<Department>(request);
             return await _departmentRepository.UpdateDepartment(data, requestId);
         }
     }

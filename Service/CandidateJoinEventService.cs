@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
 
@@ -29,23 +30,17 @@ namespace Service
         public async Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents()
         {
             var data = await _candidateJoinEventRepository.GetAllCandidateJoinEvents();
-            if (data != null)
+            if (!data.IsNullOrEmpty())
             {
-                List<CandidateJoinEventModel> listData =
-                    new List<CandidateJoinEventModel>();
-                foreach (var dataItem in data)
-                {
-                    var obj = _mapper.Map<CandidateJoinEventModel>(dataItem);
-                    listData.Add(obj);
-                }
+                List<CandidateJoinEventModel> listData = _mapper.Map<List<CandidateJoinEventModel>>(data);
                 return listData;
             }
-            return null;
+            return null!;
         }
 
         public async Task<CandidateJoinEventModel> SaveCandidateJoinEvent(CandidateJoinEventModel request)
         {
-            var data = _mapper.Map<CandidateJoinEventModel>(request);
+            var data = _mapper.Map<CandidateJoinEvent>(request);
             var response = await _candidateJoinEventRepository.SaveCandidateJoinEvent(data);
 
             return _mapper.Map<CandidateJoinEventModel>(response);
@@ -53,16 +48,14 @@ namespace Service
 
         public async Task<bool> UpdateCandidateJoinEvent(CandidateJoinEventModel request, Guid requestId)
         {
-            var data = _mapper.Map<CandidateJoinEventModel>(request);
+            var data = _mapper.Map<CandidateJoinEvent>(request);
             return await _candidateJoinEventRepository.UpdateCandidateJoinEvent(data, requestId);
         }
 
-        public async Task<IEnumerable<CandidateJoinEvent>> JoinEventDetail(Guid id)
+        public async Task<IEnumerable<CandidateJoinEventModel>> JoinEventDetail(Guid id)
         {
             var data = await _candidateJoinEventRepository.JoinEventDetail(id);
-
-            var result = _mapper.Map<List<CandidateJoinEvent>>(data);
-
+            var result = _mapper.Map<List<CandidateJoinEventModel>>(data);
             return result;
         }
 

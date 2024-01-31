@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
 
@@ -24,22 +26,17 @@ namespace Service
         public async Task<IEnumerable<CertificateModel>> GetAllCertificate(string? request)
         {
             var data = await _certificateRepository.GetAllCertificate(request);
-            if (data != null)
+            if (!data.IsNullOrEmpty())
             {
-                List<CertificateModel> result = new List<CertificateModel>();
-                foreach (var item in data)
-                {
-                    var obj = _mapper.Map<CertificateModel>(item);
-                    result.Add(obj);
-                }
+                List<CertificateModel> result = _mapper.Map<List<CertificateModel>>(data);
                 return result;
             }
-            return null;
+            return null!;
         }
 
         public async Task<CertificateModel> SaveCertificate(CertificateModel request)
         {
-            var data = _mapper.Map<CertificateModel>(request);
+            var data = _mapper.Map<Certificate>(request);
             var response = await _certificateRepository.SaveCertificate(data);
 
             return _mapper.Map<CertificateModel>(response);
@@ -47,7 +44,7 @@ namespace Service
 
         public async Task<bool> UpdateCertificate(CertificateModel request, Guid requestId)
         {
-            var data = _mapper.Map<CertificateModel>(request);
+            var data = _mapper.Map<Certificate>(request);
             return await _certificateRepository.UpdateCertificate(data, requestId);
         }
     }

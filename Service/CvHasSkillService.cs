@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
 
@@ -24,22 +26,17 @@ namespace Service
         public async Task<IEnumerable<CvHasSkillModel>> GetAllCvHasSkillService(string? request)
         {
             var data = await _cvHasSkillrepository.GetAllCvHasSkillService(request);
-            List<CvHasSkillModel> cvHasSkillModels = new List<CvHasSkillModel>();
-            if (data != null)
+            if (!data.IsNullOrEmpty())
             {
-                foreach (var item in data)
-                {
-                    var obj = _mapper.Map<CvHasSkillModel>(item);
-                    cvHasSkillModels.Add(obj);
-                }
+                List<CvHasSkillModel> cvHasSkillModels = _mapper.Map<List<CvHasSkillModel>>(data);
                 return cvHasSkillModels;
             }
-            return null;
+            return null!;
         }
 
         public async Task<CvHasSkillModel> SaveCvHasSkillService(CvHasSkillModel request)
         {
-            var data = _mapper.Map<CvHasSkillModel>(request);
+            var data = _mapper.Map<CvHasSkill>(request);
             var response = await _cvHasSkillrepository.SaveCvHasSkillService(data);
 
             return _mapper.Map<CvHasSkillModel>(response);
@@ -47,7 +44,7 @@ namespace Service
 
         public async Task<bool> UpdateCvHasSkillService(CvHasSkillModel request, Guid requestId)
         {
-            var data = _mapper.Map<CvHasSkillModel>(request);
+            var data = _mapper.Map<CvHasSkill>(request);
             return await _cvHasSkillrepository.UpdateCvHasSkillService(data, requestId);
         }
     }
