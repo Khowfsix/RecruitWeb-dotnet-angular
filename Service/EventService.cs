@@ -1,8 +1,9 @@
 using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Event;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service;
 
@@ -17,11 +18,11 @@ public class EventService : IEventService
         _mapper = mapper;
     }
 
-    public async Task<EventViewModel> SaveEvent(EventAddModel eventModel)
+    public async Task<EventModel> SaveEvent(EventModel eventModel)
     {
-        var data = _mapper.Map<EventModel>(eventModel);
+        var data = _mapper.Map<Event>(eventModel);
         var response = await _EventRepository.SaveEvent(data);
-        return _mapper.Map<EventViewModel>(response);
+        return _mapper.Map<EventModel>(response);
     }
 
     public async Task<bool> DeleteEvent(Guid eventModelId)
@@ -29,36 +30,31 @@ public class EventService : IEventService
         return await _EventRepository.DeleteEvent(eventModelId);
     }
 
-    public async Task<IEnumerable<EventViewModel>> GetAllEvent()
+    public async Task<IEnumerable<EventModel>> GetAllEvent()
     {
         var data = await _EventRepository.GetAllEvent();
-        List<EventViewModel> result = new List<EventViewModel>();
-        if (data != null)
+        if (!data.IsNullOrEmpty())
         {
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<EventViewModel>(item);
-                result.Add(obj);
-            }
+            List<EventModel> result = _mapper.Map<List<EventModel>>(data);
             return result;
         }
-        return null;
+        return null!;
     }
 
-    public async Task<bool> UpdateEvent(EventUpdateModel eventUpdateModel, Guid eventModelId)
+    public async Task<bool> UpdateEvent(EventModel eventModel, Guid eventModelId)
     {
-        var data = _mapper.Map<EventModel>(eventUpdateModel);
+        var data = _mapper.Map<Event>(eventModel);
         return await _EventRepository.UpdateEvent(data, eventModelId);
     }
 
-    public async Task<EventViewModel> GetEventById(Guid id)
+    public async Task<EventModel> GetEventById(Guid id)
     {
         var data = await _EventRepository.GetEventById(id);
         if (data == null)
         {
-            return null;
+            return null!;
         }
-        var respone = _mapper.Map<EventViewModel>(data);
+        var respone = _mapper.Map<EventModel>(data);
         return respone;
     }
 }

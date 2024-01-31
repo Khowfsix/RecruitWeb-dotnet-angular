@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.CategoryQuestion;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -22,43 +22,43 @@ namespace Service
             return await _categoryQuestionRepository.DeleteCategoryQuestion(requestId);
         }
 
-        public async Task<IEnumerable<CategoryQuestionViewModel>> GetAllCategoryQuestions()
+        public async Task<IEnumerable<CategoryQuestionModel>> GetAllCategoryQuestions()
         {
             var data = await _categoryQuestionRepository.GetAllCategoryQuestions();
-            return data.Select(item => _mapper.Map<CategoryQuestionViewModel>(item)).ToList();
+            return data.Select(item => _mapper.Map<CategoryQuestionModel>(item)).ToList();
         }
 
-        public async Task<CategoryQuestionViewModel?> GetCategoryQuestionById(Guid id)
+        public async Task<CategoryQuestionModel?> GetCategoryQuestionById(Guid id)
         {
             var data = await _categoryQuestionRepository.GetCategoryQuestionById(id);
             if (data == null) return null;
-            var response = _mapper.Map<CategoryQuestionViewModel>(data);
+            var response = _mapper.Map<CategoryQuestionModel>(data);
             return response;
         }
 
-        public async Task<IEnumerable<CategoryQuestionViewModel>> GetCategoryQuestionsByName(string keyword)
+        public async Task<IEnumerable<CategoryQuestionModel>> GetCategoryQuestionsByName(string keyword)
         {
             var data = await _categoryQuestionRepository.GetCategoryQuestionsByName(keyword);
-            return data.Select(item => _mapper.Map<CategoryQuestionViewModel>(item)).ToList();
+            return data.Select(item => _mapper.Map<CategoryQuestionModel>(item)).ToList();
         }
 
-        public async Task<IEnumerable<CategoryQuestionViewModel>> GetCategoryQuestionsByWeight(double weight)
+        public async Task<IEnumerable<CategoryQuestionModel>> GetCategoryQuestionsByWeight(double weight)
         {
             var data = await _categoryQuestionRepository.GetCategoryQuestionsByWeight(weight);
-            return data.Select(item => _mapper.Map<CategoryQuestionViewModel>(item)).ToList();
+            return data.Select(item => _mapper.Map<CategoryQuestionModel>(item)).ToList();
         }
 
-        public async Task<CategoryQuestionViewModel> SaveCategoryQuestion(CategoryQuestionAddModel categoryQuestion)
+        public async Task<CategoryQuestionModel> SaveCategoryQuestion(CategoryQuestionModel categoryQuestion)
         {
-            var data = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
+            var data = _mapper.Map<CategoryQuestion>(categoryQuestion);
             var response = await _categoryQuestionRepository.SaveCategoryQuestion(data);
 
-            return _mapper.Map<CategoryQuestionViewModel>(response);
+            return _mapper.Map<CategoryQuestionModel>(response);
         }
 
-        public async Task<bool> UpdateCategoryQuestion(CategoryQuestionUpdateModel categoryQuestion, Guid categoryQuestionId)
+        public async Task<bool> UpdateCategoryQuestion(CategoryQuestionModel categoryQuestion, Guid categoryQuestionId)
         {
-            var data = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
+            var data = _mapper.Map<CategoryQuestion>(categoryQuestion);
             return await _categoryQuestionRepository.UpdateCategoryQuestion(data, categoryQuestionId);
         }
     }

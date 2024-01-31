@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.CvHasSkill;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -22,33 +23,28 @@ namespace Service
             return await _cvHasSkillrepository.DeleteCvHasSkillService(requestId);
         }
 
-        public async Task<IEnumerable<CvHasSkillViewModel>> GetAllCvHasSkillService(string? request)
+        public async Task<IEnumerable<CvHasSkillModel>> GetAllCvHasSkillService(string? request)
         {
             var data = await _cvHasSkillrepository.GetAllCvHasSkillService(request);
-            List<CvHasSkillViewModel> cvHasSkillViewModels = new List<CvHasSkillViewModel>();
-            if (data != null)
+            if (!data.IsNullOrEmpty())
             {
-                foreach (var item in data)
-                {
-                    var obj = _mapper.Map<CvHasSkillViewModel>(item);
-                    cvHasSkillViewModels.Add(obj);
-                }
-                return cvHasSkillViewModels;
+                List<CvHasSkillModel> cvHasSkillModels = _mapper.Map<List<CvHasSkillModel>>(data);
+                return cvHasSkillModels;
             }
-            return null;
+            return null!;
         }
 
-        public async Task<CvHasSkillViewModel> SaveCvHasSkillService(CvHasSkillAddModel request)
+        public async Task<CvHasSkillModel> SaveCvHasSkillService(CvHasSkillModel request)
         {
-            var data = _mapper.Map<CvHasSkillModel>(request);
+            var data = _mapper.Map<CvHasSkill>(request);
             var response = await _cvHasSkillrepository.SaveCvHasSkillService(data);
 
-            return _mapper.Map<CvHasSkillViewModel>(response);
+            return _mapper.Map<CvHasSkillModel>(response);
         }
 
-        public async Task<bool> UpdateCvHasSkillService(CvHasSkillUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateCvHasSkillService(CvHasSkillModel request, Guid requestId)
         {
-            var data = _mapper.Map<CvHasSkillModel>(request);
+            var data = _mapper.Map<CvHasSkill>(request);
             return await _cvHasSkillrepository.UpdateCvHasSkillService(data, requestId);
         }
     }

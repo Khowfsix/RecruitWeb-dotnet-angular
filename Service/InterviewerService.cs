@@ -1,8 +1,9 @@
 using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Interviewer;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service;
 
@@ -17,11 +18,11 @@ public class InterviewerService : IInterviewerService
         _mapper = mapper;
     }
 
-    public async Task<InterviewerViewModel> SaveInterviewer(InterviewerAddModel addModel)
+    public async Task<InterviewerModel> SaveInterviewer(InterviewerModel addModel)
     {
-        var data = _mapper.Map<InterviewerModel>(addModel);
+        var data = _mapper.Map<Interviewer>(addModel);
         var response = await _interviewerRepository.SaveInterviewer(data);
-        return _mapper.Map<InterviewerViewModel>(response);
+        return _mapper.Map<InterviewerModel>(response);
     }
 
     public async Task<bool> DeleteInterviewer(Guid interviewerModelId)
@@ -29,42 +30,36 @@ public class InterviewerService : IInterviewerService
         return await _interviewerRepository.DeleteInterviewer(interviewerModelId);
     }
 
-    public async Task<IEnumerable<InterviewerViewModel>> GetAllInterviewer()
+    public async Task<IEnumerable<InterviewerModel>> GetAllInterviewer()
     {
         var data = await _interviewerRepository.GetAllInterviewer();
-        return data.Select(item => _mapper.Map<InterviewerViewModel>(item)).ToList();
+        return data.Select(item => _mapper.Map<InterviewerModel>(item)).ToList();
     }
 
-    public async Task<IEnumerable<InterviewerViewModel>> GetInterviewersInDepartment(Guid departmentId)
+    public async Task<IEnumerable<InterviewerModel?>> GetInterviewersInDepartment(Guid departmentId)
     {
-        var modelDatas = await _interviewerRepository.GetAllInterviewer();
+        var entityDatas = await _interviewerRepository.GetAllInterviewer();
 
-        if (modelDatas != null)
+        if (!entityDatas.IsNullOrEmpty())
         {
-            List<InterviewerViewModel> datas = new List<InterviewerViewModel>();
-            foreach (var item in modelDatas)
-            {
-                if (item.DepartmentId.Equals(departmentId))
-                {
-                    var data = _mapper.Map<InterviewerViewModel>(item);
-                    datas.Add(data);
-                }
-            }
-            return _mapper.Map<List<InterviewerViewModel>>(datas);
+            var filteredDatas = entityDatas.Where(item => item.DepartmentId.Equals(departmentId));
+            List<InterviewerModel> datas = _mapper.Map<List<InterviewerModel>>(filteredDatas);
+
+            return _mapper.Map<List<InterviewerModel>>(datas);
         }
-        return null;
+        return null!;
     }
 
-    public async Task<bool> UpdateInterviewer(InterviewerUpdateModel interviewerModel, Guid interviewerModelId)
+    public async Task<bool> UpdateInterviewer(InterviewerModel interviewerModel, Guid interviewerModelId)
     {
-        var data = _mapper.Map<InterviewerModel>(interviewerModel);
+        var data = _mapper.Map<Interviewer>(interviewerModel);
         return await _interviewerRepository.UpdateInterviewer(data, interviewerModelId);
     }
 
-    public async Task<InterviewerViewModel?> GetInterviewerById(Guid id)
+    public async Task<InterviewerModel?> GetInterviewerById(Guid id)
     {
         var data = await _interviewerRepository.GetInterviewerById(id);
-        var result = _mapper.Map<InterviewerViewModel>(data);
+        var result = _mapper.Map<InterviewerModel>(data);
         return result;
     }
 }

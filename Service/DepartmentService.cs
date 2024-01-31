@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Department;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -22,32 +23,27 @@ namespace Service
             return await _departmentRepository.DeleteDepartment(requestId);
         }
 
-        public async Task<IEnumerable<DepartmentViewModel>> GetAllDepartment(string? request)
+        public async Task<IEnumerable<DepartmentModel>> GetAllDepartment(string? request)
         {
             var data = await _departmentRepository.GetAllDepartment(request);
-            List<DepartmentViewModel> result = new List<DepartmentViewModel>();
-            if (data != null)
+            if (!data.IsNullOrEmpty())
             {
-                foreach (var item in data)
-                {
-                    var obj = _mapper.Map<DepartmentViewModel>(item);
-                    result.Add(obj);
-                }
+                List<DepartmentModel> result = _mapper.Map<List<DepartmentModel>>(data);
                 return result;
             }
-            return null;
+            return null!;
         }
 
-        public async Task<DepartmentViewModel> SaveDepartment(DepartmentAddModel request)
+        public async Task<DepartmentModel> SaveDepartment(DepartmentModel request)
         {
-            var data = _mapper.Map<DepartmentModel>(request);
+            var data = _mapper.Map<Department>(request);
             var response = await _departmentRepository.SaveDepartment(data);
-            return _mapper.Map<DepartmentViewModel>(response);
+            return _mapper.Map<DepartmentModel>(response);
         }
 
-        public async Task<bool> UpdateDepartment(DepartmentUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateDepartment(DepartmentModel request, Guid requestId)
         {
-            var data = _mapper.Map<DepartmentModel>(request);
+            var data = _mapper.Map<Department>(request);
             return await _departmentRepository.UpdateDepartment(data, requestId);
         }
     }
