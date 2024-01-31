@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-
-using Api.ViewModels.Certificate;
-using Api.ViewModels.Cv;
-using Api.ViewModels.Skill;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -38,26 +35,26 @@ namespace Service
             return await _cvRepository.DeleteCv(requestId);
         }
 
-        public async Task<IEnumerable<CvViewModel>> GetAllCv(string? request)
+        public async Task<IEnumerable<CvModel>> GetAllCv(string? request)
         {
             // Get Cv thuộc về candidate
             var data = await _cvRepository.GetAllCv(request);
 
-            var resp = _mapper.Map<IList<CvViewModel>>(data);
+            var resp = _mapper.Map<IList<CvModel>>(data);
 
             foreach (var item in resp)
             {
                 // Tìm skills và gắn vào
                 var skills = await _cvHasSkillRepository.GetSkill(item.Cvid);
 
-                var skillVMs = _mapper.Map<IList<SkillViewModel>>(skills);
+                var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
 
                 item.Skills = skillVMs;
 
                 // Tìm certificates và gắn vào
                 var certificates = await _certificateRepository.GetForeignKey(item.Cvid);
 
-                var certificateVMs = _mapper.Map<IList<CertificateViewModel>>(certificates);
+                var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
 
                 item.Certificates = certificateVMs;
             }
@@ -65,7 +62,7 @@ namespace Service
             return resp;
         }
 
-        public async Task<CvViewModel> SaveCv(CvAddModel request)
+        public async Task<CvModel> SaveCv(CvModel request)
         {
             // Get list skill
             var skills = request.Skills;
@@ -118,7 +115,7 @@ namespace Service
             return await cvVM;
         }
 
-        public async Task<bool> UpdateCv(CvUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateCv(CvModel request, Guid requestId)
         {
             // Get list skill
             var skills = request.Skills;
@@ -175,7 +172,7 @@ namespace Service
             return true;
         }
 
-        public async Task<CvViewModel> GetCvById(Guid requestId)
+        public async Task<CvModel> GetCvById(Guid requestId)
         {
             // Get cv from cv id
             var data = await _cvRepository.GetCVById(requestId);
@@ -183,27 +180,27 @@ namespace Service
             // Get skill from cv id
             var skills = await _cvHasSkillRepository.GetSkill(requestId);
 
-            var skillVMs = _mapper.Map<IList<SkillViewModel>>(skills);
+            var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
 
             // Gắn skill vào cv
-            var resp = _mapper.Map<CvViewModel>(data);
+            var resp = _mapper.Map<CvModel>(data);
             resp.Skills = skillVMs;
 
             // Tìm certificates và gắn vào
             var certificates = await _certificateRepository.GetForeignKey(requestId);
 
-            var certificateVMs = _mapper.Map<IList<CertificateViewModel>>(certificates);
+            var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
 
             resp.Certificates = certificateVMs;
             return resp;
         }
 
-        public async Task<IEnumerable<CvViewModel>> GetCvsOfCandidate(Guid candidateId)
+        public async Task<IEnumerable<CvModel>> GetCvsOfCandidate(Guid candidateId)
         {
             // Get Cv thuộc về candidate
             var data = await _cvRepository.GetForeignKey(candidateId);
 
-            var resp = _mapper.Map<IEnumerable<CvViewModel>>(data);
+            var resp = _mapper.Map<IEnumerable<CvModel>>(data);
 
             // Tìm skills và gắn vào
             foreach (var item in resp)
@@ -211,14 +208,14 @@ namespace Service
                 // Tìm skills và gắn vào
                 var skills = await _cvHasSkillRepository.GetSkill(item.Cvid);
 
-                var skillVMs = _mapper.Map<IList<SkillViewModel>>(skills);
+                var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
 
                 item.Skills = skillVMs;
 
                 // Tìm certificates và gắn vào
                 var certificates = await _certificateRepository.GetForeignKey(item.Cvid);
 
-                var certificateVMs = _mapper.Map<IList<CertificateViewModel>>(certificates);
+                var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
 
                 item.Certificates = certificateVMs;
             }
@@ -226,10 +223,10 @@ namespace Service
             return resp;
         }
 
-        public async Task<IEnumerable<CvViewModel>> GetAllUserCv(string userId)
+        public async Task<IEnumerable<CvModel>> GetAllUserCv(string userId)
         {
             var data = await _cvRepository.GetAllUserCv(userId);
-            var resp = _mapper.Map<IEnumerable<CvViewModel>>(data);
+            var resp = _mapper.Map<IEnumerable<CvModel>>(data);
             return resp;
         }
 

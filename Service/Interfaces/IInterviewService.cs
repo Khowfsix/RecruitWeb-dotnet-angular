@@ -24,7 +24,7 @@ public interface IInterviewService
     Task<bool> DeleteInterview(Guid interviewModelId);
 
     //todo: InterviewResultQuestionModel in viewmodel
-    Task<InterviewModel?> PostQuestionIntoInterview(InterviewResultQuestionModel request);
+    Task<InterviewModel?> PostQuestionIntoInterview(InterviewResultQuestion_Model request);
 
     Task<InterviewModel?> GetInterviewById_noInclude(Guid id);
 }

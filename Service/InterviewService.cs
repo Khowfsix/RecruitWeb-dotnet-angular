@@ -1,8 +1,9 @@
 using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Interview;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service;
 
@@ -24,116 +25,88 @@ public class InterviewService : IInterviewService
         _mapper = mapper;
     }
 
-    public async Task<InterviewViewModel> GetInterviewById(Guid id)
+    public async Task<InterviewModel?> GetInterviewById(Guid id)
     {
         var data = await _interviewRepository.GetInterviewById(id);
-        var result = _mapper.Map<InterviewViewModel>(data);
+        var result = _mapper.Map<InterviewModel>(data);
         return result;
     }
 
-    public async Task<InterviewViewModel> SaveInterview(InterviewAddModel interviewModel)
+    public async Task<InterviewModel> SaveInterview(InterviewModel interviewModel)
     {
-        var interviewData = _mapper.Map<InterviewModel>(interviewModel);
+        var interviewData = _mapper.Map<Interview>(interviewModel);
 
         var response = await _interviewRepository.SaveInterview(interviewData);
-        return _mapper.Map<InterviewViewModel>(response);
+        return _mapper.Map<InterviewModel>(response);
     }
 
     public async Task<bool> DeleteInterview(Guid interviewModelId)
     {
         var thisInterview = await GetInterviewById_noInclude(interviewModelId);
-
-        var deleteITRS = await _itrsinterviewRepository.DeleteItrsinterview((Guid)thisInterview.ItrsinterviewId);
+        var deleteITRS = await _itrsinterviewRepository.DeleteItrsinterview((Guid)thisInterview!.ItrsinterviewId!);
 
         var response = await _interviewRepository.DeleteInterview(interviewModelId);
         return response;
     }
 
-    public async Task<bool> UpdateInterview(InterviewUpdateModel interviewModel, Guid interviewModelId)
+    public async Task<bool> UpdateInterview(InterviewModel interviewModel, Guid interviewModelId)
     {
-        var data = _mapper.Map<InterviewModel>(interviewModel);
+        var data = _mapper.Map<Interview>(interviewModel);
         return await _interviewRepository.UpdateInterview(data, interviewModelId);
     }
 
-    public async Task<IEnumerable<InterviewViewModel>> GetInterviewsByPositon(Guid requestId)
+    public async Task<IEnumerable<InterviewModel>> GetInterviewsByPositon(Guid requestId)
     {
         var data = await _interviewRepository.GetAllInterview();
-        if (data != null)
+        if (!data.IsNullOrEmpty())
         {
-            List<InterviewViewModel> result = new List<InterviewViewModel>();
-            foreach (var item in data)
-            {
-                if (item.Application.Position.PositionId.Equals(requestId))
-                {
-                    var obj = _mapper.Map<InterviewViewModel>(item);
-                    result.Add(obj);
-                }
-            }
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(data);
             return result;
         }
         return null!;
     }
 
-    public async Task<IEnumerable<InterviewViewModel>> GetInterviewsByDepartment(Guid requestId)
+    public async Task<IEnumerable<InterviewModel>> GetInterviewsByDepartment(Guid requestId)
     {
         var data = await _interviewRepository.GetAllInterview();
-        if (data != null)
+        if (!data.IsNullOrEmpty())
         {
-            List<InterviewViewModel> result = new List<InterviewViewModel>();
-            foreach (var item in data)
-            {
-                if (item.Application.Position.Department.DepartmentId.Equals(requestId))
-                {
-                    var obj = _mapper.Map<InterviewViewModel>(item);
-                    result.Add(obj);
-                }
-            }
+            var filteredDatas = data.Where(i => i.Application.Position.Department.DepartmentId.Equals(requestId));
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
             return result;
         }
         return null!;
     }
 
-    public async Task<IEnumerable<InterviewViewModel>> GetAllInterview(string status)
+    public async Task<IEnumerable<InterviewModel>> GetAllInterview(string status)
     {
         var data = await _interviewRepository.GetAllInterview();
-        if (data != null)
+        if (!data.IsNullOrEmpty())
         {
-            List<InterviewViewModel> result = new List<InterviewViewModel>();
-            foreach (var item in data)
-            {
-                if (item.Company_Status!.Contains(status) || item.Candidate_Status!.Contains(status))
-                {
-                    var obj = _mapper.Map<InterviewViewModel>(item);
-                    result.Add(obj);
-                }
-            }
+            var filteredDatas = data.Where(i => (
+                i.Company_Status!.Contains(status) ||
+                i.Candidate_Status!.Contains(status)
+            ));
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
             return result;
         }
         return null!;
     }
 
-    public async Task<IEnumerable<InterviewViewModel>> GetInterviewsByInterviewer(Guid requestId)
+    public async Task<IEnumerable<InterviewModel>> GetInterviewsByInterviewer(Guid requestId)
     {
         var data = await _interviewRepository.GetAllInterview();
-        if (data != null)
+        if (!data.IsNullOrEmpty())
         {
-            List<InterviewViewModel> result = new List<InterviewViewModel>();
-            foreach (var item in data)
-            {
-                if (item.InterviewerId.Equals(requestId))
-                {
-                    var obj = _mapper.Map<InterviewViewModel>(item);
-                    result.Add(obj);
-                }
-            }
-            return result;
+            var filterdDatas = data.Where(i => i.InterviewerId.Equals(requestId));
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filterdDatas);
         }
         return null!;
     }
 
     public async Task<bool> UpdateStatusInterview(Guid interviewId, string? Candidate_Status, string? Company_Status)
     {
-        var oldData = await GetInterviewById_noInclude(interviewId);
+        var oldData = await _interviewRepository.GetInterviewById_NoInclude(interviewId);
 
         if (!string.IsNullOrEmpty(Candidate_Status))
         {
@@ -175,31 +148,22 @@ public class InterviewService : IInterviewService
 
     public async Task<InterviewModel?> GetInterviewById_noInclude(Guid id)
     {
-        return await _interviewRepository.GetInterviewById_NoInclude(id);
+        var entityData = await _interviewRepository.GetInterviewById_NoInclude(id);
+        return _mapper.Map<InterviewModel?>(entityData);
     }
 
-    public async Task<InterviewModel?> PostQuestionIntoInterview(InterviewResultQuestionModel request)
+    //todo: interview result question
+    public async Task<InterviewModel?> PostQuestionIntoInterview(InterviewResultQuestion_Model request)
     {
-        var thisInterview = await GetInterviewById_noInclude(request.InterviewId);
+        var thisInterview = await _interviewRepository.GetInterviewById_NoInclude(request.InterviewId);
+        if (thisInterview == null) return null!;
 
-        if (thisInterview == null)
-        {
-            return null!;
-        }
         thisInterview.Notes = request.Notes;
-
         var updateInterview = await _interviewRepository.UpdateInterview(thisInterview, request.InterviewId);
 
         foreach (var item in request.Rounds)
         {
-            var newRound = new RoundModel()
-            {
-                RoundId = Guid.Empty,
-                InterviewId = request.InterviewId,
-                QuestionId = item.QuestionId,
-                Score = item.Score,
-            };
-
+            var newRound = _mapper.Map<Round>(item);
             var respInsertRounds = await _roundRepository.SaveRound(newRound);
 
             if (respInsertRounds == null)
@@ -213,6 +177,6 @@ public class InterviewService : IInterviewService
             return null!;
         }
 
-        return thisInterview;
+        return _mapper.Map<InterviewModel>(thisInterview);
     }
 }

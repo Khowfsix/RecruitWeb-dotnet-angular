@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.CandidateJoinEvent;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -26,16 +26,16 @@ namespace Service
             return await _candidateJoinEventRepository.DeleteCandidateJoinEvent(requestId);
         }
 
-        public async Task<IEnumerable<CandidateJoinEventViewModel>> GetAllCandidateJoinEvents()
+        public async Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents()
         {
             var data = await _candidateJoinEventRepository.GetAllCandidateJoinEvents();
             if (data != null)
             {
-                List<CandidateJoinEventViewModel> listData =
-                    new List<CandidateJoinEventViewModel>();
+                List<CandidateJoinEventModel> listData =
+                    new List<CandidateJoinEventModel>();
                 foreach (var dataItem in data)
                 {
-                    var obj = _mapper.Map<CandidateJoinEventViewModel>(dataItem);
+                    var obj = _mapper.Map<CandidateJoinEventModel>(dataItem);
                     listData.Add(obj);
                 }
                 return listData;
@@ -43,44 +43,44 @@ namespace Service
             return null;
         }
 
-        public async Task<CandidateJoinEventViewModel> SaveCandidateJoinEvent(CandidateJoinEventAddModel request)
+        public async Task<CandidateJoinEventModel> SaveCandidateJoinEvent(CandidateJoinEventModel request)
         {
             var data = _mapper.Map<CandidateJoinEventModel>(request);
             var response = await _candidateJoinEventRepository.SaveCandidateJoinEvent(data);
 
-            return _mapper.Map<CandidateJoinEventViewModel>(response);
+            return _mapper.Map<CandidateJoinEventModel>(response);
         }
 
-        public async Task<bool> UpdateCandidateJoinEvent(CandidateJoinEventUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateCandidateJoinEvent(CandidateJoinEventModel request, Guid requestId)
         {
             var data = _mapper.Map<CandidateJoinEventModel>(request);
             return await _candidateJoinEventRepository.UpdateCandidateJoinEvent(data, requestId);
         }
 
-        public async Task<IEnumerable<CandidateJoinedEvent>> JoinEventDetail(Guid id)
+        public async Task<IEnumerable<CandidateJoinEvent>> JoinEventDetail(Guid id)
         {
             var data = await _candidateJoinEventRepository.JoinEventDetail(id);
 
-            var result = _mapper.Map<List<CandidateJoinedEvent>>(data);
+            var result = _mapper.Map<List<CandidateJoinEvent>>(data);
 
             return result;
         }
 
-        public async Task<IEnumerable<CandidateJoinEventViewModel>> GetCandidatesSortedByJoinEventCount()
+        public async Task<IEnumerable<CandidateJoinEventModel>> GetCandidatesSortedByJoinEventCount()
         {
             var candidateJoinEvents = await _candidateJoinEventRepository.GetAllCandidateJoinEvents();
 
-            var candidateJoinEventViewModels = candidateJoinEvents
+            var candidateJoinEventModels = candidateJoinEvents
                 .GroupBy(cje => cje.CandidateId)
-                .Select(group => new CandidateJoinEventViewModel
+                .Select(group => new CandidateJoinEventModel
                 {
                     CandidateId = group.Key,
                     JoinEventCount = group.Count(),
                 })
-                .OrderBy(cjeViewModel => cjeViewModel.CandidateId) // Sorting by CandidateId as required.
+                .OrderBy(cjeModel => cjeModel.CandidateId) // Sorting by CandidateId as required.
                 .ToList();
 
-            return candidateJoinEventViewModels;
+            return candidateJoinEventModels;
         }
     }
 }

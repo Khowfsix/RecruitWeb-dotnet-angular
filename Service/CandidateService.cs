@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-
-using Api.ViewModels.Candidate;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -22,51 +21,51 @@ namespace Service
             return await _candidateRepository.DeleteCandidate(requestId);
         }
 
-        public async Task<IEnumerable<CandidateViewModel>> GetAllCandidates()
+        public async Task<IEnumerable<CandidateModel>> GetAllCandidates()
         {
             var data = await _candidateRepository.GetAllCandidates();
-            List<CandidateViewModel> listData = new List<CandidateViewModel>();
+            List<CandidateModel> listData = new List<CandidateModel>();
             foreach (var candidate in data)
             {
-                var obj = _mapper.Map<CandidateViewModel>(candidate);
+                var obj = _mapper.Map<CandidateModel>(candidate);
                 listData.Add(obj);
             }
             return listData;
         }
 
-        public async Task<CandidateViewModel> SaveCandidate(CandidateAddModel request)
+        public async Task<CandidateModel> SaveCandidate(CandidateModel request)
         {
             var data = _mapper.Map<CandidateModel>(request);
             var response = await _candidateRepository.SaveCandidate(data);
 
-            return _mapper.Map<CandidateViewModel>(response);
+            return _mapper.Map<CandidateModel>(response);
         }
 
-        public async Task<bool> UpdateCandidate(CandidateUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateCandidate(CandidateModel request, Guid requestId)
         {
             var data = _mapper.Map<CandidateModel>(request);
             return await _candidateRepository.UpdateCandidate(data, requestId);
         }
 
-        public async Task<ProfileViewModel?> GetProfile(Guid candidateId)
+        public async Task<ProfileModel?> GetProfile(Guid candidateId)
         {
             var data = await _candidateRepository.GetProfile(candidateId);
-            return _mapper.Map<ProfileViewModel>(data);
+            return _mapper.Map<ProfileModel>(data);
         }
 
-        public async Task<CandidateViewModel> FindById(Guid id)
+        public async Task<CandidateModel> FindById(Guid id)
         {
             var model = await _candidateRepository.FindById(id);
 
-            var viewmodel = _mapper.Map<CandidateViewModel>(model);
+            var viewmodel = _mapper.Map<CandidateModel>(model);
 
             return viewmodel;
         }
 
-        public async Task<CandidateViewModel> GetCandidateByUserId(string id)
+        public async Task<CandidateModel> GetCandidateByUserId(string id)
         {
             var candidateModel = await _candidateRepository.GetCandidateByUserId(id);
-            var candidateVM = _mapper.Map<CandidateViewModel>(candidateModel);
+            var candidateVM = _mapper.Map<CandidateModel>(candidateModel);
             if (candidateVM != null)
                 return candidateVM;
             else

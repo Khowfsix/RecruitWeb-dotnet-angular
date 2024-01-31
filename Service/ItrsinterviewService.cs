@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Itrsinterview;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service;
 
@@ -19,7 +20,7 @@ public class ItrsinterviewService : IItrsinterviewService
         _mapper = mapper;
     }
 
-    public async Task<ItrsinterviewViewModel?> SaveItrsinterview(ItrsinterviewAddModel itrsinterviewModel, Guid interviewerId)
+    public async Task<ItrsinterviewModel?> SaveItrsinterview(ItrsinterviewModel itrsinterviewModel, Guid interviewerId)
     {
         // Nếu ca, phòng đó đã có người đặt
         if (await ExistITRS(itrsinterviewModel, interviewerId) == true)
@@ -29,12 +30,12 @@ public class ItrsinterviewService : IItrsinterviewService
 
         try
         {
-            var data = _mapper.Map<ItrsinterviewModel>(itrsinterviewModel);
+            var data = _mapper.Map<Itrsinterview>(itrsinterviewModel);
             var response = await _itrsinterviewRepository.SaveItrsinterview(data, interviewerId);
 
             if (response != null)
             {
-                return _mapper.Map<ItrsinterviewViewModel>(response);
+                return _mapper.Map<ItrsinterviewModel>(response);
             }
 
             return null!;
@@ -52,48 +53,41 @@ public class ItrsinterviewService : IItrsinterviewService
         return await _itrsinterviewRepository.DeleteItrsinterview(itrsinterviewModelId);
     }
 
-    public async Task<IEnumerable<ItrsinterviewViewModel>> GetAllItrsinterview()
+    public async Task<IEnumerable<ItrsinterviewModel>> GetAllItrsinterview()
     {
         var data = await _itrsinterviewRepository.GetAllItrsinterview();
-        if (data != null)
+        if (!data.IsNullOrEmpty())
         {
-            List<ItrsinterviewViewModel> result = new List<ItrsinterviewViewModel>();
-            foreach (var item in data)
-            {
-                var obj = _mapper.Map<ItrsinterviewViewModel>(item);
-                result.Add(obj);
-            }
+            List<ItrsinterviewModel> result = _mapper.Map<List<ItrsinterviewModel>>(data);
             return result;
         }
-        return null;
+        return null!;
     }
 
-    public async Task<bool> UpdateItrsinterview(ItrsinterviewUpdateModel itrsinterviewModel, Guid itrsinterviewId, Guid interviewerId)
+    public async Task<bool> UpdateItrsinterview(ItrsinterviewModel itrsinterviewModel, Guid itrsinterviewId, Guid interviewerId)
     {
-        var addData = new ItrsinterviewAddModel
+        var addData = new ItrsinterviewModel
         {
             DateInterview = itrsinterviewModel.DateInterview,
             RoomId = itrsinterviewModel.RoomId,
             ShiftId = itrsinterviewModel.ShiftId
         };
 
-        if (await ExistITRS(addData, interviewerId) == true)
-        {
-            return false;
-        }
+        if (await ExistITRS(addData, interviewerId)) return false;
 
-        var data = _mapper.Map<ItrsinterviewModel>(itrsinterviewModel);
+
+        var data = _mapper.Map<Itrsinterview>(itrsinterviewModel);
         return await _itrsinterviewRepository.UpdateItrsinterview(data, itrsinterviewId);
     }
 
-    public async Task<ItrsinterviewViewModel?> GetItrsinterviewById(Guid id)
+    public async Task<ItrsinterviewModel?> GetItrsinterviewById(Guid id)
     {
         var data = await _itrsinterviewRepository.GetItrsinterviewById(id);
-        var result = _mapper.Map<ItrsinterviewViewModel>(data);
+        var result = _mapper.Map<ItrsinterviewModel>(data);
         return result;
     }
 
-    public async Task<bool> ExistITRS(ItrsinterviewAddModel itrsinterview, Guid interviewerId)
+    public async Task<bool> ExistITRS(ItrsinterviewModel itrsinterview, Guid interviewerId)
     {
         if (itrsinterview == null)
         {
@@ -102,26 +96,23 @@ public class ItrsinterviewService : IItrsinterviewService
 
         // check ngày giờ phòng đó có ai đăng ký chưa
         var exists = await _itrsinterviewRepository.GetAllItrsinterview_NoInclude();
-        foreach (var item in exists)
-        {
-            if ((item.DateInterview.Date.Equals(itrsinterview.DateInterview.Date)) &&
+        bool alreadyExist_Room = exists.Any(item =>
+            (
+                (item.DateInterview.Date.Equals(itrsinterview.DateInterview.Date)) &&
                 (item.ShiftId.Equals(itrsinterview.ShiftId)) &&
-                (item.RoomId.Equals(itrsinterview.RoomId)))
-            {
-                return await Task.FromResult(true);
-            }
-        }
+                (item.RoomId.Equals(itrsinterview.RoomId))
+            ));
+        if (alreadyExist_Room) return await Task.FromResult(true);
+
 
         //check interviewer vào ngày giờ đó có itrs không
         var interviewOfInterviewer = await _interviewRepository.GetInterviewOfInterviewer(interviewerId);
-        foreach (var item in interviewOfInterviewer)
-        {
-            if ((item.Itrsinterview.DateInterview.Date.Equals(itrsinterview.DateInterview.Date)) &&
-                (item.Itrsinterview.ShiftId.Equals(itrsinterview.ShiftId)))
-            {
-                return await Task.FromResult(true);
-            }
-        }
+        bool alreadyExist_Time = interviewOfInterviewer.Any(item =>
+            (
+                (item.Itrsinterview!.DateInterview.Date.Equals(itrsinterview.DateInterview.Date)) &&
+                (item.Itrsinterview.ShiftId.Equals(itrsinterview.ShiftId))
+            ));
+        if (alreadyExist_Time) return await Task.FromResult(true);
 
         return await Task.FromResult(false);
     }

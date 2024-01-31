@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Application;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -31,23 +32,18 @@ namespace Service
             return await _applicationRepository.DeleteApplication(applicationId);
         }
 
-        public async Task<IEnumerable<ApplicationViewModel>> GetAllApplications()
+        public async Task<IEnumerable<ApplicationModel>> GetAllApplications()
         {
             var data = await _applicationRepository.GetAllApplications();
-            List<ApplicationViewModel> listData = new();
-            if (data != null)
+            if (!data.IsNullOrEmpty())
             {
-                foreach (var item in data)
-                {
-                    var obj = _mapper.Map<ApplicationViewModel>(item);
-                    listData.Add(obj);
-                }
+                List<ApplicationModel> listData = _mapper.Map<List<ApplicationModel>>(data);
                 return listData;
             }
-            return null;
+            return null!;
         }
 
-        //public async Task<bool> SaveApplication(ApplicationAddModel request)
+        //public async Task<bool> SaveApplication(ApplicationModel request)
         //{
         //    var candidateId = await _cvRepository.GetCandidateIdByCVId(request.CvId);
         //    var isInBlackList = await _blacklistRepository.CheckIsInBlackList(candidateId);
@@ -59,61 +55,60 @@ namespace Service
         //    return await _applicationRepository.SaveApplication(data);
         //}
 
-        //public async Task<bool> UpdateApplication(ApplicationUpdateModel request, Guid candidateId)
+        //public async Task<bool> UpdateApplication(ApplicationModel request, Guid candidateId)
         //{
         //    var data = _mapper.Map<ApplicationModel>(request);
         //    return await _applicationRepository.UpdateApplication(data, candidateId);
         //}
 
-        //public async Task<IEnumerable<ApplicationHistoryViewModel>> GetApplicationHistory(
+        //public async Task<IEnumerable<ApplicationHistoryModel>> GetApplicationHistory(
         //    Guid candidateId
         //)
         //{
         //    return await _applicationRepository.GetApplicationHistory(candidateId);
         //}
 
-        public async Task<ApplicationViewModel?> GetApplicationById(Guid ApplicationId)
+        public async Task<ApplicationModel?> GetApplicationById(Guid ApplicationId)
         {
-            var modelData = await _applicationRepository.GetApplicationById(ApplicationId);
-            if (modelData != null)
+            var entityData = await _applicationRepository.GetApplicationById(ApplicationId);
+            if (entityData != null)
             {
-                var data = _mapper.Map<ApplicationViewModel>(modelData);
+                var data = _mapper.Map<ApplicationModel>(entityData);
                 return data;
             }
             return null!;
         }
 
-        public async Task<IEnumerable<ApplicationViewModel>> GetAllApplicationsOfPosition(Guid? positionId, string? status, string? priority)
+        public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsOfPosition(Guid? positionId, string? status = "", string? priority = "")
         {
             var modelDatas = await _applicationRepository.GetAllApplications();
-            if (status == null) status = "";
-            if (priority == null) priority = "";
 
-            List<ApplicationViewModel> listData = new List<ApplicationViewModel>();
-            if (modelDatas != null)
+            if (!modelDatas.IsNullOrEmpty())
             {
+                var filteredData = modelDatas.Where(item =>
+                    (
+                        item.Position.PositionId.Equals(positionId) &&
+                        (item.Company_Status!.Contains(status!) || item.Candidate_Status!.Contains(status!)) &&
+                        item.Priority!.Contains(priority!)
+                    ));
                 foreach (var item in modelDatas)
                 {
-                    if (item.Position.PositionId.Equals(positionId) &&
-                        (item.Company_Status.Contains(status) || item.Candidate_Status.Contains(status)) &&
-                        item.Priority.Contains(priority))
-                    {
-                        listData.Add(_mapper.Map<ApplicationViewModel>(item));
-                    }
+                    List<ApplicationModel> listData = _mapper.Map<List<ApplicationModel>>(filteredData);
+                    return listData;
                 }
             }
-            return listData;
+            return null!;
         }
 
-        //public async Task<IEnumerable<ApplicationViewModel>> GetAllApplicationsOfPosition(Guid? positionId)
+        //public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsOfPosition(Guid? positionId)
         //{
         //    var data = await _applicationRepository.GetAllApplications();
-        //    List<ApplicationViewModel> listData = new List<ApplicationViewModel>();
+        //    List<ApplicationModel> listData = new List<ApplicationModel>();
         //    if (data != null)
         //    {
         //        foreach (var item in data)
         //        {
-        //            var obj = _mapper.Map<ApplicationViewModel>(item);
+        //            var obj = _mapper.Map<ApplicationModel>(item);
         //            listData.Add(obj);
         //        }
         //        return listData;
@@ -121,9 +116,9 @@ namespace Service
         //    return null;
         //}
 
-        public async Task<ApplicationViewModel> SaveApplication(ApplicationAddModel request)
+        public async Task<ApplicationModel> SaveApplication(ApplicationModel request)
         {
-            var data = _mapper.Map<ApplicationModel>(request);
+            var data = _mapper.Map<Application>(request);
             var blackList = await _blacklistRepository.GetAllBlackLists();
             var thisCv = await _cvRepository.GetCVById(request.Cvid);
             var canInBlacklist = blackList.Where(c => c.CandidateId == thisCv.CandidateId).ToList();
@@ -136,30 +131,34 @@ namespace Service
             }
 
             var response = await _applicationRepository.SaveApplication(data);
-            return _mapper.Map<ApplicationViewModel>(response);
+            return _mapper.Map<ApplicationModel>(response);
         }
 
-        public async Task<bool> UpdateApplication(ApplicationUpdateModel request, Guid applicationId)
+        public async Task<bool> UpdateApplication(ApplicationModel request, Guid applicationId)
         {
-            var data = _mapper.Map<ApplicationModel>(request);
-
+            var data = _mapper.Map<Application>(request);
             return await _applicationRepository.UpdateApplication(data, applicationId);
         }
 
-        public async Task<IEnumerable<ApplicationHistoryViewModel>> GetApplicationHistory(Guid candidateId)
+        public async Task<IEnumerable<ApplicationModel>> GetApplicationHistory(Guid candidateId)
         {
-            return await _applicationRepository.GetApplicationHistory(candidateId);
+            var entityDatas = await _applicationRepository.GetApplicationHistory(candidateId);
+            if (!entityDatas.IsNullOrEmpty())
+                return _mapper.Map<List<ApplicationModel>>(entityDatas);
+            return null!;
         }
 
-        public async Task<IEnumerable<ApplicationViewModel>>? GetApplicationsWithStatus(string status, string priority)
+        public async Task<IEnumerable<ApplicationModel>> GetApplicationsWithStatus(string status, string priority)
         {
-            var data = await _applicationRepository.GetApplicationsWithStatus(status, priority);
-            return _mapper.Map<List<ApplicationViewModel>>(data);
+            var entityDatas = await _applicationRepository.GetApplicationsWithStatus(status, priority);
+            if (!entityDatas.IsNullOrEmpty())
+                return _mapper.Map<List<ApplicationModel>>(entityDatas);
+            return null!;
         }
 
-        public async Task<bool> UpdateStatusApplication(Guid applicationId, string? Candidate_Status, string? Company_Status)
+        public async Task<bool> UpdateStatusApplication(Guid applicationId, string? Candidate_Status = "", string? Company_Status = "")
         {
-            var oldData = await GetApplicationModelById(applicationId);
+            var oldData = await _applicationRepository.GetApplicationById(applicationId);
 
             //oldData = null;
             if (oldData == null)
@@ -211,7 +210,8 @@ namespace Service
 
         public async Task<ApplicationModel?> GetApplicationModelById(Guid applicationId)
         {
-            return await _applicationRepository.GetApplicationById(applicationId);
+            var entityData = await _applicationRepository.GetApplicationById(applicationId);
+            return _mapper.Map<ApplicationModel>(entityData);
         }
     }
 }

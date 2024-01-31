@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-
-using Api.ViewModels.BlackList;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -22,21 +21,21 @@ namespace Service
             return await _blacklistRepository.DeleteBlackList(requestId);
         }
 
-        public async Task<IEnumerable<BlacklistViewModel>> GetAllBlackLists()
+        public async Task<IEnumerable<BlacklistModel>> GetAllBlackLists()
         {
             var data = await _blacklistRepository.GetAllBlackLists();
-            return data.Select(item => _mapper.Map<BlacklistViewModel>(item)).ToList();
+            return data.Select(item => _mapper.Map<BlacklistModel>(item)).ToList();
         }
 
-        public async Task<BlacklistViewModel> SaveBlackList(BlackListAddModel request)
+        public async Task<BlacklistModel> SaveBlackList(BlacklistModel request)
         {
             var data = _mapper.Map<BlacklistModel>(request);
             var response = await _blacklistRepository.SaveBlackList(data);
 
-            return _mapper.Map<BlacklistViewModel>(response);
+            return _mapper.Map<BlacklistModel>(response);
         }
 
-        public async Task<bool> UpdateBlackList(BlackListUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateBlackList(BlacklistModel request, Guid requestId)
         {
             var data = _mapper.Map<BlacklistModel>(request);
             return await _blacklistRepository.UpdateBlackList(data, requestId);
