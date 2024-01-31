@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-
-using Api.ViewModels.Shift;
 using Service.Interfaces;
+using Service.Models;
+using Data.Entities;
 
 namespace Service
 {
@@ -17,32 +17,32 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ShiftViewModel>> GetAllShifts(int? request)
+        public async Task<IEnumerable<ShiftModel>> GetAllShifts(int? request)
         {
-            var modelDatas = await _shiftRepository.GetAllShifts(request);
-            if (modelDatas != null)
+            var entities = await _shiftRepository.GetAllShifts(request);
+            if (entities != null)
             {
-                List<ShiftViewModel> list = new List<ShiftViewModel>();
-                foreach (var item in modelDatas)
+                List<ShiftModel> models = new List<ShiftModel>();
+                foreach (var item in entities)
                 {
-                    list.Add(_mapper.Map<ShiftViewModel>(item));
+                    models.Add(_mapper.Map<ShiftModel>(item));
                 }
-                return list;
+                return models;
             }
             return null;
         }
 
-        public async Task<ShiftViewModel> SaveShift(ShiftAddModel request)
+        public async Task<ShiftModel> SaveShift(ShiftModel request)
         {
-            var data = _mapper.Map<ShiftModel>(request);
-            var response = await _shiftRepository.SaveShift(data);
-            return _mapper.Map<ShiftViewModel>(response);
+            var entity = _mapper.Map<Shift>(request);
+            var response = await _shiftRepository.SaveShift(entity);
+            return _mapper.Map<ShiftModel>(response);
         }
 
-        public async Task<bool> UpdateShift(ShiftUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateShift(ShiftModel request, Guid requestId)
         {
-            var data = _mapper.Map<ShiftModel>(request);
-            return await _shiftRepository.UpdateShift(data, requestId);
+            var entity = _mapper.Map<Shift>(request);
+            return await _shiftRepository.UpdateShift(entity, requestId);
         }
 
         public async Task<bool> DeleteShift(Guid requestId)

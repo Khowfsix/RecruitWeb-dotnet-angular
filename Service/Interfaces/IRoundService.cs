@@ -1,16 +1,16 @@
-﻿using Api.ViewModels.Round;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IRoundService
     {
-        Task<IEnumerable<RoundViewModel>> GetAllRounds(string? interviewId);
+        Task<IEnumerable<RoundModel>> GetAllRounds(string? interviewId);
 
-        Task<IEnumerable<RoundViewModel>> GetRoundsOfInterview(Guid interviewId);
+        Task<IEnumerable<RoundModel>> GetRoundsOfInterview(Guid interviewId);
 
-        Task<RoundViewModel> SaveRound(RoundAddModel roundModel);
+        Task<RoundModel> SaveRound(RoundModel roundModel);
 
-        Task<bool> UpdateRound(RoundUpdateModel roundModel, Guid roundId);
+        Task<bool> UpdateRound(RoundModel roundModel, Guid roundId);
 
         Task<bool> DeleteRound(Guid roundId);
     }

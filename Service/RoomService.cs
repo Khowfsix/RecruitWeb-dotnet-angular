@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Room;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,11 +17,11 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<RoomViewModel> SaveRoom(RoomAddModel reportModel)
+        public async Task<RoomModel> SaveRoom(RoomModel reportModel)
         {
-            var data = _mapper.Map<RoomModel>(reportModel);
-            var response = await _reportRepository.SaveRoom(data);
-            return _mapper.Map<RoomViewModel>(response);
+            var entity = _mapper.Map<Room>(reportModel);
+            var response = await _reportRepository.SaveRoom(entity);
+            return _mapper.Map<RoomModel>(response);
         }
 
         public async Task<bool> DeleteRoom(Guid reportModelId)
@@ -29,21 +29,21 @@ namespace Service
             return await _reportRepository.DeleteRoom(reportModelId);
         }
 
-        public async Task<IEnumerable<RoomViewModel>> GetAllRoom()
+        public async Task<IEnumerable<RoomModel>> GetAllRoom()
         {
-            var modelDatas = await _reportRepository.GetAllRoom();
-            List<RoomViewModel> list = new List<RoomViewModel>();
-            foreach (var item in modelDatas)
+            var entities = await _reportRepository.GetAllRoom();
+            List<RoomModel> models = new List<RoomModel>();
+            foreach (var item in entities)
             {
-                list.Add(_mapper.Map<RoomViewModel>(item));
+                models.Add(_mapper.Map<RoomModel>(item));
             }
-            return list;
+            return models;
         }
 
-        public async Task<bool> UpdateRoom(RoomUpdateModel reportModel, Guid reportModelId)
+        public async Task<bool> UpdateRoom(RoomModel reportModel, Guid reportModelId)
         {
-            var data = _mapper.Map<RoomModel>(reportModel);
-            return await _reportRepository.UpdateRoom(data, reportModelId);
+            var entity = _mapper.Map<Room>(reportModel);
+            return await _reportRepository.UpdateRoom(entity, reportModelId);
         }
     }
 }

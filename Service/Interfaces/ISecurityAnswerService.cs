@@ -1,13 +1,12 @@
-﻿
-using Api.ViewModels.SecurityAnswer;
+﻿using Data.Entities;
 
 namespace Service.Interfaces
 {
     public interface ISecurityAnswerService
     {
-        Task<IEnumerable<SecurityAnswerViewModel>> GetAllSecurityAnswers();
-        Task<SecurityAnswerViewModel> SaveSecurityAnswer(SecurityAnswerAddModel viewModel);
-        Task<bool> UpdateSecurityAnswer(SecurityAnswerUpdateModel reportModel, Guid reportModelId);
+        Task<IEnumerable<SecurityAnswerModel>> GetAllSecurityAnswers();
+        Task<SecurityAnswerModel> SaveSecurityAnswer(SecurityAnswerModel viewModel);
+        Task<bool> UpdateSecurityAnswer(SecurityAnswerModel reportModel, Guid reportModelId);
         Task<bool> DeleteSecurityAnswer(Guid reportModelId);
     }
 }

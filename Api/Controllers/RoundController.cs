@@ -2,6 +2,8 @@
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,13 @@ namespace Api.Controllers
     public class RoundController : BaseAPIController
     {
         private readonly IRoundService _roundService;
+        private readonly IMapper _mapper;
 
-        public RoundController(IRoundService roundService)
+        public RoundController(IRoundService roundService,
+            IMapper mapper)
         {
             _roundService = roundService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -35,7 +40,13 @@ namespace Api.Controllers
                 return Ok("Not found");
             }
 
-            return Ok(roundlist);
+            var result = new List<RoundViewModel>();
+            foreach (var round in roundlist)
+            {
+                result.Add(_mapper.Map<RoundViewModel>(round));
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -46,8 +57,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-
-            var roundlist = await _roundService.SaveRound(roundModel);
+            var model = _mapper.Map<RoundModel>(roundModel);
+            var roundlist = await _roundService.SaveRound(model);
             return Ok(roundlist);
         }
 
@@ -59,7 +70,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            var roundlist = await _roundService.UpdateRound(roundModel, id);
+            var model = _mapper.Map<RoundModel>(roundModel);
+            var roundlist = await _roundService.UpdateRound(model, id);
             return Ok(roundlist);
         }
 

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-
-using Api.ViewModels.Question;
+using Data.Entities;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -21,35 +21,35 @@ namespace Service
             _categoryQuestionRepository = categoryQuestionRepository;
         }
 
-        public async Task<QuestionViewModel> AddQuestion(QuestionAddModel entity)
+        public async Task<QuestionModel> AddQuestion(QuestionModel model)
         {
-            var data = _mapper.Map<QuestionModel>(entity);
-            var response = await _questionRepository.AddQuestion(data);
-            return _mapper.Map<QuestionViewModel>(response);
+            var entity = _mapper.Map<Question>(model);
+            var response = await _questionRepository.AddQuestion(entity);
+            return _mapper.Map<QuestionModel>(response);
         }
 
-        public async IAsyncEnumerable<Task> AddQuestion(IAsyncEnumerable<QuestionAddModel> entities)
+        public async IAsyncEnumerable<Task> AddQuestion(IAsyncEnumerable<QuestionModel> models)
         {
-            await foreach (QuestionAddModel obj in entities)
+            await foreach (QuestionModel model in models)
             {
-                var data = _mapper.Map<QuestionModel>(obj);
-                yield return _questionRepository.AddQuestion(data);
+                var entity = _mapper.Map<Question>(model);
+                yield return _questionRepository.AddQuestion(entity);
             }
         }
 
-        public async Task<List<QuestionViewModel>> GetAllLanguageQuestions()
+        public async Task<List<QuestionModel>> GetAllLanguageQuestions()
         {
             try
             {
                 string cateQuestion = "Language";
                 Guid id = await _categoryQuestionRepository.GetIdCategoryQuestion(cateQuestion);
-                var modelDatas = await _questionRepository.GetListQuestions(id);
-                List<QuestionViewModel> list = new List<QuestionViewModel>();
-                foreach (var item in modelDatas)
+                var entityDatas = await _questionRepository.GetListQuestions(id);
+                List<QuestionModel> models = new List<QuestionModel>();
+                foreach (var item in entityDatas)
                 {
-                    list.Add(_mapper.Map<QuestionViewModel>(item));
+                    models.Add(_mapper.Map<QuestionModel>(item));
                 }
-                return list;
+                return models;
             }
             catch (Exception ex)
             {
@@ -57,19 +57,19 @@ namespace Service
             }
         }
 
-        public async Task<List<QuestionViewModel>> GetAllSoftSkillQuestions()
+        public async Task<List<QuestionModel>> GetAllSoftSkillQuestions()
         {
             try
             {
                 String cateQuestion = "SoftSkill";
                 Guid id = await _categoryQuestionRepository.GetIdCategoryQuestion(cateQuestion);
-                var modelDatas = await _questionRepository.GetListQuestions(id);
-                List<QuestionViewModel> list = new List<QuestionViewModel>();
-                foreach (var item in modelDatas)
+                var entities = await _questionRepository.GetListQuestions(id);
+                List<QuestionModel> models = new List<QuestionModel>();
+                foreach (var item in entities)
                 {
-                    list.Add(_mapper.Map<QuestionViewModel>(item));
+                    models.Add(_mapper.Map<QuestionModel>(item));
                 }
-                return list;
+                return models;
             }
             catch (Exception ex)
             {
@@ -77,19 +77,19 @@ namespace Service
             }
         }
 
-        public async Task<List<QuestionViewModel>> GetAllTechnologyQuestions()
+        public async Task<List<QuestionModel>> GetAllTechnologyQuestions()
         {
             try
             {
                 String cateQuestion = "Technology";
                 Guid id = await _categoryQuestionRepository.GetIdCategoryQuestion(cateQuestion);
-                var modelDatas = await _questionRepository.GetListQuestions(id);
-                List<QuestionViewModel> list = new List<QuestionViewModel>();
-                foreach (var item in modelDatas)
+                var entities = await _questionRepository.GetListQuestions(id);
+                List<QuestionModel> models = new List<QuestionModel>();
+                foreach (var item in entities)
                 {
-                    list.Add(_mapper.Map<QuestionViewModel>(item));
+                    models.Add(_mapper.Map<QuestionModel>(item));
                 }
-                return list;
+                return models;
             }
             catch (Exception ex)
             {
@@ -102,16 +102,16 @@ namespace Service
             return _questionRepository;
         }
 
-        public async Task<List<QuestionViewModel>> GetAllQuestions(string? query, Guid? questionId)
+        public async Task<List<QuestionModel>> GetAllQuestions(string? query, Guid? questionId)
         {
-            var list = new List<QuestionViewModel>();
+            var models = new List<QuestionModel>();
             if (questionId != null)
             {
                 var quest = await _questionRepository.GetQuestion(questionId);
-                var response = _mapper.Map<QuestionViewModel>(quest);
-                //var list = new List<QuestionViewModel>();
-                list.Add(response);
-                return list;
+                var response = _mapper.Map<QuestionModel>(quest);
+                //var list = new List<QuestionModel>();
+                models.Add(response);
+                return models;
             }
             else if (query != null)
             {
@@ -119,31 +119,31 @@ namespace Service
                 var quest = await _questionRepository.GetQuestionsByName(query);
                 if (query != null || questionId != null)
                 {
-                    //List<QuestionViewModel> list = new List<QuestionViewModel>();
-                    foreach (var item in modelDatas)
+                    //List<QuestionModel> list = new List<QuestionModel>();
+                    foreach (var item in quest)
                     {
-                        list.Add(_mapper.Map<QuestionViewModel>(item));
+                        models.Add(_mapper.Map<QuestionModel>(item));
                     }
-                    return list;
+                    return models;
                 }
             }
             else
             {
                 var modelDatas = await _questionRepository.GetAllQuestions();
-                //List<QuestionViewModel> list = new List<QuestionViewModel>();
+                //List<QuestionModel> list = new List<QuestionModel>();
                 foreach (var item in modelDatas)
                 {
-                    list.Add(_mapper.Map<QuestionViewModel>(item));
+                    models.Add(_mapper.Map<QuestionModel>(item));
                 }
-                return list;
+                return models;
             }
-            return list;
+            return models;
         }
 
-        public async Task<QuestionViewModel> GetQuestion(Guid id)
+        public async Task<QuestionModel> GetQuestion(Guid id)
         {
             var data = await _questionRepository.GetQuestion(id);
-            return _mapper.Map<QuestionViewModel>(data);
+            return _mapper.Map<QuestionModel>(data);
         }
 
         public async Task<bool> RemoveQuestion(Guid id)
@@ -151,10 +151,10 @@ namespace Service
             return await _questionRepository.RemoveQuestion(id);
         }
 
-        public async Task<bool> UpdateQuestion(QuestionUpdateModel entity, Guid id)
+        public async Task<bool> UpdateQuestion(QuestionModel model, Guid id)
         {
-            var data = _mapper.Map<QuestionModel>(entity);
-            return await _questionRepository.UpdateQuestion(data, id);
+            var entity = _mapper.Map<Question>(model);
+            return await _questionRepository.UpdateQuestion(entity, id);
         }
     }
 }

@@ -1,13 +1,12 @@
-﻿
-using Api.ViewModels.Result;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IResultService
     {
-        Task<IEnumerable<ResultViewModel>> GetAllResult();
-        Task<ResultViewModel> SaveResult(ResultAddModel viewModel);
-        Task<bool> UpdateResult(ResultUpdateModel reportModel, Guid reportModelId);
+        Task<IEnumerable<ResultModel>> GetAllResult();
+        Task<ResultModel> SaveResult(ResultModel viewModel);
+        Task<bool> UpdateResult(ResultModel reportModel, Guid reportModelId);
         Task<bool> DeleteResult(Guid reportModelId);
     }
 }

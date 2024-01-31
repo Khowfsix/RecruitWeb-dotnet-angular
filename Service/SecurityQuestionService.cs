@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.SecurityQuestion;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -22,28 +22,28 @@ namespace Service
             return await _securityQuestionRepository.RemoveSecurityQuestion(requestId);
         }
 
-        public async Task<IEnumerable<SecurityQuestionViewModel>> GetAllSecurityQuestion()
+        public async Task<IEnumerable<SecurityQuestionModel>> GetAllSecurityQuestion()
         {
             var modelDatas = await _securityQuestionRepository.GetSecurityQuestion();
-            List<SecurityQuestionViewModel> list = new List<SecurityQuestionViewModel>();
+            List<SecurityQuestionModel> list = new List<SecurityQuestionModel>();
             foreach (var item in modelDatas)
             {
-                list.Add(_mapper.Map<SecurityQuestionViewModel>(item));
+                list.Add(_mapper.Map<SecurityQuestionModel>(item));
             }
             return list;
         }
 
-        public async Task<SecurityQuestionViewModel> SaveSecurityQuestion(SecurityQuestionAddModel request)
+        public async Task<SecurityQuestionModel> SaveSecurityQuestion(SecurityQuestionModel request)
         {
-            var data = _mapper.Map<SecurityQuestionModel>(request);
-            var response = await _securityQuestionRepository.AddSecurityQuestion(data);
-            return _mapper.Map<SecurityQuestionViewModel>(response);
+            var entity = _mapper.Map<SecurityQuestion>(request);
+            var response = await _securityQuestionRepository.AddSecurityQuestion(entity);
+            return _mapper.Map<SecurityQuestionModel>(response);
         }
 
-        public Task<bool> UpdateSecurityQuestion(SecurityQuestionUpdateModel request, Guid requestId)
+        public Task<bool> UpdateSecurityQuestion(SecurityQuestionModel request, Guid requestId)
         {
-            var data = _mapper.Map<SecurityQuestionModel>(request);
-            return _securityQuestionRepository.UpdateSecurityQuestion(data, requestId);
+            var entity = _mapper.Map<SecurityQuestion>(request);
+            return _securityQuestionRepository.UpdateSecurityQuestion(entity, requestId);
         }
     }
 }

@@ -1,19 +1,19 @@
-﻿using Api.ViewModels.Report;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IReportService
     {
-        Task<IEnumerable<ReportViewModel>> GetAllReport();
+        Task<IEnumerable<ReportModel>> GetAllReport();
 
-        Task<ReportViewModel> SaveReport(ReportAddModel viewModel);
+        Task<ReportModel> SaveReport(ReportModel viewModel);
 
-        Task<bool> UpdateReport(ReportUpdateModel reportModel, Guid reportModelId);
+        Task<bool> UpdateReport(ReportModel reportModel, Guid reportModelId);
 
         Task<bool> DeleteReport(Guid reportModelId);
 
-        Task<IEnumerable<InterviewReportViewModel>> InterviewReport(DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<InterviewReportModel>> InterviewReport(DateTime fromDate, DateTime toDate);
 
-        Task<IEnumerable<ApplicationReportViewModel>> ApplicationReport(DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<ApplicationReportModel>> ApplicationReport(DateTime fromDate, DateTime toDate);
     }
 }

@@ -3,6 +3,8 @@ using Api.ViewModels.Question;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -11,10 +13,13 @@ namespace Api.Controllers
     public class QuestionController : BaseAPIController
     {
         private readonly IQuestionService _questionService;
+        private readonly IMapper _mapper;
 
-        public QuestionController(IQuestionService questionService)
+        public QuestionController(IQuestionService questionService,
+            IMapper mapper)
         {
             _questionService = questionService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,8 +32,12 @@ namespace Api.Controllers
                 {
                     return Ok();
                 }
-
-                return Ok(questionList);
+                List<QuestionViewModel> results = new List<QuestionViewModel>();
+                foreach (var models in questionList)
+                {
+                    results.Add(_mapper.Map<QuestionViewModel>(models));
+                }
+                return Ok(results);
             }
 
             var listQuestion = await _questionService.GetAllQuestions(query, null);
@@ -36,43 +45,63 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-
-            return Ok(listQuestion);
+            List<QuestionViewModel> viewModels = new List<QuestionViewModel>();
+            foreach (var models in listQuestion)
+            {
+                viewModels.Add(_mapper.Map<QuestionViewModel>(models));
+            }
+            return Ok(viewModels);
         }
 
         [HttpGet("[action]/Language")]
         public async Task<IActionResult> GetAllLanguageQuestions()
         {
             var listQuestion = await _questionService.GetAllLanguageQuestions();
-            return Ok(listQuestion);
+            List<QuestionViewModel> viewModels = new List<QuestionViewModel>();
+            foreach (var models in listQuestion)
+            {
+                viewModels.Add(_mapper.Map<QuestionViewModel>(models));
+            }
+            return Ok(viewModels);
         }
 
         [HttpGet("[action]/SoftSkill")]
         public async Task<IActionResult> GetAllSoftSkillQuestions()
         {
             var listQuestion = await _questionService.GetAllSoftSkillQuestions();
-            return Ok(listQuestion);
+            List<QuestionViewModel> viewModels = new List<QuestionViewModel>();
+            foreach (var models in listQuestion)
+            {
+                viewModels.Add(_mapper.Map<QuestionViewModel>(models));
+            }
+            return Ok(viewModels);
         }
 
         [HttpGet("[action]/Technology")]
         public async Task<IActionResult> GetAllTechnologyQuestions()
         {
             var listQuestion = await _questionService.GetAllTechnologyQuestions();
-            return Ok(listQuestion);
+            List<QuestionViewModel> viewModels = new List<QuestionViewModel>();
+            foreach (var models in listQuestion)
+            {
+                viewModels.Add(_mapper.Map<QuestionViewModel>(models));
+            }
+            return Ok(viewModels);
         }
 
         [HttpGet("[action]/{questionId:guid}")]
         public async Task<IActionResult> GetQuestion(Guid questionId)
         {
-            var response = await _questionService.GetQuestion(questionId);
-            return response is not null ? Ok(response) : Ok("Not found");
+            var model = await _questionService.GetQuestion(questionId);
+            return model is not null ? Ok(_mapper.Map<QuestionViewModel>(model)) : Ok("Not found");
         }
 
         [HttpPost]
         [Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> AddQuestion(QuestionAddModel question)
         {
-            var response = await _questionService.AddQuestion(question);
+            var model = _mapper.Map<QuestionModel>(question);
+            var response = await _questionService.AddQuestion(model);
             return response is not null ? Ok(response)
                                     : BadRequest(question);
         }
@@ -82,7 +111,8 @@ namespace Api.Controllers
         public async Task<IActionResult> UpdateQuestion
         (QuestionUpdateModel question, Guid questionId)
         {
-            var response = await _questionService.UpdateQuestion(question, questionId);
+            var model = _mapper.Map<QuestionModel>(question);
+            var response = await _questionService.UpdateQuestion(model, questionId);
             return response is true ? Ok(true) : Ok("Not found");
         }
 

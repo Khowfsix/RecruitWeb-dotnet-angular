@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.SuccessfulCadidate;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,32 +17,32 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SuccessfulCadidateViewModel>> GetAllSuccessfulCadidates(string? request)
+        public async Task<IEnumerable<SuccessfulCadidateModel>> GetAllSuccessfulCadidates(string? request)
         {
-            var modelDatas = await _successfulCadidateRepository.GetAllSuccessfulCadidates(request);
-            if (modelDatas != null)
+            var entities = await _successfulCadidateRepository.GetAllSuccessfulCadidates(request);
+            if (entities != null)
             {
-                List<SuccessfulCadidateViewModel> list = new List<SuccessfulCadidateViewModel>();
-                foreach (var item in modelDatas)
+                List<SuccessfulCadidateModel> list = new List<SuccessfulCadidateModel>();
+                foreach (var item in entities)
                 {
-                    list.Add(_mapper.Map<SuccessfulCadidateViewModel>(item));
+                    list.Add(_mapper.Map<SuccessfulCadidateModel>(item));
                 }
                 return list;
             }
             return null;
         }
 
-        public async Task<SuccessfulCadidateViewModel> SaveSuccessfulCadidate(SuccessfulCadidateAddModel request)
+        public async Task<SuccessfulCadidateModel> SaveSuccessfulCadidate(SuccessfulCadidateModel request)
         {
-            var data = _mapper.Map<SuccessfulCadidateModel>(request);
-            var response = await _successfulCadidateRepository.SaveSuccessfulCadidate(data);
-            return _mapper.Map<SuccessfulCadidateViewModel>(response);
+            var entity = _mapper.Map<SuccessfulCadidate>(request);
+            var response = await _successfulCadidateRepository.SaveSuccessfulCadidate(entity);
+            return _mapper.Map<SuccessfulCadidateModel>(response);
         }
 
-        public async Task<bool> UpdateSuccessfulCadidate(SuccessfulCadidateUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateSuccessfulCadidate(SuccessfulCadidateModel request, Guid requestId)
         {
-            var data = _mapper.Map<SuccessfulCadidateModel>(request);
-            return await _successfulCadidateRepository.UpdateSuccessfulCadidate(data, requestId);
+            var entity = _mapper.Map<SuccessfulCadidate>(request);
+            return await _successfulCadidateRepository.UpdateSuccessfulCadidate(entity, requestId);
         }
 
         public async Task<bool> DeleteSuccessfulCadidate(Guid requestId)

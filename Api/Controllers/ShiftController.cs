@@ -2,6 +2,8 @@
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,13 @@ namespace Api.Controllers
     public class ShiftController : BaseAPIController
     {
         private readonly IShiftService _shiftService;
+        private readonly IMapper _mapper;
 
-        public ShiftController(IShiftService shiftService)
+        public ShiftController(IShiftService shiftService,
+            IMapper mapper)
         {
             _shiftService = shiftService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,8 +28,12 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-
-            return Ok(shiftList);
+            var result = new List<ShiftViewModel>();
+            foreach (var shift in shiftList)
+            {
+                result.Add(_mapper.Map<ShiftViewModel>(shift));
+            }
+            return Ok(result);
         }
 
         [HttpPost]
@@ -35,8 +44,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-
-            var shiftList = await _shiftService.SaveShift(shiftModel);
+            var model = _mapper.Map<ShiftModel>(shiftModel);
+            var shiftList = await _shiftService.SaveShift(model);
             return Ok(shiftList);
         }
 
@@ -48,7 +57,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            var shiftList = await _shiftService.UpdateShift(shiftModel, id);
+            var model = _mapper.Map<ShiftModel>(shiftModel);
+            var shiftList = await _shiftService.UpdateShift(model, id);
             return Ok(shiftList);
         }
 

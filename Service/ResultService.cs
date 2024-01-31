@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Result;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,11 +17,11 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<ResultViewModel> SaveResult(ResultAddModel reportModel)
+        public async Task<ResultModel> SaveResult(ResultModel reportModel)
         {
-            var data = _mapper.Map<ResultModel>(reportModel);
-            var response = await _reportRepository.SaveResult(data);
-            return _mapper.Map<ResultViewModel>(response);
+            var entity = _mapper.Map<Result>(reportModel);
+            var response = await _reportRepository.SaveResult(entity);
+            return _mapper.Map<ResultModel>(response);
         }
 
         public async Task<bool> DeleteResult(Guid reportModelId)
@@ -29,21 +29,21 @@ namespace Service
             return await _reportRepository.DeleteResult(reportModelId);
         }
 
-        public async Task<IEnumerable<ResultViewModel>> GetAllResult()
+        public async Task<IEnumerable<ResultModel>> GetAllResult()
         {
-            var modelDatas = await _reportRepository.GetAllResult();
-            List<ResultViewModel> list = new List<ResultViewModel>();
-            foreach (var item in modelDatas)
+            var entities = await _reportRepository.GetAllResult();
+            List<ResultModel> models = new List<ResultModel>();
+            foreach (var item in entities)
             {
-                list.Add(_mapper.Map<ResultViewModel>(item));
+                models.Add(_mapper.Map<ResultModel>(item));
             }
-            return list;
+            return models;
         }
 
-        public async Task<bool> UpdateResult(ResultUpdateModel reportModel, Guid reportModelId)
+        public async Task<bool> UpdateResult(ResultModel reportModel, Guid reportModelId)
         {
-            var data = _mapper.Map<ResultModel>(reportModel);
-            return await _reportRepository.UpdateResult(data, reportModelId);
+            var entity = _mapper.Map<Result>(reportModel);
+            return await _reportRepository.UpdateResult(entity, reportModelId);
         }
     }
 }

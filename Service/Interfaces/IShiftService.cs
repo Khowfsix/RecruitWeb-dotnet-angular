@@ -1,15 +1,14 @@
-﻿
-using Api.ViewModels.Shift;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IShiftService
     {
-        Task<IEnumerable<ShiftViewModel>> GetAllShifts(int? request);
+        Task<IEnumerable<ShiftModel>> GetAllShifts(int? request);
 
-        Task<ShiftViewModel> SaveShift(ShiftAddModel request);
+        Task<ShiftModel> SaveShift(ShiftModel request);
 
-        Task<bool> UpdateShift(ShiftUpdateModel request, Guid requestId);
+        Task<bool> UpdateShift(ShiftModel request, Guid requestId);
 
         Task<bool> DeleteShift(Guid requestId);
     }

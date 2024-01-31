@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
-using Api.ViewModels.SecurityAnswer;
 using Service.Interfaces;
 
 namespace Service
@@ -17,11 +16,11 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<SecurityAnswerViewModel> SaveSecurityAnswer(SecurityAnswerAddModel reportModel)
+        public async Task<SecurityAnswerModel> SaveSecurityAnswer(SecurityAnswerModel reportModel)
         {
-            var data = _mapper.Map<SecurityAnswerModel>(reportModel);
-            var response = await _reportRepository.SaveSecurityAnswer(data);
-            return _mapper.Map<SecurityAnswerViewModel>(response);
+            var entity = _mapper.Map<SecurityAnswer>(reportModel);
+            var response = await _reportRepository.SaveSecurityAnswer(entity);
+            return _mapper.Map<SecurityAnswerModel>(response);
         }
 
         public async Task<bool> DeleteSecurityAnswer(Guid reportModelId)
@@ -29,21 +28,21 @@ namespace Service
             return await _reportRepository.DeleteSecurityAnswer(reportModelId);
         }
 
-        public async Task<IEnumerable<SecurityAnswerViewModel>> GetAllSecurityAnswers()
+        public async Task<IEnumerable<SecurityAnswerModel>> GetAllSecurityAnswers()
         {
             var modelDatas = await _reportRepository.GetAllSecurityAnswers();
-            List<SecurityAnswerViewModel> list = new List<SecurityAnswerViewModel>();
+            List<SecurityAnswerModel> list = new List<SecurityAnswerModel>();
             foreach (var item in modelDatas)
             {
-                list.Add(_mapper.Map<SecurityAnswerViewModel>(item));
+                list.Add(_mapper.Map<SecurityAnswerModel>(item));
             }
             return list;
         }
 
-        public async Task<bool> UpdateSecurityAnswer(SecurityAnswerUpdateModel reportModel, Guid reportModelId)
+        public async Task<bool> UpdateSecurityAnswer(SecurityAnswerModel reportModel, Guid reportModelId)
         {
-            var data = _mapper.Map<SecurityAnswerModel>(reportModel);
-            return await _reportRepository.UpdateSecurityAnswer(data, reportModelId);
+            var entity = _mapper.Map<SecurityAnswer>(reportModel);
+            return await _reportRepository.UpdateSecurityAnswer(entity, reportModelId);
         }
     }
 }

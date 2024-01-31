@@ -2,6 +2,8 @@
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Data.Entities;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,13 @@ namespace Api.Controllers
     public class SecurityAnswerController : BaseAPIController
     {
         private readonly ISecurityAnswerService _securityAnswerService;
+        private readonly IMapper _mapper;
 
-        public SecurityAnswerController(ISecurityAnswerService securityAnswerService)
+        public SecurityAnswerController(ISecurityAnswerService securityAnswerService,
+            IMapper mapper)
         {
             _securityAnswerService = securityAnswerService;
+            _mapper = mapper;
         }
 
         // GET: api/<SecurityQuestionController>
@@ -20,14 +25,20 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllSecurityAnswers(string req)
         {
             var reportList = await _securityAnswerService.GetAllSecurityAnswers();
-            return Ok(reportList);
+            var result = new List<SecurityAnswerViewModel>();
+            foreach (var report in reportList)
+            {
+                result.Add(_mapper.Map<SecurityAnswerViewModel>(report));
+            }
+            return Ok(result);
         }
 
         // POST api/<SecurityQuestionController>
         [HttpPost]
         public async Task<IActionResult> SaveSecurityAnswer(SecurityAnswerAddModel req)
         {
-            var sqList = await _securityAnswerService.SaveSecurityAnswer(req);
+            var model = _mapper.Map<SecurityAnswerModel>(req);
+            var sqList = await _securityAnswerService.SaveSecurityAnswer(model);
             return Ok(sqList);
         }
 
@@ -35,7 +46,8 @@ namespace Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSecurityAnswer(SecurityAnswerUpdateModel req, Guid id)
         {
-            var reportList = await _securityAnswerService.UpdateSecurityAnswer(req, id);
+            var model = _mapper.Map<SecurityAnswerModel>(req);
+            var reportList = await _securityAnswerService.UpdateSecurityAnswer(model, id);
             return Ok(reportList);
         }
 

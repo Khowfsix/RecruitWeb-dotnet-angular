@@ -2,6 +2,8 @@
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,13 @@ namespace Api.Controllers
     public class SecurityQuestionController : BaseAPIController
     {
         private readonly ISecurityQuestionService _securityQuestionService;
+        private readonly IMapper _mapper;
 
-        public SecurityQuestionController(ISecurityQuestionService securityQuestionService)
+        public SecurityQuestionController(ISecurityQuestionService securityQuestionService,
+            IMapper mapper)
         {
             _securityQuestionService = securityQuestionService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,7 +28,12 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            return Ok(listSecurityQuestion);
+            var result = new List<SecurityQuestionViewModel>();
+            foreach (var item in listSecurityQuestion)
+            {
+                result.Add(_mapper.Map<SecurityQuestionViewModel>(item));
+            }
+            return Ok(result);
         }
 
         [HttpPost]
@@ -33,7 +43,8 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            var listSecurityQuestion = await _securityQuestionService.SaveSecurityQuestion(request);
+            var model = _mapper.Map<SecurityQuestionModel>(request);
+            var listSecurityQuestion = await _securityQuestionService.SaveSecurityQuestion(model);
             return Ok(listSecurityQuestion);
         }
 
@@ -44,7 +55,8 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            var listSecurityQuestion = await _securityQuestionService.UpdateSecurityQuestion(request, requestId);
+            var model = _mapper.Map<SecurityQuestionModel>(request);
+            var listSecurityQuestion = await _securityQuestionService.UpdateSecurityQuestion(model, requestId);
             return Ok(listSecurityQuestion);
         }
 

@@ -1,14 +1,14 @@
-﻿using Api.ViewModels.Room;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IRoomService
     {
-        Task<IEnumerable<RoomViewModel>> GetAllRoom();
+        Task<IEnumerable<RoomModel>> GetAllRoom();
 
-        Task<RoomViewModel> SaveRoom(RoomAddModel viewModel);
+        Task<RoomModel> SaveRoom(RoomModel viewModel);
 
-        Task<bool> UpdateRoom(RoomUpdateModel reportModel, Guid reportModelId);
+        Task<bool> UpdateRoom(RoomModel reportModel, Guid reportModelId);
 
         Task<bool> DeleteRoom(Guid reportModelId);
     }

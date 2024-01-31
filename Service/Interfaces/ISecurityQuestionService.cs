@@ -1,17 +1,12 @@
-﻿using Api.ViewModels.SecurityQuestion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ISecurityQuestionService
     {
-        Task<IEnumerable<SecurityQuestionViewModel>> GetAllSecurityQuestion();
-        Task<SecurityQuestionViewModel> SaveSecurityQuestion(SecurityQuestionAddModel request);
-        Task<bool> UpdateSecurityQuestion(SecurityQuestionUpdateModel request, Guid requestId);
+        Task<IEnumerable<SecurityQuestionModel>> GetAllSecurityQuestion();
+        Task<SecurityQuestionModel> SaveSecurityQuestion(SecurityQuestionModel request);
+        Task<bool> UpdateSecurityQuestion(SecurityQuestionModel request, Guid requestId);
         Task<bool> DeleteSecurityQuestion(Guid requestId);
     }
 }

@@ -2,6 +2,8 @@
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,13 @@ namespace Api.Controllers
     public class SkillController : BaseAPIController
     {
         private readonly ISkillService _skillService;
+        private readonly IMapper _mapper;
 
-        public SkillController(ISkillService skillService)
+        public SkillController(ISkillService skillService,
+            IMapper mapper)
         {
             _skillService = skillService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,8 +28,12 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-
-            return Ok(skilllist);
+            var result = new List<SkillViewModel>();
+            foreach (var skill in skilllist)
+            {
+                result.Add(_mapper.Map<SkillViewModel>(skill));
+            }
+            return Ok(result);
         }
 
         [HttpPost]
@@ -35,8 +44,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-
-            var skilllist = await _skillService.SaveSkill(skillModel);
+            var model = _mapper.Map<SkillModel>(skillModel);
+            var skilllist = await _skillService.SaveSkill(model);
             return Ok(skilllist);
         }
 
@@ -48,7 +57,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            var skillList = await _skillService.UpdateSkill(skillModel, id);
+            var model = _mapper.Map<SkillModel>(skillModel);
+            var skillList = await _skillService.UpdateSkill(model, id);
             return Ok(skillList);
         }
 

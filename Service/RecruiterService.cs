@@ -1,10 +1,10 @@
+namespace Service; 
+
 using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Recruiter;
 using Service.Interfaces;
-
-namespace Service;
+using Service.Models;
 
 public class RecruiterService : IRecruiterService
 {
@@ -17,11 +17,11 @@ public class RecruiterService : IRecruiterService
         _mapper = mapper;
     }
 
-    public async Task<RecruiterViewModel> SaveRecruiter(RecruiterAddModel recruiterModel)
+    public async Task<RecruiterModel> SaveRecruiter(RecruiterModel recruiterModel)
     {
-        var data = _mapper.Map<RecruiterModel>(recruiterModel);
-        var response = await _recruiterRepository.SaveRecruiter(data);
-        return _mapper.Map<RecruiterViewModel>(response);
+        var entity = _mapper.Map<Recruiter>(recruiterModel);
+        var response = await _recruiterRepository.SaveRecruiter(entity);
+        return _mapper.Map<RecruiterModel>(response);
     }
 
     public async Task<bool> DeleteRecruiter(Guid recruiterModelId)
@@ -29,26 +29,26 @@ public class RecruiterService : IRecruiterService
         return await _recruiterRepository.DeleteRecruiter(recruiterModelId);
     }
 
-    public async Task<IEnumerable<RecruiterViewModel>> GetAllRecruiter()
+    public async Task<IEnumerable<RecruiterModel>> GetAllRecruiter()
     {
-        var modelDatas = await _recruiterRepository.GetAllRecruiter();
-        List<RecruiterViewModel> list = new List<RecruiterViewModel>();
-        foreach (var item in modelDatas)
+        var entities = await _recruiterRepository.GetAllRecruiter();
+        List<RecruiterModel> models = new List<RecruiterModel>();
+        foreach (var item in entities)
         {
-            list.Add(_mapper.Map<RecruiterViewModel>(item));
+            models.Add(_mapper.Map<RecruiterModel>(item));
         }
-        return list;
+        return models;
     }
 
-    public async Task<bool> UpdateRecruiter(RecruiterUpdateModel recruiterModel, Guid recruiterModelId)
+    public async Task<bool> UpdateRecruiter(RecruiterModel recruiterModel, Guid recruiterModelId)
     {
-        var data = _mapper.Map<RecruiterModel>(recruiterModel);
-        return await _recruiterRepository.UpdateRecruiter(data, recruiterModelId);
+        var entity = _mapper.Map<Recruiter>(recruiterModel);
+        return await _recruiterRepository.UpdateRecruiter(entity, recruiterModelId);
     }
 
-    async Task<RecruiterViewModel?> IRecruiterService.GetRecruiterById(Guid id)
+    async Task<RecruiterModel?> IRecruiterService.GetRecruiterById(Guid id)
     {
         var data = await _recruiterRepository.GetRecruiterById(id);
-        return _mapper.Map<RecruiterViewModel>(data);
+        return _mapper.Map<RecruiterModel>(data);
     }
 }

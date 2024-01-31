@@ -1,10 +1,10 @@
 ﻿using Data.Entities;
-using Api.ViewModels.Candidate;
-using Api.ViewModels.Report;
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Api.ViewModels.Report;
 
 namespace Api.Controllers
 {
@@ -15,17 +15,20 @@ namespace Api.Controllers
         private readonly ICandidateService _candidateService;
         private readonly IInterviewerService _interviewerService;
         private readonly UserManager<WebUser> _userManager;
+        private readonly IMapper _mapper;
 
         public ReportController(
             IReportService reportService,
             ICandidateService candidateService,
             IInterviewerService interviewerService,
-            UserManager<WebUser> userManager)
+            UserManager<WebUser> userManager,
+            IMapper mapper)
         {
             _reportService = reportService;
             _candidateService = candidateService;
             _interviewerService = interviewerService;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         [HttpPost("[action]")]
@@ -67,15 +70,25 @@ namespace Api.Controllers
                 }
             }
 
-            return Ok(reportList);
+            List<InterviewReportViewModel> viewModels = new List<InterviewReportViewModel>();
+            foreach (var report in reportList)
+            {
+                viewModels.Add(_mapper.Map<InterviewReportViewModel>(report));
+            }
+
+            return Ok(viewModels);
         }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> ApplicationReport(DateTime fromDate, DateTime toDate)
         {
             var reportList = await _reportService.ApplicationReport(fromDate, toDate);
-
-            return Ok(reportList);
+            List<InterviewReportViewModel> viewModels = new List<InterviewReportViewModel>();
+            foreach (var report in reportList)
+            {
+                viewModels.Add(_mapper.Map<InterviewReportViewModel>(report));
+            }
+            return Ok(viewModels);
         }
     }
 }

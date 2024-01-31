@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Report;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -21,11 +21,11 @@ namespace Service
             _interviewRepository = interviewRepository;
         }
 
-        public async Task<ReportViewModel> SaveReport(ReportAddModel reportModel)
+        public async Task<ReportModel> SaveReport(ReportModel reportModel)
         {
-            var data = _mapper.Map<ReportModel>(reportModel);
-            var response = await _reportRepository.SaveReport(data);
-            return _mapper.Map<ReportViewModel>(response);
+            var entity = _mapper.Map<Report>(reportModel);
+            var response = await _reportRepository.SaveReport(entity);
+            return _mapper.Map<ReportModel>(response);
         }
 
         public async Task<bool> DeleteReport(Guid reportModelId)
@@ -33,32 +33,32 @@ namespace Service
             return await _reportRepository.DeleteReport(reportModelId);
         }
 
-        public async Task<IEnumerable<ReportViewModel>> GetAllReport()
+        public async Task<IEnumerable<ReportModel>> GetAllReport()
         {
-            var modelDatas = await _reportRepository.GetAllReport();
-            List<ReportViewModel> list = new List<ReportViewModel>();
-            foreach (var item in modelDatas)
+            var entites = await _reportRepository.GetAllReport();
+            List<ReportModel> models = new List<ReportModel>();
+            foreach (var item in entites)
             {
-                list.Add(_mapper.Map<ReportViewModel>(item));
+                models.Add(_mapper.Map<ReportModel>(item));
             }
-            return list;
+            return models;
         }
 
-        public async Task<bool> UpdateReport(ReportUpdateModel reportModel, Guid reportModelId)
+        public async Task<bool> UpdateReport(ReportModel reportModel, Guid reportModelId)
         {
-            var data = _mapper.Map<ReportModel>(reportModel);
-            return await _reportRepository.UpdateReport(data, reportModelId);
+            var entity = _mapper.Map<Report>(reportModel);
+            return await _reportRepository.UpdateReport(entity, reportModelId);
         }
 
-        public async Task<IEnumerable<InterviewReportViewModel>> InterviewReport(DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<InterviewReportModel>> InterviewReport(DateTime fromDate, DateTime toDate)
         {
             var reportData = await _interviewRepository.InterviewReport(fromDate, toDate);
 
-            var result = new List<InterviewReportViewModel>();
+            var result = new List<InterviewReportModel>();
 
             foreach (var item in reportData)
             {
-                var row = new InterviewReportViewModel()
+                var row = new InterviewReportModel()
                 {
                     InterviewId = item.InterviewId,
                     CandidateId = item.Application.Cv.CandidateId,
@@ -74,15 +74,15 @@ namespace Service
             return result;
         }
 
-        public async Task<IEnumerable<ApplicationReportViewModel>> ApplicationReport(DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<ApplicationReportModel>> ApplicationReport(DateTime fromDate, DateTime toDate)
         {
             var reportData = await _applicationRepository.ApplicationReport(fromDate, toDate);
 
-            var result = new List<ApplicationReportViewModel>();
+            var result = new List<ApplicationReportModel>();
 
             foreach (var item in reportData)
             {
-                var row = new ApplicationReportViewModel()
+                var row = new ApplicationReportModel()
                 {
                     ApplicationId = item.ApplicationId,
                     FullName = item.Cv.Candidate.User.FullName,

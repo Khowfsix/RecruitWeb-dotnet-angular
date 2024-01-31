@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Requirement;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,11 +17,11 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<RequirementViewModel> SaveRequirement(RequirementAddModel reportModel)
+        public async Task<RequirementModel> SaveRequirement(RequirementModel reportModel)
         {
-            var data = _mapper.Map<RequirementModel>(reportModel);
-            var response = await _reportRepository.SaveRequirement(data);
-            return _mapper.Map<RequirementViewModel>(response);
+            var entity = _mapper.Map<Requirement>(reportModel);
+            var response = await _reportRepository.SaveRequirement(entity);
+            return _mapper.Map<RequirementModel>(response);
         }
 
         public async Task<bool> DeleteRequirement(Guid reportModelId)
@@ -29,21 +29,21 @@ namespace Service
             return await _reportRepository.DeleteRequirement(reportModelId);
         }
 
-        public async Task<IEnumerable<RequirementViewModel>> GetAllRequirement()
+        public async Task<IEnumerable<RequirementModel>> GetAllRequirement()
         {
-            var modelDatas = await _reportRepository.GetAllRequirement();
-            List<RequirementViewModel> list = new List<RequirementViewModel>();
-            foreach (var item in modelDatas)
+            var entities = await _reportRepository.GetAllRequirement();
+            List<RequirementModel> models = new List<RequirementModel>();
+            foreach (var item in entities)
             {
-                list.Add(_mapper.Map<RequirementViewModel>(item));
+                models.Add(_mapper.Map<RequirementModel>(item));
             }
-            return list;
+            return models;
         }
 
-        public async Task<bool> UpdateRequirement(RequirementUpdateModel reportModel, Guid reportModelId)
+        public async Task<bool> UpdateRequirement(RequirementModel reportModel, Guid reportModelId)
         {
-            var data = _mapper.Map<RequirementModel>(reportModel);
-            return await _reportRepository.UpdateRequirement(data, reportModelId);
+            var entity = _mapper.Map<Requirement>(reportModel);
+            return await _reportRepository.UpdateRequirement(entity, reportModelId);
         }
     }
 }

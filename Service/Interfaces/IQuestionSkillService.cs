@@ -1,14 +1,14 @@
-using Api.ViewModels.QuestionSkill;
+using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IQuestionSkillService
     {
-        Task<List<QuestionSkillViewModel>> GetAllQuestionSkills();
+        Task<List<QuestionSkillModel>> GetAllQuestionSkills();
 
-        Task<QuestionSkillViewModel> AddQuestionSkill(QuestionSkillAddModel questionSkill);
+        Task<QuestionSkillModel> AddQuestionSkill(QuestionSkillModel questionSkill);
 
-        Task<bool> UpdateQuestionSkill(QuestionSkillUpdateModel questionSkill, Guid id);
+        Task<bool> UpdateQuestionSkill(QuestionSkillModel questionSkill, Guid id);
 
         Task<bool> RemoveQuestionSkill(Guid id);
     }

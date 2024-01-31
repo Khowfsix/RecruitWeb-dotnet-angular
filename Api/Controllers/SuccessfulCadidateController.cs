@@ -2,6 +2,8 @@
 using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,13 @@ namespace Api.Controllers
     public class SuccessfulCadidateController : BaseAPIController
     {
         private readonly ISuccessfulCandidateService _successfulCandidateService;
+        private readonly IMapper _mapper;
 
-        public SuccessfulCadidateController(ISuccessfulCandidateService successfulCandidateService)
+        public SuccessfulCadidateController(ISuccessfulCandidateService successfulCandidateService,
+            IMapper mapper)
         {
             _successfulCandidateService = successfulCandidateService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,8 +28,12 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-
-            return Ok(SCsList);
+            var result = new List<SuccessfulCadidateViewModel>();
+            foreach (var SC in SCsList)
+            {
+                result.Add(_mapper.Map<SuccessfulCadidateViewModel>(SC));
+            }
+            return Ok(result);
         }
 
         [HttpPost]
@@ -35,8 +44,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-
-            var SCsList = await _successfulCandidateService.SaveSuccessfulCadidate(successfulCadidateModel);
+            var model = _mapper.Map<SuccessfulCadidateModel>(successfulCadidateModel);
+            var SCsList = await _successfulCandidateService.SaveSuccessfulCadidate(model);
             return Ok(SCsList);
         }
 
@@ -48,7 +57,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            var SCsList = await _successfulCandidateService.UpdateSuccessfulCadidate(successfulCadidateModel, id);
+            var model = _mapper.Map<SuccessfulCadidateModel>(successfulCadidateModel);
+            var SCsList = await _successfulCandidateService.UpdateSuccessfulCadidate(model, id);
             return Ok(SCsList);
         }
 

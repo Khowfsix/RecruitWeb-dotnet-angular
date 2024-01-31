@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Round;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,32 +17,32 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoundViewModel>> GetAllRounds(string? interviewId)
+        public async Task<IEnumerable<RoundModel>> GetAllRounds(string? interviewId)
         {
-            var modelDatas = await _roundRepository.GetAllRounds(interviewId);
-            if (modelDatas != null)
+            var entities = await _roundRepository.GetAllRounds(interviewId);
+            if (entities != null)
             {
-                List<RoundViewModel> list = new List<RoundViewModel>();
-                foreach (var item in modelDatas)
+                List<RoundModel> models = new List<RoundModel>();
+                foreach (var item in entities)
                 {
-                    list.Add(_mapper.Map<RoundViewModel>(item));
+                    models.Add(_mapper.Map<RoundModel>(item));
                 }
-                return list;
+                return models;
             }
             return null;
         }
 
-        public async Task<RoundViewModel> SaveRound(RoundAddModel roundModel)
+        public async Task<RoundModel> SaveRound(RoundModel roundModel)
         {
-            var data = _mapper.Map<RoundModel>(roundModel);
-            var response = await _roundRepository.SaveRound(data);
-            return _mapper.Map<RoundViewModel>(response);
+            var entity = _mapper.Map<Round>(roundModel);
+            var response = await _roundRepository.SaveRound(entity);
+            return _mapper.Map<RoundModel>(response);
         }
 
-        public async Task<bool> UpdateRound(RoundUpdateModel roundModel, Guid roundId)
+        public async Task<bool> UpdateRound(RoundModel roundModel, Guid roundId)
         {
-            var data = _mapper.Map<RoundModel>(roundModel);
-            return await _roundRepository.UpdateRound(data, roundId);
+            var entity = _mapper.Map<Round>(roundModel);
+            return await _roundRepository.UpdateRound(entity, roundId);
         }
 
         public async Task<bool> DeleteRound(Guid roundId)
@@ -50,20 +50,20 @@ namespace Service
             return await _roundRepository.DeleteRound(roundId);
         }
 
-        public async Task<IEnumerable<RoundViewModel>> GetRoundsOfInterview(Guid interviewId)
+        public async Task<IEnumerable<RoundModel>> GetRoundsOfInterview(Guid interviewId)
         {
-            var modelDatas = await _roundRepository.GetAllRounds(null);
-            if (modelDatas != null)
+            var entities = await _roundRepository.GetAllRounds(null);
+            if (entities != null)
             {
-                List<RoundViewModel> list = new List<RoundViewModel>();
-                foreach (var item in modelDatas)
+                List<RoundModel> models = new List<RoundModel>();
+                foreach (var item in entities)
                 {
                     if (item.InterviewId.Equals(interviewId))
                     {
-                        list.Add(_mapper.Map<RoundViewModel>(item));
+                        models.Add(_mapper.Map<RoundModel>(item));
                     }
                 }
-                return list;
+                return models;
             }
             return null;
         }

@@ -1,15 +1,14 @@
-﻿
-using Api.ViewModels.Skill;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ISkillService
     {
-        Task<IEnumerable<SkillViewModel>> GetAllSkills(string? request);
+        Task<IEnumerable<SkillModel>> GetAllSkills(string? request);
 
-        Task<SkillViewModel> SaveSkill(SkillAddModel request);
+        Task<SkillModel> SaveSkill(SkillModel request);
 
-        Task<bool> UpdateSkill(SkillUpdateModel request, Guid requestId);
+        Task<bool> UpdateSkill(SkillModel request, Guid requestId);
 
         Task<bool> DeleteSkill(Guid requestId);
     }

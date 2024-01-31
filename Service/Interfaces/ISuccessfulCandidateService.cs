@@ -1,15 +1,14 @@
-﻿
-using Api.ViewModels.SuccessfulCadidate;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface ISuccessfulCandidateService
     {
-        Task<IEnumerable<SuccessfulCadidateViewModel>> GetAllSuccessfulCadidates(string? request);
+        Task<IEnumerable<SuccessfulCadidateModel>> GetAllSuccessfulCadidates(string? request);
 
-        Task<SuccessfulCadidateViewModel> SaveSuccessfulCadidate(SuccessfulCadidateAddModel request);
+        Task<SuccessfulCadidateModel> SaveSuccessfulCadidate(SuccessfulCadidateModel request);
 
-        Task<bool> UpdateSuccessfulCadidate(SuccessfulCadidateUpdateModel request, Guid requestId);
+        Task<bool> UpdateSuccessfulCadidate(SuccessfulCadidateModel request, Guid requestId);
 
         Task<bool> DeleteSuccessfulCadidate(Guid requestId);
     }

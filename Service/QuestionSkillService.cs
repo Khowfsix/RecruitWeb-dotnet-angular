@@ -1,8 +1,8 @@
 using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.QuestionSkill;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,22 +17,22 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<QuestionSkillViewModel> AddQuestionSkill(QuestionSkillAddModel questionSkill)
+        public async Task<QuestionSkillModel> AddQuestionSkill(QuestionSkillModel questionSkill)
         {
-            var data = _mapper.Map<QuestionSkillModel>(questionSkill);
-            var response = await _questionSkillRepository.AddQuestionSkill(data);
-            return _mapper.Map<QuestionSkillViewModel>(response);
+            var entity = _mapper.Map<QuestionSkill>(questionSkill);
+            var response = await _questionSkillRepository.AddQuestionSkill(entity);
+            return _mapper.Map<QuestionSkillModel>(response);
         }
 
-        public async Task<List<QuestionSkillViewModel>> GetAllQuestionSkills()
+        public async Task<List<QuestionSkillModel>> GetAllQuestionSkills()
         {
-            var modelDatas = await _questionSkillRepository.GetAllQuestionSkills();
-            List<QuestionSkillViewModel> list = new List<QuestionSkillViewModel>();
-            foreach (var item in modelDatas)
+            var entities = await _questionSkillRepository.GetAllQuestionSkills();
+            List<QuestionSkillModel> models = new List<QuestionSkillModel>();
+            foreach (var item in entities)
             {
-                list.Add(_mapper.Map<QuestionSkillViewModel>(item));
+                models.Add(_mapper.Map<QuestionSkillModel>(item));
             }
-            return list;
+            return models;
         }
 
         public async Task<bool> RemoveQuestionSkill(Guid id)
@@ -40,10 +40,10 @@ namespace Service
             return await _questionSkillRepository.RemoveQuestionSkill(id);
         }
 
-        public async Task<bool> UpdateQuestionSkill(QuestionSkillUpdateModel questionSkill, Guid id)
+        public async Task<bool> UpdateQuestionSkill(QuestionSkillModel questionSkill, Guid id)
         {
-            var data = _mapper.Map<QuestionSkillModel>(questionSkill);
-            return await _questionSkillRepository.UpdateQuestionSkill(data, id);
+            var entity = _mapper.Map<QuestionSkill>(questionSkill);
+            return await _questionSkillRepository.UpdateQuestionSkill(entity, id);
         }
     }
 }

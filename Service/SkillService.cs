@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
-
-using Api.ViewModels.Skill;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Service
 {
@@ -17,32 +17,32 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SkillViewModel>> GetAllSkills(string? request)
+        public async Task<IEnumerable<SkillModel>> GetAllSkills(string? request)
         {
-            var modelDatas = await _skillRepository.GetAllSkills(request);
-            if (modelDatas != null)
+            var entities = await _skillRepository.GetAllSkills(request);
+            if (entities != null)
             {
-                List<SkillViewModel> list = new List<SkillViewModel>();
-                foreach (var item in modelDatas)
+                List<SkillModel> models = new List<SkillModel>();
+                foreach (var item in entities)
                 {
-                    list.Add(_mapper.Map<SkillViewModel>(item));
+                    models.Add(_mapper.Map<SkillModel>(item));
                 }
-                return list;
+                return models;
             }
             return null!;
         }
 
-        public async Task<SkillViewModel> SaveSkill(SkillAddModel request)
+        public async Task<SkillModel> SaveSkill(SkillModel request)
         {
-            var data = _mapper.Map<SkillModel>(request);
-            var response = await _skillRepository.SaveSkill(data);
-            return _mapper.Map<SkillViewModel>(response);
+            var entity = _mapper.Map<Skill>(request);
+            var response = await _skillRepository.SaveSkill(entity);
+            return _mapper.Map<SkillModel>(response);
         }
 
-        public async Task<bool> UpdateSkill(SkillUpdateModel request, Guid requestId)
+        public async Task<bool> UpdateSkill(SkillModel request, Guid requestId)
         {
-            var data = _mapper.Map<SkillModel>(request);
-            return await _skillRepository.UpdateSkill(data, requestId);
+            var entity = _mapper.Map<Skill>(request);
+            return await _skillRepository.UpdateSkill(entity, requestId);
         }
 
         public async Task<bool> DeleteSkill(Guid requestId)
