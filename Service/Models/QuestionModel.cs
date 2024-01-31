@@ -1,7 +1,3 @@
-using Api.ViewModels.CategoryQuestion;
-using System;
-using System.Collections.Generic;
-
 namespace Service.Models;
 
 public class QuestionModel

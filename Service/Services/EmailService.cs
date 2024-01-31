@@ -1,14 +1,6 @@
-﻿using Service.Models;
+﻿using MailKit.Net.Smtp;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MailKit.Net.Smtp;
-using SendGrid.Helpers.Mail;
-using System.ComponentModel.DataAnnotations;
-using MailKit.Security;
+using Service.Models;
 
 
 namespace Service.Services
@@ -57,7 +49,5 @@ namespace Service.Services
                 client.Dispose();
             }
         }
-
-
     }
 }

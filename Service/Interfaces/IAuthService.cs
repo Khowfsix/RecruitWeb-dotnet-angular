@@ -1,5 +1,4 @@
-﻿using Data.Entities;
-using Service.Models;
+﻿using Service.Models;
 
 namespace Service.Interfaces
 {
@@ -23,23 +22,23 @@ namespace Service.Interfaces
 
         Task<Guid?> GetCandidateId(string userId);
 
-        Task<IEnumerable<CandidateModel>> GetUsersInBlacklist();
+        Task<IEnumerable<ProfileModel>> GetUsersInBlacklist();
 
-        Task<IEnumerable<WebUser>> GetAllCandidate();
+        Task<IEnumerable<UserModel>> GetAllCandidate();
 
-        Task<IEnumerable<WebUser>> GetAllInterviewer();
+        Task<IEnumerable<UserModel>> GetAllInterviewer();
 
-        Task<IEnumerable<WebUser>> GetAllRecruiter();
+        Task<IEnumerable<UserModel>> GetAllRecruiter();
 
-        Task<IEnumerable<WebUser>> GetAllAccount();
+        Task<IEnumerable<UserModel>> GetAllAccount();
 
-        Task<WebUser> GetAccountByUserId(string userId);
+        Task<UserModel> GetAccountByUserId(string userId);
 
-        Task<IEnumerable<WebUser>> GetAllSystemAccount();
+        Task<IEnumerable<WebUserModel>> GetAllSystemAccount();
 
-        Task<IEnumerable<WebUser>> GetAllUsers();
+        Task<IEnumerable<WebUserModel>> GetAllUsers();
 
-        Task<CandidateModel> GetUserInBlacklistById(string userId);
+        Task<ProfileModel> GetUserInBlacklistById(string userId);
 
         Task<bool> BrowsePassInterview(Guid interviewId);
 

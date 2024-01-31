@@ -10,15 +10,15 @@ namespace Service
     public class CandidateJoinEventService : ICandidateJoinEventService
     {
         private readonly ICandidateJoinEventRepository _candidateJoinEventRepository;
-        private readonly IEventRepository _eventRepository;
+        //private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
 
         public CandidateJoinEventService(ICandidateJoinEventRepository candidateJoinEventRepository,
-            IEventRepository eventRepository,
+            //IEventRepository eventRepository,
             IMapper mapper)
         {
             _candidateJoinEventRepository = candidateJoinEventRepository;
-            _eventRepository = eventRepository;
+            //_eventRepository = eventRepository;
             _mapper = mapper;
         }
 
