@@ -1,45 +1,53 @@
 using Api.ViewModels.Event;
+using AutoMapper;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers;
 [Authorize]
 public class EventController : BaseAPIController
 {
     private readonly IEventService _EventService;
+    private readonly IMapper _mapper;
 
-    public EventController(IEventService eventService)
+    public EventController(IEventService eventService, IMapper mapper)
     {
         _EventService = eventService;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllEvent(Guid? id)
+    public async Task<IActionResult> GetEvent(Guid? id)
     {
         if (id != null)
         {
             var data = await _EventService.GetEventById((Guid)id);
-            return data switch
+            var response = _mapper.Map<EventViewModel>(data);
+            return response switch
             {
                 null => NotFound(),
-                _ => Ok(data)
+                _ => Ok(response)
             };
         }
 
         var eventList = await _EventService.GetAllEvent();
-        if (eventList == null)
+        if (eventList.IsNullOrEmpty())
         {
             return Ok("Not found");
         }
-        return Ok(eventList);
+        var responseList = _mapper.Map<List<EventViewModel>>(eventList);
+        return Ok(responseList);
     }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SaveEvent(EventAddModel request)
     {
-        var response = await _EventService.SaveEvent(request);
+        var modelData = _mapper.Map<EventModel>(request);
+        var response = await _EventService.SaveEvent(modelData);
         if (response != null)
         {
             return Ok(response);
@@ -52,7 +60,8 @@ public class EventController : BaseAPIController
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateEvent(EventUpdateModel request, Guid id)
     {
-        var response = await _EventService.UpdateEvent(request, id);
+        var modelData = _mapper.Map<EventModel>(request);
+        var response = await _EventService.UpdateEvent(modelData, id);
         if (response == true)
         {
             return Ok(response);

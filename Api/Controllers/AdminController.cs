@@ -1,4 +1,5 @@
 ﻿using Api.ViewModels.SuccessfulCadidate;
+using AutoMapper;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,7 @@ namespace Api.Controllers
         private readonly IInterviewService _interviewService;
         private readonly IApplicationService _applicationService;
         private readonly ISuccessfulCandidateService _successfulCandidateService;
+        private readonly IMapper _mapper;
 
         public AdminController(UserManager<WebUser> userManager,
             RoleManager<IdentityRole> roleManager, IEmailService emailService,
@@ -39,7 +41,9 @@ namespace Api.Controllers
 
             IInterviewService interviewService,
             IApplicationService applicationService,
-            ISuccessfulCandidateService successfulCandidateService
+            ISuccessfulCandidateService successfulCandidateService,
+
+            IMapper mapper
             )
         {
             _userManager = userManager;
@@ -57,6 +61,8 @@ namespace Api.Controllers
             _interviewService = interviewService;
             _applicationService = applicationService;
             _successfulCandidateService = successfulCandidateService;
+
+            _mapper = mapper;
         }
 
         [HttpGet("Employees")]
@@ -67,7 +73,7 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("SendConfirmationEmail")]
-        public async Task SendEmailConfirmation(string emailUser, string token)
+        public void SendEmailConfirmation(string emailUser, string token)
         {
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = emailUser }, Request.Scheme);
             var message = new Message(new string[] { emailUser! }, "Confirmation email link", confirmationLink!);
@@ -147,7 +153,7 @@ namespace Api.Controllers
 
             // Send email confirmation link
             //await ConfirmEmail(token, signUp.Email);
-            await SendEmailConfirmation(user.Email, token);
+            SendEmailConfirmation(user.Email!, token);
 
             return StatusCode(StatusCodes.Status200OK,
                 new Response { Status = "Success", Message = $"User created & email sent to {user.Email} Successfully." });
@@ -191,7 +197,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAllUsers();
             if (response == null)
                 return BadRequest("System connection failed");
-            else if (response.Count() <= 0)
+            else if (!response.Any())
                 return BadRequest("No user in system!");
             else return Ok(response);
         }
@@ -240,8 +246,7 @@ namespace Api.Controllers
             var _user = await _userManager.FindByIdAsync(id.ToString());
 
             var result = await _userManager.DeleteAsync(_user);
-
-            return Ok(); ;
+            return Ok(result);
         }
 
         [HttpGet]
@@ -251,7 +256,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAllCandidate();
             if (response == null)
                 return BadRequest("Don't exist role Candidate");
-            else if (response.Count() <= 0)
+            else if (!response.Any())
                 return Ok(true);
             else return Ok(response);
         }
@@ -263,7 +268,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAllInterviewer();
             if (response == null)
                 return BadRequest("Don't exist role Interviewer");
-            else if (response.Count() <= 0)
+            else if (!response.Any())
                 return Ok(true);
             else return Ok(response);
         }
@@ -275,7 +280,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAllRecruiter();
             if (response == null)
                 return BadRequest("Don't exist role Recruiter");
-            else if (response.Count() <= 0)
+            else if (!response.Any())
                 return Ok(true);
             else return Ok(response);
         }
@@ -287,7 +292,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAllAccount();
             if (response == null)
                 return BadRequest("System connection failed");
-            else if (response.Count() <= 0)
+            else if (!response.Any())
                 return BadRequest("No user in system!");
             else return Ok(response);
         }
@@ -297,7 +302,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllUserInBlacklist()
         {
             var response = await _authenticationService.GetUsersInBlacklist();
-            if (response == null || response.Count() <= 0)
+            if (response == null || !response.Any())
                 return BadRequest("No user in blacklist!");
             else
                 return Ok(response);
@@ -307,11 +312,7 @@ namespace Api.Controllers
         [Route("PassInterview/{interviewId:guid}")]
         public async Task<IActionResult> BrowsePassInterview(Guid interviewId)
         {
-            if (interviewId == null)
-            {
-                return BadRequest();
-            }
-            else
+            if (interviewId != null)
             {
                 // Update Interview status
                 var interviewResponse = await _interviewService.UpdateStatusInterview(interviewId,
@@ -335,7 +336,8 @@ namespace Api.Controllers
                     DateSuccess = DateTime.Now
                 };
 
-                var successfulCandidate = await _successfulCandidateService.SaveSuccessfulCadidate(addSuccessfulCandidate);
+                var modelAddSuccessfulCandidate = _mapper.Map<SuccessfulCadidateModel>(addSuccessfulCandidate);
+                var successfulCandidate = await _successfulCandidateService.SaveSuccessfulCadidate(modelAddSuccessfulCandidate);
 
                 if ((interviewResponse && applicationResponse))
                 {
@@ -345,6 +347,10 @@ namespace Api.Controllers
                     }
                 }
                 return Ok(interviewId);
+            }
+            else
+            {
+                return BadRequest();
             }
         }
 

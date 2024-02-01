@@ -1,7 +1,9 @@
 ﻿using Api.ViewModels.BlackList;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,16 +11,19 @@ namespace Api.Controllers
     public class BlackListController : BaseAPIController
     {
         private readonly IBlacklistService _blacklistService;
+        private readonly IMapper _mapper;
 
-        public BlackListController(IBlacklistService blacListService)
+        public BlackListController(IBlacklistService blacListService, IMapper mapper)
         {
             _blacklistService = blacListService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllApplications()
+        public async Task<IActionResult> GetAllBlackList()
         {
-            var response = await _blacklistService.GetAllBlackLists();
+            var listModelDatas = await _blacklistService.GetAllBlackLists();
+            var response = _mapper.Map<List<BlacklistViewModel>>(listModelDatas);
             return Ok(response);
         }
 
@@ -29,7 +34,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            var response = await _blacklistService.SaveBlackList(request);
+            var modelData = _mapper.Map<BlacklistModel>(request); // <BlackListModel>
+            var response = await _blacklistService.SaveBlackList(modelData);
             return Ok(response);
         }
 
@@ -51,7 +57,8 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            var response = await _blacklistService.UpdateBlackList(request, requestId);
+            var modelData = _mapper.Map<BlacklistModel>(request);
+            var response = await _blacklistService.UpdateBlackList(modelData, requestId);
             return Ok(response);
         }
     }

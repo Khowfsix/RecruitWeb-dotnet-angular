@@ -1,17 +1,20 @@
 using Api.ViewModels.Interviewer;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
 
 namespace Api.Controllers;
 [Authorize]
 public class InterviewerController : BaseAPIController
 {
     private readonly IInterviewerService _interviewerService;
+    private readonly IMapper _mapper;
 
-    public InterviewerController(IInterviewerService interviewerService)
+    public InterviewerController(IInterviewerService interviewerService, IMapper mapper)
     {
         _interviewerService = interviewerService;
+        _mapper = mapper;
     }
 
     [HttpGet]

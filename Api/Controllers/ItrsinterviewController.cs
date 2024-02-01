@@ -1,17 +1,21 @@
 using Api.ViewModels.Itrsinterview;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers;
 [Authorize]
 public class ItrsinterviewController : BaseAPIController
 {
     private readonly IItrsinterviewService _itrsinterviewService;
+    private readonly IMapper _mapper;
 
-    public ItrsinterviewController(IItrsinterviewService itrsinterviewService)
+    public ItrsinterviewController(IItrsinterviewService itrsinterviewService, IMapper mapper)
     {
         _itrsinterviewService = itrsinterviewService;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -43,7 +47,8 @@ public class ItrsinterviewController : BaseAPIController
             return StatusCode(StatusCodes.Status400BadRequest);
         }
 
-        var response = await _itrsinterviewService.SaveItrsinterview(request, interviewerId);
+        var modelRequestData = _mapper.Map<ItrsinterviewModel>(request); // <ItrsinterviewModel>
+        var response = await _itrsinterviewService.SaveItrsinterview(modelRequestData, interviewerId);
         if (response == null)
         {
             return BadRequest();
@@ -60,7 +65,9 @@ public class ItrsinterviewController : BaseAPIController
     [Authorize(Roles = "Recruiter,Interviewer,Admin")]
     public async Task<IActionResult> UpdateItrsinterview(ItrsinterviewUpdateModel request, Guid id, Guid interviewerId)
     {
-        return await _itrsinterviewService.UpdateItrsinterview(request, id, interviewerId) ? Ok(true) : Ok("Update is not success instead of Confict or Not found");
+        var ItrsinterviewModel = _mapper.Map<ItrsinterviewModel>(request);
+        var response = await _itrsinterviewService.UpdateItrsinterview(ItrsinterviewModel, id, interviewerId);
+        return response ? Ok(true) : Ok("Update is not success instead of Confict or Not found");
     }
 
     [HttpDelete("{id:guid}")]

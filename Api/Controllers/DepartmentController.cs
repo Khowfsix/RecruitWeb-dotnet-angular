@@ -1,7 +1,9 @@
 ﻿using Api.ViewModels.Department;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,16 +11,19 @@ namespace Api.Controllers
     public class DepartmentController : BaseAPIController
     {
         private readonly IDepartmentService _departmentService;
+        private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentService departmentService)
+        public DepartmentController(IDepartmentService departmentService, IMapper mapper)
         {
             _departmentService = departmentService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllDepartment(string? name)
         {
-            var departmentList = await _departmentService.GetAllDepartment(name);
+            var modelDatas = await _departmentService.GetAllDepartment(name);
+            var departmentList = _mapper.Map<List<DepartmentViewModel>>(modelDatas);
             if (departmentList == null)
             {
                 return Ok("Not found");
@@ -30,7 +35,8 @@ namespace Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SaveDepartment(DepartmentAddModel request)
         {
-            var departmentList = await _departmentService.SaveDepartment(request);
+            var modelData = _mapper.Map<DepartmentModel>(request);
+            var departmentList = await _departmentService.SaveDepartment(modelData);
             if (departmentList == null)
             {
                 return Ok("Not found");
@@ -42,24 +48,31 @@ namespace Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateDepartment(DepartmentUpdateModel request, Guid requestId)
         {
-            var departmentList = await _departmentService.UpdateDepartment(request, requestId);
-            if (departmentList == null)
+            try
+            {
+                var modelData = _mapper.Map<DepartmentModel>(request);
+                var departmentList = await _departmentService.UpdateDepartment(modelData, requestId);
+                return Ok(departmentList);
+            }
+            catch (Exception)
             {
                 return Ok("Not found");
             }
-            return Ok(departmentList);
         }
 
         [HttpDelete("{requestId:guid}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteDepartment(Guid requestId)
         {
-            var departmentList = await _departmentService.DeleteDepartment(requestId);
-            if (departmentList == null)
+            try
+            {
+                var departmentList = await _departmentService.DeleteDepartment(requestId);
+                return Ok(departmentList);
+            }
+            catch (Exception)
             {
                 return Ok("Not found");
             }
-            return Ok(departmentList);
         }
     }
 }

@@ -1,24 +1,33 @@
 ﻿using Data.Entities;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Models
 {
     public class CvModel
     {
         public Guid Cvid { get; set; }
+
         public Guid CandidateId { get; set; }
-        public virtual CandidateModel Candidate { get; set; } = null!;
+
         public string? Experience { get; set; }
+
         public string? CvPdf { get; set; }
         public string CvName { get; set; }
-        public string Introduction { get; set; }
-        public string Education { get; set; }
+
+        public string Introduction { get; set; } = null!;
+
+
+        public string Education { get; set; } = null!;
+
         public bool IsDeleted { get; set; } = false;
+
+        public bool IsDefault { get; set; } = false;
+
+        public virtual ICollection<ApplicationModel> Applications { get; set; } = null!;
+
+        public virtual Candidate Candidate { get; set; } = null!;
+
+        public virtual ICollection<CertificateModel> Certificates { get; set; } = null!;
+
+        public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } = null!;
     }
 }

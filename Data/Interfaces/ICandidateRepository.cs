@@ -14,7 +14,6 @@ namespace Data.Interfaces
 
         Task<Candidate?> GetCandidateByUserId(string userId);
 
-        // todo: profile?
         // candidate map to profile
         Task<Candidate?> GetProfile(Guid candidateId);
 

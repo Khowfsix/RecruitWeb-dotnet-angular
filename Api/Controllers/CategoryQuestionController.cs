@@ -1,7 +1,9 @@
 using Api.ViewModels.CategoryQuestion;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,12 @@ namespace Api.Controllers
     public class CategoryQuestionController : BaseAPIController
     {
         private readonly ICategoryQuestionService _categoryQuestionService;
+        private readonly IMapper _mapper;
 
-        public CategoryQuestionController(ICategoryQuestionService categoryQuestionService)
+        public CategoryQuestionController(ICategoryQuestionService categoryQuestionService, IMapper mapper)
         {
             _categoryQuestionService = categoryQuestionService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -25,7 +29,8 @@ namespace Api.Controllers
                 {
                     return Ok("Not found");
                 }
-                return Ok(categoryQuestion);
+                var response_id = _mapper.Map<CategoryQuestionViewModel>(categoryQuestion);
+                return Ok(response_id);
             }
             else if (name != null)
             {
@@ -34,7 +39,9 @@ namespace Api.Controllers
                 {
                     return Ok("Not found");
                 }
-                return Ok(listCategoryQuestionbyName);
+
+                var response_name = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestionbyName);
+                return Ok(response_name);
             }
             else if (weight != null)
             {
@@ -43,11 +50,14 @@ namespace Api.Controllers
                 {
                     return Ok("Not found");
                 }
-                return Ok(listCategoryQuestionByWeight);
+
+                var response_weight = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestionByWeight);
+                return Ok(response_weight);
             }
 
             var listCategoryQuestion = await _categoryQuestionService.GetAllCategoryQuestions();
-            return Ok(listCategoryQuestion);
+            var response = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestion);
+            return Ok(response);
         }
 
         [HttpGet("[action]")]
@@ -58,14 +68,16 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            return Ok(categoryQuestion);
+            var response = _mapper.Map<CategoryQuestionViewModel>(categoryQuestion);
+            return Ok(response);
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCategoryQuestionsByName(string keyword)
         {
             var listCategoryQuestion = await _categoryQuestionService.GetCategoryQuestionsByName(keyword);
-            return Ok(listCategoryQuestion);
+            var response = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestion);
+            return Ok(response);
         }
 
         [HttpGet("[action]")]
@@ -76,7 +88,8 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            return Ok(listCategoryQuestion);
+            var response = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestion);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -87,7 +100,8 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            var listCategoryQuestion = await _categoryQuestionService.SaveCategoryQuestion(categoryQuestion);
+            var modelData = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
+            var listCategoryQuestion = await _categoryQuestionService.SaveCategoryQuestion(modelData);
             return Ok(listCategoryQuestion);
         }
 
@@ -99,7 +113,8 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            var listCategoryQuestion = await _categoryQuestionService.UpdateCategoryQuestion(categoryQuestion, categoryQuestionId);
+            var modelData = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
+            var listCategoryQuestion = await _categoryQuestionService.UpdateCategoryQuestion(modelData, categoryQuestionId);
             return Ok(listCategoryQuestion);
         }
 
@@ -107,12 +122,15 @@ namespace Api.Controllers
         [Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> DeleteCategoryQuestion(Guid requestId)
         {
-            if (requestId == null)
+            try
             {
-                return Ok("Not found");
+                var listCategoryQuestion = await _categoryQuestionService.DeleteCategoryQuestion(requestId);
+                return Ok(listCategoryQuestion);
             }
-            var listCategoryQuestion = await _categoryQuestionService.DeleteCategoryQuestion(requestId);
-            return Ok(listCategoryQuestion);
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
     }
 }

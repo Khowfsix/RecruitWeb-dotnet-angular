@@ -1,7 +1,9 @@
 ﻿using Api.ViewModels.Candidate;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,16 +11,19 @@ namespace Api.Controllers
     public class CandidateController : BaseAPIController
     {
         private readonly ICandidateService _candidateService;
+        private readonly IMapper _mapper;
 
-        public CandidateController(ICandidateService candidateService)
+        public CandidateController(ICandidateService candidateService, IMapper mapper)
         {
             _candidateService = candidateService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCandidates()
         {
-            var response = await _candidateService.GetAllCandidates();
+            var modelDatas = await _candidateService.GetAllCandidates();
+            var response = _mapper.Map<List<CandidateViewModel>>(modelDatas);
             return Ok(response);
         }
 
@@ -30,7 +35,9 @@ namespace Api.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            var response = await _candidateService.SaveCandidate(request);
+
+            var modelData = _mapper.Map<CandidateModel>(request);
+            var response = await _candidateService.SaveCandidate(modelData);
             if (response != null)
             {
                 return Ok(response);
@@ -69,7 +76,8 @@ namespace Api.Controllers
             //    return BadRequest();
             //}
 
-            var response = await _candidateService.UpdateCandidate(request, requestId);
+            var modelData = _mapper.Map<CandidateModel>(request);
+            var response = await _candidateService.UpdateCandidate(modelData, requestId);
             if (response == true)
             {
                 return Ok(true);
@@ -84,7 +92,8 @@ namespace Api.Controllers
         public async Task<IActionResult> GetProfiles(Guid candidateId)
         {
             //var response = await _candidateService.GetProfile(candidateId);
-            var response = await _candidateService.FindById(candidateId);
+            var modelData = await _candidateService.FindById(candidateId);
+            var response = _mapper.Map<CandidateViewModel>(modelData);
             if (response == null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);

@@ -319,6 +319,9 @@ namespace Data.Mapping
 
             CreateMap<WebUser, UserModel>().ReverseMap();
             CreateMap<WebUser, WebUserModel>().ReverseMap();
+
+            CreateMap<WebUserModel, WebUserViewModel>().ReverseMap();
+            CreateMap<UserModel, WebUserViewModel>().ReverseMap();
             #endregion WebUser
         }
     }

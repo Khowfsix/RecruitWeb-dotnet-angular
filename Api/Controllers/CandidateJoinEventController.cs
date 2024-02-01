@@ -1,8 +1,9 @@
-﻿using Data.Entities;
-using Api.ViewModels.CandidateJoinEvent;
-using Service.Interfaces;
+﻿using Api.ViewModels.CandidateJoinEvent;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -10,16 +11,19 @@ namespace Api.Controllers
     public class CandidateJoinEventController : BaseAPIController
     {
         private readonly ICandidateJoinEventService _candidateJoinEventService;
+        private readonly IMapper _mapper;
 
-        public CandidateJoinEventController(ICandidateJoinEventService candidateJoinEventService)
+        public CandidateJoinEventController(ICandidateJoinEventService candidateJoinEventService, IMapper mapper)
         {
             _candidateJoinEventService = candidateJoinEventService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCandidateJoinEvents()
         {
-            var response = await _candidateJoinEventService.GetAllCandidateJoinEvents();
+            var modelDatas = await _candidateJoinEventService.GetAllCandidateJoinEvents();
+            var response = _mapper.Map<List<CandidateJoinEventViewModel>>(modelDatas);
             return Ok(response);
         }
 
@@ -30,7 +34,8 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            var response = await _candidateJoinEventService.SaveCandidateJoinEvent(request);
+            var modelData = _mapper.Map<CandidateJoinEventModel>(request);
+            var response = await _candidateJoinEventService.SaveCandidateJoinEvent(modelData);
             if (response == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -56,14 +61,17 @@ namespace Api.Controllers
             {
                 return Ok("Not found");
             }
-            var response = await _candidateJoinEventService.UpdateCandidateJoinEvent(request, requestId);
+
+            var modelData = _mapper.Map<CandidateJoinEventModel>(request);
+            var response = await _candidateJoinEventService.UpdateCandidateJoinEvent(modelData, requestId);
             return Ok(response);
         }
 
         [HttpGet("[action]/{candidateJoinEventId:guid}")]
         public async Task<IActionResult> JoinEventDetail(Guid candidateJoinEventId)
         {
-            var response = await _candidateJoinEventService.JoinEventDetail(candidateJoinEventId);
+            var modelData = await _candidateJoinEventService.JoinEventDetail(candidateJoinEventId);
+            var response = _mapper.Map<CandidateJoinEventViewModel>(modelData);
             return response is not null ? Ok(response) : NotFound();
         }
 

@@ -47,11 +47,13 @@ namespace Data.Repositories
             var cv = Entities
                 .AsNoTracking()
                 .Include(c => c.Candidate)
+                .Include(c => c.CvHasSkills)
+                    .ThenInclude(chk => chk.Skill)
+                .Include(c => c.Certificates)
                 .Where(c => c.Cvid == id)
                 .FirstOrDefaultAsync();
 
-            if (cv == null) return null!;
-            return await cv!;
+            return (await cv != null) ? (await cv)! : null!;
         }
 
         public async Task<IEnumerable<Cv>> GetAllCv(string? request)
@@ -61,12 +63,19 @@ namespace Data.Repositories
                 var listData = new List<Cv>();
                 if (string.IsNullOrEmpty(request))
                 {
-                    listData = await Entities.ToListAsync();
+                    listData = await Entities
+                        .Include(c => c.CvHasSkills)
+                            .ThenInclude(chk => chk.Skill)
+                        .Include(c => c.Certificates)
+                        .ToListAsync();
                 }
                 else
                 {
                     listData = await Entities
                         .Where(rp => rp.CvName.Contains(request))
+                        .Include(c => c.CvHasSkills)
+                            .ThenInclude(chk => chk.Skill)
+                        .Include(c => c.Certificates)
                         .ToListAsync();
                 }
                 return listData;
@@ -120,8 +129,10 @@ namespace Data.Repositories
         public async Task<IEnumerable<Cv>> GetForeignKey(Guid requestId)
         {
             var data = await Entities
-                .Where(x => x.CandidateId == requestId)
-                .Where(x => x.IsDeleted == false)
+                .Where(x => x.CandidateId == requestId && x.IsDeleted == false)
+                .Include(c => c.CvHasSkills)
+                    .ThenInclude(chk => chk.Skill)
+                .Include(c => c.Certificates)
                 .ToListAsync();
 
             return data;
@@ -131,6 +142,9 @@ namespace Data.Repositories
         {
             var cvList = await Entities
                         .Where(cv => cv.CandidateId == candidateId)
+                        .Include(c => c.CvHasSkills)
+                            .ThenInclude(chk => chk.Skill)
+                        .Include(c => c.Certificates)
                         .ToListAsync();
             return cvList;
         }
@@ -140,6 +154,9 @@ namespace Data.Repositories
             var candidate = await _candidateRepository.GetCandidateByUserId(userId);
             var data = await Entities
                 .Where(x => x.CandidateId == candidate!.CandidateId)
+                .Include(c => c.CvHasSkills)
+                    .ThenInclude(chk => chk.Skill)
+                .Include(c => c.Certificates)
                 .ToListAsync();
 
             return data;

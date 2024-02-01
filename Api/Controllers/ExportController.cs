@@ -1,10 +1,9 @@
 ﻿using Common.ExportExcel;
 using Data.Entities;
-using Api.ViewModels;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
 
 namespace Api.Controllers
 {

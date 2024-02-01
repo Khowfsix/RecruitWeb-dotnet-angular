@@ -1,11 +1,12 @@
-using Data.Entities;
 using Api.ViewModels.Cv;
 using Api.ViewModels.UploadFileFromForm;
-using Service.Interfaces;
+using AutoMapper;
+using Castle.Core.Internal;
+using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
+using Service.Interfaces;
 
 namespace Api.Controllers
 {
@@ -17,18 +18,22 @@ namespace Api.Controllers
         private readonly IApplicationSuggestionService _applicationSuggestionService;
         private readonly IUploadFileService _uploadFileService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IMapper _mapper;
 
         public CvController(ICvService cvService,
             UserManager<WebUser> userManager,
             IApplicationSuggestionService applicationSuggestionService,
             IUploadFileService uploadFileService,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            IMapper mapper)
         {
             _cvService = cvService;
             _userManager = userManager;
             _applicationSuggestionService = applicationSuggestionService;
             _uploadFileService = uploadFileService;
             _httpClientFactory = httpClientFactory;
+
+            _mapper = mapper;
         }
 
 
@@ -36,11 +41,12 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllCv(string? request)
         {
             var cvList = await _cvService.GetAllCv(request);
-            if (cvList == null)
+            if (cvList.IsNullOrEmpty())
             {
                 return Ok("Not found");
             }
-            return Ok(cvList);
+            var response = _mapper.Map<List<CvViewModel>>(cvList); //List<CV>>
+            return Ok(response);
         }
 
         [HttpPost]

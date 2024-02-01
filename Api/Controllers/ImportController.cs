@@ -7,10 +7,10 @@ using Api.ViewModels.Room;
 using Api.ViewModels.SecurityQuestion;
 using Api.ViewModels.Skill;
 using Api.ViewModels.UploadFileFromForm;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using Service.Interfaces;
 
 namespace Api.Controllers
 {
@@ -67,20 +67,18 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new SkillAddModel
                         {
-                            list.Add(new SkillAddModel
-                            {
-                                SkillName = worksheet.Cells[row, 1].Value?.ToString() ?? "",
-                                Description = worksheet.Cells[row, 2].Value?.ToString() ?? "",
-                                //IsDeleted = (bool)(worksheet.Cells[row, 3].Value ?? false)
-                            });
-                        }
+                            SkillName = worksheet.Cells[row, 1].Value?.ToString() ?? "",
+                            Description = worksheet.Cells[row, 2].Value?.ToString() ?? "",
+                            //IsDeleted = (bool)(worksheet.Cells[row, 3].Value ?? false)
+                        });
                     }
                 }
 
@@ -118,19 +116,17 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new CategoryQuestionAddModel
                         {
-                            list.Add(new CategoryQuestionAddModel
-                            {
-                                CategoryQuestionName = worksheet.Cells[row, 1].Value?.ToString()!,
-                                Weight = double.Parse(worksheet.Cells[row, 2].Value?.ToString()!.Trim()!),
-                            });
-                        }
+                            CategoryQuestionName = worksheet.Cells[row, 1].Value?.ToString()!,
+                            Weight = double.Parse(worksheet.Cells[row, 2].Value?.ToString()!.Trim()!),
+                        });
                     }
                 }
 
@@ -168,19 +164,17 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new QuestionAddModel
                         {
-                            list.Add(new QuestionAddModel
-                            {
-                                QuestionString = worksheet.Cells[row, 1].Value?.ToString()!,
-                                CategoryQuestionId = Guid.Parse(worksheet.Cells[row, 2].Value?.ToString()!.Trim()!)
-                            });
-                        }
+                            QuestionString = worksheet.Cells[row, 1].Value?.ToString()!,
+                            CategoryQuestionId = Guid.Parse(worksheet.Cells[row, 2].Value?.ToString()!.Trim()!)
+                        });
                     }
                 }
 
@@ -218,18 +212,16 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new LanguageAddModel
                         {
-                            list.Add(new LanguageAddModel
-                            {
-                                LanguageName = worksheet.Cells[row, 1].Value?.ToString()!,
-                            });
-                        }
+                            LanguageName = worksheet.Cells[row, 1].Value?.ToString()!,
+                        });
                     }
                 }
 
@@ -267,22 +259,20 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new DepartmentAddModel
                         {
-                            list.Add(new DepartmentAddModel
-                            {
-                                DepartmentName = worksheet.Cells[row, 1].Value?.ToString()!,
-                                Address = worksheet.Cells[row, 2].Value?.ToString()!,
-                                Email = worksheet.Cells[row, 3].Value?.ToString()!,
-                                Phone = worksheet.Cells[row, 4].Value?.ToString()!,
-                                Website = worksheet.Cells[row, 5].Value?.ToString()!,
-                            });
-                        }
+                            DepartmentName = worksheet.Cells[row, 1].Value?.ToString()!,
+                            Address = worksheet.Cells[row, 2].Value?.ToString()!,
+                            Email = worksheet.Cells[row, 3].Value?.ToString()!,
+                            Phone = worksheet.Cells[row, 4].Value?.ToString()!,
+                            Website = worksheet.Cells[row, 5].Value?.ToString()!,
+                        });
                     }
                 }
 
@@ -320,18 +310,16 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new ResultAddModel
                         {
-                            list.Add(new ResultAddModel
-                            {
-                                ResultString = worksheet.Cells[row, 1].Value?.ToString()!,
-                            });
-                        }
+                            ResultString = worksheet.Cells[row, 1].Value?.ToString()!,
+                        });
                     }
                 }
 
@@ -369,18 +357,16 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new RoomAddModel
                         {
-                            list.Add(new RoomAddModel
-                            {
-                                RoomName = worksheet.Cells[row, 1].Value?.ToString()!,
-                            });
-                        }
+                            RoomName = worksheet.Cells[row, 1].Value?.ToString()!,
+                        });
                     }
                 }
 
@@ -418,18 +404,16 @@ namespace Api.Controllers
                 {
                     await file.CopyToAsync(stream, cancellationToken);
 
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
-                        var rowCount = worksheet.Dimension.Rows;
+                    using var package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault()!;
+                    var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        list.Add(new SecurityQuestionAddModel
                         {
-                            list.Add(new SecurityQuestionAddModel
-                            {
-                                QuestionString = worksheet.Cells[row, 1].Value?.ToString()!,
-                            });
-                        }
+                            QuestionString = worksheet.Cells[row, 1].Value?.ToString()!,
+                        });
                     }
                 }
 

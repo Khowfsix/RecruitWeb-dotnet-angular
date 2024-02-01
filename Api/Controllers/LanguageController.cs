@@ -42,7 +42,7 @@ namespace Api.Controllers
                 }
 
                 var viewModelDatas = _mapper.Map<List<LanguageViewModel>>(languagesByName);
-                return Ok(languagesByName);
+                return Ok(viewModelDatas);
             }
 
             var getallModelDatas = await _languageService.GetAllLanguages();

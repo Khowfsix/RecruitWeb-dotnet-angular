@@ -1,7 +1,9 @@
 ﻿using Api.ViewModels.Application;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,12 @@ namespace Api.Controllers
     public class ApplicationController : BaseAPIController
     {
         private readonly IApplicationService _applicationService;
+        private readonly IMapper _mapper;
 
-        public ApplicationController(IApplicationService applicationService)
+        public ApplicationController(IApplicationService applicationService, IMapper mapper)
         {
             _applicationService = applicationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -20,15 +24,17 @@ namespace Api.Controllers
         {
             if (string.IsNullOrEmpty(status) && string.IsNullOrEmpty(priority))
             {
-                var response = await _applicationService.GetAllApplications();
+                var modelDatas = await _applicationService.GetAllApplications();
+                var response = _mapper.Map<List<ApplicationViewModel>>(modelDatas);
                 return Ok(response);
             }
             else
             {
-                var response = await _applicationService.GetApplicationsWithStatus(
+                var modelDatas = await _applicationService.GetApplicationsWithStatus(
                     status!,
                     priority!
                 );
+                var response = _mapper.Map<List<ApplicationViewModel>>(modelDatas);
                 return Ok(response);
             }
         }
@@ -36,11 +42,12 @@ namespace Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetApplicationById(Guid id)
         {
-            var response = await _applicationService.GetApplicationById(id);
-            if (response == null)
+            ApplicationModel? modelDatas = await _applicationService.GetApplicationById(id);
+            if (modelDatas == null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
+            var response = _mapper.Map<ApplicationViewModel>(modelDatas);
             return Ok(response);
         }
 
@@ -50,8 +57,9 @@ namespace Api.Controllers
         {
             if (request == null)
                 return StatusCode(StatusCodes.Status400BadRequest);
-            var response = await _applicationService.SaveApplication(request);
-            return Ok(response);
+            var modelData = _mapper.Map<ApplicationModel>(request);
+            var response = await _applicationService.SaveApplication(modelData);
+            return Ok(_mapper.Map<ApplicationModel>(response));
         }
 
         [HttpPut("{requestId:guid}")]
@@ -63,7 +71,8 @@ namespace Api.Controllers
         {
             if (request == null)
                 return StatusCode(StatusCodes.Status400BadRequest);
-            var response = await _applicationService.UpdateApplication(request, requestId);
+            var modelData = _mapper.Map<ApplicationModel>(request);
+            var response = await _applicationService.UpdateApplication(modelData, requestId);
             return Ok(response);
         }
 

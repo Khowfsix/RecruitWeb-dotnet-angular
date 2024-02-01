@@ -6,5 +6,9 @@ namespace Api.Controllers
     [ApiController]
     public class BaseAPIController : ControllerBase
     {
+        public void Bruh()
+        {
+            Console.WriteLine("Ahhhhhhhhhhhhhhhh, I hate myself!!!");
+        }
     }
 }

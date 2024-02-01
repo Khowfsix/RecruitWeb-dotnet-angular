@@ -41,18 +41,18 @@ namespace Service
             var data = await _cvRepository.GetAllCv(request);
             var resp = _mapper.Map<IList<CvModel>>(data);
 
-            foreach (var item in resp)
-            {
-                // Tìm skills và gắn vào
-                var skills = await _cvHasSkillRepository.GetSkill(item.Cvid);
-                var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
-                item.Skills = skillVMs;
+            //foreach (var item in resp)
+            //{
+            //    // Tìm skills và gắn vào
+            //    var skills = await _cvHasSkillRepository.GetSkill(item.Cvid);
+            //    var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
+            //    item.Skills = skillVMs;
 
-                // Tìm certificates và gắn vào
-                var certificates = await _certificateRepository.GetForeignKey(item.Cvid);
-                var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
-                item.Certificates = certificateVMs;
-            }
+            //    // Tìm certificates và gắn vào
+            //    var certificates = await _certificateRepository.GetForeignKey(item.Cvid);
+            //    var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
+            //    item.Certificates = certificateVMs;
+            //}
 
             return resp;
         }
@@ -236,17 +236,10 @@ namespace Service
             var resp = await _uploadFileService.AddFileAsync(CvFile);
             var CvLink = resp.Url != null ? resp.Url.ToString() : "";
 
-            var cvModel = await _cvRepository.GetCVById(Cvid);
-
-            if (cvModel == null)
-            {
-                throw new Exception("CV not found");
-            }
-
+            var cvModel = await _cvRepository.GetCVById(Cvid) ?? throw new Exception("CV not found");
             cvModel.CvPdf = CvLink;
 
             var updated = await _cvRepository.UpdateCv(cvModel, cvModel.Cvid);
-
             return updated;
         }
     }

@@ -1,20 +1,20 @@
-﻿using AutoMapper;
+﻿using Api.ViewModels;
+using Api.ViewModels.Admin;
+using Api.ViewModels.Authentication.LogIn;
+using Api.ViewModels.Authentication.SignUp;
+using AutoMapper;
 using Data.Entities;
-
-using Service.Interfaces;
-using Service.Models;
-using Service.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Service.Interfaces;
+using Service.Models;
+using Service.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Api.ViewModels.Admin;
-using Api.ViewModels.Authentication.LogIn;
-using Api.ViewModels.Authentication.SignUp;
 
 namespace Api.Controllers
 {
@@ -60,7 +60,7 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] Register signUp)
         {
-            var userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity!.Name;
             if (!string.IsNullOrEmpty(userName))
             {
                 return Ok("Please logout your account");
@@ -122,10 +122,10 @@ namespace Api.Controllers
 
                 //send email confirm
                 //await ConfirmEmail(token, signUp.Email);
-                await SendEmailConfirmation(user.Email, token);
+                SendEmailConfirmation(user.Email!, token);
 
                 //create candidate in database
-                _authenticationService.CreateCandidate(user.Id);
+                await _authenticationService.CreateCandidate(user.Id);
                 return StatusCode(StatusCodes.Status200OK,
                     new Response { Status = "Success", Message = $"User created & email sent to {user.Email} Successfully." });
             }
@@ -138,7 +138,7 @@ namespace Api.Controllers
 
         }
 
-        private async Task SendEmailConfirmation(string emailUser, string token)
+        private void SendEmailConfirmation(string emailUser, string token)
         {
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = emailUser }, Request.Scheme);
             var message = new Message(new string[] { emailUser! }, "Confirmation email link", confirmationLink!);
@@ -240,10 +240,10 @@ namespace Api.Controllers
                 if (user != null)
                 {
                     var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+                    {
+                        new(ClaimTypes.Name, user.UserName),
+                        new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    };
                     var userRoles = await _userManager.GetRolesAsync(user);
                     foreach (var role in userRoles)
                     {
@@ -383,8 +383,8 @@ namespace Api.Controllers
         public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileModel model, bool twoFa)
         {
             // Get the current user
-            var userName = HttpContext.User.Identity.Name;
-            var userId = await _authenticationService.GetCurrentUserId(userName);
+            var userName = HttpContext.User.Identity!.Name;
+            var userId = await _authenticationService.GetCurrentUserId(userName!);
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -400,7 +400,7 @@ namespace Api.Controllers
             user.DateOfBirth = model.DateOfBirth;
             user.TwoFactorEnabled = twoFa;
 
-            var image = await _uploadFileService.AddFileAsync(model.ImageFile);
+            var image = await _uploadFileService.AddFileAsync(model.ImageFile!);
 
             user.ImageURL = image.Url.ToString();
 
@@ -434,7 +434,7 @@ namespace Api.Controllers
         [HttpGet("UserId")]
         public async Task<IActionResult> GetIdCurrent()
         {
-            var userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity!.Name;
             var user = await _userManager.FindByNameAsync(userName);
 
             if (user != null)
@@ -453,7 +453,7 @@ namespace Api.Controllers
         [HttpGet("GetId")]
         public async Task<IActionResult> GetUserId()
         {
-            var userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity!.Name;
             if (!string.IsNullOrEmpty(userName))
             {
                 var response = await _authenticationService.GetCurrentUserId(userName);
@@ -466,11 +466,12 @@ namespace Api.Controllers
         [HttpGet("UserLogin")]
         public async Task<IActionResult> GetUserLogin()
         {
-            var userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity!.Name;
             var user = await _userManager.FindByNameAsync(userName);
             if (user != null)
             {
-                return Ok(user);
+                var viewModelResponse = _mapper.Map<WebUserViewModel>(user);
+                return Ok(viewModelResponse);
             }
             return NotFound();
         }
@@ -483,8 +484,10 @@ namespace Api.Controllers
             var candidateVM = await _candidateService.GetCandidateByUserId(userId);
             var candidateModel = _mapper.Map<CandidateModel>(candidateVM);
             var candidate = _mapper.Map<Candidate>(candidateModel);
-            var listCandidate = new List<Candidate>();
-            listCandidate.Add(candidate);
+            var listCandidate = new List<Candidate>
+            {
+                candidate
+            };
             if (candidate != null)
             {
                 user.Candidates = listCandidate;
@@ -493,7 +496,8 @@ namespace Api.Controllers
             //var userRole = await _userManager.GetRolesAsync(user);
             if (user != null)
             {
-                return Ok(user);
+                var viewModelResponse = _mapper.Map<WebUserViewModel>(user);
+                return Ok(viewModelResponse);
             }
             return NotFound();
         }
@@ -504,7 +508,10 @@ namespace Api.Controllers
         {
             var response = await _authenticationService.GetAccountByUserId(userId);
             if (response != null)
+            {
+                var viewModelResponse = _mapper.Map<WebUserViewModel>(response);
                 return Ok(response);
+            }
             else
                 return BadRequest("This user is not on the System");
         }
@@ -515,7 +522,11 @@ namespace Api.Controllers
         {
             var response = await _authenticationService.GetAllSystemAccount();
             if (response != null)
-                return Ok(response);
+            {
+                //todo : system account
+                var viewModelResponse = _mapper.Map<List<WebUserViewModel>>(response); //List<WebUser>>
+                return Ok(viewModelResponse);
+            }
             else
                 return BadRequest("No user on the System");
         }
@@ -524,7 +535,7 @@ namespace Api.Controllers
         [HttpGet("Role")]
         public async Task<IActionResult> GetRoleCurrent()
         {
-            var userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity!.Name;
             var user = await _userManager.FindByNameAsync(userName);
             var userRole = await _userManager.GetRolesAsync(user);
             if (user != null)
@@ -538,7 +549,7 @@ namespace Api.Controllers
         [HttpGet("GetRole")]
         public async Task<IActionResult> GetRole()
         {
-            var userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity!.Name;
             if (!string.IsNullOrEmpty(userName))
             {
                 var response = await _authenticationService.GetCurrentUserRole(userName);
@@ -549,7 +560,7 @@ namespace Api.Controllers
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
-            var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT: ValidIssuer"],
@@ -564,7 +575,7 @@ namespace Api.Controllers
         private static int GenerateOTP()
         {
             // Create an instance of the Random class
-            Random random = new Random();
+            Random random = new();
 
             // Generate a random 6-digit OTP (from 100000 to 999999)
             int otp = random.Next(100000, 999999);
@@ -577,5 +588,4 @@ namespace Api.Controllers
 
 /*
  webuser extend identity
-
  */
