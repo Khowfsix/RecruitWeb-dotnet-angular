@@ -1,8 +1,8 @@
 ﻿using Api.Controllers;
 using Api.ViewModels.Application;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Service.Interfaces;
 
 namespace UnitTest.Application
 {

@@ -47,7 +47,7 @@ namespace Data.Repositories
         public async Task<bool> UpdateSecurityQuestion(SecurityQuestion request, Guid requestId)
         {
             request.SecurityQuestionId = requestId;
-            
+
             Entities.Update(request);
             _uow.SaveChanges();
 

@@ -1,6 +1,4 @@
 using Api.ViewModels.CategoryQuestion;
-using System;
-using System.Collections.Generic;
 
 namespace Api.ViewModels.Question;
 

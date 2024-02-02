@@ -29,7 +29,9 @@ namespace Service
                 }
                 return models;
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<RoundModel> SaveRound(RoundModel roundModel)
@@ -65,7 +67,9 @@ namespace Service
                 }
                 return models;
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }

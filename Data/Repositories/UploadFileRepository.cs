@@ -3,12 +3,12 @@ using CloudinaryDotNet.Actions;
 using Data.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+
 namespace Data.Repositories
 {
     public class UploadFileRepository : IUploadFileRepository
     {
         private readonly Cloudinary _cloudinary;
-
 
         public UploadFileRepository(IOptions<CloudinarySettings> config)
         {
@@ -19,7 +19,6 @@ namespace Data.Repositories
                     config.Value.ApiSecret
                 );
             _cloudinary = new Cloudinary(acc);
-
         }
 
         public async Task<IEnumerable<ImageUploadResult>> AddListFileAsync(List<IFormFile> files)
@@ -92,7 +91,6 @@ namespace Data.Repositories
             var deletionParams = new DeletionParams(publicId);
             var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
 
-
             if (deletionResult.Result == "ok")
             {
                 // Xóa thành công
@@ -105,6 +103,7 @@ namespace Data.Repositories
                 return false;
             }
         }
+
         private string ConvertFileId(string path)
         {
             string[] parts = path.Split('/');
@@ -112,7 +111,5 @@ namespace Data.Repositories
             var publicId = publicIdWithExtension.Split('.')[0];
             return publicId;
         }
-
-
     }
 }

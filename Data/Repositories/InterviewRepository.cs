@@ -16,6 +16,8 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
 
     public async Task<IEnumerable<Interview>> GetAllInterview()
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         var listDatas = await Entities
             .Include(i => i.Itrsinterview)
                 .ThenInclude(t => t.Room)
@@ -31,6 +33,8 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
             .Include(i => i.Rounds)
                 .ThenInclude(r => r.Question)
             .ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         return listDatas;
     }

@@ -1,15 +1,12 @@
+using Api.ViewModels.Requirement;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Requirement;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly IRequirementRepository _fakeRequirementRepository = A.Fake<IRequirementRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public RequirementRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -58,7 +56,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Requirement_Returns_Correctly()
         {
-
             //Arrange
             List<RequirementModel> list = new();
             var expectedCreatedRequirement1 = new RequirementModel
@@ -88,4 +85,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

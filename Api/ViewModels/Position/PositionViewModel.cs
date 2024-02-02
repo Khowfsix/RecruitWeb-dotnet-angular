@@ -1,4 +1,3 @@
-
 using Api.ViewModels.Department;
 using Api.ViewModels.Language;
 using Api.ViewModels.Recruiter;
@@ -24,9 +23,13 @@ namespace Api.ViewModels.Position
 
         public DateTime? EndDate { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public DepartmentViewModel Department { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public LanguageViewModel Language { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         public RecruiterViewModel Recruiter { get; set; } = null!;
 

@@ -1,15 +1,12 @@
+using Api.ViewModels.QuestionSkill;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.QuestionSkill;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly IQuestionSkillRepository _fakeQuestionSkillRepository = A.Fake<IQuestionSkillRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public QuestionSkillRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -57,7 +55,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_QuestionSkill_Returns_Correctly()
         {
-
             //Arrange
             List<QuestionSkillModel> list = new();
             var expectedCreatedQuestionSkill1 = new QuestionSkillModel
@@ -84,4 +81,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

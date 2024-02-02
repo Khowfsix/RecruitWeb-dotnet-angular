@@ -7,11 +7,13 @@ namespace Data
     {
         private readonly RecruitmentWebContext _dbContext;
         public DbSet<TEntity> Entities { get; }
+
         public Repository(RecruitmentWebContext dbContext)
         {
             _dbContext = dbContext;
             Entities = _dbContext.Set<TEntity>();
         }
+
         public async Task Add(TEntity entity)
         {
             if (entity == null)

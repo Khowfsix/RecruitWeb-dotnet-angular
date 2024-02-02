@@ -1,15 +1,13 @@
+using Api.ViewModels.Cv;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
 using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Cv;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -27,6 +25,7 @@ namespace UnitTest.RepositoryTests
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly ICertificateRepository _fakeCertificateRepository = A.Fake<ICertificateRepository>();
         private readonly IMapper _mapper;
+
         public CvRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -67,7 +66,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Cv_Returns_Correctly()
         {
-
             //Arrange
             var fakeCvid = Guid.NewGuid();
             var expectedCreatedCv = new CvModel
@@ -87,4 +85,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

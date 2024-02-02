@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Api.ViewModels.Candidate
+﻿namespace Api.ViewModels.Candidate
 {
     public class ProfileViewModel
 
@@ -20,7 +14,5 @@ namespace Api.ViewModels.Candidate
         public bool? Priority { get; set; }
         public Guid BlacklistId { get; set; }
         public string? Reason { get; set; }
-
     }
-
 }

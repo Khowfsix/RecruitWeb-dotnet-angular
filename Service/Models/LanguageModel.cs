@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Service.Models
 {
     public class LanguageModel
@@ -11,5 +8,4 @@ namespace Service.Models
 
         public bool IsDeleted { get; set; } = false;
     }
-
 }

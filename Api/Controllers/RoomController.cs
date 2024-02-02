@@ -1,7 +1,7 @@
 using Api.ViewModels.Room;
-using Service.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
 using Service.Models;
 
 namespace Api.Controllers
@@ -32,7 +32,6 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> SaveRoom(RoomAddModel request)
         {
             var model = _mapper.Map<RoomModel>(request);
@@ -41,7 +40,6 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        //[Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> UpdateRoom(RoomUpdateModel request, Guid id)
         {
             var model = _mapper.Map<RoomModel>(request);
@@ -50,7 +48,6 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        //[Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> DeleteRoom(Guid id)
         {
             var reportList = await _reportService.DeleteRoom(id);

@@ -1,9 +1,9 @@
 ﻿using Api.ViewModels.SecurityAnswer;
-using Service.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
 
 namespace Api.Controllers
 {

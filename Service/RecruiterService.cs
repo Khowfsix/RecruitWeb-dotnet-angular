@@ -1,4 +1,4 @@
-namespace Service; 
+namespace Service;
 
 using AutoMapper;
 using Data.Entities;

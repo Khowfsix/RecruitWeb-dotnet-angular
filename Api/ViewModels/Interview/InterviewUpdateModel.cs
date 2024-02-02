@@ -1,5 +1,3 @@
-using Api.ViewModels.Itrsinterview;
-
 namespace Api.ViewModels.Interview
 {
     public class InterviewUpdateModel

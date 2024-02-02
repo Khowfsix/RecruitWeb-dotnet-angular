@@ -13,9 +13,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
     public RecruitmentWebContext(DbContextOptions<RecruitmentWebContext> options)
         : base(options)
     {
-
     }
+
     #region Dbset
+
     public virtual DbSet<Application> Applications { get; set; }
 
     public virtual DbSet<BlackList> BlackLists { get; set; }
@@ -74,12 +75,14 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
     public virtual DbSet<ResetPassword> ResetPasswords { get; set; }
 
     //public virtual DbSet<WebUser> WebUsers { get; set; }
-    #endregion
+
+    #endregion Dbset
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         // => optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection");
         // => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
         => optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -193,7 +196,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             entity.HasKey(e => e.CertificateId).HasName("PK__Certific__BBF8A7C122402FA9");
 
             entity.ToTable("Certificate");
-
 
             entity.Property(e => e.CertificateId).ValueGeneratedNever();
             entity.Property(e => e.CertificateName).HasMaxLength(255);
@@ -374,7 +376,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             entity.HasKey(e => e.LanguageId).HasName("PK__Language__B93855AB02B6E2A3");
 
             entity.ToTable("Language");
-
 
             entity.Property(e => e.LanguageId).ValueGeneratedNever();
 
@@ -564,7 +565,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
                 .HasConstraintName("Fk_RoundQuestion");
         });
 
-
         modelBuilder.Entity<SecurityQuestion>(entity =>
         {
             entity.HasKey(e => e.SecurityQuestionId).HasName("PK__SecurityQuestion__C0A83881EF08EB13");
@@ -601,7 +601,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             entity.ToTable("Shift");
 
             entity.Property(e => e.ShiftId).ValueGeneratedNever();
-
         });
 
         modelBuilder.Entity<Skill>(entity =>
@@ -622,7 +621,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             entity.HasKey(e => e.SuccessfulCadidateId).HasName("PK__Successf__0743315651E595B0");
 
             entity.ToTable("SuccessfulCadidate");
-
 
             entity.Property(e => e.SuccessfulCadidateId).ValueGeneratedNever();
 

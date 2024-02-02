@@ -13,5 +13,4 @@ public class ProfileModel
     public bool? Priority { get; set; }
     public Guid BlacklistId { get; set; }
     public string? Reason { get; set; }
-
 }

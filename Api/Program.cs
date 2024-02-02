@@ -1,17 +1,16 @@
 using Common.TrapException;
 using Data;
 using Data.Entities;
-using Service;
-using Service.Models;
-using Service.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
+using Service;
+using Service.Models;
+using Service.Services;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -162,7 +161,9 @@ try
     var emailConfig = builder.Configuration
      .GetSection("EmailConfiguration")
     .Get<EmailConfiguration>();
+#pragma warning disable CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
     builder.Services.AddSingleton(emailConfig);
+#pragma warning restore CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
     builder.Services.AddScoped<IEmailService, EmailService>();
 
     builder.Services.AddHttpClient();

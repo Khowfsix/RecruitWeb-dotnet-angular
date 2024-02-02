@@ -10,9 +10,11 @@ namespace Service.Interfaces
         Task<List<ApplicationModel>> GetApplicationHistory(Guid candidateId);
 
         Task<InterviewerModel> GetInterviewerInformation(Guid id);
+
         //Task<bool> GetRoomInformation();
 
         Task<CvModel> GetCV(Guid id);
+
         Task<RoomModel> GetRoomInformation(Guid id);
     }
 }

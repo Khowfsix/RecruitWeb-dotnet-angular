@@ -1,15 +1,12 @@
+using Api.ViewModels.Shift;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Shift;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly IShiftRepository _fakeShiftRepository = A.Fake<IShiftRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public ShiftRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -42,7 +40,6 @@ namespace UnitTest.RepositoryTests
 
             var fakeCreatedShift = new ShiftAddModel
             {
-
             };
 
             var mappedCreatedShift = _mapper.Map<ShiftModel>(fakeCreatedShift);
@@ -56,7 +53,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Shift_Returns_Correctly()
         {
-
             //Arrange
             List<ShiftModel> list = new();
             var expectedCreatedShift1 = new ShiftModel
@@ -84,4 +80,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

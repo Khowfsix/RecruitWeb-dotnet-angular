@@ -1,15 +1,12 @@
+using Api.ViewModels.Result;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Result;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly IResultRepository _fakeResultRepository = A.Fake<IResultRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public ResultRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -56,7 +54,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Result_Returns_Correctly()
         {
-
             //Arrange
             List<ResultModel> list = new();
             var expectedCreatedResult1 = new ResultModel
@@ -87,4 +84,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

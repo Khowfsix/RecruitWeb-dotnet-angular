@@ -1,8 +1,8 @@
 ﻿using Api.ViewModels.SecurityQuestion;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
+using Service.Interfaces;
 using Service.Models;
 
 namespace Api.Controllers
@@ -63,10 +63,12 @@ namespace Api.Controllers
         [HttpDelete("{requestId:guid}")]
         public async Task<IActionResult> DeleteSecurityQuestion(Guid requestId)
         {
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (requestId == null)
             {
                 return Ok("Not found");
             }
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             var listCategoryQuestion = await _securityQuestionService.DeleteSecurityQuestion(requestId);
             return Ok(listCategoryQuestion);
         }

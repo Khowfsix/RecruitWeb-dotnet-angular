@@ -31,8 +31,6 @@ using AutoMapper;
 using Data.Entities;
 using Service.Models;
 
-
-
 namespace Data.Mapping
 {
     public class AutoMapperConfiguration : Profile
@@ -185,9 +183,11 @@ namespace Data.Mapping
             #endregion Candidate
 
             #region Profile Candidate
+
             CreateMap<Candidate, ProfileModel>().ReverseMap();
             CreateMap<ProfileModel, ProfileViewModel>().ReverseMap();
-            #endregion
+
+            #endregion Profile Candidate
 
             #region CandidateJoinEvent
 
@@ -198,7 +198,6 @@ namespace Data.Mapping
             CreateMap<CandidateJoinEvent, CandidateJoinedEvent>().ReverseMap();
             CreateMap<CandidateJoinEventModel, CandidateJoinedEvent>().ReverseMap();
             CreateMap<CandidateJoinEvent, CandidateJoinEventModel>().ReverseMap();
-
 
             #endregion CandidateJoinEvent
 
@@ -312,16 +311,17 @@ namespace Data.Mapping
             #endregion SecurityAnswer
 
             #region WebUser
+
             CreateMap<WebUser, UserViewModel>().ReverseMap();
             CreateMap<WebUser, WebUserViewModel>().ReverseMap();
             CreateMap<WebUser, ProfileViewModel>().ReverseMap();
-
 
             CreateMap<WebUser, UserModel>().ReverseMap();
             CreateMap<WebUser, WebUserModel>().ReverseMap();
 
             CreateMap<WebUserModel, WebUserViewModel>().ReverseMap();
             CreateMap<UserModel, WebUserViewModel>().ReverseMap();
+
             #endregion WebUser
         }
     }

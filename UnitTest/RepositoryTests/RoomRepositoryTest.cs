@@ -1,15 +1,12 @@
+using Api.ViewModels.Room;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Room;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly IRoomRepository _fakeRoomRepository = A.Fake<IRoomRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public RoomRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -57,7 +55,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Room_Returns_Correctly()
         {
-
             //Arrange
             List<RoomModel> list = new();
             var expectedCreatedRoom1 = new RoomModel
@@ -88,4 +85,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

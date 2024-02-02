@@ -1,10 +1,8 @@
 ﻿using Api.Controllers;
-using Data.Entities;
 using Api.ViewModels.BlackList;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Drawing;
+using Service.Interfaces;
 
 namespace UnitTest.BlackList
 {
@@ -60,7 +58,6 @@ namespace UnitTest.BlackList
                 DateTime = DateTime.Now,
                 Status = 1,
                 IsDeleted = false
-
             };
 
             _mockBlackListService.Setup(service => service.SaveBlackList(input)).ReturnsAsync(expected);

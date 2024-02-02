@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 
 namespace Api.Controllers;
+
 [Authorize]
 public class ApplicationHistoryController : BaseAPIController
 {

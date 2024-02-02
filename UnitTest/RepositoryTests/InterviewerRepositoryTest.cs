@@ -1,15 +1,12 @@
+using Api.ViewModels.Interviewer;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Interviewer;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly IInterviewerRepository _fakeInterviewerRepository = A.Fake<IInterviewerRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public InterviewerRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -57,7 +55,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Interviewer_Returns_Correctly()
         {
-
             //Arrange
             var fakeInterviewerId = Guid.NewGuid();
             var expectedCreatedInterviewer = new InterviewerModel
@@ -75,4 +72,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

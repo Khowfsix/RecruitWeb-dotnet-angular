@@ -2,7 +2,6 @@
 using MimeKit;
 using Service.Models;
 
-
 namespace Service.Services
 {
     public class EmailService : IEmailService

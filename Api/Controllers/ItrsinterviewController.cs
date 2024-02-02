@@ -6,6 +6,7 @@ using Service.Interfaces;
 using Service.Models;
 
 namespace Api.Controllers;
+
 [Authorize]
 public class ItrsinterviewController : BaseAPIController
 {

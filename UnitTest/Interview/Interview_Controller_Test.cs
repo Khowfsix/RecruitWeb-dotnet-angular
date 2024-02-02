@@ -1,14 +1,10 @@
-﻿using FakeItEasy;
-using Api.Controllers;
-using Data.Entities;
-using Api.ViewModels.Interview;
+﻿using Api.ViewModels.Interview;
 using Api.ViewModels.Itrsinterview;
 using Api.ViewModels.Room;
 using Api.ViewModels.Shift;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Drawing;
+using Service.Interfaces;
 
 namespace UnitTest.Interview
 {

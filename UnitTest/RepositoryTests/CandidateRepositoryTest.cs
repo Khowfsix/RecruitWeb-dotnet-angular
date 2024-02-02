@@ -1,15 +1,12 @@
+using Api.ViewModels.Candidate;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Candidate;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly ICandidateRepository _fakeCandidateRepository = A.Fake<ICandidateRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public CandidateRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -57,7 +55,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Candidate_Returns_Correctly()
         {
-
             //Arrange
             List<CandidateModel> list = new();
             var expectedCreatedCandidate1 = new CandidateModel
@@ -88,4 +85,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

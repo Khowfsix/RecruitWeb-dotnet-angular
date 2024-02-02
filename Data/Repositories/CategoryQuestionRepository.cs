@@ -44,7 +44,10 @@ namespace Data.Repositories
             return listData;
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
         public async Task<CategoryQuestion?> GetCategoryQuestionById(Guid id)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             try
             {

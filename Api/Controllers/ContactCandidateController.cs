@@ -1,10 +1,10 @@
-﻿using Data.Entities;
-using Api.ViewModels.ContactEmail;
-using Service.Models;
-using Service.Services;
+﻿using Api.ViewModels.ContactEmail;
+using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Service.Models;
+using Service.Services;
 
 namespace Api.Controllers
 {
@@ -55,6 +55,7 @@ namespace Api.Controllers
         [HttpPost]
         [Route("ConfirmCVReceipted")]
         public async Task<IActionResult> ConfirmCVReceipted([FromBody] AddContactEmailModel contact)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             IdentityUser user = new()
             {
@@ -73,6 +74,7 @@ namespace Api.Controllers
         [HttpPost]
         [Route("ConfirmCVApproval")]
         public async Task<IActionResult> ConfirmCVApproval([FromBody] AddContactEmailModel contact)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             IdentityUser user = new()
             {
@@ -91,6 +93,7 @@ namespace Api.Controllers
         [HttpPost]
         [Route("ConfirmPassed")]
         public async Task<IActionResult> ConfirmPassed([FromBody] AddContactEmailModel contact)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             IdentityUser user = new()
             {
@@ -109,6 +112,7 @@ namespace Api.Controllers
         [HttpPost]
         [Route("ConfirmInterviewSchedule")]
         public async Task<IActionResult> ConfirmInterviewSchedule([FromBody] UpdateContacEmailModel contact)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             IdentityUser user = new()
             {

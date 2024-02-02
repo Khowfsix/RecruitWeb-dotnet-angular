@@ -12,14 +12,17 @@ namespace Service.Services
         private readonly UserManager<WebUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
+
         //private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICandidateService _candidateService;
+
         private readonly IRecruiterService _recruiterService;
         private readonly IInterviewerService _interviewerService;
         private readonly IBlacklistService _blacklistService;
         private readonly IInterviewService _interviewService;
         private readonly IApplicationService _applicationService;
         private readonly ICvService _cvService;
+
         //private readonly IDepartmentService _departmentService;
         private readonly ISuccessfulCandidateService _successfulCandidateService;
 
@@ -251,7 +254,9 @@ namespace Service.Services
                 }
             }
             else
+#pragma warning disable CS8603 // Possible null reference return.
                 return null;
+#pragma warning restore CS8603 // Possible null reference return.
 
             return listUserVM;
         }
@@ -305,7 +310,9 @@ namespace Service.Services
                     }
                 }
                 else
+#pragma warning disable CS8603 // Possible null reference return.
                     return null;
+#pragma warning restore CS8603 // Possible null reference return.
             }
             return listInterviewer;
         }
@@ -405,7 +412,9 @@ namespace Service.Services
                     }
                 }
                 else
+#pragma warning disable CS8603 // Possible null reference return.
                     return null;
+#pragma warning restore CS8603 // Possible null reference return.
             }
             return listRecruiter;
         }
@@ -422,7 +431,9 @@ namespace Service.Services
         {
             var listWebUser = await _userManager.Users.ToListAsync();
             if (listWebUser == null)
+#pragma warning disable CS8603 // Possible null reference return.
                 return null;
+#pragma warning restore CS8603 // Possible null reference return.
             var listUserVM = new List<WebUserModel>();
             foreach (var item in listWebUser)
             {

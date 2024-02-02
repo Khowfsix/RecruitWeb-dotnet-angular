@@ -40,6 +40,7 @@ namespace Data.Repositories
 
             return await Task.FromResult(true);
         }
+
         public async Task<bool> DeleteSecurityAnswer(Guid requestId)
         {
             var entity = await Entities.FirstOrDefaultAsync(x => x.SecurityAnswerId == requestId);
@@ -53,4 +54,3 @@ namespace Data.Repositories
         }
     }
 }
-

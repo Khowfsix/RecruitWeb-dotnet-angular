@@ -1,4 +1,3 @@
-
 using Service.Models;
 
 namespace Service.Interfaces
@@ -6,8 +5,11 @@ namespace Service.Interfaces
     public interface IQuestionService
     {
         Task<List<QuestionModel>> GetAllQuestions(string? query, Guid? questionId);
+
         Task<List<QuestionModel>> GetAllLanguageQuestions();
+
         Task<List<QuestionModel>> GetAllSoftSkillQuestions();
+
         Task<List<QuestionModel>> GetAllTechnologyQuestions();
 
         Task<QuestionModel> GetQuestion(Guid id);

@@ -12,5 +12,6 @@ public class ApplicationHistoryViewModel
 
     [JsonPropertyName("Status")]
     public string? Candidate_status { get; set; }
+
     public string? Priority { get; set; }
 }

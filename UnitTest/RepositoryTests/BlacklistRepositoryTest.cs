@@ -1,15 +1,12 @@
+using Api.ViewModels.BlackList;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Data.Mapping;
-using Api.ViewModels.BlackList;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly IBlacklistRepository _fakeBlacklistRepository = A.Fake<IBlacklistRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public BlacklistRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -56,9 +54,7 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Blacklist_Returns_Correctly()
         {
-
             //Arrange
-
 
             //
             List<BlacklistModel> blacklistModels = new();
@@ -89,4 +85,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

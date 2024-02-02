@@ -9,7 +9,6 @@ namespace Data.Repositories
     {
         private readonly IUnitOfWork _unitOfWork;
 
-
         public PositionRepository(RecruitmentWebContext context,
             IUnitOfWork unitOfWork) : base(context)
         {
@@ -89,7 +88,6 @@ namespace Data.Repositories
                 // Finds asynchronously and removes entity with matched id in db.
                 var position = await Entities.FindAsync(positionId);
 
-
                 if (position == null)
                 {
                     return await Task.FromResult(false);
@@ -114,7 +112,6 @@ namespace Data.Repositories
             // If id is not found in db, return false. Else, update in db and return true.
             if (await Entities.AnyAsync(l => l.PositionId.Equals(positionId)) is false)
                 return await Task.FromResult(false);
-
 
             Entities.Update(position);
             _unitOfWork.SaveChanges();

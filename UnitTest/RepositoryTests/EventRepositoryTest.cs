@@ -1,15 +1,12 @@
+using Api.ViewModels.Event;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Event;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -57,7 +54,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Event_Returns_Correctly()
         {
-
             //Arrange
             List<EventModel> list = new();
             var expectedCreatedEvent1 = new EventModel
@@ -91,4 +87,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

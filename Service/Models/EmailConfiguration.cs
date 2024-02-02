@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Service.Models
+﻿namespace Service.Models
 {
     public class EmailConfiguration
     {
@@ -14,6 +8,5 @@ namespace Service.Models
         public int Port { get; set; }
         public string UserName { get; set; } = null!;
         public string Password { get; set; } = null!;
-
     }
 }

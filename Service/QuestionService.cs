@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Data.Interfaces;
 using Data.Entities;
+using Data.Interfaces;
 using Service.Interfaces;
 using Service.Models;
 

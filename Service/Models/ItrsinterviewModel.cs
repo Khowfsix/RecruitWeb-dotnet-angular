@@ -1,5 +1,3 @@
-using Data.Entities;
-
 namespace Service.Models;
 
 public class ItrsinterviewModel
@@ -15,5 +13,4 @@ public class ItrsinterviewModel
     public virtual RoomModel Room { get; set; } = null!;
 
     public virtual ShiftModel Shift { get; set; } = null!;
-
 }

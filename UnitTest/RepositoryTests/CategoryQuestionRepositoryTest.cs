@@ -1,15 +1,12 @@
+using Api.ViewModels.CategoryQuestion;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.CategoryQuestion;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly ICategoryQuestionRepository _fakeCategoryQuestionRepository = A.Fake<ICategoryQuestionRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public CategoryQuestionRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -56,23 +54,19 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_CategoryQuestion_Returns_Correctly()
         {
-
             //Arrange
             List<CategoryQuestionModel> list = new();
             var expectedCreatedCategoryQuestion1 = new CategoryQuestionModel
             {
                 CategoryQuestionId = Guid.NewGuid(),
-
             };
             var expectedCreatedCategoryQuestion2 = new CategoryQuestionModel
             {
                 CategoryQuestionId = Guid.NewGuid(),
-
             };
             var expectedCreatedCategoryQuestion3 = new CategoryQuestionModel
             {
                 CategoryQuestionId = Guid.NewGuid(),
-
             };
             list.Add(expectedCreatedCategoryQuestion1);
             list.Add(expectedCreatedCategoryQuestion2);
@@ -87,4 +81,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

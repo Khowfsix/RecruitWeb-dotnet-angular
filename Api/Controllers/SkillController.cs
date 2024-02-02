@@ -1,8 +1,8 @@
 ﻿using Api.ViewModels.Skill;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
+using Service.Interfaces;
 using Service.Models;
 
 namespace Api.Controllers
@@ -53,10 +53,12 @@ namespace Api.Controllers
         [Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> UpdateSkill(SkillUpdateModel skillModel, Guid id)
         {
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (id == null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             var model = _mapper.Map<SkillModel>(skillModel);
             var skillList = await _skillService.UpdateSkill(model, id);
             return Ok(skillList);
@@ -66,11 +68,13 @@ namespace Api.Controllers
         [Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> DeleteSkill(Guid id)
         {
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (id != null)
             {
                 var skillList = await _skillService.DeleteSkill(id);
                 return Ok(skillList);
             }
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             return StatusCode(StatusCodes.Status400BadRequest);
         }
     }

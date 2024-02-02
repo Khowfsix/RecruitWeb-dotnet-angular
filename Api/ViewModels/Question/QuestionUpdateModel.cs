@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Api.ViewModels.Question;
 
 public class QuestionUpdateModel

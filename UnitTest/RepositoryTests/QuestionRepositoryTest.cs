@@ -1,15 +1,12 @@
+using Api.ViewModels.Question;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Question;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -19,11 +16,14 @@ namespace UnitTest.RepositoryTests
         private readonly QuestionService _QuestionService;
 
         private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
+
         private readonly ICategoryQuestionRepository _fakeCategoryQuestionRepository =
                                                     A.Fake<ICategoryQuestionRepository>();
+
         private readonly IQuestionRepository _fakeQuestionRepository = A.Fake<IQuestionRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public QuestionRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -60,7 +60,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Question_Returns_Correctly()
         {
-
             //Arrange
             var fakeQuestionId = Guid.NewGuid();
             var expectedCreatedQuestion = new QuestionModel
@@ -78,4 +77,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

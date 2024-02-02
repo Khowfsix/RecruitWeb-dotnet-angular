@@ -1,15 +1,12 @@
+using Api.ViewModels.Interview;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Interview;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -57,7 +54,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_interview_Returns_Correctly()
         {
-
             //Arrange
             var fakeInterviewId = Guid.NewGuid();
             var expectedCreatedInterview = new InterviewModel
@@ -75,4 +71,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

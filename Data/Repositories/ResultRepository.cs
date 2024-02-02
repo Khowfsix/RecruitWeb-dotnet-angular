@@ -40,6 +40,7 @@ namespace Data.Repositories
 
             return await Task.FromResult(true);
         }
+
         public async Task<bool> DeleteResult(Guid requestId)
         {
             var entity = await Entities.FirstOrDefaultAsync(x => x.ResultId == requestId);

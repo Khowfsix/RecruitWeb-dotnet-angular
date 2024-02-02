@@ -1,15 +1,12 @@
+using Api.ViewModels.SuccessfulCadidate;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.SuccessfulCadidate;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly ISuccessfulCadidateRepository _fakeSuccessfulCadidateRepository = A.Fake<ISuccessfulCadidateRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public SuccessfulCandidateRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -56,7 +54,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_SuccessfulCadidate_Returns_Correctly()
         {
-
             //Arrange
             List<SuccessfulCadidateModel> list = new();
             var expectedCreatedSuccessfulCadidate1 = new SuccessfulCadidateModel
@@ -87,4 +84,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

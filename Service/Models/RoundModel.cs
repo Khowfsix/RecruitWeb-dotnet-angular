@@ -1,6 +1,4 @@
-﻿using Data.Entities;
-
-namespace Service.Models
+﻿namespace Service.Models
 {
     public class RoundModel
     {

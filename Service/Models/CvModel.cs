@@ -11,10 +11,11 @@ namespace Service.Models
         public string? Experience { get; set; }
 
         public string? CvPdf { get; set; }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string CvName { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         public string Introduction { get; set; } = null!;
-
 
         public string Education { get; set; } = null!;
 

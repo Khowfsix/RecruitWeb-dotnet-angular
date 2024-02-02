@@ -4,6 +4,7 @@ namespace Data
         where TEntity : class
     {
         Task Add(TEntity entity);
+
         Task Add(IEnumerable<TEntity> entities);
 
         TEntity? GetById(object id);

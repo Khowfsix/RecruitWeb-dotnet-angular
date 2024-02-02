@@ -1,15 +1,12 @@
+using Api.ViewModels.Itrsinterview;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Itrsinterview;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -23,6 +20,7 @@ namespace UnitTest.RepositoryTests
         private readonly IItrsinterviewRepository _fakeItrsinterviewRepository = A.Fake<IItrsinterviewRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public ItrsInterviewRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -58,7 +56,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Itrsinterview_Returns_Correctly()
         {
-
             //Arrange
             var fakeItrsinterviewId = Guid.NewGuid();
             var expectedCreatedItrsinterview = new ItrsinterviewModel
@@ -75,4 +72,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

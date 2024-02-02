@@ -49,7 +49,6 @@ namespace Common.ExportExcel
 
         public static byte[] ExportExcel(DataTable dataTable, string heading = "", bool showSrNo = false, params string[] columnsToTake)
         {
-
             byte[] result = null!;
             using (ExcelPackage package = new ExcelPackage())
             {
@@ -68,11 +67,10 @@ namespace Common.ExportExcel
                     }
                 }
 
-
-                // add the content into the Excel file  
+                // add the content into the Excel file
                 workSheet.Cells["A" + startRowFrom].LoadFromDataTable(dataTable, true);
 
-                // autofit width of cells with small content  
+                // autofit width of cells with small content
                 int columnIndex = 1;
                 foreach (DataColumn column in dataTable.Columns)
                 {
@@ -88,11 +86,10 @@ namespace Common.ExportExcel
                         workSheet.Column(columnIndex).AutoFit();
                     }
 
-
                     columnIndex++;
                 }
 
-                // format header - bold, yellow on black  
+                // format header - bold, yellow on black
                 using (ExcelRange r = workSheet.Cells[startRowFrom, 1, startRowFrom, dataTable.Columns.Count])
                 {
                     r.Style.Font.Color.SetColor(System.Drawing.Color.White);
@@ -101,7 +98,7 @@ namespace Common.ExportExcel
                     r.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
                 }
 
-                // format cells - add borders  
+                // format cells - add borders
                 using (ExcelRange r = workSheet.Cells[startRowFrom + 1, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
                 {
                     r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
@@ -115,7 +112,7 @@ namespace Common.ExportExcel
                     r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);
                 }
 
-                // removed ignored columns  
+                // removed ignored columns
                 for (int i = dataTable.Columns.Count - 1; i >= 0; i--)
                 {
                     if (i == 0 && showSrNo)

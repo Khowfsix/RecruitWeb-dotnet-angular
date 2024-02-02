@@ -1,8 +1,8 @@
 using Api.ViewModels.QuestionSkill;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
+using Service.Interfaces;
 using Service.Models;
 
 namespace Api.Controllers

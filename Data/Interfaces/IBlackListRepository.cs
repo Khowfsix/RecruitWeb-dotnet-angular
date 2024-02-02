@@ -1,6 +1,4 @@
-﻿
-
-using Data.Entities;
+﻿using Data.Entities;
 
 namespace Data.Interfaces;
 

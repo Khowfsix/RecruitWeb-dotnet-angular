@@ -1,15 +1,12 @@
+using Api.ViewModels.CandidateJoinEvent;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.CandidateJoinEvent;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -23,6 +20,7 @@ namespace UnitTest.RepositoryTests
         private readonly IEventRepository _fakeEventRepository = A.Fake<IEventRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public CandidateJoinEventRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -57,7 +55,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_CandidateJoinEvent_Returns_Correctly()
         {
-
             //Arrange
             List<CandidateJoinEventModel> list = new();
 
@@ -86,4 +83,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

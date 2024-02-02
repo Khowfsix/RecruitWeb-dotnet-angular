@@ -1,10 +1,10 @@
-﻿using Data.Entities;
-using Service.Interfaces;
+﻿using Api.ViewModels.Report;
+using AutoMapper;
+using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using Api.ViewModels.Report;
+using Service.Interfaces;
 
 namespace Api.Controllers
 {

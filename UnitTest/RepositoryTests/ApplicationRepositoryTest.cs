@@ -1,16 +1,12 @@
+using Api.ViewModels.Application;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Language;
-using Data.Mapping;
-using Api.ViewModels.Application;
 
 namespace UnitTest.RepositoryTests
 {
@@ -25,6 +21,7 @@ namespace UnitTest.RepositoryTests
         private readonly IApplicationRepository _fakeApplicationRepository = A.Fake<IApplicationRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public ApplicationRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -62,7 +59,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Application_Returns_Correctly()
         {
-
             //Arrange
             var fakeApplicationId = Guid.NewGuid();
             var expectedCreatedApplication = new ApplicationModel
@@ -80,4 +76,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

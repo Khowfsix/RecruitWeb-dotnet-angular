@@ -1,15 +1,12 @@
+using Api.ViewModels.CvHasSkill;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.CvHasSkill;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly ICvHasSkillrepository _fakeCvHasSkillRepository = A.Fake<ICvHasSkillrepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public CvHasSkillRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -57,7 +55,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_CvHasSkill_Returns_Correctly()
         {
-
             //Arrange
             List<CvHasSkillModel> list = new();
             var expectedCreatedCvHasSkill1 = new CvHasSkillModel
@@ -85,4 +82,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

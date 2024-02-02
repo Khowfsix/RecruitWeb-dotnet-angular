@@ -1,15 +1,12 @@
+using Api.ViewModels.SecurityAnswer;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.SecurityAnswer;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly ISecurityAnswerRepository _fakeSecurityAnswerRepository = A.Fake<ISecurityAnswerRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public SecurityAnswerRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -56,23 +54,19 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_SecurityAnswer_Returns_Correctly()
         {
-
             //Arrange
             List<SecurityAnswerModel> list = new();
             var expectedCreatedSecurityAnswer1 = new SecurityAnswerModel
             {
                 SecurityAnswerId = Guid.NewGuid(),
-
             };
             var expectedCreatedSecurityAnswer2 = new SecurityAnswerModel
             {
                 SecurityAnswerId = Guid.NewGuid(),
-
             };
             var expectedCreatedSecurityAnswer3 = new SecurityAnswerModel
             {
                 SecurityAnswerId = Guid.NewGuid(),
-
             };
             list.Add(expectedCreatedSecurityAnswer1);
             list.Add(expectedCreatedSecurityAnswer2);
@@ -87,4 +81,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

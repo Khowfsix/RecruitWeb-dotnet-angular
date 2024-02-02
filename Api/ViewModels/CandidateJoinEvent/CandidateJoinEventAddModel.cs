@@ -1,12 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Api.ViewModels.CandidateJoinEvent
+﻿namespace Api.ViewModels.CandidateJoinEvent
 {
     public class CandidateJoinEventAddModel
     {
@@ -15,7 +7,5 @@ namespace Api.ViewModels.CandidateJoinEvent
         public Guid EventId { get; set; }
 
         //public DateTime? DateJoin { get; set; }
-
-
     }
 }

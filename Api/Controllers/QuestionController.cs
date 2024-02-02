@@ -1,15 +1,13 @@
-using CloudinaryDotNet.Actions;
 using Api.ViewModels.Question;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
+using Service.Interfaces;
 using Service.Models;
 
 namespace Api.Controllers
 {
     [Authorize]
-
     public class QuestionController : BaseAPIController
     {
         private readonly IQuestionService _questionService;
@@ -105,6 +103,7 @@ namespace Api.Controllers
             return response is not null ? Ok(response)
                                     : BadRequest(question);
         }
+
         //[Authorize(Roles = "Recruiter")]
         [HttpPut("{questionId:guid}")]
         [Authorize(Roles = "Recruiter,Interviewer,Admin")]

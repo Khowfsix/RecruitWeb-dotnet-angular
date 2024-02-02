@@ -54,10 +54,13 @@ namespace Data.Repositories
 
             return await Task.FromResult(true);
         }
+
         public async Task<Room> GetRoomById(Guid id)
         {
             var entity = await Entities.FindAsync(id);
+#pragma warning disable CS8603 // Possible null reference return.
             return entity;
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }

@@ -23,10 +23,14 @@ namespace Data.Repositories
             }
             else
             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var datas = await Entities.Where(
                     s => s.Candidate.User.FullName.Contains(request) ||
                          s.Position.PositionName.Contains(request)
                     ).Take(10).ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 return datas;
             }
         }

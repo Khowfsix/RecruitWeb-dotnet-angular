@@ -312,6 +312,7 @@ namespace Api.Controllers
         [Route("PassInterview/{interviewId:guid}")]
         public async Task<IActionResult> BrowsePassInterview(Guid interviewId)
         {
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (interviewId != null)
             {
                 // Update Interview status
@@ -352,12 +353,14 @@ namespace Api.Controllers
             {
                 return BadRequest();
             }
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
         }
 
         [HttpPut]
         [Route("FailInterview/{interviewId:guid}")]
         public async Task<IActionResult> BrowseFailInterview(Guid interviewId)
         {
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (interviewId == null)
             {
                 return BadRequest();
@@ -382,6 +385,7 @@ namespace Api.Controllers
 
                 return Ok(interviewId);
             }
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
         }
 
         [HttpGet]

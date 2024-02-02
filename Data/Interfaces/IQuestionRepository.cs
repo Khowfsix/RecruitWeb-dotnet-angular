@@ -7,6 +7,7 @@ namespace Data.Interfaces
         Task<List<Question>> GetAllQuestions();
 
         Task<Question> GetQuestion(Guid? id);
+
         Task<List<Question>> GetListQuestions(Guid id);
 
         //Task<List<CategoryQuestionModel>> GetAllQuestionCategories();
@@ -15,6 +16,7 @@ namespace Data.Interfaces
         Task<bool> UpdateQuestion(Question question, Guid id);
 
         Task<bool> RemoveQuestion(Guid id);
+
         Task<List<Question>> GetQuestionsByName(string keyword);
     }
 }

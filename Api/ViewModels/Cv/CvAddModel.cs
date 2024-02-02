@@ -1,5 +1,4 @@
 ﻿using Api.ViewModels.Certificate;
-using Microsoft.AspNetCore.Http;
 
 namespace Api.ViewModels.Cv
 {
@@ -7,6 +6,7 @@ namespace Api.ViewModels.Cv
     {
         //public Guid Cvid { get; set; }
         public Guid CandidateId { get; set; }
+
         public string? Experience { get; set; }
         public string? CvPdf { get; set; } = null!;
         public string CvName { get; set; } = string.Empty;

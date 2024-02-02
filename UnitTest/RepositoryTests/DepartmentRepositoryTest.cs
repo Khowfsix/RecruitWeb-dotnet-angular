@@ -1,15 +1,12 @@
+using Api.ViewModels.Department;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Department;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -57,7 +54,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Department_Returns_Correctly()
         {
-
             //Arrange
             List<DepartmentModel> departmentList = new();
             var expectedCreatedDepartment1 = new DepartmentModel
@@ -90,4 +86,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
 using Service.Interfaces;
 using Service.Models;
-using Data.Entities;
 
 namespace Service
 {
@@ -29,7 +29,9 @@ namespace Service
                 }
                 return models;
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<ShiftModel> SaveShift(ShiftModel request)

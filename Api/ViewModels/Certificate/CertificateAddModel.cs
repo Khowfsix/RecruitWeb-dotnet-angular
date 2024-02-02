@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Api.ViewModels.Certificate
+﻿namespace Api.ViewModels.Certificate
 {
     public class CertificateAddModel
     {
@@ -25,5 +18,4 @@ namespace Api.ViewModels.Certificate
 
         public bool IsDeleted { get; set; } = false;
     }
-
 }

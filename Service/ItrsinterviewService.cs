@@ -39,7 +39,6 @@ public class ItrsinterviewService : IItrsinterviewService
             }
 
             return null!;
-
         }
         catch (Exception)
         {
@@ -75,7 +74,6 @@ public class ItrsinterviewService : IItrsinterviewService
 
         if (await ExistITRS(addData, interviewerId)) return false;
 
-
         var data = _mapper.Map<Itrsinterview>(itrsinterviewModel);
         return await _itrsinterviewRepository.UpdateItrsinterview(data, itrsinterviewId);
     }
@@ -103,7 +101,6 @@ public class ItrsinterviewService : IItrsinterviewService
                 (item.RoomId.Equals(itrsinterview.RoomId))
             ));
         if (alreadyExist_Room) return await Task.FromResult(true);
-
 
         //check interviewer vào ngày giờ đó có itrs không
         var interviewOfInterviewer = await _interviewRepository.GetInterviewOfInterviewer(interviewerId);

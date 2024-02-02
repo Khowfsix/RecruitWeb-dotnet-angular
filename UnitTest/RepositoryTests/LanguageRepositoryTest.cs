@@ -1,15 +1,12 @@
+using Api.ViewModels.Language;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Language;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly ILanguageRepository _fakeLanguageRepository = A.Fake<ILanguageRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public LanguageRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -58,7 +56,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Language_Returns_Correctly()
         {
-
             //Arrange
             var fakeLanguageId = Guid.NewGuid();
             var expectedCreatedLanguage = new LanguageModel
@@ -77,4 +74,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

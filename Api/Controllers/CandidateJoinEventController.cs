@@ -76,12 +76,10 @@ namespace Api.Controllers
         }
 
         [HttpGet("[action]")]
-
         public async Task<IActionResult> GetCandidatesSortedByJoinEventCount()
         {
             var response = await _candidateJoinEventService.GetCandidatesSortedByJoinEventCount();
             return response is not null ? Ok(response) : NotFound();
         }
-
     }
 }

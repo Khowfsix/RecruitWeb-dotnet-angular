@@ -1,10 +1,8 @@
 ﻿using Api.Controllers;
-using Data.Entities;
 using Api.ViewModels.Recruiter;
-using Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Drawing;
+using Service.Interfaces;
 
 namespace UnitTest.Recruiter
 {

@@ -135,7 +135,6 @@ namespace Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new Response { Status = "Error", Message = "This Role Does Not Exist." });
             }
-
         }
 
         private void SendEmailConfirmation(string emailUser, string token)
@@ -179,9 +178,7 @@ namespace Api.Controllers
             }
             return StatusCode(StatusCodes.Status200OK,
                    new Response { Status = "Success", Message = "Email Verified Successfully" });
-
         }
-
 
         [HttpPost]
         [Route("Login")]

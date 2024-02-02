@@ -71,7 +71,9 @@ namespace Data.Repositories
 
             /*------------------------------*/
             //Returns a Question mapped from foundQuestion if it is in db. Otherwise, return null.
+#pragma warning disable CS8603 // Possible null reference return.
             return foundQuestion;
+#pragma warning restore CS8603 // Possible null reference return.
             /*------------------------------*/
         }
 
@@ -137,7 +139,7 @@ namespace Data.Repositories
             // If id is not found in db, return false. Else, update and return true.
             if (await Entities.AnyAsync(l => l.QuestionId.Equals(id)) is false)
                 return await Task.FromResult(false);
-            
+
             entity.QuestionId = id;
 
             Entities.Update(entity);

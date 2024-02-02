@@ -3,8 +3,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers;
+
 [Authorize]
 public class InterviewerController : BaseAPIController
 {
@@ -33,7 +35,6 @@ public class InterviewerController : BaseAPIController
                 _ => Ok(data)
             };
         }
-
         else if (departmentId != null)
         {
             var response = await _interviewerService.GetInterviewersInDepartment((Guid)departmentId);
@@ -57,7 +58,8 @@ public class InterviewerController : BaseAPIController
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SaveInterviewer(InterviewerAddModel request)
     {
-        var response = await _interviewerService.SaveInterviewer(request);
+        var modelData = _mapper.Map<InterviewerModel>(request);
+        var response = await _interviewerService.SaveInterviewer(modelData);
         if (response != null)
         {
             return Ok(response);
@@ -69,7 +71,8 @@ public class InterviewerController : BaseAPIController
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateInterviewer(InterviewerUpdateModel request, Guid id)
     {
-        return await _interviewerService.UpdateInterviewer(request, id) ? Ok(true) : BadRequest();
+        var modelData = _mapper.Map<InterviewerModel>(request);
+        return await _interviewerService.UpdateInterviewer(modelData, id) ? Ok(true) : BadRequest();
     }
 
     [HttpDelete("{id:guid}")]

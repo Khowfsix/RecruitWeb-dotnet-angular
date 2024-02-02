@@ -1,15 +1,12 @@
+using Api.ViewModels.Skill;
+using AutoMapper;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
-
+using Data.Mapping;
 using Data.Repositories;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore.InMemory;
 using Service;
-using Service.Interfaces;
-using Data.Entities;
-using AutoMapper;
-using Api.ViewModels.Skill;
-using Data.Mapping;
 
 namespace UnitTest.RepositoryTests
 {
@@ -22,6 +19,7 @@ namespace UnitTest.RepositoryTests
         private readonly ISkillRepository _fakeSkillRepository = A.Fake<ISkillRepository>();
         private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
         private readonly IMapper _mapper;
+
         public SkillRepository_UnitTest()
         {
             _mapper = new MapperConfiguration(cfg =>
@@ -57,7 +55,6 @@ namespace UnitTest.RepositoryTests
         [Fact]
         public async Task Get_Skill_Returns_Correctly()
         {
-
             //Arrange
             List<SkillModel> list = new();
             var expectedCreatedSkill1 = new SkillModel
@@ -91,4 +88,3 @@ namespace UnitTest.RepositoryTests
         }
     }
 }
-

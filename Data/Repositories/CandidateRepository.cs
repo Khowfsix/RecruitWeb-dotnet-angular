@@ -1,7 +1,6 @@
 using Data.Entities;
 using Data.Interfaces;
 
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
@@ -49,7 +48,9 @@ namespace Data.Repositories
                 .Where(x => x.CandidateId == id)
                 .FirstOrDefaultAsync();
 
+#pragma warning disable CS8603 // Possible null reference return.
             return entity;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<Candidate?> GetCandidateByUserId(string userId)
@@ -62,7 +63,10 @@ namespace Data.Repositories
             return data;
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
         public async Task<Candidate?> GetProfile(Guid candidateId)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var profile = GetById(candidateId);
             if (profile is not null)
