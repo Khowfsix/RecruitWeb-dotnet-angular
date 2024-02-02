@@ -1,3 +1,4 @@
+using AutoMapper;
 using Data.Interfaces;
 
 using Service.Interfaces;
@@ -10,12 +11,18 @@ namespace Service
         private readonly IApplicationRepository _applicationRepository;
         private readonly IRequirementRepository _requirementRepository;
         private readonly ICvHasSkillrepository _cvHasSkillRepository;
+        private readonly IMapper _mapper;
 
-        public ApplicationSuggestionService(IApplicationRepository applicationRepository, IRequirementRepository requirementRepository, ICvHasSkillrepository cvHasSkillRepository)
+        public ApplicationSuggestionService(
+            IApplicationRepository applicationRepository,
+            IRequirementRepository requirementRepository,
+            ICvHasSkillrepository cvHasSkillRepository,
+            IMapper mapper)
         {
             _applicationRepository = applicationRepository;
             _requirementRepository = requirementRepository;
             _cvHasSkillRepository = cvHasSkillRepository;
+            _mapper = mapper;
         }
 
         public async Task<List<ApplicationModel>> GetSuggestion(Guid positionId)
@@ -34,7 +41,9 @@ namespace Service
                                             join specificCvSkill in specificCvSkillList
                                             on positionSkill equals specificCvSkill.SkillId
                                             select positionSkill).Count();
-                applicationWithSkillMatchedCount.Add((application, numberOfMatchedSkill));
+
+                var modelData = _mapper.Map<ApplicationModel>(application);
+                applicationWithSkillMatchedCount.Add((modelData, numberOfMatchedSkill));
             }
             //var potentialSkillListMatch = positionSkillList.Zip(applicationList);
 

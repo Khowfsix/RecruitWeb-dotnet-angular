@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Data.Entities;
 using Data.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
 
@@ -59,170 +61,216 @@ namespace Service
 
         public async Task<CvModel> SaveCv(CvModel request)
         {
-            // Get list skill
-            var skills = request.Skills;
+            //// Get list skill
+            //var skills = request.Skills;
 
-            // Get list Certificate
-            var CertificateVMs = request.Certificates;
+            //// Get list Certificate
+            //var CertificateVMs = request.Certificates;
 
-            var data = _mapper.Map<CvModel>(request);
+            //var data = _mapper.Map<CvModel>(request);
 
-            // Create cv
-            var result = await _cvRepository.SaveCv(data);
+            //// Create cv
+            //var result = await _cvRepository.SaveCv(data);
 
-            if (result.Item1 == false)
+            //if (result.Item1 == false)
+            //    return null!;
+
+            //var cv = result.Item2;
+
+            //// Create Cv skill
+            //foreach (var skill in skills)
+            //{
+            //    var cvHasSkill = new CvHasSkillModel()
+            //    {
+            //        Cvid = cv.Cvid,
+            //        SkillId = skill.SkillId,
+            //        ExperienceYear = skill.ExperienceYear
+            //    };
+
+            //    var cvHasSkill_entityData = _mapper.Map<CvHasSkill>(cvHasSkill);
+            //    _ = await _cvHasSkillRepository.SaveCvHasSkillService(cvHasSkill_entityData) ?? throw new Exception("Fail to create CvHasSkill");
+            //}
+
+            //// Create Cv Certificate
+            //foreach (var certificateVM in CertificateVMs)
+            //{
+            //    certificateVM.Cvid = cv.Cvid;
+            //    var certificate = _mapper.Map<CertificateModel>(certificateVM);
+            //    var certificate_entityData = _mapper.Map<Certificate>(certificate);
+            //    _ = await _certificateRepository.SaveCertificate(certificate_entityData) ?? throw new Exception("Failed to save certificate");
+            //}
+            //var cvVM = GetCvById(result.Item2.Cvid);
+            //return await cvVM;
+
+            try
+            {
+                var entityData = _mapper.Map<Cv>(request);
+                var response = await _cvRepository.SaveCv(entityData);
+                return _mapper.Map<CvModel>(response);
+            }
+            catch (Exception)
+            {
                 return null!;
-
-            var cv = result.Item2;
-
-            // Create Cv skill
-            foreach (var skill in skills)
-            {
-                var cvHasSkill = new CvHasSkillModel()
-                {
-                    Cvid = cv.Cvid,
-                    SkillId = skill.SkillId,
-                    ExperienceYear = skill.ExperienceYear
-                };
-
-                var cvSkillResp = await _cvHasSkillRepository.SaveCvHasSkillService(cvHasSkill);
-
-                if (cvSkillResp == null)
-                {
-                    throw new Exception("Fail to create CvHasSkill");
-                }
             }
-
-            // Create Cv Certificate
-            foreach (var certificateVM in CertificateVMs)
-            {
-                certificateVM.Cvid = cv.Cvid;
-                var certificate = _mapper.Map<CertificateModel>(certificateVM);
-
-                var certResp = await _certificateRepository.SaveCertificate(certificate);
-
-                if (certResp == null)
-                {
-                    throw new Exception("Failed to save certificate");
-                }
-            }
-            var cvVM = GetCvById(result.Item2.Cvid);
-            return await cvVM;
         }
 
         public async Task<bool> UpdateCv(CvModel request, Guid requestId)
         {
-            // Get list skill
-            var skills = request.Skills;
+            //// Get list skill
+            //var skills = request.Skills;
 
-            // Get list Certificate
-            var CertificateVMs = request.Certificates;
+            //// Get list Certificate
+            //var CertificateVMs = request.Certificates;
 
-            // Update Cv
-            var data = _mapper.Map<CvModel>(request);
-            var result = await _cvRepository.UpdateCv(data, requestId);
+            //// Update Cv
+            //var data = _mapper.Map<CvModel>(request);
+            //var result = await _cvRepository.UpdateCv(data, requestId);
 
-            if (result == false)
-                throw new Exception("Cannot update CV");
+            //if (result == false)
+            //    throw new Exception("Cannot update CV");
 
-            // Update Cv Has Skill
-            var listCvHasSkill = await _cvHasSkillRepository.GetAllSkillsFromOneCV(requestId);
+            //// Update Cv Has Skill
+            //var listCvHasSkill = await _cvHasSkillRepository.GetAllSkillsFromOneCV(requestId);
 
-            //// Delete all
-            foreach (var cvHasSkill in listCvHasSkill)
+            ////// Delete all
+            //foreach (var cvHasSkill in listCvHasSkill)
+            //{
+            //    await _cvHasSkillRepository.DeleteCvHasSkillService(cvHasSkill.CvSkillsId);
+            //}
+
+            ////// Create new
+            //foreach (var skill in skills)
+            //{
+            //    var cvHasSkill = new CvHasSkillModel()
+            //    {
+            //        Cvid = requestId,
+            //        SkillId = skill.SkillId,
+            //        ExperienceYear = skill.ExperienceYear
+            //    };
+
+            //    await _cvHasSkillRepository.SaveCvHasSkillService(cvHasSkill);
+            //}
+
+            //// Update Certificate
+            //var certificates = await _certificateRepository.GetForeignKey(requestId);
+
+            ////// Delete all
+            //foreach (var certificate in certificates)
+            //{
+            //    await _certificateRepository.DeleteCertificate(certificate.CertificateId);
+            //}
+
+            ////// Create new
+            //foreach (var certificateVM in CertificateVMs)
+            //{
+            //    var certificate = _mapper.Map<CertificateModel>(certificateVM);
+
+            //    await _certificateRepository.SaveCertificate(certificate);
+            //}
+
+            //return true;
+
+            try
             {
-                await _cvHasSkillRepository.DeleteCvHasSkillService(cvHasSkill.CvSkillsId);
+                var entityData = _mapper.Map<Cv>(request);
+                var response = await _cvRepository.UpdateCv(entityData, requestId);
+                return _mapper.Map<CvModel>(response) != null;
             }
-
-            //// Create new
-            foreach (var skill in skills)
+            catch (Exception)
             {
-                var cvHasSkill = new CvHasSkillModel()
-                {
-                    Cvid = requestId,
-                    SkillId = skill.SkillId,
-                    ExperienceYear = skill.ExperienceYear
-                };
-
-                await _cvHasSkillRepository.SaveCvHasSkillService(cvHasSkill);
+                return await Task.FromResult(false);
             }
-
-            // Update Certificate
-            var certificates = await _certificateRepository.GetForeignKey(requestId);
-
-            //// Delete all
-            foreach (var certificate in certificates)
-            {
-                await _certificateRepository.DeleteCertificate(certificate.CertificateId);
-            }
-
-            //// Create new
-            foreach (var certificateVM in CertificateVMs)
-            {
-                var certificate = _mapper.Map<CertificateModel>(certificateVM);
-
-                await _certificateRepository.SaveCertificate(certificate);
-            }
-
-            return true;
         }
 
         public async Task<CvModel> GetCvById(Guid requestId)
         {
-            // Get cv from cv id
-            var data = await _cvRepository.GetCVById(requestId);
+            //// Get cv from cv id
+            //var data = await _cvRepository.GetCVById(requestId);
 
-            // Get skill from cv id
-            var skills = await _cvHasSkillRepository.GetSkill(requestId);
+            //// Get skill from cv id
+            //var skills = await _cvHasSkillRepository.GetSkill(requestId);
 
-            var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
+            //var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
 
-            // Gắn skill vào cv
-            var resp = _mapper.Map<CvModel>(data);
-            resp.Skills = skillVMs;
+            //// Gắn skill vào cv
+            //var resp = _mapper.Map<CvModel>(data);
+            //resp.Skills = skillVMs;
 
-            // Tìm certificates và gắn vào
-            var certificates = await _certificateRepository.GetForeignKey(requestId);
+            //// Tìm certificates và gắn vào
+            //var certificates = await _certificateRepository.GetForeignKey(requestId);
 
-            var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
+            //var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
 
-            resp.Certificates = certificateVMs;
-            return resp;
+            //resp.Certificates = certificateVMs;
+            //return resp;
+
+            try
+            {
+                var data = await _cvRepository.GetCVById(requestId);
+                var response = _mapper.Map<CvModel>(data);
+                return response;
+            }
+            catch (Exception)
+            {
+                return null!;
+            }
         }
 
         public async Task<IEnumerable<CvModel>> GetCvsOfCandidate(Guid candidateId)
         {
-            // Get Cv thuộc về candidate
-            var data = await _cvRepository.GetForeignKey(candidateId);
+            //// Get Cv thuộc về candidate
+            //var data = await _cvRepository.GetForeignKey(candidateId);
 
-            var resp = _mapper.Map<IEnumerable<CvModel>>(data);
+            //var resp = _mapper.Map<IEnumerable<CvModel>>(data);
 
-            // Tìm skills và gắn vào
-            foreach (var item in resp)
+            //// Tìm skills và gắn vào
+            //foreach (var item in resp)
+            //{
+            //    // Tìm skills và gắn vào
+            //    var skills = await _cvHasSkillRepository.GetSkill(item.Cvid);
+
+            //    var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
+
+            //    item.Skills = skillVMs;
+
+            //    // Tìm certificates và gắn vào
+            //    var certificates = await _certificateRepository.GetForeignKey(item.Cvid);
+
+            //    var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
+
+            //    item.Certificates = certificateVMs;
+            //}
+
+            //return resp;
+
+            try
             {
-                // Tìm skills và gắn vào
-                var skills = await _cvHasSkillRepository.GetSkill(item.Cvid);
-
-                var skillVMs = _mapper.Map<IList<SkillModel>>(skills);
-
-                item.Skills = skillVMs;
-
-                // Tìm certificates và gắn vào
-                var certificates = await _certificateRepository.GetForeignKey(item.Cvid);
-
-                var certificateVMs = _mapper.Map<IList<CertificateModel>>(certificates);
-
-                item.Certificates = certificateVMs;
+                var entityDatas = await _cvRepository.GetCvsByCandidateId(candidateId);
+                if (!entityDatas.IsNullOrEmpty())
+                {
+                    var resp = _mapper.Map<IEnumerable<CvModel>>(entityDatas);
+                    return resp;
+                }
+                return null!;
             }
-
-            return resp;
+            catch (Exception)
+            {
+                return null!;
+            }
         }
 
         public async Task<IEnumerable<CvModel>> GetAllUserCv(string userId)
         {
-            var data = await _cvRepository.GetAllUserCv(userId);
-            var resp = _mapper.Map<IEnumerable<CvModel>>(data);
-            return resp;
+            try
+            {
+                var data = await _cvRepository.GetAllUserCv(userId);
+                var resp = _mapper.Map<IEnumerable<CvModel>>(data);
+                return resp;
+            }
+            catch (Exception)
+            {
+                return null!;
+            }
         }
 
         public async Task<bool> UploadCvPdf(IFormFile? CvFile, Guid Cvid)

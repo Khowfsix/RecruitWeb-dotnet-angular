@@ -1,7 +1,8 @@
 using Api.ViewModels.Interview;
-using Service.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
 
 namespace Api.Controllers;
 [Authorize]
@@ -10,6 +11,7 @@ public class InterviewController : BaseAPIController
     private readonly IInterviewService _interviewService;
     private readonly IItrsinterviewService _itrsinterviewService;
     private readonly IRoundService _roundService;
+    private readonly IMapper _mapper;
 
     #region comment
     //public InterviewController(IInterviewService interviewService,
@@ -31,11 +33,13 @@ public class InterviewController : BaseAPIController
     #endregion
     public InterviewController(
         IInterviewService interviewService,
-        IItrsinterviewService itrsinterviewService)
+        IItrsinterviewService itrsinterviewService,
+        IMapper mapper)
     {
         _interviewService = interviewService;
         _itrsinterviewService = itrsinterviewService;
         _roundService = null!;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -45,63 +49,70 @@ public class InterviewController : BaseAPIController
         if (id != null)
         {
             var data = await _interviewService.GetInterviewById((Guid)id);
-            return data switch
+            var response = _mapper.Map<InterviewViewModel>(data);
+            return response switch
             {
                 null => Ok("Not found"),
-                _ => Ok(data)
+                _ => Ok(response)
             };
         }
 
         // Get by Interviewer
-        if (status == null)
-        {
-            //var interviewByStatus = await _interviewService.GetAllInterviewByStatus(status);
-            //if (interviewByStatus == null)
-            //{
-            //    return Ok();
-            //}
-            //return Ok(interviewByStatus);
-            status = "";
-        }
+        //var interviewByStatus = await _interviewService.GetAllInterviewByStatus(status);
+        //if (interviewByStatus == null)
+        //{
+        //    return Ok();
+        //}
+        //return Ok(interviewByStatus);
+        status ??= "";
 
         var reportList = await _interviewService.GetAllInterview(status);
         if (reportList == null)
         {
             return Ok();
         }
-        return Ok(reportList);
+        var responseList = _mapper.Map<List<InterviewViewModel>>(reportList);
+        return Ok(responseList);
     }
 
     [HttpGet("[action]/{requestId}")]
     public async Task<IActionResult> GetInterviewsByInterviewer(Guid requestId)
     {
-        if (requestId == null)
+
+        try
+        {
+            var dataList = await _interviewService.GetInterviewsByInterviewer(requestId);
+            if (dataList == null)
+            {
+                return Ok();
+            }
+            return Ok(dataList);
+
+        }
+        catch (Exception)
         {
             return BadRequest();
         }
 
-        var dataList = await _interviewService.GetInterviewsByInterviewer(requestId);
-        if (dataList == null)
-        {
-            return Ok();
-        }
-        return Ok(dataList);
+
     }
 
     [HttpGet("[action]/{requestId}")]
     public async Task<IActionResult> GetInterviewsByPositon(Guid requestId)
     {
-        if (requestId == null)
+        try
+        {
+            var dataList = await _interviewService.GetInterviewsByPositon(requestId);
+            if (dataList == null)
+            {
+                return Ok();
+            }
+            return Ok(dataList);
+        }
+        catch (Exception)
         {
             return BadRequest();
         }
-
-        var dataList = await _interviewService.GetInterviewsByPositon(requestId);
-        if (dataList == null)
-        {
-            return Ok();
-        }
-        return Ok(dataList);
     }
 
     [HttpGet("[action]/{requestId}")]
@@ -152,7 +163,7 @@ public class InterviewController : BaseAPIController
     }
 
     [HttpPost("[action]/{id:guid}")]
-    public async Task<IActionResult> PostQuestionInterviewResult(InterviewResultQuestionModel request)
+    public async Task<IActionResult> PostQuestionInterviewResult(InterviewResultQuestion_ViewModel request)
     {
         var postQuestionIntoInterview = await _interviewService.PostQuestionIntoInterview(request);
 
