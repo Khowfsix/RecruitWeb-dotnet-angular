@@ -71,6 +71,7 @@ namespace Api.Controllers
             return new List<string> { "Vi01", "Vi10", "Vi11" };
         }
 
+        //fix mailkit
         [HttpPost]
         [Route("SendConfirmationEmail")]
         public void SendEmailConfirmation(string emailUser, string token)
