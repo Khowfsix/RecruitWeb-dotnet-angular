@@ -7,8 +7,9 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
-		provideRouter(routes),
-		provideClientHydration(),
-		provideAnimations(),
-	],
+    provideRouter(routes),
+    provideClientHydration(),
+    provideAnimations(),
+    provideAnimations()
+],
 };
