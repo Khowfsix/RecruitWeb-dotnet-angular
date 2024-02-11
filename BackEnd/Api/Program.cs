@@ -106,7 +106,7 @@ try
                             //Scheme = "Bearer"
                         }
                     },
-                    new string[] { }
+                    Array.Empty<string>()
                 },
             }
         );
@@ -161,9 +161,9 @@ try
     var emailConfig = builder.Configuration
      .GetSection("EmailConfiguration")
     .Get<EmailConfiguration>();
-#pragma warning disable CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
-    builder.Services.AddSingleton(emailConfig);
-#pragma warning restore CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
+
+    builder.Services.AddSingleton(emailConfig!);
+
     builder.Services.AddScoped<IEmailService, EmailService>();
 
     builder.Services.AddHttpClient();
@@ -191,8 +191,10 @@ try
     // Configure the HTTP request pipeline.
     app.UseSwagger();
     app.UseSwaggerUI();
+
     // Remove this middleware if you use reverse proxy
     app.UseHttpsRedirection();
+
     // Configure CORS
     app.UseCors(corsPolicyName);
     app.UseAuthentication();

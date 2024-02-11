@@ -138,6 +138,7 @@ namespace Api.Controllers
             }
         }
 
+        //todo: fix confirm email
         private void SendEmailConfirmation(string emailUser, string token)
         {
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = emailUser }, Request.Scheme);
