@@ -5,7 +5,11 @@
 	"projects": {
 		"RecruitmentWeb_FE": {
 			"projectType": "application",
-			"schematics": {},
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				}
+			},
 			"root": "",
 			"sourceRoot": "src",
 			"prefix": "app",
@@ -20,12 +24,12 @@
 						"tsConfig": "tsconfig.app.json",
 						"assets": ["src/favicon.ico", "src/assets"],
 						"styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/bootstrap/scss/bootstrap.scss",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.scss",
-              "src/styles.css"
-            ],
+							"node_modules/bootstrap/dist/css/bootstrap.min.css",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"node_modules/bootstrap/scss/bootstrap.scss",
+							"node_modules/bootstrap-icons/font/bootstrap-icons.scss",
+							"src/styles.css"
+						],
 						"scripts": [
 							"node_modules/bootstrap/dist/js/bootstrap.min.js"
 						],
@@ -92,8 +96,8 @@
 				}
 			}
 		}
-  },
-  "cli": {
-    "analytics": "8998d649-edd6-4f19-96c3-537cd2e2a05d"
-  }
+	},
+	"cli": {
+		"analytics": "8998d649-edd6-4f19-96c3-537cd2e2a05d"
+	}
 }
