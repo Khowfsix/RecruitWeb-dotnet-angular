@@ -8,8 +8,7 @@ export const routes: Routes = [
 		loadChildren: () =>
 			import('./modules/auth/auth.module').then((m) => m.AuthModule),
 	},
-    { path: 'position', component: PositionComponent },
-    {path: "", redirectTo: "/", pathMatch: "full"},
-    {path: "**", title: "UrlNotFound", component: UrlNotFoundComponent}
-
+	{ path: 'position', component: PositionComponent },
+	{ path: '', redirectTo: '/', pathMatch: 'full' },
+	{ path: '**', title: 'UrlNotFound', component: UrlNotFoundComponent },
 ];
