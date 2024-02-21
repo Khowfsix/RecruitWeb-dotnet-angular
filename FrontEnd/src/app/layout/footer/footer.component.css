@@ -1,0 +1,15 @@
+.custom-footer {
+    background-color: #1c395f;
+    height: 120px;
+}
+
+.custom-row-header {
+    width: fit-content;
+    margin-bottom: 4px;
+}
+
+.custom-row {
+    width: fit-content;
+    margin-bottom: 1px;
+    color:rgb(182, 206, 250);
+}
