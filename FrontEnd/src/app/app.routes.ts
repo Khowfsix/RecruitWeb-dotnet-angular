@@ -4,7 +4,7 @@ import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.compo
 
 export const routes: Routes = [
     { path: 'position', component: PositionComponent },
-    {path: "", redirectTo: "/", pathMatch: "full"},
-    {path: "**", title: "UrlNotFound", component: UrlNotFoundComponent}
+    // {path: "", redirectTo: "/", pathMatch: "full"},
+    // {path: "**", title: "UrlNotFound", component: UrlNotFoundComponent}
 
 ];
