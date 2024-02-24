@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
 	standalone: true,
 	templateUrl: './login.component.html',
 	styleUrl: './login.component.scss',
-	imports: [MatCardModule, MatFormFieldModule, MatIcon, MatGridListModule],
+	imports: [],
 })
 export class LoginComponent {
+	constructor(private router: Router) {}
+
 	hide: boolean = true;
 }
