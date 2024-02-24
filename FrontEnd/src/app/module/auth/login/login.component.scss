@@ -1,9 +1,19 @@
-mat-card {
-	max-width: 400px;
-	margin: 2rem auto;
+.divider {
+	:after,
+	:before {
+		content: '';
+		flex: 1;
+		height: 1px;
+		background: #eee;
+	}
 }
 
-mat-form-field {
-	width: 100%;
-	margin-bottom: 1rem;
+.h-custom {
+	height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+	.h-custom {
+		height: 100%;
+	}
 }
