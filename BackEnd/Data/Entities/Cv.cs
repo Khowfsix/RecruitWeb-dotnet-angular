@@ -16,7 +16,7 @@ public partial class Cv
     [DataType(DataType.ImageUrl)]
     public string CvName { get; set; }
 
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 
     [Required]
     public string Introduction { get; set; } = null!;

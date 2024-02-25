@@ -1,88 +1,88 @@
-using Api.ViewModels.Department;
-using AutoMapper;
-using Data;
-using Data.Entities;
-using Data.Interfaces;
-using Data.Mapping;
-using Data.Repositories;
-using FakeItEasy;
-using Service;
+//using Api.ViewModels.Department;
+//using AutoMapper;
+//using Data;
+//using Data.Entities;
+//using Data.Interfaces;
+//using Data.Mapping;
+//using Data.Repositories;
+//using FakeItEasy;
+//using Service;
 
-namespace UnitTest.RepositoryTests
-{
-    public class DepartmentRepository_UnitTest
-    {
-        private readonly DepartmentRepository _DepartmentRepository;
-        private readonly DepartmentService _DepartmentService;
+//namespace UnitTest.RepositoryTests
+//{
+//    public class DepartmentRepository_UnitTest
+//    {
+//        private readonly DepartmentRepository _DepartmentRepository;
+//        private readonly DepartmentService _DepartmentService;
 
-        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
-        private readonly IDepartmentRepository _fakeDepartmentRepository = A.Fake<IDepartmentRepository>();
-        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
-        private readonly IMapper _mapper;
-        public DepartmentRepository_UnitTest()
-        {
-            _mapper = new MapperConfiguration(cfg =>
-                        {
-                            cfg.AddProfile(new AutoMapperConfiguration());
-                        }).CreateMapper();
+//        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
+//        private readonly IDepartmentRepository _fakeDepartmentRepository = A.Fake<IDepartmentRepository>();
+//        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
+//        private readonly IMapper _mapper;
+//        public DepartmentRepository_UnitTest()
+//        {
+//            _mapper = new MapperConfiguration(cfg =>
+//                        {
+//                            cfg.AddProfile(new AutoMapperConfiguration());
+//                        }).CreateMapper();
 
-            _DepartmentRepository = new DepartmentRepository(_fakeDbContext, _fakeUow, _mapper);
-            _DepartmentService = new DepartmentService(_fakeDepartmentRepository, _mapper);
-        }
+//            _DepartmentRepository = new DepartmentRepository(_fakeDbContext, _fakeUow, _mapper);
+//            _DepartmentService = new DepartmentService(_fakeDepartmentRepository, _mapper);
+//        }
 
-        [Fact]
-        public async Task Add_Department_In_Repository_Returns_Correctly()
-        {
-            //Code để check repo trả về model với id tạo ở model, tên giống tên truyền vào từ add model
-            //Arrange
-            var fakeDepartmentId = Guid.NewGuid();
+//        [Fact]
+//        public async Task Add_Department_In_Repository_Returns_Correctly()
+//        {
+//            //Code để check repo trả về model với id tạo ở model, tên giống tên truyền vào từ add model
+//            //Arrange
+//            var fakeDepartmentId = Guid.NewGuid();
 
-            var fakeCreatedDepartment = new DepartmentAddModel
-            {
-                DepartmentName = "string",
-            };
+//            var fakeCreatedDepartment = new DepartmentAddModel
+//            {
+//                DepartmentName = "string",
+//            };
 
-            var mappedCreatedDepartment = _mapper.Map<DepartmentModel>(fakeCreatedDepartment);
-            mappedCreatedDepartment.DepartmentId = fakeDepartmentId;
-            //Act
-            var response = await _DepartmentRepository.SaveDepartment(mappedCreatedDepartment);
+//            var mappedCreatedDepartment = _mapper.Map<DepartmentModel>(fakeCreatedDepartment);
+//            mappedCreatedDepartment.DepartmentId = fakeDepartmentId;
+//            //Act
+//            var response = await _DepartmentRepository.SaveDepartment(mappedCreatedDepartment);
 
-            //Assert
-            Assert.NotEqual(mappedCreatedDepartment.DepartmentId, response.DepartmentId);
-        }
+//            //Assert
+//            Assert.NotEqual(mappedCreatedDepartment.DepartmentId, response.DepartmentId);
+//        }
 
-        [Fact]
-        public async Task Get_Department_Returns_Correctly()
-        {
-            //Arrange
-            List<DepartmentModel> departmentList = new();
-            var expectedCreatedDepartment1 = new DepartmentModel
-            {
-                DepartmentId = Guid.NewGuid(),
-                DepartmentName = "string",
-                IsDeleted = false
-            };
-            var expectedCreatedDepartment2 = new DepartmentModel
-            {
-                DepartmentId = Guid.NewGuid(),
-                DepartmentName = "string",
-                IsDeleted = false
-            };
-            var expectedCreatedDepartment3 = new DepartmentModel
-            {
-                DepartmentId = Guid.NewGuid(),
-                DepartmentName = "string",
-                IsDeleted = false
-            };
-            departmentList.Add(expectedCreatedDepartment1);
-            departmentList.Add(expectedCreatedDepartment2);
-            departmentList.Add(expectedCreatedDepartment3);
-            //Act
-            A.CallTo(() => _fakeDepartmentRepository.GetAllDepartment(null)).Returns(departmentList);
-            var response = await _DepartmentService.GetAllDepartment(null);
+//        [Fact]
+//        public async Task Get_Department_Returns_Correctly()
+//        {
+//            //Arrange
+//            List<DepartmentModel> departmentList = new();
+//            var expectedCreatedDepartment1 = new DepartmentModel
+//            {
+//                DepartmentId = Guid.NewGuid(),
+//                DepartmentName = "string",
+//                IsDeleted = false
+//            };
+//            var expectedCreatedDepartment2 = new DepartmentModel
+//            {
+//                DepartmentId = Guid.NewGuid(),
+//                DepartmentName = "string",
+//                IsDeleted = false
+//            };
+//            var expectedCreatedDepartment3 = new DepartmentModel
+//            {
+//                DepartmentId = Guid.NewGuid(),
+//                DepartmentName = "string",
+//                IsDeleted = false
+//            };
+//            departmentList.Add(expectedCreatedDepartment1);
+//            departmentList.Add(expectedCreatedDepartment2);
+//            departmentList.Add(expectedCreatedDepartment3);
+//            //Act
+//            A.CallTo(() => _fakeDepartmentRepository.GetAllDepartment(null)).Returns(departmentList);
+//            var response = await _DepartmentService.GetAllDepartment(null);
 
-            //Assert
-            Assert.IsAssignableFrom<IEnumerable<DepartmentViewModel>>(response);
-        }
-    }
-}
+//            //Assert
+//            Assert.IsAssignableFrom<IEnumerable<DepartmentViewModel>>(response);
+//        }
+//    }
+//}

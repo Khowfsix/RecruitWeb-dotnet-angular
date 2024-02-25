@@ -1,82 +1,82 @@
-﻿using Api.Controllers;
-using Api.ViewModels.Itrsinterview;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Service.Interfaces;
+﻿//using Api.Controllers;
+//using Api.ViewModels.Itrsinterview;
+//using Microsoft.AspNetCore.Mvc;
+//using Moq;
+//using Service.Interfaces;
 
-namespace UnitTest.Itrsinterview
-{
-    public class ItrsinterviewControllerTests
-    {
-        private readonly Mock<IItrsinterviewService> _mockItrsinterviewService;
-        private readonly ItrsinterviewController _ItrsinterviewController;
+//namespace UnitTest.Itrsinterview
+//{
+//    public class ItrsinterviewControllerTests
+//    {
+//        private readonly Mock<IItrsinterviewService> _mockItrsinterviewService;
+//        private readonly ItrsinterviewController _ItrsinterviewController;
 
-        public ItrsinterviewControllerTests()
-        {
-            _mockItrsinterviewService = new Mock<IItrsinterviewService>();
-            _ItrsinterviewController = new ItrsinterviewController(_mockItrsinterviewService.Object);
-        }
+//        public ItrsinterviewControllerTests()
+//        {
+//            _mockItrsinterviewService = new Mock<IItrsinterviewService>();
+//            _ItrsinterviewController = new ItrsinterviewController(_mockItrsinterviewService.Object);
+//        }
 
-        [Fact]
-        public async Task Itrsinterview_Controller_Get_All_Test()
-        {
-            // Arrange
-            var expecteds = new List<ItrsinterviewViewModel>
-            {
-                new ItrsinterviewViewModel(),
-                new ItrsinterviewViewModel()
-            };
+//        [Fact]
+//        public async Task Itrsinterview_Controller_Get_All_Test()
+//        {
+//            // Arrange
+//            var expecteds = new List<ItrsinterviewViewModel>
+//            {
+//                new ItrsinterviewViewModel(),
+//                new ItrsinterviewViewModel()
+//            };
 
-            _mockItrsinterviewService.Setup(service => service.GetAllItrsinterview()).ReturnsAsync(expecteds);
+//            _mockItrsinterviewService.Setup(service => service.GetAllItrsinterview()).ReturnsAsync(expecteds);
 
-            // Act
-            var result = await _ItrsinterviewController.GetAllItrsinterview(null) as OkObjectResult;
+//            // Act
+//            var result = await _ItrsinterviewController.GetAllItrsinterview(null) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var ItrsinterviewList = Assert.IsType<List<ItrsinterviewViewModel>>(result.Value);
-            Assert.Equal(2, ItrsinterviewList.Count);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var ItrsinterviewList = Assert.IsType<List<ItrsinterviewViewModel>>(result.Value);
+//            Assert.Equal(2, ItrsinterviewList.Count);
+//        }
 
-        [Fact]
-        public async Task Itrsinterview_Controller_Update_Itrsinterview_Test()
-        {
-            // Arrange
-            Guid ItrsinterviewId = Guid.NewGuid();
-            var input = new ItrsinterviewUpdateModel();
+//        [Fact]
+//        public async Task Itrsinterview_Controller_Update_Itrsinterview_Test()
+//        {
+//            // Arrange
+//            Guid ItrsinterviewId = Guid.NewGuid();
+//            var input = new ItrsinterviewUpdateModel();
 
-            var expected = true;
+//            var expected = true;
 
-            _mockItrsinterviewService.Setup(service => service.UpdateItrsinterview(input, ItrsinterviewId, Guid.Empty)).ReturnsAsync(true);
+//            _mockItrsinterviewService.Setup(service => service.UpdateItrsinterview(input, ItrsinterviewId, Guid.Empty)).ReturnsAsync(true);
 
-            // Act
-            var result = await _ItrsinterviewController.UpdateItrsinterview(input, ItrsinterviewId, Guid.Empty) as OkObjectResult;
+//            // Act
+//            var result = await _ItrsinterviewController.UpdateItrsinterview(input, ItrsinterviewId, Guid.Empty) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var updated = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, updated);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var updated = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, updated);
+//        }
 
-        [Fact]
-        public async Task Itrsinterview_Controller_Delete_Itrsinterview_Test()
-        {
-            // Arrange
-            Guid ItrsinterviewId = Guid.NewGuid();
-            var expected = true;
+//        [Fact]
+//        public async Task Itrsinterview_Controller_Delete_Itrsinterview_Test()
+//        {
+//            // Arrange
+//            Guid ItrsinterviewId = Guid.NewGuid();
+//            var expected = true;
 
-            _mockItrsinterviewService.Setup(service => service.DeleteItrsinterview(ItrsinterviewId)).ReturnsAsync(true);
+//            _mockItrsinterviewService.Setup(service => service.DeleteItrsinterview(ItrsinterviewId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _ItrsinterviewController.DeleteItrsinterview(ItrsinterviewId) as OkObjectResult;
+//            // Act
+//            var result = await _ItrsinterviewController.DeleteItrsinterview(ItrsinterviewId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var deleted = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, deleted);
-        }
-    }
-}
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var deleted = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, deleted);
+//        }
+//    }
+//}

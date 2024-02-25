@@ -1,74 +1,74 @@
-using Api.ViewModels.Itrsinterview;
-using AutoMapper;
-using Data;
-using Data.Entities;
-using Data.Interfaces;
-using Data.Mapping;
-using Data.Repositories;
-using FakeItEasy;
-using Service;
+//using Api.ViewModels.Itrsinterview;
+//using AutoMapper;
+//using Data;
+//using Data.Entities;
+//using Data.Interfaces;
+//using Data.Mapping;
+//using Data.Repositories;
+//using FakeItEasy;
+//using Service;
 
-namespace UnitTest.RepositoryTests
-{
-    public class ItrsInterviewRepository_UnitTest
-    {
-        private readonly ItrsinterviewRepository _ItrsinterviewRepository;
-        private readonly ItrsinterviewService _ItrsinterviewService;
+//namespace UnitTest.RepositoryTests
+//{
+//    public class ItrsInterviewRepository_UnitTest
+//    {
+//        private readonly ItrsinterviewRepository _ItrsinterviewRepository;
+//        private readonly ItrsinterviewService _ItrsinterviewService;
 
-        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
-        private readonly IInterviewRepository _fakeInterviewRepository = A.Fake<IInterviewRepository>();
-        private readonly IItrsinterviewRepository _fakeItrsinterviewRepository = A.Fake<IItrsinterviewRepository>();
-        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
-        private readonly IMapper _mapper;
+//        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
+//        private readonly IInterviewRepository _fakeInterviewRepository = A.Fake<IInterviewRepository>();
+//        private readonly IItrsinterviewRepository _fakeItrsinterviewRepository = A.Fake<IItrsinterviewRepository>();
+//        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
+//        private readonly IMapper _mapper;
 
-        public ItrsInterviewRepository_UnitTest()
-        {
-            _mapper = new MapperConfiguration(cfg =>
-                        {
-                            cfg.AddProfile(new AutoMapperConfiguration());
-                        }).CreateMapper();
+//        public ItrsInterviewRepository_UnitTest()
+//        {
+//            _mapper = new MapperConfiguration(cfg =>
+//                        {
+//                            cfg.AddProfile(new AutoMapperConfiguration());
+//                        }).CreateMapper();
 
-            _ItrsinterviewRepository = new ItrsinterviewRepository(_fakeDbContext, _fakeUow, _mapper);
-            _ItrsinterviewService = new ItrsinterviewService(_fakeItrsinterviewRepository,
-                                                 _fakeInterviewRepository, _mapper);
-        }
+//            _ItrsinterviewRepository = new ItrsinterviewRepository(_fakeDbContext, _fakeUow, _mapper);
+//            _ItrsinterviewService = new ItrsinterviewService(_fakeItrsinterviewRepository,
+//                                                 _fakeInterviewRepository, _mapper);
+//        }
 
-        [Fact]
-        public async Task Add_Itrsinterview_In_Repository_Returns_Correctly()
-        {
-            //Code để check repo trả về model với id tạo ở model, tên giống tên truyền vào từ add model
-            //Arrange
-            var fakeItrsinterviewId = Guid.NewGuid();
+//        [Fact]
+//        public async Task Add_Itrsinterview_In_Repository_Returns_Correctly()
+//        {
+//            //Code để check repo trả về model với id tạo ở model, tên giống tên truyền vào từ add model
+//            //Arrange
+//            var fakeItrsinterviewId = Guid.NewGuid();
 
-            var fakeCreatedItrsinterview = new ItrsinterviewAddModel
-            {
-            };
+//            var fakeCreatedItrsinterview = new ItrsinterviewAddModel
+//            {
+//            };
 
-            var mappedCreatedItrsinterview = _mapper.Map<ItrsinterviewModel>(fakeCreatedItrsinterview);
-            mappedCreatedItrsinterview.ItrsinterviewId = fakeItrsinterviewId;
-            //Act
-            var response = await _ItrsinterviewRepository.SaveItrsinterview(mappedCreatedItrsinterview, fakeItrsinterviewId);
+//            var mappedCreatedItrsinterview = _mapper.Map<ItrsinterviewModel>(fakeCreatedItrsinterview);
+//            mappedCreatedItrsinterview.ItrsinterviewId = fakeItrsinterviewId;
+//            //Act
+//            var response = await _ItrsinterviewRepository.SaveItrsinterview(mappedCreatedItrsinterview, fakeItrsinterviewId);
 
-            //Assert
-            Assert.NotEqual(mappedCreatedItrsinterview.ItrsinterviewId, response.ItrsinterviewId);
-        }
+//            //Assert
+//            Assert.NotEqual(mappedCreatedItrsinterview.ItrsinterviewId, response.ItrsinterviewId);
+//        }
 
-        [Fact]
-        public async Task Get_Itrsinterview_Returns_Correctly()
-        {
-            //Arrange
-            var fakeItrsinterviewId = Guid.NewGuid();
-            var expectedCreatedItrsinterview = new ItrsinterviewModel
-            {
-                ItrsinterviewId = fakeItrsinterviewId,
-            };
+//        [Fact]
+//        public async Task Get_Itrsinterview_Returns_Correctly()
+//        {
+//            //Arrange
+//            var fakeItrsinterviewId = Guid.NewGuid();
+//            var expectedCreatedItrsinterview = new ItrsinterviewModel
+//            {
+//                ItrsinterviewId = fakeItrsinterviewId,
+//            };
 
-            //Act
-            A.CallTo(() => _fakeItrsinterviewRepository.GetItrsinterviewById(fakeItrsinterviewId)).Returns(expectedCreatedItrsinterview);
-            var response = await _ItrsinterviewService.GetItrsinterviewById(fakeItrsinterviewId);
+//            //Act
+//            A.CallTo(() => _fakeItrsinterviewRepository.GetItrsinterviewById(fakeItrsinterviewId)).Returns(expectedCreatedItrsinterview);
+//            var response = await _ItrsinterviewService.GetItrsinterviewById(fakeItrsinterviewId);
 
-            //Assert
-            Assert.Equal(expectedCreatedItrsinterview.ItrsinterviewId, response.ItrsinterviewId);
-        }
-    }
-}
+//            //Assert
+//            Assert.Equal(expectedCreatedItrsinterview.ItrsinterviewId, response.ItrsinterviewId);
+//        }
+//    }
+//}

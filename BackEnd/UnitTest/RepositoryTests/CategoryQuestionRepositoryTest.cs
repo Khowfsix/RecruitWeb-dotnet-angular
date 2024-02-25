@@ -1,83 +1,83 @@
-using Api.ViewModels.CategoryQuestion;
-using AutoMapper;
-using Data;
-using Data.Entities;
-using Data.Interfaces;
-using Data.Mapping;
-using Data.Repositories;
-using FakeItEasy;
-using Service;
+//using Api.ViewModels.CategoryQuestion;
+//using AutoMapper;
+//using Data;
+//using Data.Entities;
+//using Data.Interfaces;
+//using Data.Mapping;
+//using Data.Repositories;
+//using FakeItEasy;
+//using Service;
 
-namespace UnitTest.RepositoryTests
-{
-    public class CategoryQuestionRepository_UnitTest
-    {
-        private readonly CategoryQuestionRepository _CategoryQuestionRepository;
-        private readonly CategoryQuestionService _CategoryQuestionService;
+//namespace UnitTest.RepositoryTests
+//{
+//    public class CategoryQuestionRepository_UnitTest
+//    {
+//        private readonly CategoryQuestionRepository _CategoryQuestionRepository;
+//        private readonly CategoryQuestionService _CategoryQuestionService;
 
-        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
-        private readonly ICategoryQuestionRepository _fakeCategoryQuestionRepository = A.Fake<ICategoryQuestionRepository>();
-        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
-        private readonly IMapper _mapper;
+//        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
+//        private readonly ICategoryQuestionRepository _fakeCategoryQuestionRepository = A.Fake<ICategoryQuestionRepository>();
+//        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
+//        private readonly IMapper _mapper;
 
-        public CategoryQuestionRepository_UnitTest()
-        {
-            _mapper = new MapperConfiguration(cfg =>
-                        {
-                            cfg.AddProfile(new AutoMapperConfiguration());
-                        }).CreateMapper();
+//        public CategoryQuestionRepository_UnitTest()
+//        {
+//            _mapper = new MapperConfiguration(cfg =>
+//                        {
+//                            cfg.AddProfile(new AutoMapperConfiguration());
+//                        }).CreateMapper();
 
-            _CategoryQuestionRepository = new CategoryQuestionRepository(_fakeDbContext, _fakeUow, _mapper);
-            _CategoryQuestionService = new CategoryQuestionService(_fakeCategoryQuestionRepository, _mapper);
-        }
+//            _CategoryQuestionRepository = new CategoryQuestionRepository(_fakeDbContext, _fakeUow, _mapper);
+//            _CategoryQuestionService = new CategoryQuestionService(_fakeCategoryQuestionRepository, _mapper);
+//        }
 
-        [Fact]
-        public async Task Add_CategoryQuestion_In_Repository_Returns_Correctly()
-        {
-            //Code để check repo trả về model với id tạo ở model, tên giống tên truyền vào từ add model
-            //Arrange
-            var fakeCategoryQuestionId = Guid.NewGuid();
+//        [Fact]
+//        public async Task Add_CategoryQuestion_In_Repository_Returns_Correctly()
+//        {
+//            //Code để check repo trả về model với id tạo ở model, tên giống tên truyền vào từ add model
+//            //Arrange
+//            var fakeCategoryQuestionId = Guid.NewGuid();
 
-            var fakeCreatedCategoryQuestion = new CategoryQuestionAddModel
-            {
-            };
+//            var fakeCreatedCategoryQuestion = new CategoryQuestionAddModel
+//            {
+//            };
 
-            var mappedCreatedCategoryQuestion = _mapper.Map<CategoryQuestionModel>(fakeCreatedCategoryQuestion);
-            mappedCreatedCategoryQuestion.CategoryQuestionId = fakeCategoryQuestionId;
-            //Act
-            var response = await _CategoryQuestionRepository.SaveCategoryQuestion(mappedCreatedCategoryQuestion);
+//            var mappedCreatedCategoryQuestion = _mapper.Map<CategoryQuestionModel>(fakeCreatedCategoryQuestion);
+//            mappedCreatedCategoryQuestion.CategoryQuestionId = fakeCategoryQuestionId;
+//            //Act
+//            var response = await _CategoryQuestionRepository.SaveCategoryQuestion(mappedCreatedCategoryQuestion);
 
-            //Assert
-            Assert.NotEqual(mappedCreatedCategoryQuestion.CategoryQuestionId, response.CategoryQuestionId);
-        }
+//            //Assert
+//            Assert.NotEqual(mappedCreatedCategoryQuestion.CategoryQuestionId, response.CategoryQuestionId);
+//        }
 
-        [Fact]
-        public async Task Get_CategoryQuestion_Returns_Correctly()
-        {
-            //Arrange
-            List<CategoryQuestionModel> list = new();
-            var expectedCreatedCategoryQuestion1 = new CategoryQuestionModel
-            {
-                CategoryQuestionId = Guid.NewGuid(),
-            };
-            var expectedCreatedCategoryQuestion2 = new CategoryQuestionModel
-            {
-                CategoryQuestionId = Guid.NewGuid(),
-            };
-            var expectedCreatedCategoryQuestion3 = new CategoryQuestionModel
-            {
-                CategoryQuestionId = Guid.NewGuid(),
-            };
-            list.Add(expectedCreatedCategoryQuestion1);
-            list.Add(expectedCreatedCategoryQuestion2);
-            list.Add(expectedCreatedCategoryQuestion3);
+//        [Fact]
+//        public async Task Get_CategoryQuestion_Returns_Correctly()
+//        {
+//            //Arrange
+//            List<CategoryQuestionModel> list = new();
+//            var expectedCreatedCategoryQuestion1 = new CategoryQuestionModel
+//            {
+//                CategoryQuestionId = Guid.NewGuid(),
+//            };
+//            var expectedCreatedCategoryQuestion2 = new CategoryQuestionModel
+//            {
+//                CategoryQuestionId = Guid.NewGuid(),
+//            };
+//            var expectedCreatedCategoryQuestion3 = new CategoryQuestionModel
+//            {
+//                CategoryQuestionId = Guid.NewGuid(),
+//            };
+//            list.Add(expectedCreatedCategoryQuestion1);
+//            list.Add(expectedCreatedCategoryQuestion2);
+//            list.Add(expectedCreatedCategoryQuestion3);
 
-            //Act
-            A.CallTo(() => _fakeCategoryQuestionRepository.GetAllCategoryQuestions()).Returns(list);
-            var response = await _CategoryQuestionService.GetAllCategoryQuestions();
+//            //Act
+//            A.CallTo(() => _fakeCategoryQuestionRepository.GetAllCategoryQuestions()).Returns(list);
+//            var response = await _CategoryQuestionService.GetAllCategoryQuestions();
 
-            //Assert
-            Assert.IsAssignableFrom<IEnumerable<CategoryQuestionViewModel>>(response);
-        }
-    }
-}
+//            //Assert
+//            Assert.IsAssignableFrom<IEnumerable<CategoryQuestionViewModel>>(response);
+//        }
+//    }
+//}

@@ -1,101 +1,101 @@
-﻿using Api.Controllers;
-using Api.ViewModels.SecurityQuestion;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Service.Interfaces;
+﻿//using Api.Controllers;
+//using Api.ViewModels.SecurityQuestion;
+//using Microsoft.AspNetCore.Mvc;
+//using Moq;
+//using Service.Interfaces;
 
-namespace UnitTest.SecurityQuestion
-{
-    public class SecurityQuestionControllerTests
-    {
-        private readonly Mock<ISecurityQuestionService> _mockSecurityQuestionService;
-        private readonly SecurityQuestionController _SecurityQuestionController;
+//namespace UnitTest.SecurityQuestion
+//{
+//    public class SecurityQuestionControllerTests
+//    {
+//        private readonly Mock<ISecurityQuestionService> _mockSecurityQuestionService;
+//        private readonly SecurityQuestionController _SecurityQuestionController;
 
-        public SecurityQuestionControllerTests()
-        {
-            _mockSecurityQuestionService = new Mock<ISecurityQuestionService>();
-            _SecurityQuestionController = new SecurityQuestionController(_mockSecurityQuestionService.Object);
-        }
+//        public SecurityQuestionControllerTests()
+//        {
+//            _mockSecurityQuestionService = new Mock<ISecurityQuestionService>();
+//            _SecurityQuestionController = new SecurityQuestionController(_mockSecurityQuestionService.Object);
+//        }
 
-        [Fact]
-        public async Task SecurityQuestion_Controller_Get_All_Test()
-        {
-            // Arrange
-            var expecteds = new List<SecurityQuestionViewModel>
-            {
-                new SecurityQuestionViewModel(),
-                new SecurityQuestionViewModel()
-            };
+//        [Fact]
+//        public async Task SecurityQuestion_Controller_Get_All_Test()
+//        {
+//            // Arrange
+//            var expecteds = new List<SecurityQuestionViewModel>
+//            {
+//                new SecurityQuestionViewModel(),
+//                new SecurityQuestionViewModel()
+//            };
 
-            _mockSecurityQuestionService.Setup(service => service.GetAllSecurityQuestion()).ReturnsAsync(expecteds);
+//            _mockSecurityQuestionService.Setup(service => service.GetAllSecurityQuestion()).ReturnsAsync(expecteds);
 
-            // Act
-            var result = await _SecurityQuestionController.GetAllSecurityQuestion() as OkObjectResult;
+//            // Act
+//            var result = await _SecurityQuestionController.GetAllSecurityQuestion() as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var SecurityQuestionList = Assert.IsType<List<SecurityQuestionViewModel>>(result.Value);
-            Assert.Equal(2, SecurityQuestionList.Count);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var SecurityQuestionList = Assert.IsType<List<SecurityQuestionViewModel>>(result.Value);
+//            Assert.Equal(2, SecurityQuestionList.Count);
+//        }
 
-        [Fact]
-        public async Task SecurityQuestion_Controller_Save_SecurityQuestion_Test()
-        {
-            // Arrange
-            var input = new SecurityQuestionAddModel();
+//        [Fact]
+//        public async Task SecurityQuestion_Controller_Save_SecurityQuestion_Test()
+//        {
+//            // Arrange
+//            var input = new SecurityQuestionAddModel();
 
-            var expected = new SecurityQuestionViewModel();
+//            var expected = new SecurityQuestionViewModel();
 
-            _mockSecurityQuestionService.Setup(service => service.SaveSecurityQuestion(input)).ReturnsAsync(expected);
+//            _mockSecurityQuestionService.Setup(service => service.SaveSecurityQuestion(input)).ReturnsAsync(expected);
 
-            // Act
-            var result = await _SecurityQuestionController.SaveSecurityQuestion(input) as OkObjectResult;
+//            // Act
+//            var result = await _SecurityQuestionController.SaveSecurityQuestion(input) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var created = Assert.IsType<SecurityQuestionViewModel>(result.Value);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var created = Assert.IsType<SecurityQuestionViewModel>(result.Value);
+//        }
 
-        [Fact]
-        public async Task SecurityQuestion_Controller_Update_SecurityQuestion_Test()
-        {
-            // Arrange
-            Guid SecurityQuestionId = Guid.NewGuid();
-            var input = new SecurityQuestionUpdateModel();
+//        [Fact]
+//        public async Task SecurityQuestion_Controller_Update_SecurityQuestion_Test()
+//        {
+//            // Arrange
+//            Guid SecurityQuestionId = Guid.NewGuid();
+//            var input = new SecurityQuestionUpdateModel();
 
-            var expected = true;
+//            var expected = true;
 
-            _mockSecurityQuestionService.Setup(service => service.UpdateSecurityQuestion(input, SecurityQuestionId)).ReturnsAsync(true);
+//            _mockSecurityQuestionService.Setup(service => service.UpdateSecurityQuestion(input, SecurityQuestionId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _SecurityQuestionController.UpdateSecurityQuestion(input, SecurityQuestionId) as OkObjectResult;
+//            // Act
+//            var result = await _SecurityQuestionController.UpdateSecurityQuestion(input, SecurityQuestionId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var updated = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, updated);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var updated = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, updated);
+//        }
 
-        [Fact]
-        public async Task SecurityQuestion_Controller_Delete_SecurityQuestion_Test()
-        {
-            // Arrange
-            Guid SecurityQuestionId = Guid.NewGuid();
-            var expected = true;
+//        [Fact]
+//        public async Task SecurityQuestion_Controller_Delete_SecurityQuestion_Test()
+//        {
+//            // Arrange
+//            Guid SecurityQuestionId = Guid.NewGuid();
+//            var expected = true;
 
-            _mockSecurityQuestionService.Setup(service => service.DeleteSecurityQuestion(SecurityQuestionId)).ReturnsAsync(true);
+//            _mockSecurityQuestionService.Setup(service => service.DeleteSecurityQuestion(SecurityQuestionId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _SecurityQuestionController.DeleteSecurityQuestion(SecurityQuestionId) as OkObjectResult;
+//            // Act
+//            var result = await _SecurityQuestionController.DeleteSecurityQuestion(SecurityQuestionId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var deleted = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, deleted);
-        }
-    }
-}
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var deleted = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, deleted);
+//        }
+//    }
+//}

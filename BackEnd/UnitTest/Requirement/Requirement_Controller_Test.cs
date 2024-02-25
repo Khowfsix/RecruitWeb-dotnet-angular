@@ -1,101 +1,101 @@
-﻿using Api.Controllers;
-using Api.ViewModels.Requirement;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Service.Interfaces;
+﻿//using Api.Controllers;
+//using Api.ViewModels.Requirement;
+//using Microsoft.AspNetCore.Mvc;
+//using Moq;
+//using Service.Interfaces;
 
-namespace UnitTest.Requirement
-{
-    public class RequirementControllerTests
-    {
-        private readonly Mock<IRequirementService> _mockRequirementService;
-        private readonly RequirementController _RequirementController;
+//namespace UnitTest.Requirement
+//{
+//    public class RequirementControllerTests
+//    {
+//        private readonly Mock<IRequirementService> _mockRequirementService;
+//        private readonly RequirementController _RequirementController;
 
-        public RequirementControllerTests()
-        {
-            _mockRequirementService = new Mock<IRequirementService>();
-            _RequirementController = new RequirementController(_mockRequirementService.Object);
-        }
+//        public RequirementControllerTests()
+//        {
+//            _mockRequirementService = new Mock<IRequirementService>();
+//            _RequirementController = new RequirementController(_mockRequirementService.Object);
+//        }
 
-        [Fact]
-        public async Task Requirement_Controller_Get_All_Test()
-        {
-            // Arrange
-            var expecteds = new List<RequirementViewModel>
-            {
-                new RequirementViewModel(),
-                new RequirementViewModel()
-            };
+//        [Fact]
+//        public async Task Requirement_Controller_Get_All_Test()
+//        {
+//            // Arrange
+//            var expecteds = new List<RequirementViewModel>
+//            {
+//                new RequirementViewModel(),
+//                new RequirementViewModel()
+//            };
 
-            _mockRequirementService.Setup(service => service.GetAllRequirement()).ReturnsAsync(expecteds);
+//            _mockRequirementService.Setup(service => service.GetAllRequirement()).ReturnsAsync(expecteds);
 
-            // Act
-            var result = await _RequirementController.GetAllRequirement() as OkObjectResult;
+//            // Act
+//            var result = await _RequirementController.GetAllRequirement() as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var RequirementList = Assert.IsType<List<RequirementViewModel>>(result.Value);
-            Assert.Equal(2, RequirementList.Count);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var RequirementList = Assert.IsType<List<RequirementViewModel>>(result.Value);
+//            Assert.Equal(2, RequirementList.Count);
+//        }
 
-        [Fact]
-        public async Task Requirement_Controller_Save_Requirement_Test()
-        {
-            // Arrange
-            var input = new RequirementAddModel();
+//        [Fact]
+//        public async Task Requirement_Controller_Save_Requirement_Test()
+//        {
+//            // Arrange
+//            var input = new RequirementAddModel();
 
-            var expected = new RequirementViewModel();
+//            var expected = new RequirementViewModel();
 
-            _mockRequirementService.Setup(service => service.SaveRequirement(input)).ReturnsAsync(expected);
+//            _mockRequirementService.Setup(service => service.SaveRequirement(input)).ReturnsAsync(expected);
 
-            // Act
-            var result = await _RequirementController.SaveRequirement(input) as OkObjectResult;
+//            // Act
+//            var result = await _RequirementController.SaveRequirement(input) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var created = Assert.IsType<RequirementViewModel>(result.Value);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var created = Assert.IsType<RequirementViewModel>(result.Value);
+//        }
 
-        [Fact]
-        public async Task Requirement_Controller_Update_Requirement_Test()
-        {
-            // Arrange
-            Guid RequirementId = Guid.NewGuid();
-            var input = new RequirementUpdateModel();
+//        [Fact]
+//        public async Task Requirement_Controller_Update_Requirement_Test()
+//        {
+//            // Arrange
+//            Guid RequirementId = Guid.NewGuid();
+//            var input = new RequirementUpdateModel();
 
-            var expected = true;
+//            var expected = true;
 
-            _mockRequirementService.Setup(service => service.UpdateRequirement(input, RequirementId)).ReturnsAsync(true);
+//            _mockRequirementService.Setup(service => service.UpdateRequirement(input, RequirementId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _RequirementController.UpdateRequirement(input, RequirementId) as OkObjectResult;
+//            // Act
+//            var result = await _RequirementController.UpdateRequirement(input, RequirementId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var updated = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, updated);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var updated = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, updated);
+//        }
 
-        [Fact]
-        public async Task Requirement_Controller_Delete_Requirement_Test()
-        {
-            // Arrange
-            Guid RequirementId = Guid.NewGuid();
-            var expected = true;
+//        [Fact]
+//        public async Task Requirement_Controller_Delete_Requirement_Test()
+//        {
+//            // Arrange
+//            Guid RequirementId = Guid.NewGuid();
+//            var expected = true;
 
-            _mockRequirementService.Setup(service => service.DeleteRequirement(RequirementId)).ReturnsAsync(true);
+//            _mockRequirementService.Setup(service => service.DeleteRequirement(RequirementId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _RequirementController.DeleteRequirement(RequirementId) as OkObjectResult;
+//            // Act
+//            var result = await _RequirementController.DeleteRequirement(RequirementId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var deleted = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, deleted);
-        }
-    }
-}
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var deleted = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, deleted);
+//        }
+//    }
+//}

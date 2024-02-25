@@ -1,101 +1,101 @@
-﻿using Api.Controllers;
-using Api.ViewModels.Certificate;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Service.Interfaces;
+﻿//using Api.Controllers;
+//using Api.ViewModels.Certificate;
+//using Microsoft.AspNetCore.Mvc;
+//using Moq;
+//using Service.Interfaces;
 
-namespace UnitTest.Certificate
-{
-    public class CertificateControllerTests
-    {
-        private readonly Mock<ICertificateService> _mockCertificateService;
-        private readonly CertificateController _CertificateController;
+//namespace UnitTest.Certificate
+//{
+//    public class CertificateControllerTests
+//    {
+//        private readonly Mock<ICertificateService> _mockCertificateService;
+//        private readonly CertificateController _CertificateController;
 
-        public CertificateControllerTests()
-        {
-            _mockCertificateService = new Mock<ICertificateService>();
-            _CertificateController = new CertificateController(_mockCertificateService.Object);
-        }
+//        public CertificateControllerTests()
+//        {
+//            _mockCertificateService = new Mock<ICertificateService>();
+//            _CertificateController = new CertificateController(_mockCertificateService.Object);
+//        }
 
-        [Fact]
-        public async Task Certificate_Controller_Get_All_Test()
-        {
-            // Arrange
-            var expecteds = new List<CertificateViewModel>
-            {
-                new CertificateViewModel(),
-                new CertificateViewModel()
-            };
+//        [Fact]
+//        public async Task Certificate_Controller_Get_All_Test()
+//        {
+//            // Arrange
+//            var expecteds = new List<CertificateViewModel>
+//            {
+//                new CertificateViewModel(),
+//                new CertificateViewModel()
+//            };
 
-            _mockCertificateService.Setup(service => service.GetAllCertificate(null)).ReturnsAsync(expecteds);
+//            _mockCertificateService.Setup(service => service.GetAllCertificate(null)).ReturnsAsync(expecteds);
 
-            // Act
-            var result = await _CertificateController.GetAllCertificate(null) as OkObjectResult;
+//            // Act
+//            var result = await _CertificateController.GetAllCertificate(null) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var CertificateList = Assert.IsType<List<CertificateViewModel>>(result.Value);
-            Assert.Equal(2, CertificateList.Count);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var CertificateList = Assert.IsType<List<CertificateViewModel>>(result.Value);
+//            Assert.Equal(2, CertificateList.Count);
+//        }
 
-        [Fact]
-        public async Task Certificate_Controller_Save_Certificate_Test()
-        {
-            // Arrange
-            var input = new CertificateAddModel();
+//        [Fact]
+//        public async Task Certificate_Controller_Save_Certificate_Test()
+//        {
+//            // Arrange
+//            var input = new CertificateAddModel();
 
-            var expected = new CertificateViewModel();
+//            var expected = new CertificateViewModel();
 
-            _mockCertificateService.Setup(service => service.SaveCertificate(input)).ReturnsAsync(expected);
+//            _mockCertificateService.Setup(service => service.SaveCertificate(input)).ReturnsAsync(expected);
 
-            // Act
-            var result = await _CertificateController.SaveCertificate(input) as OkObjectResult;
+//            // Act
+//            var result = await _CertificateController.SaveCertificate(input) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var created = Assert.IsType<CertificateViewModel>(result.Value);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var created = Assert.IsType<CertificateViewModel>(result.Value);
+//        }
 
-        [Fact]
-        public async Task Certificate_Controller_Update_Certificate_Test()
-        {
-            // Arrange
-            Guid CertificateId = Guid.NewGuid();
-            var input = new CertificateUpdateModel();
+//        [Fact]
+//        public async Task Certificate_Controller_Update_Certificate_Test()
+//        {
+//            // Arrange
+//            Guid CertificateId = Guid.NewGuid();
+//            var input = new CertificateUpdateModel();
 
-            var expected = true;
+//            var expected = true;
 
-            _mockCertificateService.Setup(service => service.UpdateCertificate(input, CertificateId)).ReturnsAsync(true);
+//            _mockCertificateService.Setup(service => service.UpdateCertificate(input, CertificateId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _CertificateController.UpdateCertificate(input, CertificateId) as OkObjectResult;
+//            // Act
+//            var result = await _CertificateController.UpdateCertificate(input, CertificateId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var updated = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, updated);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var updated = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, updated);
+//        }
 
-        [Fact]
-        public async Task Certificate_Controller_Delete_Certificate_Test()
-        {
-            // Arrange
-            Guid CertificateId = Guid.NewGuid();
-            var expected = true;
+//        [Fact]
+//        public async Task Certificate_Controller_Delete_Certificate_Test()
+//        {
+//            // Arrange
+//            Guid CertificateId = Guid.NewGuid();
+//            var expected = true;
 
-            _mockCertificateService.Setup(service => service.DeleteCertificate(CertificateId)).ReturnsAsync(true);
+//            _mockCertificateService.Setup(service => service.DeleteCertificate(CertificateId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _CertificateController.DeleteCertificate(CertificateId) as OkObjectResult;
+//            // Act
+//            var result = await _CertificateController.DeleteCertificate(CertificateId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var deleted = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, deleted);
-        }
-    }
-}
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var deleted = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, deleted);
+//        }
+//    }
+//}

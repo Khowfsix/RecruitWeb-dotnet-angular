@@ -21,6 +21,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllShift(int? query)
         {
             var shiftList = await _shiftService.GetAllShifts(query);
@@ -37,6 +38,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Authorize(Roles = "Recruiter,Interviewer,Admin")]
         public async Task<IActionResult> SaveShift(ShiftAddModel shiftModel)
         {

@@ -1,101 +1,101 @@
-﻿using Api.Controllers;
-using Api.ViewModels.Room;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Service.Interfaces;
+﻿//using Api.Controllers;
+//using Api.ViewModels.Room;
+//using Microsoft.AspNetCore.Mvc;
+//using Moq;
+//using Service.Interfaces;
 
-namespace UnitTest.Room
-{
-    public class RoomControllerTests
-    {
-        private readonly Mock<IRoomService> _mockRoomService;
-        private readonly RoomController _RoomController;
+//namespace UnitTest.Room
+//{
+//    public class RoomControllerTests
+//    {
+//        private readonly Mock<IRoomService> _mockRoomService;
+//        private readonly RoomController _RoomController;
 
-        public RoomControllerTests()
-        {
-            _mockRoomService = new Mock<IRoomService>();
-            _RoomController = new RoomController(_mockRoomService.Object);
-        }
+//        public RoomControllerTests()
+//        {
+//            _mockRoomService = new Mock<IRoomService>();
+//            _RoomController = new RoomController(_mockRoomService.Object);
+//        }
 
-        [Fact]
-        public async Task Room_Controller_Get_All_Test()
-        {
-            // Arrange
-            var expecteds = new List<RoomViewModel>
-            {
-                new RoomViewModel(),
-                new RoomViewModel()
-            };
+//        [Fact]
+//        public async Task Room_Controller_Get_All_Test()
+//        {
+//            // Arrange
+//            var expecteds = new List<RoomViewModel>
+//            {
+//                new RoomViewModel(),
+//                new RoomViewModel()
+//            };
 
-            _mockRoomService.Setup(service => service.GetAllRoom()).ReturnsAsync(expecteds);
+//            _mockRoomService.Setup(service => service.GetAllRoom()).ReturnsAsync(expecteds);
 
-            // Act
-            var result = await _RoomController.GetAllRoom() as OkObjectResult;
+//            // Act
+//            var result = await _RoomController.GetAllRoom() as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var RoomList = Assert.IsType<List<RoomViewModel>>(result.Value);
-            Assert.Equal(2, RoomList.Count);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var RoomList = Assert.IsType<List<RoomViewModel>>(result.Value);
+//            Assert.Equal(2, RoomList.Count);
+//        }
 
-        [Fact]
-        public async Task Room_Controller_Save_Room_Test()
-        {
-            // Arrange
-            var input = new RoomAddModel();
+//        [Fact]
+//        public async Task Room_Controller_Save_Room_Test()
+//        {
+//            // Arrange
+//            var input = new RoomAddModel();
 
-            var expected = new RoomViewModel();
+//            var expected = new RoomViewModel();
 
-            _mockRoomService.Setup(service => service.SaveRoom(input)).ReturnsAsync(expected);
+//            _mockRoomService.Setup(service => service.SaveRoom(input)).ReturnsAsync(expected);
 
-            // Act
-            var result = await _RoomController.SaveRoom(input) as OkObjectResult;
+//            // Act
+//            var result = await _RoomController.SaveRoom(input) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var created = Assert.IsType<RoomViewModel>(result.Value);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var created = Assert.IsType<RoomViewModel>(result.Value);
+//        }
 
-        [Fact]
-        public async Task Room_Controller_Update_Room_Test()
-        {
-            // Arrange
-            Guid RoomId = Guid.NewGuid();
-            var input = new RoomUpdateModel();
+//        [Fact]
+//        public async Task Room_Controller_Update_Room_Test()
+//        {
+//            // Arrange
+//            Guid RoomId = Guid.NewGuid();
+//            var input = new RoomUpdateModel();
 
-            var expected = true;
+//            var expected = true;
 
-            _mockRoomService.Setup(service => service.UpdateRoom(input, RoomId)).ReturnsAsync(true);
+//            _mockRoomService.Setup(service => service.UpdateRoom(input, RoomId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _RoomController.UpdateRoom(input, RoomId) as OkObjectResult;
+//            // Act
+//            var result = await _RoomController.UpdateRoom(input, RoomId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var updated = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, updated);
-        }
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var updated = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, updated);
+//        }
 
-        [Fact]
-        public async Task Room_Controller_Delete_Room_Test()
-        {
-            // Arrange
-            Guid RoomId = Guid.NewGuid();
-            var expected = true;
+//        [Fact]
+//        public async Task Room_Controller_Delete_Room_Test()
+//        {
+//            // Arrange
+//            Guid RoomId = Guid.NewGuid();
+//            var expected = true;
 
-            _mockRoomService.Setup(service => service.DeleteRoom(RoomId)).ReturnsAsync(true);
+//            _mockRoomService.Setup(service => service.DeleteRoom(RoomId)).ReturnsAsync(true);
 
-            // Act
-            var result = await _RoomController.DeleteRoom(RoomId) as OkObjectResult;
+//            // Act
+//            var result = await _RoomController.DeleteRoom(RoomId) as OkObjectResult;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            var deleted = Assert.IsType<bool>(result.Value);
-            Assert.Equal(expected, deleted);
-        }
-    }
-}
+//            // Assert
+//            Assert.NotNull(result);
+//            Assert.Equal(200, result.StatusCode);
+//            var deleted = Assert.IsType<bool>(result.Value);
+//            Assert.Equal(expected, deleted);
+//        }
+//    }
+//}

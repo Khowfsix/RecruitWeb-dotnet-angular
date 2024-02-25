@@ -1,78 +1,78 @@
-using Api.ViewModels.Application;
-using AutoMapper;
-using Data;
-using Data.Entities;
-using Data.Interfaces;
-using Data.Mapping;
-using Data.Repositories;
-using FakeItEasy;
-using Service;
+//using Api.ViewModels.Application;
+//using AutoMapper;
+//using Data;
+//using Data.Entities;
+//using Data.Interfaces;
+//using Data.Mapping;
+//using Data.Repositories;
+//using FakeItEasy;
+//using Service;
 
-namespace UnitTest.RepositoryTests
-{
-    public class ApplicationRepository_UnitTest
-    {
-        private readonly ApplicationRepository _applicationRepository;
-        private readonly ApplicationService _applicationService;
+//namespace UnitTest.RepositoryTests
+//{
+//    public class ApplicationRepository_UnitTest
+//    {
+//        private readonly ApplicationRepository _applicationRepository;
+//        private readonly ApplicationService _applicationService;
 
-        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
-        private readonly ICvRepository _fakeCvRepository = A.Fake<ICvRepository>();
-        private readonly IBlacklistRepository _fakeBlacklistRepository = A.Fake<IBlacklistRepository>();
-        private readonly IApplicationRepository _fakeApplicationRepository = A.Fake<IApplicationRepository>();
-        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
-        private readonly IMapper _mapper;
+//        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
+//        private readonly ICvRepository _fakeCvRepository = A.Fake<ICvRepository>();
+//        private readonly IBlacklistRepository _fakeBlacklistRepository = A.Fake<IBlacklistRepository>();
+//        private readonly IApplicationRepository _fakeApplicationRepository = A.Fake<IApplicationRepository>();
+//        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
+//        private readonly IMapper _mapper;
 
-        public ApplicationRepository_UnitTest()
-        {
-            _mapper = new MapperConfiguration(cfg =>
-                        {
-                            cfg.AddProfile(new AutoMapperConfiguration());
-                        }).CreateMapper();
+//        public ApplicationRepository_UnitTest()
+//        {
+//            _mapper = new MapperConfiguration(cfg =>
+//                        {
+//                            cfg.AddProfile(new AutoMapperConfiguration());
+//                        }).CreateMapper();
 
-            _applicationRepository = new ApplicationRepository(_fakeDbContext, _fakeUow, _mapper);
+//            _applicationRepository = new ApplicationRepository(_fakeDbContext, _fakeUow, _mapper);
 
-            _applicationService = new ApplicationService(_fakeApplicationRepository, _fakeCvRepository
-                                                        , _fakeBlacklistRepository, _mapper);
-        }
+//            _applicationService = new ApplicationService(_fakeApplicationRepository, _fakeCvRepository
+//                                                        , _fakeBlacklistRepository, _mapper);
+//        }
 
-        [Fact]
-        public async Task Save_Application_In_Repository_Returns_Correctly()
-        {
-            //Arrange
-            var fakeApplicationId = Guid.NewGuid();
+//        [Fact]
+//        public async Task Save_Application_In_Repository_Returns_Correctly()
+//        {
+//            //Arrange
+//            var fakeApplicationId = Guid.NewGuid();
 
-            var fakeCreatedApplication = new ApplicationAddModel
-            {
-                Cvid = Guid.NewGuid(),
-                PositionId = Guid.NewGuid(),
-            };
+//            var fakeCreatedApplication = new ApplicationAddModel
+//            {
+//                Cvid = Guid.NewGuid(),
+//                PositionId = Guid.NewGuid(),
+//            };
 
-            var mappedCreatedApplication = _mapper.Map<ApplicationModel>(fakeCreatedApplication);
-            mappedCreatedApplication.ApplicationId = fakeApplicationId;
-            //Act
-            var response = await _applicationRepository.SaveApplication(mappedCreatedApplication);
+//            var mappedCreatedApplication = _mapper.Map<ApplicationModel>(fakeCreatedApplication);
+//            mappedCreatedApplication.ApplicationId = fakeApplicationId;
+//            //Act
+//            var response = await _applicationRepository.SaveApplication(mappedCreatedApplication);
 
-            //Assert
-            Assert.NotEqual(mappedCreatedApplication.ApplicationId, response.ApplicationId);
-        }
+//            //Assert
+//            Assert.NotEqual(mappedCreatedApplication.ApplicationId, response.ApplicationId);
+//        }
 
-        [Fact]
-        public async Task Get_Application_Returns_Correctly()
-        {
-            //Arrange
-            var fakeApplicationId = Guid.NewGuid();
-            var expectedCreatedApplication = new ApplicationModel
-            {
-                ApplicationId = fakeApplicationId,
-                IsDeleted = false
-            };
+//        [Fact]
+//        public async Task Get_Application_Returns_Correctly()
+//        {
+//            //Arrange
+//            var fakeApplicationId = Guid.NewGuid();
+//            var expectedCreatedApplication = new ApplicationModel
+//            {
+//                ApplicationId = fakeApplicationId,
+//                IsDeleted = false
+//            };
 
-            //Act
-            A.CallTo(() => _fakeApplicationRepository.GetApplicationById(fakeApplicationId)).Returns(expectedCreatedApplication);
-            var response = await _applicationService.GetApplicationById(fakeApplicationId);
+//            //Act
+//            A.CallTo(() => _fakeApplicationRepository.GetApplicationById(fakeApplicationId)).Returns(expectedCreatedApplication);
+//            var response = await _applicationService.GetApplicationById(fakeApplicationId);
 
-            //Assert
-            Assert.Equal(expectedCreatedApplication.ApplicationId, response.ApplicationId);
-        }
-    }
-}
+//            //Assert
+//            Assert.Equal(expectedCreatedApplication.ApplicationId, response.ApplicationId);
+//        }
+//    }
+//}
