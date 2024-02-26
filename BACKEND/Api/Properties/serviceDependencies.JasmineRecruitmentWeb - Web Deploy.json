@@ -2,7 +2,7 @@
   "dependencies": {
     "mssql1": {
       "secretStore": "AzureAppSettings",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/jasminerecwebdbserver/databases/JasmineRecWeb",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/jasminerecwebdbserver/databases/RecruitmentWeb",
       "type": "mssql.azure",
       "connectionId": "ConnectionStrings:DefaultConnection"
     }

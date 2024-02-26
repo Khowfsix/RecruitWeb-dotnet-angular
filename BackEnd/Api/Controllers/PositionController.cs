@@ -21,6 +21,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Authorize(Roles = "Recruiter,Admin")]
         public async Task<IActionResult> AddPosition(PositionAddModel position)
         {
@@ -30,6 +31,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllPositions(Guid? departmentId)
         {
             List<PositionModel> listModelDatas = await _positionService.GetAllPositions(departmentId);
