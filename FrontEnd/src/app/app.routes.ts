@@ -9,6 +9,10 @@ export const routes: Routes = [
 			import('./module/auth/auth.module').then((m) => m.AuthModule),
 	},
 	{ path: 'position', component: PositionComponent },
-	{ path: '', redirectTo: '/', pathMatch: 'full' },
-	{ path: '**', title: 'UrlNotFound', component: UrlNotFoundComponent },
+	// { path: '', redirectTo: '/', pathMatch: 'full' },
+	// { path: '**', title: 'UrlNotFound', component: UrlNotFoundComponent },
+    // { path: 'position', component: PositionComponent },
+    // {path: "", redirectTo: "/", pathMatch: "full"},
+    // {path: "**", title: "UrlNotFound", component: UrlNotFoundComponent}
+
 ];
