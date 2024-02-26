@@ -6,7 +6,7 @@ import { moduleImportGuard } from './module-import.guard';
 describe('moduleImportGuard', () => {
 	const executeGuard: CanActivateFn = (...guardParameters) =>
 		TestBed.runInInjectionContext(() =>
-			moduleImportGuard(...guardParameters)
+			moduleImportGuard(...guardParameters),
 		);
 
 	beforeEach(() => {

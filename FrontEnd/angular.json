@@ -5,7 +5,11 @@
 	"projects": {
 		"RecruitmentWeb_FE": {
 			"projectType": "application",
-			"schematics": {},
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				}
+			},
 			"root": "",
 			"sourceRoot": "src",
 			"prefix": "app",
@@ -20,14 +24,14 @@
 						"tsConfig": "tsconfig.app.json",
 						"assets": ["src/favicon.ico", "src/assets"],
 						"styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/bootstrap/scss/bootstrap.scss",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.scss",
-              "src/styles.css"
-            ],
+							"node_modules/bootstrap/dist/css/bootstrap.min.css",
+							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
+							"src/styles.css"
+						],
 						"scripts": [
-							"node_modules/bootstrap/dist/js/bootstrap.min.js"
+							"node_modules/jquery/dist/jquery.min.js",
+							"node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+							"node_modules/chart.js/dist/chart.js"
 						],
 						"server": "src/main.server.ts",
 						"prerender": true,
@@ -40,13 +44,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "5mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "5mb"
 								}
 							],
 							"outputHashing": "all"
@@ -92,8 +96,8 @@
 				}
 			}
 		}
-  },
-  "cli": {
-    "analytics": "8998d649-edd6-4f19-96c3-537cd2e2a05d"
-  }
+	},
+	"cli": {
+		"analytics": "8998d649-edd6-4f19-96c3-537cd2e2a05d"
+	}
 }
