@@ -1,6 +1,5 @@
 .custom-footer {
     background-color: #1c395f;
-    height: 120px;
 }
 
 .custom-row-header {
@@ -8,8 +7,14 @@
     margin-bottom: 4px;
 }
 
+.custom-row-end {
+    width: fit-content;
+    color:rgb(182, 206, 250);
+    font-size: 17px;
+}
 .custom-row {
     width: fit-content;
-    margin-bottom: 1px;
+    margin-bottom: 3px;
     color:rgb(182, 206, 250);
+    font-size: 17px;
 }

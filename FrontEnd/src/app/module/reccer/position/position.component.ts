@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
-import {MatCardModule} from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 import { PositionService } from '../../../data/position/position.service';
 import { Position } from '../../../data/position/position.model';
 
@@ -20,7 +20,7 @@ export class PositionComponent implements OnInit {
   constructor(private positionService: PositionService) { }
 
   ngOnInit(): void {
-    this.retrieveTutorials();
+    // this.retrieveTutorials();
   }
 
   retrieveTutorials(): void {
@@ -33,7 +33,4 @@ export class PositionComponent implements OnInit {
         error: (e) => console.error(e)
       });
   }
-  // public dataSource = [1, 2, 3];
-  // public actions: string[] = ['View & Edit', 'Delete'];
-  // public columnsToDisplay: string[] = ['No.', 'PositionName', 'Salary', 'MaxHiringQty', 'StartDate', 'EndDate', 'Department', 'Language', 'Recruiter', 'Actions'];
 }
