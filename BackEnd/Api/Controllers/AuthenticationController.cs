@@ -115,18 +115,23 @@ namespace Api.Controllers
                 }
 
                 //Add role to the user
-                await _userManager.AddToRoleAsync(user, role);
+                var addRole = await _userManager.AddToRoleAsync(user, role);
+                await _authenticationService.CreateCandidate(user.Id);
 
-                //Add Token to Verify the email...
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                await _dbContext.SaveChangesAsync();
 
                 //send email confirm
-                //await ConfirmEmail(token, signUp.Email);
-                //SendEmailConfirmation(user.Email!, token);
+                if (addRole.Succeeded)
+                {
+                    //Add Token to Verify the email...
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    SendEmailConfirmation(user.Email!, token);
+
+                    //await ConfirmEmail(token, signUp.Email!);
+                }
 
                 //create candidate in database
-                await _authenticationService.CreateCandidate(user.Id);
+                await _dbContext.SaveChangesAsync();
+
                 return StatusCode(StatusCodes.Status200OK,
                     new Response { Status = "Success", Message = $"User created & email sent to {user.Email} Successfully." });
             }
@@ -142,7 +147,7 @@ namespace Api.Controllers
         private void SendEmailConfirmation(string emailUser, string token)
         {
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = emailUser }, Request.Scheme);
-            var message = new Message(new string[] { emailUser! }, "Confirmation email link", confirmationLink!);
+            var message = new Message(new string[] { emailUser! }, "(noreply) Confirm your account", confirmationLink!);
 
             // Send the confirmation email
             _emailService.SendEmail(message);
@@ -160,6 +165,7 @@ namespace Api.Controllers
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = "User not found." });
             }
+
             /*
             // Generate the email confirmation link
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
