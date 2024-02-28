@@ -149,7 +149,7 @@ try
     //Add Config for Required Email
     builder.Services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
     builder.Services.Configure<DataProtectionTokenProviderOptions>(
-        option => option.TokenLifespan = TimeSpan.FromHours(10)
+        option => option.TokenLifespan = TimeSpan.FromHours(1000)
     );
 
     // Add auto mapper
