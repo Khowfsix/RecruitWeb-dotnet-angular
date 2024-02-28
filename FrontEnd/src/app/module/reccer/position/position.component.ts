@@ -21,15 +21,15 @@ export class PositionComponent implements OnInit {
   constructor(private positionService: PositionService) { }
 
   ngOnInit(): void {
-    this.retrieveTutorials();
+    this.fetchedAllPositions();
   }
 
-  retrieveTutorials(): void {
+  fetchedAllPositions(): void {
     this.positionService.getAll()
       .subscribe({
         next: (data) => {
           this.fetchedPositions = data;
-          console.log('positions', this.fetchedPositions);
+          // console.log('positions', this.fetchedPositions);
         },
         error: (e) => console.error(e)
       });
