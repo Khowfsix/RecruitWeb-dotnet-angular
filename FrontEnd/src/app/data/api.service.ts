@@ -6,25 +6,24 @@ import { Observable } from 'rxjs';
 const baseUrl = 'https://jasminerecruitmentweb.azurewebsites.net';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class API {
+	constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+	public GET(path: string): Observable<any[]> {
+		return this.http.get<any[]>(baseUrl + path);
+	}
 
-  public GET(path: string): Observable<any[]> {
-    return this.http.get<any[]>(baseUrl + path);
-  }
+	public POST(path: string, data: any): Observable<any> {
+		return this.http.post(baseUrl + path, data);
+	}
 
-  public POST(path: string, data: any): Observable<any> {
-    return this.http.post(baseUrl + path, data);
-  }
+	public PUT(path: string, data: any): Observable<any> {
+		return this.http.put(baseUrl + path, data);
+	}
 
-  public PUT(path: string, data: any): Observable<any> {
-    return this.http.put(baseUrl + path, data);
-  }
-
-  public DELETE(path: string): Observable<any> {
-    return this.http.delete(baseUrl + path);
-  }
+	public DELETE(path: string): Observable<any> {
+		return this.http.delete(baseUrl + path);
+	}
 }
