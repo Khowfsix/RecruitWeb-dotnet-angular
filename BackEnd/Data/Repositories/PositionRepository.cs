@@ -24,7 +24,6 @@ namespace Data.Repositories
 
             return await Task.FromResult(position);
         }
-
         public async Task<List<Position>> GetAllPositions()
         {
             /*------------------------------*/
@@ -32,6 +31,23 @@ namespace Data.Repositories
             // Returns a list of it with the related entities.
             /*------------------------------*/
             var positionListWithName = await Entities
+                .Include(o => o.Requirements)
+                .Include(o => o.Department)
+                .Include(o => o.Language)
+                .Include(o => o.Recruiter)
+                .ToListAsync();
+
+            return positionListWithName;
+        }
+
+        public async Task<List<Position>> GetAllPositionsByRecruiterId(Guid recruiterId)
+        {
+            /*------------------------------*/
+            // Finds all of position entities asynchronously in db.
+            // Returns a list of it with the related entities.
+            /*------------------------------*/
+            var positionListWithName = await Entities
+                .Where(o => o.RecruiterId.Equals(recruiterId))
                 .Include(o => o.Requirements)
                 .Include(o => o.Department)
                 .Include(o => o.Language)

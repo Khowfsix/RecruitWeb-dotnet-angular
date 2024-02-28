@@ -3,6 +3,7 @@ using AutoMapper;
 using Castle.Core.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -35,6 +36,17 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllPositions(Guid? departmentId)
         {
             List<PositionModel> listModelDatas = await _positionService.GetAllPositions(departmentId);
+            List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Recruiter,Admin")]
+        [Route("Position/CurrentUser")]
+        public async Task<IActionResult> GetAllPositionsByCurrentUser()
+        {
+            var userId = HttpContext.User.GetUserId();
+            List<PositionModel> listModelDatas = await _positionService.GetAllPositionsByCurrentUser(Guid.Parse(userId));
             List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
             return Ok(response);
         }
