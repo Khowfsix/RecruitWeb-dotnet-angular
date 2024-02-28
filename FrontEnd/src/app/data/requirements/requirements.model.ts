@@ -1,8 +1,8 @@
 export class Requirements {
-    RequirementId?: any;
-    PositionId?: any;
-    SkillId?: any;
-    Experience?: string;
-    Notes?: string;
+    requirementId?: string;
+    positionId?: string;
+    skillId?: string;
+    experience?: string;
+    notes?: string;
     isDeleted?: boolean;
 }

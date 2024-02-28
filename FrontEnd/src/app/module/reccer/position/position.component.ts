@@ -1,34 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
 import { PositionService } from '../../../data/position/position.service';
 import { Position } from '../../../data/position/position.model';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
 	selector: 'app-position',
 	standalone: true,
-	imports: [MatTableModule, MatCardModule],
+	imports: [CommonModule, MatMenuModule, MatButtonModule],
 	templateUrl: './position.component.html',
 	styleUrl: './position.component.css',
 })
 export class PositionComponent implements OnInit {
-  positions?: Position[];
-  currentPosition: Position = {};
-  currentIndex = -1;
-  title = '';
+  public fetchedPositions?: Position[];
+  public currentPosition: Position = {};
+  public currentIndex = -1;
+  public title = '';
 
   constructor(private positionService: PositionService) { }
 
   ngOnInit(): void {
-    // this.retrieveTutorials();
+    this.retrieveTutorials();
   }
 
   retrieveTutorials(): void {
     this.positionService.getAll()
       .subscribe({
         next: (data) => {
-          this.positions = data;
-          console.log(data);
+          this.fetchedPositions = data;
+          console.log('positions', this.fetchedPositions);
         },
         error: (e) => console.error(e)
       });
