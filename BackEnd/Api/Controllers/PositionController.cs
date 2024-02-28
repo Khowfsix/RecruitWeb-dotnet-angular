@@ -1,7 +1,9 @@
 using Api.ViewModels.Position;
 using AutoMapper;
 using Castle.Core.Internal;
+using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using Service.Models;
@@ -11,6 +13,7 @@ namespace Api.Controllers
     [Authorize]
     public class PositionController : BaseAPIController
     {
+        private readonly UserManager<WebUser> _userManager;
         private readonly IPositionService _positionService;
         private readonly IMapper _mapper;
 
@@ -34,6 +37,14 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllPositions(Guid? departmentId)
         {
+            List<PositionModel> listModelDatas = await _positionService.GetAllPositions(departmentId);
+            List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
+            return Ok(response);
+        }
+
+        public async Task<IActionResult> GetAllPositionsByReccer(Guid? departmentId)
+        {
+            Guid reccerId = _authService
             List<PositionModel> listModelDatas = await _positionService.GetAllPositions(departmentId);
             List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
             return Ok(response);
