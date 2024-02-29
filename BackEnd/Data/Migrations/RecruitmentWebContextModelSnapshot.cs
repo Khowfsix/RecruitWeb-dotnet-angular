@@ -147,6 +147,27 @@ namespace Data.Migrations
                     b.ToTable("CandidateJoinEvent", (string)null);
                 });
 
+            modelBuilder.Entity("Data.Entities.CategoryPosition", b =>
+                {
+                    b.Property<Guid>("CategoryPositionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CategoryPositionDescription")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("CategoryPositionName")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasDefaultValue("");
+
+                    b.HasKey("CategoryPositionId")
+                        .HasName("PK_categoryPostion");
+
+                    b.ToTable("CategoryPosition", (string)null);
+                });
+
             modelBuilder.Entity("Data.Entities.CategoryQuestion", b =>
                 {
                     b.Property<Guid>("CategoryQuestionId")
@@ -201,6 +222,45 @@ namespace Data.Migrations
                     b.HasIndex("Cvid");
 
                     b.ToTable("Certificate", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.Company", b =>
+                {
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CompanyId");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("CompanyName");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(40)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(40)");
+
+                    b.Property<string>("Website")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("CompanyId")
+                        .HasName("PK__Departme__B2079BED26482F76");
+
+                    b.ToTable("Company", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Cv", b =>
@@ -274,43 +334,6 @@ namespace Data.Migrations
                     b.HasIndex("SkillId");
 
                     b.ToTable("CV_has_Skills", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Entities.Department", b =>
-                {
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DepartmentName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("isDeleted");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(40)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(40)");
-
-                    b.Property<string>("Website")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("DepartmentId")
-                        .HasName("PK__Departme__B2079BED26482F76");
-
-                    b.ToTable("Department", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Event", b =>
@@ -415,8 +438,9 @@ namespace Data.Migrations
                     b.Property<Guid>("InterviewerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CompanyId");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -429,7 +453,7 @@ namespace Data.Migrations
                     b.HasKey("InterviewerId")
                         .HasName("PK__Intervie__C29BDA1D949A214A");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("UserId");
 
@@ -489,8 +513,12 @@ namespace Data.Migrations
                     b.Property<Guid>("PositionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentId")
+                    b.Property<Guid>("CategoryPositionId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CompanyId");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -527,7 +555,9 @@ namespace Data.Migrations
                     b.HasKey("PositionId")
                         .HasName("PK__Position__60BB9A79BADAC7AE");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("CategoryPositionId");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("LanguageId");
 
@@ -610,8 +640,9 @@ namespace Data.Migrations
                     b.Property<Guid>("RecruiterId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CompanyId");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -624,7 +655,7 @@ namespace Data.Migrations
                     b.HasKey("RecruiterId")
                         .HasName("PK__Recruite__219CFF5625FB1B60");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("UserId");
 
@@ -916,28 +947,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6f169ed7-7ad4-4700-af12-185af8c2dd82",
+                            Id = "42ca546d-38bb-4894-818e-9d01aced2684",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "51371e00-370f-4d2a-851d-66577c889f85",
+                            Id = "615b8564-22f8-45d8-b20a-2829efe636c7",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "6cbddd9e-6288-4e9f-82c9-300d14b8f6d9",
+                            Id = "9256779b-19cf-4c57-8ab3-48b9801436e7",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "d8a92a79-69df-4e57-b269-7bd04082d9a3",
+                            Id = "ae9e1417-d8b8-42a7-b1d2-ecad6169cbce",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1301,9 +1332,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Interviewer", b =>
                 {
-                    b.HasOne("Data.Entities.Department", "Department")
+                    b.HasOne("Data.Entities.Company", "Company")
                         .WithMany("Interviewers")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("CompanyId")
                         .IsRequired()
                         .HasConstraintName("Fk_interDepart");
 
@@ -1313,7 +1344,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasConstraintName("Fk_InterviewerUser");
 
-                    b.Navigation("Department");
+                    b.Navigation("Company");
 
                     b.Navigation("User");
                 });
@@ -1339,9 +1370,15 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Position", b =>
                 {
-                    b.HasOne("Data.Entities.Department", "Department")
+                    b.HasOne("Data.Entities.CategoryPosition", "CategoryPosition")
                         .WithMany("Positions")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("CategoryPositionId")
+                        .IsRequired()
+                        .HasConstraintName("FK__categoryOfPosition");
+
+                    b.HasOne("Data.Entities.Company", "Company")
+                        .WithMany("Positions")
+                        .HasForeignKey("CompanyId")
                         .IsRequired()
                         .HasConstraintName("FK_Hires");
 
@@ -1357,7 +1394,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_ManagedBy");
 
-                    b.Navigation("Department");
+                    b.Navigation("CategoryPosition");
+
+                    b.Navigation("Company");
 
                     b.Navigation("Language");
 
@@ -1421,9 +1460,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Recruiter", b =>
                 {
-                    b.HasOne("Data.Entities.Department", "Department")
+                    b.HasOne("Data.Entities.Company", "Company")
                         .WithMany("Recruiters")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("CompanyId")
                         .IsRequired()
                         .HasConstraintName("Fk_reccerDepart");
 
@@ -1433,7 +1472,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_ReccerUser");
 
-                    b.Navigation("Department");
+                    b.Navigation("Company");
 
                     b.Navigation("User");
                 });
@@ -1593,9 +1632,23 @@ namespace Data.Migrations
                     b.Navigation("SuccessfulCadidates");
                 });
 
+            modelBuilder.Entity("Data.Entities.CategoryPosition", b =>
+                {
+                    b.Navigation("Positions");
+                });
+
             modelBuilder.Entity("Data.Entities.CategoryQuestion", b =>
                 {
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("Data.Entities.Company", b =>
+                {
+                    b.Navigation("Interviewers");
+
+                    b.Navigation("Positions");
+
+                    b.Navigation("Recruiters");
                 });
 
             modelBuilder.Entity("Data.Entities.Cv", b =>
@@ -1605,15 +1658,6 @@ namespace Data.Migrations
                     b.Navigation("Certificates");
 
                     b.Navigation("CvHasSkills");
-                });
-
-            modelBuilder.Entity("Data.Entities.Department", b =>
-                {
-                    b.Navigation("Interviewers");
-
-                    b.Navigation("Positions");
-
-                    b.Navigation("Recruiters");
                 });
 
             modelBuilder.Entity("Data.Entities.Event", b =>

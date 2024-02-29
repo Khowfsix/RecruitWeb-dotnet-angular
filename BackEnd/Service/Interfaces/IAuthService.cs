@@ -10,11 +10,11 @@ namespace Service.Interfaces
 
         Task<bool> CreateCandidate(string userId);
 
-        Task<bool> CreateRecruiter(string userId, Guid departmentId);
+        Task<bool> CreateRecruiter(string userId, Guid companyId);
 
-        Task<bool> CreateInterviewer(string userId, Guid departmentId);
+        Task<bool> CreateInterviewer(string userId, Guid companyId);
 
-        Task<Guid?> GetDepartmentId(string userId);
+        Task<Guid?> GetCompanyId(string userId);
 
         Task<Guid?> GetRecruiterId(string userId);
 

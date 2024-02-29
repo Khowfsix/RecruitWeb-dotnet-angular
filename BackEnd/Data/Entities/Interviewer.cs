@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Data.Entities;
 
 public partial class Interviewer
@@ -7,12 +9,12 @@ public partial class Interviewer
 
     public string UserId { get; set; }
 
-
-    public Guid DepartmentId { get; set; }
+    [Column("CompanyId")]
+    public Guid CompanyId { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public virtual Department Department { get; set; } = null!;
+    public virtual Company Company { get; set; } = null!;
 
     public virtual ICollection<Interview> Interviews { get; set; } = new List<Interview>();
 

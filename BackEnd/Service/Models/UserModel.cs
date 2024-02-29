@@ -14,6 +14,6 @@
         public Guid? CandidateId { get; set; }
         public Guid? InterviewerId { get; set; }
         public Guid? RecruiterId { get; set; }
-        public Guid? DepartmentId { get; set; }
+        public Guid? CompanyId { get; set; }
     }
 }

@@ -13,7 +13,7 @@
         public string? PositionName { get; set; }
         public string? Description { get; set; }
         public decimal? Salary { get; set; }
-        public string DepartmentName { get; set; } = null!;
+        public string CompanyName { get; set; } = null!;
         public string LanguageName { get; set; } = null!;
         public DateTime DateTime { get; set; } = DateTime.Now;
         public string Candidate_Status { get; set; } = "Pending";

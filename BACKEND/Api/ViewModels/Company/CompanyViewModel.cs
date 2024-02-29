@@ -1,10 +1,10 @@
-﻿namespace Service.Models
+﻿namespace Api.ViewModels.Company
 {
-    public class DepartmentModel
+    public class CompanyViewModel
     {
-        public Guid DepartmentId { get; set; }
+        public Guid CompanyId { get; set; }
 
-        public string DepartmentName { get; set; } = null!;
+        public string CompanyName { get; set; } = null!;
 
         public string? Address { get; set; }
 

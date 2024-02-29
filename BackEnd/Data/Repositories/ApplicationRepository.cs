@@ -124,7 +124,7 @@ namespace Data.Repositories
                 .AsNoTracking()
                 .Where(x => fromDate <= x.DateTime && x.DateTime <= toDate)
                 .Include(x => x.Cv).ThenInclude(x => x.Candidate).ThenInclude(x => x.User)
-                .Include(x => x.Position).ThenInclude(x => x.Department)
+                .Include(x => x.Position).ThenInclude(x => x.Company)
                 .Include(x => x.Position).ThenInclude(x => x.Language)
                 .ToListAsync();
 

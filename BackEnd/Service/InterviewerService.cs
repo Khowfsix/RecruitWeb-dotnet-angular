@@ -36,13 +36,13 @@ public class InterviewerService : IInterviewerService
         return data.Select(item => _mapper.Map<InterviewerModel>(item)).ToList();
     }
 
-    public async Task<IEnumerable<InterviewerModel?>> GetInterviewersInDepartment(Guid departmentId)
+    public async Task<IEnumerable<InterviewerModel?>> GetInterviewersInCompany(Guid companyId)
     {
         var entityDatas = await _interviewerRepository.GetAllInterviewer();
 
         if (!entityDatas.IsNullOrEmpty())
         {
-            var filteredDatas = entityDatas.Where(item => item.DepartmentId.Equals(departmentId));
+            var filteredDatas = entityDatas.Where(item => item.CompanyId.Equals(companyId));
             List<InterviewerModel> datas = _mapper.Map<List<InterviewerModel>>(filteredDatas);
 
             return _mapper.Map<List<InterviewerModel>>(datas);

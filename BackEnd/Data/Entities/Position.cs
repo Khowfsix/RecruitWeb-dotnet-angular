@@ -1,4 +1,6 @@
-﻿namespace Data.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Data.Entities;
 
 public partial class Position
 {
@@ -18,7 +20,8 @@ public partial class Position
 
     public DateTime? EndDate { get; set; }
 
-    public Guid DepartmentId { get; set; }
+    [Column("CompanyId")]
+    public Guid CompanyId { get; set; }
 
     public Guid LanguageId { get; set; }
 
@@ -30,7 +33,7 @@ public partial class Position
 
     public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
 
-    public virtual Department Department { get; set; } = null!;
+    public virtual Company Company { get; set; } = null!;
 
     public virtual Language Language { get; set; } = null!;
 

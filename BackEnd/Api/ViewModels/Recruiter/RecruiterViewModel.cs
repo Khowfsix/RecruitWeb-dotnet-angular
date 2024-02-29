@@ -7,7 +7,7 @@
         public string UserId { get; set; }
 
 
-        public Guid DepartmentId { get; set; }
+        public Guid CompanyId { get; set; }
 
         public WebUserViewModel User { get; set; }
 

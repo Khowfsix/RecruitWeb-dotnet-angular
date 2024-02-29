@@ -1,4 +1,4 @@
-using Api.ViewModels.Department;
+using Api.ViewModels.Company;
 using Api.ViewModels.Language;
 using Api.ViewModels.Recruiter;
 using Api.ViewModels.Requirement;
@@ -24,7 +24,7 @@ namespace Api.ViewModels.Position
         public DateTime? EndDate { get; set; }
 
 
-        public DepartmentViewModel Department { get; set; }
+        public CompanyViewModel Company { get; set; }
 
 
 

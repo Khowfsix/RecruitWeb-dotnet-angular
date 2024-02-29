@@ -23,7 +23,7 @@ namespace Service.Services
         private readonly IApplicationService _applicationService;
         private readonly ICvService _cvService;
 
-        //private readonly IDepartmentService _departmentService;
+        //private readonly ICompanyService _companyService;
         private readonly ISuccessfulCandidateService _successfulCandidateService;
 
         public AuthService(UserManager<WebUser> userManager,
@@ -38,7 +38,7 @@ namespace Service.Services
             IApplicationService applicationService,
             ISuccessfulCandidateService successfulCandidateService,
             ICvService cvService
-            //IDepartmentService departmentService
+            //ICompanyService companyService
             )
         {
             _userManager = userManager;
@@ -51,7 +51,7 @@ namespace Service.Services
             _interviewService = interviewService;
             _applicationService = applicationService;
             _cvService = cvService;
-            //_departmentService = departmentService;
+            //_companyService = companyService;
             _successfulCandidateService = successfulCandidateService;
             _roleManager = roleManager;
         }
@@ -98,13 +98,13 @@ namespace Service.Services
             return await Task.FromResult(false);
         }
 
-        public async Task<bool> CreateRecruiter(string userId, Guid departmentId)
+        public async Task<bool> CreateRecruiter(string userId, Guid companyId)
         {
             var recruiter = new RecruiterModel
             {
                 //RecruiterId = Guid.Empty,
                 UserId = userId,
-                DepartmentId = departmentId,
+                CompanyId = companyId,
                 IsDeleted = false
             };
             var response = await _recruiterService.SaveRecruiter(recruiter);
@@ -115,13 +115,13 @@ namespace Service.Services
             return await Task.FromResult(false);
         }
 
-        public async Task<bool> CreateInterviewer(string userId, Guid departmentId)
+        public async Task<bool> CreateInterviewer(string userId, Guid companyId)
         {
             var interviewer = new InterviewerModel
             {
                 //InterviewerId = Guid.Empty,
                 UserId = userId,
-                DepartmentId = departmentId,
+                CompanyId = companyId,
                 IsDeleted = false
             };
             var response = await _interviewerService.SaveInterviewer(interviewer);
@@ -249,7 +249,7 @@ namespace Service.Services
                     user.CandidateId = await GetCandidateId(user.Id);
                     user.InterviewerId = await GetInterviewerId(user.Id);
                     user.RecruiterId = await GetRecruiterId(user.Id);
-                    user.DepartmentId = await GetDepartmentId(user.Id);
+                    user.CompanyId = await GetCompanyId(user.Id);
                     listUserVM.Add(user);
                 }
             }
@@ -277,7 +277,7 @@ namespace Service.Services
                         user.CandidateId = await GetCandidateId(user.Id);
                         user.InterviewerId = await GetInterviewerId(user.Id);
                         user.RecruiterId = await GetRecruiterId(user.Id);
-                        user.DepartmentId = await GetDepartmentId(user.Id);
+                        user.CompanyId = await GetCompanyId(user.Id);
                         if (user.CandidateId != null)
                             listCandidate.Add(user);
                     }
@@ -304,7 +304,7 @@ namespace Service.Services
                         user.CandidateId = await GetCandidateId(user.Id);
                         user.InterviewerId = await GetInterviewerId(user.Id);
                         user.RecruiterId = await GetRecruiterId(user.Id);
-                        user.DepartmentId = await GetDepartmentId(user.Id);
+                        user.CompanyId = await GetCompanyId(user.Id);
                         if (user.InterviewerId != null)
                             listInterviewer.Add(user);
                     }
@@ -365,7 +365,7 @@ namespace Service.Services
                 return null;
         }
 
-        public async Task<Guid?> GetDepartmentId(string userId)
+        public async Task<Guid?> GetCompanyId(string userId)
         {
             var listRecruiter = await _recruiterService.GetAllRecruiter();
             if (listRecruiter != null)
@@ -373,7 +373,7 @@ namespace Service.Services
                 foreach (var item in listRecruiter)
                 {
                     if (item.UserId == userId)
-                        return item.DepartmentId;
+                        return item.CompanyId;
                 }
             }
             var listInterviewer = await _interviewerService.GetAllInterviewer();
@@ -382,7 +382,7 @@ namespace Service.Services
                 foreach (var item in listInterviewer)
                 {
                     if (item.UserId == userId)
-                        return item.DepartmentId;
+                        return item.CompanyId;
                 }
                 return null;
             }
@@ -406,7 +406,7 @@ namespace Service.Services
                         user.CandidateId = await GetCandidateId(user.Id);
                         user.InterviewerId = await GetInterviewerId(user.Id);
                         user.RecruiterId = await GetRecruiterId(user.Id);
-                        user.DepartmentId = await GetDepartmentId(user.Id);
+                        user.CompanyId = await GetCompanyId(user.Id);
                         if (user.RecruiterId != null)
                             listRecruiter.Add(user);
                     }
@@ -453,7 +453,7 @@ namespace Service.Services
             webUser.CandidateId = await GetCandidateId(user.Id);
             webUser.InterviewerId = await GetInterviewerId(user.Id);
             webUser.RecruiterId = await GetRecruiterId(user.Id);
-            webUser.DepartmentId = await GetDepartmentId(user.Id);
+            webUser.CompanyId = await GetCompanyId(user.Id);
             if (webUser != null)
                 return webUser;
             else

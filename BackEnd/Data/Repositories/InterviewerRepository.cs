@@ -77,10 +77,10 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
         }
     }
 
-    public async Task<IEnumerable<Interviewer>> GetInterviewersInDepartment(Guid deparmentId)
+    public async Task<IEnumerable<Interviewer>> GetInterviewersInCompany(Guid deparmentId)
     {
         var listDatas = await Entities.Include(x => x.User)
-            .Where(i => i.DepartmentId.Equals(deparmentId))
+            .Where(i => i.CompanyId.Equals(deparmentId))
             .Where(iDel => iDel.IsDeleted == false)
             .ToListAsync();
 

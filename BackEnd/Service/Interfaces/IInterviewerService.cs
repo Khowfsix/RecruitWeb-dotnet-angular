@@ -8,7 +8,7 @@ public interface IInterviewerService
 
     Task<InterviewerModel?> GetInterviewerById(Guid id);
 
-    Task<IEnumerable<InterviewerModel?>> GetInterviewersInDepartment(Guid departmentId);
+    Task<IEnumerable<InterviewerModel?>> GetInterviewersInCompany(Guid companyId);
 
     Task<InterviewerModel> SaveInterviewer(InterviewerModel addModel);
 

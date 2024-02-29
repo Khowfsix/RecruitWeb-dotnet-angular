@@ -66,12 +66,12 @@ public class InterviewService : IInterviewService
         return null!;
     }
 
-    public async Task<IEnumerable<InterviewModel>> GetInterviewsByDepartment(Guid requestId)
+    public async Task<IEnumerable<InterviewModel>> GetInterviewsByCompany(Guid requestId)
     {
         var data = await _interviewRepository.GetAllInterview();
         if (!data.IsNullOrEmpty())
         {
-            var filteredDatas = data.Where(i => i.Application.Position.Department.DepartmentId.Equals(requestId));
+            var filteredDatas = data.Where(i => i.Application.Position.Company.CompanyId.Equals(requestId));
             List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
             return result;
         }

@@ -24,11 +24,11 @@ namespace Service
             return _mapper.Map<PositionModel>(response);
         }
 
-        public async Task<List<PositionModel>> GetAllPositions(Guid? departmentId)
+        public async Task<List<PositionModel>> GetAllPositions(Guid? companyId)
         {
             var entityDatas = await _positionRepository.GetAllPositions();
             List<PositionModel> list = new List<PositionModel>();
-            if (departmentId == null)
+            if (companyId == null)
             {
                 foreach (var item in entityDatas)
                 {
@@ -39,7 +39,7 @@ namespace Service
             {
                 foreach (var item in entityDatas)
                 {
-                    if (item.DepartmentId.Equals(departmentId))
+                    if (item.CompanyId.Equals(companyId))
                     {
                         list.Add(_mapper.Map<PositionModel>(item));
                     }

@@ -37,9 +37,9 @@ namespace Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllPositions(Guid? departmentId)
+        public async Task<IActionResult> GetAllPositions(Guid? companyId)
         {
-            List<PositionModel> listModelDatas = await _positionService.GetAllPositions(departmentId);
+            List<PositionModel> listModelDatas = await _positionService.GetAllPositions(companyId);
             List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
             return Ok(response);
         }

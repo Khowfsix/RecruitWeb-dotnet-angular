@@ -4,7 +4,7 @@ namespace Service.Interfaces
 {
     public interface IPositionService
     {
-        Task<List<PositionModel>> GetAllPositions(Guid? departmentId);
+        Task<List<PositionModel>> GetAllPositions(Guid? companyId);
         Task<List<PositionModel>> GetAllPositionsByCurrentUser(String userId);
 
         Task<PositionModel> GetPositionById(Guid id);

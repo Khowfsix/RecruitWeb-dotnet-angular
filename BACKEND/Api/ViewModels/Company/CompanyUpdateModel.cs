@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api.ViewModels.Department
+namespace Api.ViewModels.Company
 {
-    public class DepartmentAddModel
+    public class CompanyUpdateModel
     {
-        [Required]
-        public string DepartmentName { get; set; } = null!;
+        [Key]
+        public Guid CompanyId { get; set; }
+
+        public string CompanyName { get; set; } = null!;
 
         public string? Address { get; set; }
 
@@ -17,5 +19,7 @@ namespace Api.ViewModels.Department
 
         [DataType(DataType.Url)]
         public string? Website { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

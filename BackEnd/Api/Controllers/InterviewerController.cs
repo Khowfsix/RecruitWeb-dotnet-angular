@@ -20,11 +20,11 @@ public class InterviewerController : BaseAPIController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllInterviewer(Guid? id, Guid? departmentId)
+    public async Task<IActionResult> GetAllInterviewer(Guid? id, Guid? companyId)
     {
-        //if (departmentId != null)
+        //if (companyId != null)
         //{
-        //    var response = await _interviewerService.GetInterviewersInDepartment((Guid)departmentId);
+        //    var response = await _interviewerService.GetInterviewersInCompany((Guid)companyId);
         //}
         if (id != null)
         {
@@ -35,9 +35,9 @@ public class InterviewerController : BaseAPIController
                 _ => Ok(data)
             };
         }
-        else if (departmentId != null)
+        else if (companyId != null)
         {
-            var response = await _interviewerService.GetInterviewersInDepartment((Guid)departmentId);
+            var response = await _interviewerService.GetInterviewersInCompany((Guid)companyId);
 
             if (response != null)
             {

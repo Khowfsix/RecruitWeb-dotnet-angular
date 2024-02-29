@@ -5,26 +5,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
-    public class DepartmentRepository : Repository<Department>, IDepartmentRepository
+    public class CompanyRepository : Repository<Company>, ICompanyRepository
     {
         private readonly IUnitOfWork _uow;
 
-        public DepartmentRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
+        public CompanyRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
         {
             _uow = uow;
         }
 
-        public async Task<bool> DeleteDepartment(Guid requestId)
+        public async Task<bool> DeleteCompany(Guid requestId)
         {
             try
             {
-                var department = GetById(requestId);
-                if (department == null)
-                    throw new ArgumentNullException(nameof(department));
+                var company = GetById(requestId);
+                if (company == null)
+                    throw new ArgumentNullException(nameof(company));
 
-                //Entities.Remove(department);
-                department.IsDeleted = true;
-                Entities.Update(department);
+                //Entities.Remove(company);
+                company.IsDeleted = true;
+                Entities.Update(company);
 
                 _uow.SaveChanges();
                 return await Task.FromResult(true);
@@ -35,11 +35,11 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<Department>> GetAllDepartment(string? request)
+        public async Task<IEnumerable<Company>> GetAllCompany(string? request)
         {
             try
             {
-                var listData = new List<Department>();
+                var listData = new List<Company>();
                 if (string.IsNullOrEmpty(request))
                 {
                     listData = await Entities.ToListAsync();
@@ -47,7 +47,7 @@ namespace Data.Repositories
                 else
                 {
                     listData = await Entities
-                        .Where(rp => rp.DepartmentName.Contains(request))
+                        .Where(rp => rp.CompanyName.Contains(request))
                         .ToListAsync();
                 }
 
@@ -59,11 +59,11 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<Department> SaveDepartment(Department request)
+        public async Task<Company> SaveCompany(Company request)
         {
             try
             {
-                request.DepartmentId = Guid.NewGuid();
+                request.CompanyId = Guid.NewGuid();
 
                 Entities.Add(request);
                 _uow.SaveChanges();
@@ -76,11 +76,11 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<bool> UpdateDepartment(Department request, Guid requestId)
+        public async Task<bool> UpdateCompany(Company request, Guid requestId)
         {
             try
             {
-                request.DepartmentId = requestId;
+                request.CompanyId = requestId;
 
                 Entities.Update(request);
                 _uow.SaveChanges();

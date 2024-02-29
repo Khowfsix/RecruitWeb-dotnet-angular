@@ -138,11 +138,11 @@ namespace Api.Controllers
             // Create the corresponding interviewer/recruiter record in the database
             if (role == "Interviewer")
             {
-                await _authenticationService.CreateInterviewer(user.Id, signUp.DepartmentId);
+                await _authenticationService.CreateInterviewer(user.Id, signUp.CompanyId);
             }
             else if (role == "Recruiter")
             {
-                await _authenticationService.CreateRecruiter(user.Id, signUp.DepartmentId);
+                await _authenticationService.CreateRecruiter(user.Id, signUp.CompanyId);
             }
             else if (role == "Candidate")
             {
@@ -505,11 +505,11 @@ namespace Api.Controllers
         //    // Create the corresponding interviewer/recruiter record in the database
         //    if (role == "Interviewer")
         //    {
-        //        await _authenticationService.CreateInterviewer(user.Id, signUp.DepartmentId);
+        //        await _authenticationService.CreateInterviewer(user.Id, signUp.CompanyId);
         //    }
         //    else if (role == "Recruiter")
         //    {
-        //        await _authenticationService.CreateRecruiter(user.Id, signUp.DepartmentId);
+        //        await _authenticationService.CreateRecruiter(user.Id, signUp.CompanyId);
         //    }
 
         //    // Save changes to the database

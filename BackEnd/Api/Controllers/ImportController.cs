@@ -1,7 +1,7 @@
 ﻿//todo import api
 
 //using Api.ViewModels.CategoryQuestion;
-//using Api.ViewModels.Department;
+//using Api.ViewModels.Company;
 //using Api.ViewModels.Language;
 //using Api.ViewModels.Question;
 //using Api.ViewModels.Result;
@@ -25,7 +25,7 @@
 //        private readonly IResultService _serviceResult;
 //        private readonly IQuestionService _serviceQuestion;
 //        private readonly ILanguageService _serviceLanguage;
-//        private readonly IDepartmentService _serviceDepartment;
+//        private readonly ICompanyService _serviceCompany;
 //        private readonly ICategoryQuestionService _serviceCategoryQuestion;
 
 //        public ImportController(
@@ -35,7 +35,7 @@
 //            IResultService serviceResult,
 //            IQuestionService serviceQuestion,
 //            ILanguageService serviceLanguage,
-//            IDepartmentService serviceDepartment,
+//            ICompanyService serviceCompany,
 //            ICategoryQuestionService serviceCategoryQuestion)
 //        {
 //            _serviceSkill = serviceSkill;
@@ -44,7 +44,7 @@
 //            _serviceResult = serviceResult;
 //            _serviceQuestion = serviceQuestion;
 //            _serviceLanguage = serviceLanguage;
-//            _serviceDepartment = serviceDepartment;
+//            _serviceCompany = serviceCompany;
 //            _serviceCategoryQuestion = serviceCategoryQuestion;
 //        }
 
@@ -241,7 +241,7 @@
 //        }
 
 //        [HttpPost("[action]")]
-//        public async Task<IActionResult> ImportDepartment([FromForm] UploadFileFromForm form, CancellationToken cancellationToken)
+//        public async Task<IActionResult> ImportCompany([FromForm] UploadFileFromForm form, CancellationToken cancellationToken)
 //        {
 //            if (form == null)
 //                return NotFound();
@@ -254,7 +254,7 @@
 //            if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
 //                return BadRequest("Not Support file extension");
 
-//            var list = new List<DepartmentAddModel>();
+//            var list = new List<CompanyAddModel>();
 //            try
 //            {
 //                using (var stream = new MemoryStream())
@@ -267,9 +267,9 @@
 
 //                    for (int row = 2; row <= rowCount; row++)
 //                    {
-//                        list.Add(new DepartmentAddModel
+//                        list.Add(new CompanyAddModel
 //                        {
-//                            DepartmentName = worksheet.Cells[row, 1].Value?.ToString()!,
+//                            CompanyName = worksheet.Cells[row, 1].Value?.ToString()!,
 //                            Address = worksheet.Cells[row, 2].Value?.ToString()!,
 //                            Email = worksheet.Cells[row, 3].Value?.ToString()!,
 //                            Phone = worksheet.Cells[row, 4].Value?.ToString()!,
@@ -280,7 +280,7 @@
 
 //                foreach (var item in list)
 //                {
-//                    await _serviceDepartment.SaveDepartment(item);
+//                    await _serviceCompany.SaveCompany(item);
 //                }
 //            }
 //            catch (Exception ex)

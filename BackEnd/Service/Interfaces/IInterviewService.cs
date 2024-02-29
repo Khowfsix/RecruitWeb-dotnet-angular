@@ -10,7 +10,7 @@ public interface IInterviewService
 
     Task<IEnumerable<InterviewModel>> GetInterviewsByPositon(Guid requestId);
 
-    Task<IEnumerable<InterviewModel>> GetInterviewsByDepartment(Guid requestId);
+    Task<IEnumerable<InterviewModel>> GetInterviewsByCompany(Guid requestId);
 
     Task<InterviewModel?> GetInterviewById(Guid id);
 

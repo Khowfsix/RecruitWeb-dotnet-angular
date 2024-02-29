@@ -28,7 +28,7 @@ namespace Service
             service.AddTransient<ICertificateService, CertificateService>();
             service.AddTransient<ICvService, CvService>();
             service.AddTransient<ICvHasSkillService, CvHasSkillService>();
-            service.AddTransient<IDepartmentService, DepartmentService>();
+            service.AddTransient<ICompanyService, CompanyService>();
             service.AddTransient<IEventService, EventService>();
             service.AddTransient<IApplicationService, ApplicationService>();
             service.AddTransient<IBlacklistService, BlacklistService>();

@@ -14,7 +14,7 @@
 
         public DateTime? EndDate { get; set; }
 
-        public Guid DepartmentId { get; set; }
+        public Guid CompanyId { get; set; }
 
         public Guid LanguageId { get; set; }
 

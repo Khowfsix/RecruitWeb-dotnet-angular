@@ -8,7 +8,7 @@ public interface IInterviewerRepository : IRepository<Interviewer>
 
     Task<Interviewer?> GetInterviewerById(Guid id);
 
-    Task<IEnumerable<Interviewer>> GetInterviewersInDepartment(Guid deparmentId);
+    Task<IEnumerable<Interviewer>> GetInterviewersInCompany(Guid deparmentId);
 
     Task<Interviewer> SaveInterviewer(Interviewer request);
 

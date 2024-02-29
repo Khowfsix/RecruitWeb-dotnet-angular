@@ -1,76 +1,76 @@
 ﻿//using Api.Controllers;
-//using Api.ViewModels.Department;
+//using Api.ViewModels.Company;
 //using Microsoft.AspNetCore.Mvc;
 //using Moq;
 //using Service.Interfaces;
 
-//namespace UnitTest.Department
+//namespace UnitTest.Company
 //{
-//    public class DepartmentControllerTests
+//    public class CompanyControllerTests
 //    {
-//        private readonly Mock<IDepartmentService> _mockDepartmentService;
-//        private readonly DepartmentController _DepartmentController;
+//        private readonly Mock<ICompanyService> _mockCompanyService;
+//        private readonly CompanyController _CompanyController;
 
-//        public DepartmentControllerTests()
+//        public CompanyControllerTests()
 //        {
-//            _mockDepartmentService = new Mock<IDepartmentService>();
-//            _DepartmentController = new DepartmentController(_mockDepartmentService.Object);
+//            _mockCompanyService = new Mock<ICompanyService>();
+//            _CompanyController = new CompanyController(_mockCompanyService.Object);
 //        }
 
 //        [Fact]
-//        public async Task Department_Controller_Get_All_Test()
+//        public async Task Company_Controller_Get_All_Test()
 //        {
 //            // Arrange
-//            var expecteds = new List<DepartmentViewModel>
+//            var expecteds = new List<CompanyViewModel>
 //            {
-//                new DepartmentViewModel(),
-//                new DepartmentViewModel()
+//                new CompanyViewModel(),
+//                new CompanyViewModel()
 //            };
 
-//            _mockDepartmentService.Setup(service => service.GetAllDepartment(null)).ReturnsAsync(expecteds);
+//            _mockCompanyService.Setup(service => service.GetAllCompany(null)).ReturnsAsync(expecteds);
 
 //            // Act
-//            var result = await _DepartmentController.GetAllDepartment(null) as OkObjectResult;
+//            var result = await _CompanyController.GetAllCompany(null) as OkObjectResult;
 
 //            // Assert
 //            Assert.NotNull(result);
 //            Assert.Equal(200, result.StatusCode);
-//            var DepartmentList = Assert.IsType<List<DepartmentViewModel>>(result.Value);
-//            Assert.Equal(2, DepartmentList.Count);
+//            var CompanyList = Assert.IsType<List<CompanyViewModel>>(result.Value);
+//            Assert.Equal(2, CompanyList.Count);
 //        }
 
 //        [Fact]
-//        public async Task Department_Controller_Save_Department_Test()
+//        public async Task Company_Controller_Save_Company_Test()
 //        {
 //            // Arrange
-//            var input = new DepartmentAddModel();
+//            var input = new CompanyAddModel();
 
-//            var expected = new DepartmentViewModel();
+//            var expected = new CompanyViewModel();
 
-//            _mockDepartmentService.Setup(service => service.SaveDepartment(input)).ReturnsAsync(expected);
+//            _mockCompanyService.Setup(service => service.SaveCompany(input)).ReturnsAsync(expected);
 
 //            // Act
-//            var result = await _DepartmentController.SaveDepartment(input) as OkObjectResult;
+//            var result = await _CompanyController.SaveCompany(input) as OkObjectResult;
 
 //            // Assert
 //            Assert.NotNull(result);
 //            Assert.Equal(200, result.StatusCode);
-//            var created = Assert.IsType<DepartmentViewModel>(result.Value);
+//            var created = Assert.IsType<CompanyViewModel>(result.Value);
 //        }
 
 //        [Fact]
-//        public async Task Department_Controller_Update_Department_Test()
+//        public async Task Company_Controller_Update_Company_Test()
 //        {
 //            // Arrange
-//            Guid DepartmentId = Guid.NewGuid();
-//            var input = new DepartmentUpdateModel();
+//            Guid CompanyId = Guid.NewGuid();
+//            var input = new CompanyUpdateModel();
 
 //            var expected = true;
 
-//            _mockDepartmentService.Setup(service => service.UpdateDepartment(input, DepartmentId)).ReturnsAsync(true);
+//            _mockCompanyService.Setup(service => service.UpdateCompany(input, CompanyId)).ReturnsAsync(true);
 
 //            // Act
-//            var result = await _DepartmentController.UpdateDepartment(input, DepartmentId) as OkObjectResult;
+//            var result = await _CompanyController.UpdateCompany(input, CompanyId) as OkObjectResult;
 
 //            // Assert
 //            Assert.NotNull(result);
@@ -80,16 +80,16 @@
 //        }
 
 //        [Fact]
-//        public async Task Department_Controller_Delete_Department_Test()
+//        public async Task Company_Controller_Delete_Company_Test()
 //        {
 //            // Arrange
-//            Guid DepartmentId = Guid.NewGuid();
+//            Guid CompanyId = Guid.NewGuid();
 //            var expected = true;
 
-//            _mockDepartmentService.Setup(service => service.DeleteDepartment(DepartmentId)).ReturnsAsync(true);
+//            _mockCompanyService.Setup(service => service.DeleteCompany(CompanyId)).ReturnsAsync(true);
 
 //            // Act
-//            var result = await _DepartmentController.DeleteDepartment(DepartmentId) as OkObjectResult;
+//            var result = await _CompanyController.DeleteCompany(CompanyId) as OkObjectResult;
 
 //            // Assert
 //            Assert.NotNull(result);

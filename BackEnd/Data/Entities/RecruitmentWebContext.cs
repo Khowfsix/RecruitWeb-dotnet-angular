@@ -33,7 +33,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<CvHasSkill> CvHasSkills { get; set; }
 
-    public virtual DbSet<Department> Departments { get; set; }
+    public virtual DbSet<Company> Companies { get; set; }
 
     public virtual DbSet<Event> Events { get; set; }
 
@@ -255,15 +255,15 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
                 .HasConstraintName("FK_hasSkill");
         });
 
-        modelBuilder.Entity<Department>(entity =>
+        modelBuilder.Entity<Company>(entity =>
         {
-            entity.HasKey(e => e.DepartmentId).HasName("PK__Departme__B2079BED26482F76");
+            entity.HasKey(e => e.CompanyId).HasName("PK__Departme__B2079BED26482F76");
 
-            entity.ToTable("Department");
+            entity.ToTable("Company");
 
-            entity.Property(e => e.DepartmentId).ValueGeneratedNever();
+            entity.Property(e => e.CompanyId).ValueGeneratedNever();
             entity.Property(e => e.Address).HasMaxLength(255);
-            entity.Property(e => e.DepartmentName).HasMaxLength(255);
+            entity.Property(e => e.CompanyName).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
             entity.Property(e => e.Phone)
@@ -337,8 +337,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
 
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.Interviewers)
-                .HasForeignKey(d => d.DepartmentId)
+            entity.HasOne(d => d.Company).WithMany(p => p.Interviewers)
+                .HasForeignKey(d => d.CompanyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Fk_interDepart");
 
@@ -398,8 +398,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.Salary).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.StartDate).HasColumnType("date");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.Positions)
-                .HasForeignKey(d => d.DepartmentId)
+            entity.HasOne(d => d.Company).WithMany(p => p.Positions)
+                .HasForeignKey(d => d.CompanyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Hires");
 
@@ -416,7 +416,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             entity.HasOne(c => c.CategoryPosition).WithMany(p => p.Positions)
                 .HasForeignKey(c => c.CategoryPositionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_categoryPosition");
+                .HasConstraintName("FK__categoryOfPosition");
         });
 
         modelBuilder.Entity<Question>(entity =>
@@ -481,8 +481,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
 
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.Recruiters)
-                .HasForeignKey(d => d.DepartmentId)
+            entity.HasOne(d => d.Company).WithMany(p => p.Recruiters)
+                .HasForeignKey(d => d.CompanyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Fk_reccerDepart");
 
@@ -648,7 +648,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<CategoryPosition>(entity =>
         {
-            entity.HasKey(e => e.CategoryPositionId);
+            entity.HasKey(e => e.CategoryPositionId).HasName("PK_categoryPostion");
 
             entity.ToTable("CategoryPosition");
 
@@ -671,8 +671,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             new IdentityRole() { Name = "Recruiter", ConcurrencyStamp = "3", NormalizedName = "Recruiter" },
             new IdentityRole() { Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
             );
-
-        //FormattableString triggerCommand = String(;
-        //Database.ExecuteSql(triggerCommand);
     }
+
 }

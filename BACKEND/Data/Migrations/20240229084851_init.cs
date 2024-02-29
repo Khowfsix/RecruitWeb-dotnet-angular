@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -57,6 +58,19 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CategoryPosition",
+                columns: table => new
+                {
+                    CategoryPositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryPositionName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true, defaultValue: ""),
+                    CategoryPositionDescription = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_categoryPostion", x => x.CategoryPositionId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CategoryQuestion",
                 columns: table => new
                 {
@@ -70,11 +84,11 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Department",
+                name: "Company",
                 columns: table => new
                 {
-                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DepartmentName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Phone = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: true),
@@ -83,7 +97,7 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Departme__B2079BED26482F76", x => x.DepartmentId);
+                    table.PrimaryKey("PK__Departme__B2079BED26482F76", x => x.CompanyId);
                 });
 
             migrationBuilder.CreateTable(
@@ -328,7 +342,7 @@ namespace Data.Migrations
                 {
                     InterviewerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -341,9 +355,9 @@ namespace Data.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "Fk_interDepart",
-                        column: x => x.DepartmentId,
-                        principalTable: "Department",
-                        principalColumn: "DepartmentId");
+                        column: x => x.CompanyId,
+                        principalTable: "Company",
+                        principalColumn: "CompanyId");
                 });
 
             migrationBuilder.CreateTable(
@@ -352,7 +366,7 @@ namespace Data.Migrations
                 {
                     RecruiterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -365,9 +379,9 @@ namespace Data.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "Fk_reccerDepart",
-                        column: x => x.DepartmentId,
-                        principalTable: "Department",
-                        principalColumn: "DepartmentId");
+                        column: x => x.CompanyId,
+                        principalTable: "Company",
+                        principalColumn: "CompanyId");
                 });
 
             migrationBuilder.CreateTable(
@@ -551,24 +565,30 @@ namespace Data.Migrations
                     MaxHiringQty = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "date", nullable: true),
                     EndDate = table.Column<DateTime>(type: "date", nullable: true),
-                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RecruiterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CategoryPositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__Position__60BB9A79BADAC7AE", x => x.PositionId);
                     table.ForeignKey(
                         name: "FK_Hires",
-                        column: x => x.DepartmentId,
-                        principalTable: "Department",
-                        principalColumn: "DepartmentId");
+                        column: x => x.CompanyId,
+                        principalTable: "Company",
+                        principalColumn: "CompanyId");
                     table.ForeignKey(
                         name: "FK_ManagedBy",
                         column: x => x.RecruiterId,
                         principalTable: "Recruiter",
                         principalColumn: "RecruiterId");
+                    table.ForeignKey(
+                        name: "FK__categoryOfPosition",
+                        column: x => x.CategoryPositionId,
+                        principalTable: "CategoryPosition",
+                        principalColumn: "CategoryPositionId");
                     table.ForeignKey(
                         name: "Fk_language",
                         column: x => x.LanguageId,
@@ -822,10 +842,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "193bc3b6-3437-4f4a-bf65-96035b89fad9", "3", "Recruiter", "Recruiter" },
-                    { "58e37aec-3e4d-4826-8db9-46fa37c26c33", "4", "Admin", "Admin" },
-                    { "a3626f9f-a4da-4b58-836e-390c3a5a9d88", "1", "Candidate", "Candidate" },
-                    { "f5ef1029-43c2-4330-8192-2d993ce06593", "2", "Interviewer", "Interviewer" }
+                    { "42ca546d-38bb-4894-818e-9d01aced2684", "1", "Candidate", "Candidate" },
+                    { "615b8564-22f8-45d8-b20a-2829efe636c7", "2", "Interviewer", "Interviewer" },
+                    { "9256779b-19cf-4c57-8ab3-48b9801436e7", "3", "Recruiter", "Recruiter" },
+                    { "ae9e1417-d8b8-42a7-b1d2-ecad6169cbce", "4", "Admin", "Admin" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -949,9 +969,9 @@ namespace Data.Migrations
                 column: "ResultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Interviewer_DepartmentId",
+                name: "IX_Interviewer_CompanyId",
                 table: "Interviewer",
-                column: "DepartmentId");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Interviewer_UserId",
@@ -975,9 +995,14 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Position_DepartmentId",
+                name: "IX_Position_CategoryPositionId",
                 table: "Position",
-                column: "DepartmentId");
+                column: "CategoryPositionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Position_CompanyId",
+                table: "Position",
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Position_LanguageId",
@@ -1022,9 +1047,9 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recruiter_DepartmentId",
+                name: "IX_Recruiter_CompanyId",
                 table: "Recruiter",
-                column: "DepartmentId");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recruiter_UserId",
@@ -1189,13 +1214,16 @@ namespace Data.Migrations
                 name: "Recruiter");
 
             migrationBuilder.DropTable(
+                name: "CategoryPosition");
+
+            migrationBuilder.DropTable(
                 name: "Language");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Department");
+                name: "Company");
         }
     }
 }

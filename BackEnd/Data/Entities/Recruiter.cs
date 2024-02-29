@@ -1,18 +1,19 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Data.Entities;
 
 public partial class Recruiter
 {
     public Guid RecruiterId { get; set; }
 
-
     public string UserId { get; set; }
 
-
-    public Guid DepartmentId { get; set; }
+    [Column("CompanyId")]
+    public Guid CompanyId { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public virtual Department Department { get; set; } = null!;
+    public virtual Company Company { get; set; } = null!;
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 

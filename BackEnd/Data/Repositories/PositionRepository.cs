@@ -32,7 +32,7 @@ namespace Data.Repositories
             /*------------------------------*/
             var positionListWithName = await Entities
                 .Include(o => o.Requirements)
-                .Include(o => o.Department)
+                .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .ToListAsync();
@@ -48,7 +48,7 @@ namespace Data.Repositories
             /*------------------------------*/
             var positionListWithName = await Entities
                 .Include(o => o.Requirements)
-                .Include(o => o.Department)
+                .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .Where(o => o.Recruiter.UserId.Equals(userId))
@@ -66,7 +66,7 @@ namespace Data.Repositories
             var position = await Entities
                 .Where(p => p.PositionId == id)
                 .Include(o => o.Requirements)
-                .Include(o => o.Department)
+                .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .FirstOrDefaultAsync();
@@ -88,7 +88,7 @@ namespace Data.Repositories
                 .Where(p => p.PositionName!.ToLower()
                                           .Contains(name.ToLower().Trim()))
                 .Include(o => o.Requirements)
-                .Include(o => o.Department)
+                .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .ToListAsync();

@@ -95,7 +95,7 @@ namespace Service
                     PositionName = item.Position.PositionName,
                     Description = item.Position.Description,
                     Salary = item.Position.Salary,
-                    DepartmentName = item.Position.Department.DepartmentName,
+                    CompanyName = item.Position.Company.CompanyName,
                     LanguageName = item.Position.Language.LanguageName,
                     DateTime = item.DateTime,
                     Candidate_Status = item.Candidate_Status ?? "Pending",

@@ -16,8 +16,8 @@ public class PositionModel
 
     public DateTime? EndDate { get; set; }
 
-    public Guid DepartmentId { get; set; }
-    public DepartmentModel? Department { get; set; }
+    public Guid CompanyId { get; set; }
+    public CompanyModel? Company { get; set; }
 
     public Guid LanguageId { get; set; }
     public LanguageModel? Language { get; set; }

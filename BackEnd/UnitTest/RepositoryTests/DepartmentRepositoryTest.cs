@@ -1,4 +1,4 @@
-//using Api.ViewModels.Department;
+//using Api.ViewModels.Company;
 //using AutoMapper;
 //using Data;
 //using Data.Entities;
@@ -10,79 +10,79 @@
 
 //namespace UnitTest.RepositoryTests
 //{
-//    public class DepartmentRepository_UnitTest
+//    public class CompanyRepository_UnitTest
 //    {
-//        private readonly DepartmentRepository _DepartmentRepository;
-//        private readonly DepartmentService _DepartmentService;
+//        private readonly CompanyRepository _CompanyRepository;
+//        private readonly CompanyService _CompanyService;
 
 //        private readonly RecruitmentWebContext _fakeDbContext = A.Fake<RecruitmentWebContext>();
-//        private readonly IDepartmentRepository _fakeDepartmentRepository = A.Fake<IDepartmentRepository>();
+//        private readonly ICompanyRepository _fakeCompanyRepository = A.Fake<ICompanyRepository>();
 //        private readonly IUnitOfWork _fakeUow = A.Fake<IUnitOfWork>();
 //        private readonly IMapper _mapper;
-//        public DepartmentRepository_UnitTest()
+//        public CompanyRepository_UnitTest()
 //        {
 //            _mapper = new MapperConfiguration(cfg =>
 //                        {
 //                            cfg.AddProfile(new AutoMapperConfiguration());
 //                        }).CreateMapper();
 
-//            _DepartmentRepository = new DepartmentRepository(_fakeDbContext, _fakeUow, _mapper);
-//            _DepartmentService = new DepartmentService(_fakeDepartmentRepository, _mapper);
+//            _CompanyRepository = new CompanyRepository(_fakeDbContext, _fakeUow, _mapper);
+//            _CompanyService = new CompanyService(_fakeCompanyRepository, _mapper);
 //        }
 
 //        [Fact]
-//        public async Task Add_Department_In_Repository_Returns_Correctly()
+//        public async Task Add_Company_In_Repository_Returns_Correctly()
 //        {
 //            //Code để check repo trả về model với id tạo ở model, tên giống tên truyền vào từ add model
 //            //Arrange
-//            var fakeDepartmentId = Guid.NewGuid();
+//            var fakeCompanyId = Guid.NewGuid();
 
-//            var fakeCreatedDepartment = new DepartmentAddModel
+//            var fakeCreatedCompany = new CompanyAddModel
 //            {
-//                DepartmentName = "string",
+//                CompanyName = "string",
 //            };
 
-//            var mappedCreatedDepartment = _mapper.Map<DepartmentModel>(fakeCreatedDepartment);
-//            mappedCreatedDepartment.DepartmentId = fakeDepartmentId;
+//            var mappedCreatedCompany = _mapper.Map<CompanyModel>(fakeCreatedCompany);
+//            mappedCreatedCompany.CompanyId = fakeCompanyId;
 //            //Act
-//            var response = await _DepartmentRepository.SaveDepartment(mappedCreatedDepartment);
+//            var response = await _CompanyRepository.SaveCompany(mappedCreatedCompany);
 
 //            //Assert
-//            Assert.NotEqual(mappedCreatedDepartment.DepartmentId, response.DepartmentId);
+//            Assert.NotEqual(mappedCreatedCompany.CompanyId, response.CompanyId);
 //        }
 
 //        [Fact]
-//        public async Task Get_Department_Returns_Correctly()
+//        public async Task Get_Company_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<DepartmentModel> departmentList = new();
-//            var expectedCreatedDepartment1 = new DepartmentModel
+//            List<CompanyModel> companyList = new();
+//            var expectedCreatedCompany1 = new CompanyModel
 //            {
-//                DepartmentId = Guid.NewGuid(),
-//                DepartmentName = "string",
+//                CompanyId = Guid.NewGuid(),
+//                CompanyName = "string",
 //                IsDeleted = false
 //            };
-//            var expectedCreatedDepartment2 = new DepartmentModel
+//            var expectedCreatedCompany2 = new CompanyModel
 //            {
-//                DepartmentId = Guid.NewGuid(),
-//                DepartmentName = "string",
+//                CompanyId = Guid.NewGuid(),
+//                CompanyName = "string",
 //                IsDeleted = false
 //            };
-//            var expectedCreatedDepartment3 = new DepartmentModel
+//            var expectedCreatedCompany3 = new CompanyModel
 //            {
-//                DepartmentId = Guid.NewGuid(),
-//                DepartmentName = "string",
+//                CompanyId = Guid.NewGuid(),
+//                CompanyName = "string",
 //                IsDeleted = false
 //            };
-//            departmentList.Add(expectedCreatedDepartment1);
-//            departmentList.Add(expectedCreatedDepartment2);
-//            departmentList.Add(expectedCreatedDepartment3);
+//            companyList.Add(expectedCreatedCompany1);
+//            companyList.Add(expectedCreatedCompany2);
+//            companyList.Add(expectedCreatedCompany3);
 //            //Act
-//            A.CallTo(() => _fakeDepartmentRepository.GetAllDepartment(null)).Returns(departmentList);
-//            var response = await _DepartmentService.GetAllDepartment(null);
+//            A.CallTo(() => _fakeCompanyRepository.GetAllCompany(null)).Returns(companyList);
+//            var response = await _CompanyService.GetAllCompany(null);
 
 //            //Assert
-//            Assert.IsAssignableFrom<IEnumerable<DepartmentViewModel>>(response);
+//            Assert.IsAssignableFrom<IEnumerable<CompanyViewModel>>(response);
 //        }
 //    }
 //}

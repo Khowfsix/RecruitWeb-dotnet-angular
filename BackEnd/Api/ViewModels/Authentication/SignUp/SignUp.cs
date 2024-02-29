@@ -12,5 +12,5 @@ public class SignUp
     [Required(ErrorMessage = "Password is required")]
     public string? Password { get; set; }
 
-    public Guid DepartmentId { get; set; } = Guid.NewGuid();
+    public Guid CompanyId { get; set; } = Guid.NewGuid();
 }

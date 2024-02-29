@@ -68,7 +68,7 @@ namespace Api.Controllers
             string[] columns = {
                 "ApplicationId", "FullName", "DateOfBirth", "Address", "Experience",
                 "CVName", "Introduction", "Education", "PositionName", "Description",
-                "Salary", "DepartmentName", "LanguageName", "DateTime", "CandidateStatus",
+                "Salary", "CompanyName", "LanguageName", "DateTime", "CandidateStatus",
                 "CompanyStatus", "Priority", "IsDeleted"
                                };
             byte[] filecontent = ExportExcelHelper.ExportExcel(data.ToList(), $"{nameof(Application)} Report", true, columns);

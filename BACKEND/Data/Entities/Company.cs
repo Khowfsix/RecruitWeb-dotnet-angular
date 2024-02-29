@@ -1,12 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities;
 
-public partial class Department
+[Table("Company")]
+public partial class Company
 {
-    public Guid DepartmentId { get; set; }
+    [Key]
+    [Column("CompanyId")]
+    public Guid CompanyId { get; set; }
 
-    public string DepartmentName { get; set; } = null!;
+    [Column("CompanyName")]
+    public string CompanyName { get; set; } = null!;
 
     public string? Address { get; set; }
 
@@ -22,8 +27,6 @@ public partial class Department
     public bool IsDeleted { get; set; }
 
     public virtual ICollection<Interviewer> Interviewers { get; set; } = new List<Interviewer>();
-
     public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
-
     public virtual ICollection<Recruiter> Recruiters { get; set; } = new List<Recruiter>();
 }
