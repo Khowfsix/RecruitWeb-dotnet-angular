@@ -24,6 +24,7 @@ namespace Data.Repositories
 
             return await Task.FromResult(position);
         }
+
         public async Task<List<Position>> GetAllPositions()
         {
             /*------------------------------*/

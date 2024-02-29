@@ -91,6 +91,7 @@ namespace Service
                         (item.Company_Status!.Contains(status!) || item.Candidate_Status!.Contains(status!)) &&
                         item.Priority!.Contains(priority!)
                     ));
+
                 foreach (var item in modelDatas)
                 {
                     List<ApplicationModel> listData = _mapper.Map<List<ApplicationModel>>(filteredData);

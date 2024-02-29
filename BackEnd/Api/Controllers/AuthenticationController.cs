@@ -115,23 +115,18 @@ namespace Api.Controllers
                 }
 
                 //Add role to the user
-                var addRole = await _userManager.AddToRoleAsync(user, role);
-                await _authenticationService.CreateCandidate(user.Id);
+                await _userManager.AddToRoleAsync(user, role);
 
-
-                //send email confirm
-                if (addRole.Succeeded)
-                {
-                    //Add Token to Verify the email...
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    SendEmailConfirmation(user.Email!, token);
-
-                    //await ConfirmEmail(token, signUp.Email!);
-                }
-
-                //create candidate in database
+                //Add Token to Verify the email...
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _dbContext.SaveChangesAsync();
 
+                //send email confirm
+                //await ConfirmEmail(token, signUp.Email);
+                //SendEmailConfirmation(user.Email!, token);
+
+                //create candidate in database
+                await _authenticationService.CreateCandidate(user.Id);
                 return StatusCode(StatusCodes.Status200OK,
                     new Response { Status = "Success", Message = $"User created & email sent to {user.Email} Successfully." });
             }
@@ -147,7 +142,7 @@ namespace Api.Controllers
         private void SendEmailConfirmation(string emailUser, string token)
         {
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = emailUser }, Request.Scheme);
-            var message = new Message(new string[] { emailUser! }, "(noreply) Confirm your account", confirmationLink!);
+            var message = new Message(new string[] { emailUser! }, "Confirmation email link", confirmationLink!);
 
             // Send the confirmation email
             _emailService.SendEmail(message);
@@ -165,7 +160,6 @@ namespace Api.Controllers
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = "User not found." });
             }
-
             /*
             // Generate the email confirmation link
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
@@ -565,14 +559,12 @@ namespace Api.Controllers
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
-            var tokenExpirationInHours = _configuration.GetValue<int>("TokenExpirationInHours");
-
             var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT: ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(tokenExpirationInHours),
+                expires: DateTime.Now.AddHours(3),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
                 );
