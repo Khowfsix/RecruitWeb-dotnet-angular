@@ -5,6 +5,7 @@ namespace Data.Interfaces
     public interface IPositionRepository : IRepository<Position>
     {
         Task<List<Position>> GetAllPositions();
+        Task<List<Position>> GetAllPositionsByUserId(String userId);
 
         Task<Position?> GetPositionById(Guid id);
 

@@ -1,6 +1,6 @@
 export class Recruiter {
-    RecruiterId?: any;
-    UserId?: string;
-    DepartmentId?: any;
+    recruiterId?: string;
+    userId?: string;
+    departmentId?: string;
     isDeleted?: boolean;
 }

@@ -1,40 +1,37 @@
-<div class="shadow d-flex flex-column justify-content-center" style="margin-left: 10%; margin-right: 10%;">
+<div class="shadow d-flex flex-column justify-content-center" style="margin-left: 7%; margin-right: 7%;">
   <span class="mt-4 mx-auto fs-3">POSITION LIST</span>
   <div class="mx-5">
-    <div class="container py-4">
-      <div class="d-flex flex-row rounded-4 p-3 hover-overlay"
-        style="width: 75%; background-color: rgb(230, 241, 250); border: 1px solid rgb(51, 51, 208);">
+    <div class="container py-3">
+      @for (position of fetchedPositions; track position) {
+      <div class="d-flex flex-row rounded-3 p-3 hover-overlay my-2"
+        style="width: 75%; background-color: rgb(230, 241, 250); border: 1px solid rgb(134, 134, 232);">
         <div>
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/fluid/city/113.webp"
-            class="rounded-4" style="width: 120px; height: 120px;" alt="company logo">
+          <img src="{{position.imageURL}}" class="rounded-4"
+            style="width: 120px; height: 120px;" alt="{{position.positionName}}">
         </div>
-        <div class="ms-3">
-          <div class="fs-5" style="font-weight: 500;">Position Name</div>
-          <div class="">Department</div>
-          <div class="">Salary</div>
-          <div class="">Max Hiring Quantity</div>
-          <div class="">Start date - End date</div>
-          <div class="">Required Languages</div>
+        <div class="ms-3" style="width: 40%;">
+          <div class="fs-5 custom-row" style="font-weight: 500;">{{ position.positionName }}</div>
+          <div class="custom-row"> Department: {{ position.department?.departmentName }}</div>
+          <div style="color: rgb(251, 115, 74);">${{ position.salary }}</div>
+          <div class="custom-row"> Max hiring quantity: {{ position.maxHiringQty }}</div>
+          <div class="custom-row"> From: {{ position.startDate | date:'dd/MM/yyyy' }} To: {{ position.endDate | date:'dd/MM/yyyy' }}</div>
+          <div class="custom-row"> {{ position.language?.languageName}}</div>
         </div>
-        <div class="ms-3 flex-grow-1">
-          <textarea class="flex-grow-1 rounded-3"
-            style="width: 100%; height: 100%; border: 1px solid rgb(51, 51, 208); resize: none;"> Description</textarea>
+        <div class="ms-3 flex-grow-1" style="width: 45%;">
+          <textarea readonly class="flex-grow-1 rounded-3"
+            style="width: 100%; height: 100%; border: 1px solid rgb(134, 134, 232); resize: none;"> {{ position.description }}</textarea>
         </div>
-        <div class="ms-3">
-          <i class="bi bi-three-dots" style="font-size: 20px;"></i>
+        <div class="ms-3" style="width: 3%;">
+          <i mat-button [matMenuTriggerFor]="menu" class="bi bi-three-dots custom-3-dot"></i>
         </div>
-      </div>
-    </div>
-    <!-- <div class="border border-secondary rounded-4 p-2">
-		<div>
-		  <img
-			src="https://firebasestorage.googleapis.com/v0/b/fashionecommerce-2377f.appspot.com/o/images%2Fproduct%2FAIRPLANE_TEE_0.jpg?alt=media&token=b2f6fc75-0da4-4b44-ac2c-bf97805ed8b4"
-			class="h-auto w-25 rounded-4" alt="...">
-		</div>
-		<div>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>Edit</button>
+          <button mat-menu-item>Delete</button>
+        </mat-menu>
 
-		</div>
-	  </div> -->
+      </div>
+      }
+
+    </div>
   </div>
 </div>
