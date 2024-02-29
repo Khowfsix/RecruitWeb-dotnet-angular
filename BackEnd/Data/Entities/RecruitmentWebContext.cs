@@ -412,6 +412,11 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
                 .HasForeignKey(d => d.RecruiterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ManagedBy");
+
+            entity.HasOne(c => c.CategoryPosition).WithMany(p => p.Positions)
+                .HasForeignKey(c => c.CategoryPositionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_categoryPosition");
         });
 
         modelBuilder.Entity<Question>(entity =>
@@ -639,6 +644,17 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
                 .HasForeignKey(d => d.PositionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SuccessfulPosition");
+        });
+
+        modelBuilder.Entity<CategoryPosition>(entity =>
+        {
+            entity.HasKey(e => e.CategoryPositionId);
+
+            entity.ToTable("CategoryPosition");
+
+            entity.Property(e => e.CategoryPositionId).ValueGeneratedNever();
+            entity.Property(e => e.CategoryPositionName).HasMaxLength(255).HasDefaultValue("");
+            entity.Property(e => e.CategoryPositionDescription).HasMaxLength(255);
         });
 
         base.OnModelCreating(modelBuilder);

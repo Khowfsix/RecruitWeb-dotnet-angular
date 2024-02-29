@@ -26,6 +26,8 @@ public partial class Position
 
     public bool IsDeleted { get; set; }
 
+    public Guid CategoryPositionId { get; set; }
+
     public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
 
     public virtual Department Department { get; set; } = null!;
@@ -33,6 +35,8 @@ public partial class Position
     public virtual Language Language { get; set; } = null!;
 
     public virtual Recruiter Recruiter { get; set; } = null!;
+
+    public virtual CategoryPosition CategoryPosition { get; set; } = null!;
 
     public virtual ICollection<Requirement> Requirements { get; set; } = new List<Requirement>();
 
