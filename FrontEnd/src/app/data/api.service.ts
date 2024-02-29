@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const baseUrl = 'https://localhost:7029';
-// const baseUrl = 'https://jasminerecruitmentweb.azurewebsites.net';
+// const baseUrl = 'https://localhost:7029';
+const baseUrl = 'https://jasminerecruitmentweb.azurewebsites.net';
 
 @Injectable({
 	providedIn: 'root',

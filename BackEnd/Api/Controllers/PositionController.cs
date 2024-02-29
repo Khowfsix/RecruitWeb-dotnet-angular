@@ -1,11 +1,8 @@
 using Api.ViewModels.Position;
 using AutoMapper;
 using Castle.Core.Internal;
-using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -14,13 +11,11 @@ namespace Api.Controllers
     [Authorize]
     public class PositionController : BaseAPIController
     {
-        private readonly UserManager<WebUser> _userManager;
         private readonly IPositionService _positionService;
         private readonly IMapper _mapper;
 
-        public PositionController(UserManager<WebUser> userManager, IPositionService positionService, IMapper mapper)
+        public PositionController(IPositionService positionService, IMapper mapper)
         {
-            _userManager = userManager;
             _positionService = positionService;
             _mapper = mapper;
         }
@@ -40,18 +35,6 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllPositions(Guid? departmentId)
         {
             List<PositionModel> listModelDatas = await _positionService.GetAllPositions(departmentId);
-            List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
-            return Ok(response);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Recruiter,Admin")]
-        [Route("CurrentUser")]
-        public async Task<IActionResult> GetAllPositionsByCurrentUser()
-        {
-            var userName = HttpContext.User.Identity!.Name;
-            var user = await _userManager.FindByNameAsync(userName);
-            List<PositionModel> listModelDatas = await _positionService.GetAllPositionsByCurrentUser(user.Id);
             List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
             return Ok(response);
         }
