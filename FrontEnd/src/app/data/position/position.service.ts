@@ -11,8 +11,12 @@ export class PositionService {
 
   constructor(private api: API) { }
 
-  getAll(): Observable<Position[]> {
+  getAllPositions(): Observable<Position[]> {
     return this.api.GET('/api/Position');
+  }
+
+  getAllPositionsByCurrentUser(): Observable<Position[]> {
+    return this.api.GET('/api/Position/CurrentUser');
   }
 
   // get(id: any): Observable<Position> {

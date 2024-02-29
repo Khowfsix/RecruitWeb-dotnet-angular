@@ -1,9 +1,9 @@
 export class Department {
-	DepartmentId?: any;
-	DepartmentName?: string;
-	Address?: string;
-	Email?: string;
-	Phone?: string;
-	Website?: string;
-	isDeleted?: boolean;
+    departmentId?: string;
+    departmentName?: string;
+    address?: string;
+    email?: string;
+    phone?: string;
+    website?: string;
+    isDeleted?: boolean;
 }
