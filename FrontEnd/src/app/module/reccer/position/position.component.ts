@@ -22,14 +22,26 @@ export class PositionComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchedAllPositions();
+    this.fetchedAllPositionsByCurrentUser();
+  }
+
+  fetchedAllPositionsByCurrentUser(): void {
+    this.positionService.getAllPositionsByCurrentUser()
+      .subscribe({
+        next: (data) => {
+          // this.fetchedPositions = data;
+          console.log('PositionsByCurrentUser', data);
+        },
+        error: (e) => console.error(e)
+      });
   }
 
   fetchedAllPositions(): void {
-    this.positionService.getAll()
+    this.positionService.getAllPositions()
       .subscribe({
         next: (data) => {
           this.fetchedPositions = data;
-          // console.log('positions', this.fetchedPositions);
+          console.log('positions', this.fetchedPositions);
         },
         error: (e) => console.error(e)
       });
