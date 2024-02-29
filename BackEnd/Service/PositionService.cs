@@ -48,9 +48,9 @@ namespace Service
             return list;
         }
 
-        public async Task<List<PositionModel>> GetAllPositionsByCurrentUser(Guid userId)
+        public async Task<List<PositionModel>> GetAllPositionsByCurrentUser(String userId)
         {
-            var entityDatas = await _positionRepository.GetAllPositionsByRecruiterId(userId);
+            var entityDatas = await _positionRepository.GetAllPositionsByUserId(userId);
             List<PositionModel> list = new List<PositionModel>();
             
             foreach (var item in entityDatas)

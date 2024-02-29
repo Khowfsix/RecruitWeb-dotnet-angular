@@ -40,18 +40,18 @@ namespace Data.Repositories
             return positionListWithName;
         }
 
-        public async Task<List<Position>> GetAllPositionsByRecruiterId(Guid recruiterId)
+        public async Task<List<Position>> GetAllPositionsByUserId(String userId)
         {
             /*------------------------------*/
             // Finds all of position entities asynchronously in db.
             // Returns a list of it with the related entities.
             /*------------------------------*/
             var positionListWithName = await Entities
-                .Where(o => o.RecruiterId.Equals(recruiterId))
                 .Include(o => o.Requirements)
                 .Include(o => o.Department)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
+                .Where(o => o.Recruiter.UserId.Equals(userId))
                 .ToListAsync();
 
             return positionListWithName;
