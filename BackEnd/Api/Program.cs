@@ -58,6 +58,7 @@ try
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
     );
+
     // Add services to the container.
     builder.Services
         .AddControllers(options =>
@@ -74,7 +75,7 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(option =>
     {
-        option.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth API", Version = "v1" });
+        option.SwaggerDoc("v1", new OpenApiInfo { Title = "Jasmine Recruitment Web API", Version = "v1" });
         //option.MapType<List<IFormFile>>(() => new OpenApiSchema { Type = "array", Items = new OpenApiSchema { Type = "file", Format = "binary" } });
         option.AddSecurityDefinition(
             "Bearer",

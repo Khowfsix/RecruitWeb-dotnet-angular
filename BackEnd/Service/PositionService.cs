@@ -48,6 +48,11 @@ namespace Service
             return list;
         }
 
+        public Task<List<PositionModel>> GetAllPositionsByCurrentUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<PositionModel> GetPositionById(Guid id)
         {
             var data = await _positionRepository.GetPositionById(id);

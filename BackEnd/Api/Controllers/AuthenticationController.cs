@@ -64,7 +64,7 @@ namespace Api.Controllers
             var userName = HttpContext.User.Identity!.Name;
             if (!string.IsNullOrEmpty(userName))
             {
-                return Ok("Please logout your account");
+                return BadRequest("Please logout your account");
             }
             string role = "Candidate";
             //Check User Exist
@@ -187,13 +187,13 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LogInModel loginModel)
         {
-            var user = await _userManager.FindByNameAsync(loginModel.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            var user = await _userManager.FindByNameAsync(userName: loginModel.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user: user, password: loginModel.Password))
             {
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new(ClaimTypes.Name, user.UserName),
+                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
                 var userRoles = await _userManager.GetRolesAsync(user);
                 foreach (var role in userRoles)
@@ -221,7 +221,7 @@ namespace Api.Controllers
                 //returning the token...
             }
 
-            return Unauthorized();
+            return Unauthorized("Wrong password or username");
         }
 
         [HttpPost]
