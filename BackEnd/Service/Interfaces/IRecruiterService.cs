@@ -13,4 +13,5 @@ public interface IRecruiterService
     Task<bool> UpdateRecruiter(RecruiterModel recruiterModel, Guid recruiterModelId);
 
     Task<bool> DeleteRecruiter(Guid recruiterModelId);
+    Task<RecruiterModel> GetRecruiterByUserId(string userId);
 }

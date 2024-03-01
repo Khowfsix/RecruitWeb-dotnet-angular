@@ -6,7 +6,7 @@ public partial class Recruiter
 {
     public Guid RecruiterId { get; set; }
 
-    public string UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     [Column("CompanyId")]
     public Guid CompanyId { get; set; }

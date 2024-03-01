@@ -20,7 +20,7 @@ public class RecruiterController : BaseAPIController
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet("[action]")]
     public async Task<IActionResult> GetAllRecruiter(Guid? id)
     {
         if (id != null)
@@ -42,7 +42,7 @@ public class RecruiterController : BaseAPIController
         return Ok(viewModels);
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SaveRecruiter(RecruiterAddModel request)
     {
@@ -55,7 +55,7 @@ public class RecruiterController : BaseAPIController
         return Ok("Can not create recruiter");
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("[action]/{id:guid}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateRecruiter(RecruiterUpdateModel request, Guid id)
     {
@@ -63,10 +63,19 @@ public class RecruiterController : BaseAPIController
         return await _recruiterService.UpdateRecruiter(model, id) ? Ok(true) : BadRequest();
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("[action]/{id:guid}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteRecruiter(Guid id)
     {
         return await _recruiterService.DeleteRecruiter(id) ? Ok(true) : NotFound();
+    }
+
+    [HttpGet("[action]/{userId}")]
+    [Authorize(Roles = "Admin,Recruiter")]
+    public async Task<IActionResult> GetRecruiterByUserId(string userId)
+    {
+        var model = await _recruiterService.GetRecruiterByUserId(userId);
+        var response = _mapper.Map<RecruiterViewModel>(model);
+        return Ok(response);
     }
 }

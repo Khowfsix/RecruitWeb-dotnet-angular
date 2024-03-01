@@ -17,16 +17,27 @@ public class RecruiterRepository : Repository<Recruiter>, IRecruiterRepository
 
     public async Task<IEnumerable<Recruiter>> GetAllRecruiter()
     {
-        var listData = await Entities.Include(x => x.User).ToListAsync();
+        var listData = await Entities.Include(x => x.User).Include(x => x.Company).ToListAsync();
         return listData;
     }
 
     public async Task<Recruiter?> GetRecruiterById(Guid id)
     {
-        var item = await Entities.Include(x => x.User).Where(r => r.RecruiterId == id)
+        var item = await Entities.Include(x => x.User).Include(x => x.Company).Where(r => r.RecruiterId == id)
             .FirstOrDefaultAsync();
         if (item is null) return null;
         return item;
+    }
+
+    public async Task<Recruiter> GetRecruiterByUserId(string id)
+    {
+        var item = await Entities
+            .Include(r => r.User)
+            .Include(r => r.Company)
+            .Where(r => r.UserId.Equals(id))
+            .FirstOrDefaultAsync();
+
+        return item!;
     }
 
     public async Task<Recruiter?> SaveRecruiter(Recruiter entity)

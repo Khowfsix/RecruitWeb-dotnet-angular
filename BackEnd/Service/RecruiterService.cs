@@ -51,4 +51,10 @@ public class RecruiterService : IRecruiterService
         var data = await _recruiterRepository.GetRecruiterById(id);
         return _mapper.Map<RecruiterModel>(data);
     }
+
+    public async Task<RecruiterModel> GetRecruiterByUserId(string userId)
+    {
+        var data = await _recruiterRepository.GetRecruiterByUserId(userId);
+        return _mapper.Map<RecruiterModel>(data);
+    }
 }
