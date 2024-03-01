@@ -12,25 +12,24 @@ import { Position } from '../../../data/position/position.model';
 	styleUrl: './position.component.css',
 })
 export class PositionComponent implements OnInit {
-  positions?: Position[];
-  currentPosition: Position = {};
-  currentIndex = -1;
-  title = '';
+	positions?: Position[];
+	currentPosition: Position = {};
+	currentIndex = -1;
+	title = '';
 
-  constructor(private positionService: PositionService) { }
+	constructor(private positionService: PositionService) {}
 
-  ngOnInit(): void {
-    // this.retrieveTutorials();
-  }
+	ngOnInit(): void {
+		// this.retrieveTutorials();
+	}
 
-  retrieveTutorials(): void {
-    this.positionService.getAll()
-      .subscribe({
-        next: (data) => {
-          this.positions = data;
-          console.log(data);
-        },
-        error: (e) => console.error(e)
-      });
-  }
+	retrieveTutorials(): void {
+		this.positionService.getAll().subscribe({
+			next: (data) => {
+				this.positions = data;
+				console.log(data);
+			},
+			error: (e) => console.error(e),
+		});
+	}
 }

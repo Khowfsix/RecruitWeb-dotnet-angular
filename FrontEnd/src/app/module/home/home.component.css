@@ -1,0 +1,21 @@
+/* styles.css */
+.spacer {
+	flex: 1 1 auto;
+}
+
+.search-section {
+	display: flex;
+	justify-content: center;
+	padding: 2rem;
+}
+
+mat-form-field {
+	width: 300px;
+	margin-right: 1rem;
+}
+
+.footer {
+	text-align: center;
+	padding: 1rem;
+	background-color: #f8f8f8;
+}

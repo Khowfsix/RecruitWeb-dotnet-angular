@@ -5,37 +5,36 @@ import { Position } from './position.model';
 import { API } from '../api.service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class PositionService {
+	constructor(private api: API) {}
 
-  constructor(private api: API) { }
+	getAll(): Observable<Position[]> {
+		return this.api.GET('/api/Position');
+	}
 
-  getAll(): Observable<Position[]> {
-    return this.api.GET('/api/Position');
-  }
+	// get(id: any): Observable<Position> {
+	//   return this.http.get<Position>(`${baseUrl}/${id}`);
+	// }
 
-  // get(id: any): Observable<Position> {
-  //   return this.http.get<Position>(`${baseUrl}/${id}`);
-  // }
+	// create(data: any): Observable<any> {
+	//   return this.http.post(baseUrl, data);
+	// }
 
-  // create(data: any): Observable<any> {
-  //   return this.http.post(baseUrl, data);
-  // }
+	// update(id: any, data: any): Observable<any> {
+	//   return this.http.put(`${baseUrl}/${id}`, data);
+	// }
 
-  // update(id: any, data: any): Observable<any> {
-  //   return this.http.put(`${baseUrl}/${id}`, data);
-  // }
+	// delete(id: any): Observable<any> {
+	//   return this.http.delete(`${baseUrl}/${id}`);
+	// }
 
-  // delete(id: any): Observable<any> {
-  //   return this.http.delete(`${baseUrl}/${id}`);
-  // }
+	// deleteAll(): Observable<any> {
+	//   return this.http.delete(baseUrl);
+	// }
 
-  // deleteAll(): Observable<any> {
-  //   return this.http.delete(baseUrl);
-  // }
-
-  // findByTitle(title: any): Observable<Position[]> {
-  //   return this.http.get<Position[]>(`${baseUrl}?title=${title}`);
-  // }
+	// findByTitle(title: any): Observable<Position[]> {
+	//   return this.http.get<Position[]>(`${baseUrl}?title=${title}`);
+	// }
 }
