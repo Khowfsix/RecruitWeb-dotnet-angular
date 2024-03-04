@@ -4,20 +4,25 @@ import {
 	HttpRequest,
 	HttpHandler,
 	HttpEvent,
+	HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { noTokenURLs } from '../constants/noTokenURLs.constants';
+import { AuthService } from '../services/auth.service';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+@Injectable({
+	providedIn: 'root',
+})
+class AuthInterceptor implements HttpInterceptor {
+	constructor(private authService: AuthService) {}
+
 	intercept(
 		req: HttpRequest<unknown>,
 		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
-		if (!this.isInWhiteListUrl(req.url)) {
-			const authToken = this.getAuthenticationToken();
+		if (!this.authService.isInWhiteListUrl(req.url)) {
+			const authToken = this.authService.getAuthenticationToken();
 
-			if (authToken) {
+			if (authToken !== null) {
 				req = req.clone({
 					headers: req.headers.set(
 						'Authorization',
@@ -30,13 +35,10 @@ export class AuthInterceptor implements HttpInterceptor {
 		// Gửi request đã được chỉnh sửa hoặc request gốc nếu không có token
 		return next.handle(req);
 	}
-
-	private getAuthenticationToken() {
-		return localStorage.getItem('authToken');
-	}
-
-	private isInWhiteListUrl(url: string): boolean {
-		// return if url in list no need token
-		return noTokenURLs.some((item) => item.startsWith(url));
-	}
 }
+
+export const AuthInterceptorProvider = {
+	provide: HTTP_INTERCEPTORS,
+	useClass: AuthInterceptor,
+	multi: true,
+};

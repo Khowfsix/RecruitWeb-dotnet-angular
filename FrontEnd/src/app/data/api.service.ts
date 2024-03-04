@@ -11,11 +11,11 @@ const baseUrl = 'https://jasminerecruitmentweb.azurewebsites.net';
 export class API {
 	constructor(private http: HttpClient) {}
 
-	public GET(path: string): Observable<any[]> {
+	public GET(path: string): Observable<any[] | any> {
 		return this.http.get<any[]>(baseUrl + path);
 	}
 
-	public POST(path: string, data: any): Observable<any> {
+	public POST(path: string, data?: any): Observable<any> {
 		return this.http.post(baseUrl + path, data);
 	}
 
