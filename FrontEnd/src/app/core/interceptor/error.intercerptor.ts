@@ -22,10 +22,12 @@ class ErrorInterceptor implements HttpInterceptor {
 			catchError((err) => {
 				if ([401, 403].indexOf(err.status) !== -1) {
 					// auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-					this.authenticationsService.logout();
+					const authToken =
+						this.authenticationsService.getAuthenticationToken();
+					if (authToken) this.authenticationsService.logout();
 				}
 
-				const error = err.error.message || err.statusText;
+				const error = err.error || err.statusText;
 				return throwError(() => error);
 			}),
 		);

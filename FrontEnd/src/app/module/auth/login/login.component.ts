@@ -20,26 +20,21 @@ import { first } from 'rxjs';
 })
 export class LoginComponent {
 	loginForm: FormGroup;
+	loginData: Login = {
+		username: '',
+		password: '',
+	};
 
 	constructor(
 		private fb: FormBuilder,
 		private authService: AuthService,
 		private router: Router,
 	) {
-		if (authService.isAuthenticated()) {
-			router.navigate(['']);
-		}
-
 		this.loginForm = this.fb.group({
 			username: ['', [Validators.required]],
 			password: ['', [Validators.required]],
 		});
 	}
-
-	loginData: Login = {
-		username: '',
-		password: '',
-	};
 
 	onSubmit() {
 		this.loginData = this.loginForm.value;

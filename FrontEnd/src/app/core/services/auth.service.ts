@@ -24,8 +24,9 @@ export class AuthService {
 
 	logout() {
 		this.api.POST('/api/Authentication/Logout');
-		this.router.navigate(['/auth/login']);
-		localStorage.clear();
+		if (typeof localStorage !== 'undefined') {
+			localStorage.clear();
+		}
 	}
 
 	// todo: get current user
@@ -34,16 +35,16 @@ export class AuthService {
 	}
 
 	getAuthenticationToken(): string | null {
-		if (
-			typeof localStorage === 'undefined' ||
-			localStorage.getItem('loginData') === null
-		) {
-			return null;
+		if (typeof localStorage !== 'undefined') {
+			const loginDataString = localStorage.getItem('loginData');
+			if (loginDataString !== null) {
+				const loginData: { token: string; expiration: string } =
+					JSON.parse(loginDataString);
+				return loginData.token;
+			}
 		}
-		const loginData: { token: string; expiration: string } = JSON.parse(
-			localStorage.getItem('loginData')!,
-		);
-		return loginData.token;
+		console.log('User has no token');
+		return null;
 	}
 
 	isInWhiteListUrl(url: string): boolean {
@@ -51,10 +52,10 @@ export class AuthService {
 		return noTokenURLs.some((item) => item.startsWith(url));
 	}
 
-	isAuthenticated(): boolean {
-		if (this.getAuthenticationToken() === null) {
-			return false;
+	async isAuthenticated(): Promise<boolean> {
+		if (this.getAuthenticationToken()) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 }

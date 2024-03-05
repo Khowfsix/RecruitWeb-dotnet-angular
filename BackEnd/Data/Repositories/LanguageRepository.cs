@@ -63,7 +63,9 @@ namespace Data.Repositories
             // Finds all of language entities asynchronously in db.
             // Returns a list of found entities.
             /*------------------------------*/
-            var entityDatas = await Entities.ToListAsync();
+            var entityDatas = await Entities
+                .Include(l => l.Positions).IgnoreAutoIncludes()
+                .ToListAsync();
 
             return !entityDatas.IsNullOrEmpty() ? entityDatas : new List<Language>();
         }

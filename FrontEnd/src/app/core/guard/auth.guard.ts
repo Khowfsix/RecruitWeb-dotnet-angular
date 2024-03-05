@@ -4,9 +4,9 @@ import {
 	ActivatedRouteSnapshot,
 	RouterStateSnapshot,
 	Router,
+	UrlTree,
 } from '@angular/router';
 
-import { AuthService } from '../services/auth.service';
 import { PermissionService } from '../services/permission.service';
 
 @Injectable({
@@ -14,7 +14,6 @@ import { PermissionService } from '../services/permission.service';
 })
 export class AuthGuard implements CanActivate {
 	constructor(
-		private authService: AuthService,
 		private permissionService: PermissionService,
 		private router: Router,
 	) {}
@@ -22,27 +21,25 @@ export class AuthGuard implements CanActivate {
 	async canActivate(
 		next: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot,
-	) {
-		const isAuthen = this.authService.isAuthenticated();
-
-		if (!isAuthen) {
-			// redirect user to the login page
-			this.router.navigate(['/auth/login'], {
+	): Promise<boolean | UrlTree> {
+		if (!localStorage.getItem('loginData')) {
+			return this.router.createUrlTree(['/auth/login'], {
 				queryParams: { returnUrl: state.url },
 			});
-			return false;
-		} else {
-			const requiredRoles = next.data['roles'] as string[];
-			const isAuthor = this.permissionService.isAuthorized(requiredRoles);
-
-			if (!isAuthor) {
-				// role not authorised so redirect to home page
-				// this.router.navigate(['/']);
-				return false;
-			}
 		}
 
-		// authen and author
+		// Kiểm tra role hiện tại có khớp với list role yêu cầu không
+		const requiredRole = next.data['roles'] as string[];
+		const isAuthorized = await this.permissionService.isAuthorized(
+			requiredRole,
+		); // assuming isAuthorized is an async function
+		console.log('isAuthorized:', isAuthorized);
+
+		if (!isAuthorized) {
+			console.log('User is not authorized, redirecting to home page');
+			return this.router.createUrlTree(['/home']);
+		}
+
 		return true;
 	}
 }

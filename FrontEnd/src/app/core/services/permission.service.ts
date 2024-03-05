@@ -7,21 +7,18 @@ import { API } from '../../data/api.service';
 export class PermissionService {
 	constructor(private api: API) {}
 
-	getUserRoles(): Promise<string[]> | null {
-		let listRoles: string[] = [];
-
-		this.api.GET('/api/Authentication/Role').subscribe({
-			next: (data) => {
-				listRoles = data.role;
-				console.log(listRoles);
-				return new Promise((resolve) => resolve(listRoles));
-			},
-			error: (error) => {
-				console.log(error);
-			},
-			complete: () => {},
+	getUserRoles(): Promise<string[] | null> {
+		return new Promise((resolve) => {
+			this.api.GET('/api/Authentication/Role').subscribe({
+				next: (data) => {
+					resolve(data.role);
+				},
+				error: (err) => {
+					console.log(err);
+					resolve(null);
+				},
+			});
 		});
-		return null;
 	}
 
 	hasRole(requiredRole: string[], currentUserRole: string[]): boolean {
@@ -37,17 +34,18 @@ export class PermissionService {
 		return true;
 	}
 
-	isAuthorized(requiredRole: string[]): boolean {
+	async isAuthorized(requiredRole: string[]): Promise<boolean> {
 		if (requiredRole.length === 0) {
 			return true;
 		}
 
-		const currentUserRole = this.getUserRoles();
+		const currentUserRole = await this.getUserRoles();
 
 		if (currentUserRole === null) {
 			console.log('User has no role');
 			return false;
 		}
+
 		return this.hasRole(requiredRole, currentUserRole);
 	}
 }
