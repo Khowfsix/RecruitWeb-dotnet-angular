@@ -48,17 +48,9 @@ namespace Service
             return list;
         }
 
-        public async Task<List<PositionModel>> GetAllPositionsByCurrentUser(String userId)
+        public Task<List<PositionModel>> GetAllPositionsByCurrentUser(string userId)
         {
-            var entityDatas = await _positionRepository.GetAllPositionsByUserId(userId);
-            List<PositionModel> list = new List<PositionModel>();
-            
-            foreach (var item in entityDatas)
-            {
-                list.Add(_mapper.Map<PositionModel>(item));
-            }
-            
-            return list;
+            throw new NotImplementedException();
         }
 
         public async Task<PositionModel> GetPositionById(Guid id)

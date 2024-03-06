@@ -58,6 +58,7 @@ try
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
     );
+
     // Add services to the container.
     builder.Services
         .AddControllers(options =>
@@ -74,7 +75,7 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(option =>
     {
-        option.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth API", Version = "v1" });
+        option.SwaggerDoc("v1", new OpenApiInfo { Title = "Jasmine Recruitment Web API", Version = "v1" });
         //option.MapType<List<IFormFile>>(() => new OpenApiSchema { Type = "array", Items = new OpenApiSchema { Type = "file", Format = "binary" } });
         option.AddSecurityDefinition(
             "Bearer",
@@ -148,9 +149,9 @@ try
 
     //Add Config for Required Email
     builder.Services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
-    //builder.Services.Configure<DataProtectionTokenProviderOptions>(
-    //    option => option.TokenLifespan = TimeSpan.FromHours(TokenExpirationInHours)
-    //);
+    builder.Services.Configure<DataProtectionTokenProviderOptions>(
+        option => option.TokenLifespan = TimeSpan.FromHours(1000)
+    );
 
     // Add auto mapper
     //builder.Services.AddAutoMapper(typeof(Program));

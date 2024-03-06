@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public class LogInModel
+namespace Api.ViewModels.Authentication.LogIn
 {
-    [Required(ErrorMessage = "User Name is required")]
-    public string Username { get; set; }
+    public class LogInModel
+    {
+        [Required(ErrorMessage = "User Name is required")]
+        public string Username { get; set; } = string.Empty;
 
-
-
-    [Required(ErrorMessage = "Password is required")]
-    public string Password { get; set; }
-
-
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; } = string.Empty;
+    }
 }

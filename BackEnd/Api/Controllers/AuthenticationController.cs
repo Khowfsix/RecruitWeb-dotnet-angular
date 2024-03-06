@@ -64,7 +64,7 @@ namespace Api.Controllers
             var userName = HttpContext.User.Identity!.Name;
             if (!string.IsNullOrEmpty(userName))
             {
-                return Ok("Please logout your account");
+                return BadRequest("Please logout your account");
             }
             string role = "Candidate";
             //Check User Exist
@@ -115,23 +115,18 @@ namespace Api.Controllers
                 }
 
                 //Add role to the user
-                var addRole = await _userManager.AddToRoleAsync(user, role);
-                await _authenticationService.CreateCandidate(user.Id);
+                await _userManager.AddToRoleAsync(user, role);
 
-
-                //send email confirm
-                if (addRole.Succeeded)
-                {
-                    //Add Token to Verify the email...
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    SendEmailConfirmation(user.Email!, token);
-
-                    //await ConfirmEmail(token, signUp.Email!);
-                }
-
-                //create candidate in database
+                //Add Token to Verify the email...
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _dbContext.SaveChangesAsync();
 
+                //send email confirm
+                //await ConfirmEmail(token, signUp.Email);
+                //SendEmailConfirmation(user.Email!, token);
+
+                //create candidate in database
+                await _authenticationService.CreateCandidate(user.Id);
                 return StatusCode(StatusCodes.Status200OK,
                     new Response { Status = "Success", Message = $"User created & email sent to {user.Email} Successfully." });
             }
@@ -147,7 +142,7 @@ namespace Api.Controllers
         private void SendEmailConfirmation(string emailUser, string token)
         {
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = emailUser }, Request.Scheme);
-            var message = new Message(new string[] { emailUser! }, "(noreply) Confirm your account", confirmationLink!);
+            var message = new Message(new string[] { emailUser! }, "Confirmation email link", confirmationLink!);
 
             // Send the confirmation email
             _emailService.SendEmail(message);
@@ -165,7 +160,6 @@ namespace Api.Controllers
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = "User not found." });
             }
-
             /*
             // Generate the email confirmation link
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
@@ -193,13 +187,13 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LogInModel loginModel)
         {
-            var user = await _userManager.FindByNameAsync(loginModel.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            var user = await _userManager.FindByNameAsync(userName: loginModel.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user: user, password: loginModel.Password))
             {
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new(ClaimTypes.Name, user.UserName),
+                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
                 var userRoles = await _userManager.GetRolesAsync(user);
                 foreach (var role in userRoles)
@@ -227,7 +221,7 @@ namespace Api.Controllers
                 //returning the token...
             }
 
-            return Unauthorized();
+            return Unauthorized("Wrong password or username");
         }
 
         [HttpPost]
@@ -565,14 +559,12 @@ namespace Api.Controllers
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
-            var tokenExpirationInHours = _configuration.GetValue<int>("TokenExpirationInHours");
-
             var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT: ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(tokenExpirationInHours),
+                expires: DateTime.Now.AddHours(3),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
                 );
