@@ -11,6 +11,5 @@
         public IFormFile? ImageFile { get; set; }
 
         public string PhoneNumber { get; set; }
-
     }
 }

@@ -10,6 +10,5 @@
         public bool IsDeleted { get; set; } = false;
 
         public WebUserViewModel User { get; set; }
-
     }
 }

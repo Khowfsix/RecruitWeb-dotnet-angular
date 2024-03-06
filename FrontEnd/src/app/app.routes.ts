@@ -23,7 +23,6 @@ export const routes: Routes = [
 		loadChildren: () =>
 			import('./module/auth/auth.module').then((m) => m.AuthModule),
 	},
-	// { path: 'position', component: PositionComponent },
 
 	// url for recruiter
 	createRouteWithRoles('companies', CompanyComponent, [

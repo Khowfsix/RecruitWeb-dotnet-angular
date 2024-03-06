@@ -9,12 +9,9 @@ namespace Api.ViewModels.Requirement
         public Guid PositionId { get; set; }
         public Guid SkillId { get; set; }
 
-
         public SkillViewModel Skill { get; set; }
 
-
         public PositionViewModel Position { get; set; }
-
 
         public string Experience { get; set; } = null!;
 

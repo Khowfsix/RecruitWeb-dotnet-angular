@@ -58,7 +58,6 @@ namespace Api.Controllers
         [HttpPost]
         [Route("Register")]
         [AllowAnonymous]
-        //todo: fix register
         public async Task<IActionResult> Register([FromBody] Register signUp)
         {
             var userName = HttpContext.User.Identity!.Name;

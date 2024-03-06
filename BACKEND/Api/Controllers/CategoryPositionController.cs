@@ -12,7 +12,7 @@ namespace Api.Controllers
         private readonly ICategoryPositionService _categoryPositionService;
         private readonly IMapper _mapper;
 
-        public CategoryPositionController(ICategoryPositionService categoryPositionService, 
+        public CategoryPositionController(ICategoryPositionService categoryPositionService,
             IMapper mapper)
         {
             _categoryPositionService = categoryPositionService;
