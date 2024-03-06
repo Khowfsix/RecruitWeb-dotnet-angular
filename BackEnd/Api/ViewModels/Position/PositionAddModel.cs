@@ -6,6 +6,8 @@
 
         public string? Description { get; set; }
 
+        public string? ImageURL { get; set; }
+
         public decimal? Salary { get; set; }
 
         public int MaxHiringQty { get; set; }
@@ -19,6 +21,8 @@
         public Guid LanguageId { get; set; }
 
         public Guid RecruiterId { get; set; }
+
+        public Guid CategoryPositionId { get; set; }
 
         //public bool IsDeleted { get; set; } = false;
     }

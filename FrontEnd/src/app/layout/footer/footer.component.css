@@ -1,5 +1,6 @@
 .custom-footer {
     background-color: #1c395f;
+    /* z-index: -99999; */
 }
 
 .custom-row-header {

@@ -25,6 +25,9 @@ public class PositionModel
     public Guid RecruiterId { get; set; }
     public RecruiterModel Recruiter { get; set; } = null!;
 
+    public Guid CategoryPositionId { get; set; }
+    public CategoryPositionModel CategoryPosition { get; set; } = null!;
+
     public bool IsDeleted { get; set; } = false;
 
     public virtual ICollection<RequirementModel> Requirements { get; set; } = new List<RequirementModel>();

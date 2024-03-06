@@ -23,17 +23,18 @@ export class PositionService {
   //   return this.http.get<Position>(`${baseUrl}/${id}`);
   // }
 
-  // create(data: any): Observable<any> {
-  //   return this.http.post(baseUrl, data);
-  // }
+  create(data: any): Observable<any> {
+    console.log('data:......', data)
+    return this.api.POST('/api/Position', data);
+  }
 
   // update(id: any, data: any): Observable<any> {
   //   return this.http.put(`${baseUrl}/${id}`, data);
   // }
 
-  // delete(id: any): Observable<any> {
-  //   return this.http.delete(`${baseUrl}/${id}`);
-  // }
+  delete(id: any): Observable<any> {
+    return this.api.DELETE('/api/Position/'+id);
+  }
 
   // deleteAll(): Observable<any> {
   //   return this.http.delete(baseUrl);

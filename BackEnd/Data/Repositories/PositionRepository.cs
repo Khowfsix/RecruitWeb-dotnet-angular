@@ -24,18 +24,34 @@ namespace Data.Repositories
 
             return await Task.FromResult(position);
         }
-        public async Task<List<Position>> GetAllPositions()
+        public async Task<List<Position>> GetAllPositions(bool isAdmin) 
         {
             /*------------------------------*/
             // Finds all of position entities asynchronously in db.
             // Returns a list of it with the related entities.
             /*------------------------------*/
-            var positionListWithName = await Entities
+            var positionListWithName = new List<Position>();
+            if (isAdmin)
+            {
+                positionListWithName = await Entities
                 .Include(o => o.Requirements)
                 .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
+                //.Include(o => o.CategoryPosition)
                 .ToListAsync();
+            }
+            else
+            {
+                positionListWithName = await Entities
+                .Where(o => o.IsDeleted == false)
+                .Include(o => o.Requirements)
+                .Include(o => o.Company)
+                .Include(o => o.Language)
+                .Include(o => o.Recruiter)
+                //.Include(o => o.CategoryPosition)
+                .ToListAsync();
+            }
 
             return positionListWithName;
         }
@@ -47,11 +63,12 @@ namespace Data.Repositories
             // Returns a list of it with the related entities.
             /*------------------------------*/
             var positionListWithName = await Entities
+                .Where(o => o.Recruiter.UserId.Equals(userId))
                 .Include(o => o.Requirements)
                 .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
-                .Where(o => o.Recruiter.UserId.Equals(userId))
+                .Include(o => o.CategoryPosition)
                 .ToListAsync();
 
             return positionListWithName;
@@ -69,6 +86,7 @@ namespace Data.Repositories
                 .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
+                .Include(o => o.CategoryPosition)
                 .FirstOrDefaultAsync();
 
             /*------------------------------*/
@@ -83,7 +101,6 @@ namespace Data.Repositories
             // Finds all of position entities that contain name parameter asynchronously in db.
             // Returns a list of it with the related entities if matched.
             /*------------------------------*/
-
             var positionList = await Entities
                 .Where(p => p.PositionName!.ToLower()
                                           .Contains(name.ToLower().Trim()))
@@ -91,6 +108,7 @@ namespace Data.Repositories
                 .Include(o => o.Company)
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
+                .Include(o => o.CategoryPosition)
                 .ToListAsync();
 
             return positionList;

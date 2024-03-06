@@ -1,4 +1,4 @@
-import { Department } from './department.model';
+import { Department } from './company.model';
 
 describe('Department', () => {
   it('should create an instance', () => {

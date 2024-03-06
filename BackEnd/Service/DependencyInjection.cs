@@ -41,6 +41,7 @@ namespace Service
             service.AddTransient<ISecurityQuestionService, SecurityQuestionService>();
             service.AddTransient<IAuthService, AuthService>();
             service.AddTransient<IEmailService, EmailService>();
+            service.AddTransient<ICategoryPositionService, CategoryPositionService>();
             return service;
         }
     }

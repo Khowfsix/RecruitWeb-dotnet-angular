@@ -24,9 +24,9 @@ namespace Service
             return _mapper.Map<PositionModel>(response);
         }
 
-        public async Task<List<PositionModel>> GetAllPositions(Guid? companyId)
+        public async Task<List<PositionModel>> GetAllPositions(Guid? companyId, bool isAdmin)
         {
-            var entityDatas = await _positionRepository.GetAllPositions();
+            var entityDatas = await _positionRepository.GetAllPositions(isAdmin);
             List<PositionModel> list = new List<PositionModel>();
             if (companyId == null)
             {

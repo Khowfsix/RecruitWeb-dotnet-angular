@@ -30,6 +30,7 @@ using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
 using Data.Entities;
 using Service.Models;
+using Api.ViewModels.CategoryPosition;
 
 namespace Data.Mapping
 {
@@ -37,6 +38,15 @@ namespace Data.Mapping
     {
         public AutoMapperConfiguration()
         {
+            #region CategoryPosition
+
+            CreateMap<CategoryPosition, CategoryPositionModel>().ReverseMap();
+            CreateMap<CategoryPositionModel, CategoryPositionViewModel>().ReverseMap();
+            CreateMap<CategoryPositionModel, CategoryPositionAddModel>().ReverseMap();
+            CreateMap<CategoryPositionModel, CategoryPositionUpdateModel>().ReverseMap();
+
+            #endregion CategoryPosition
+
             #region Language
 
             CreateMap<Language, LanguageModel>().ReverseMap();

@@ -39,7 +39,8 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllPositions(Guid? companyId)
         {
-            List<PositionModel> listModelDatas = await _positionService.GetAllPositions(companyId);
+            var isAdmin = HttpContext.User.IsInRole("Admin") ? true : false;
+            List<PositionModel> listModelDatas = await _positionService.GetAllPositions(companyId, isAdmin);
             List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
             return Ok(response);
         }

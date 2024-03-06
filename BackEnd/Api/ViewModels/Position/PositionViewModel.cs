@@ -1,3 +1,4 @@
+using Api.ViewModels.CategoryPosition;
 using Api.ViewModels.Company;
 using Api.ViewModels.Language;
 using Api.ViewModels.Recruiter;
@@ -23,15 +24,13 @@ namespace Api.ViewModels.Position
 
         public DateTime? EndDate { get; set; }
 
-
         public CompanyViewModel Company { get; set; }
-
-
 
         public LanguageViewModel Language { get; set; }
 
-
         public RecruiterViewModel Recruiter { get; set; } = null!;
+
+        public CategoryPositionViewModel CategoryPosition { get; set; } = null!;
 
         public bool IsDeleted { get; set; } = false;
 

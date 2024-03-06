@@ -1,4 +1,5 @@
-import { Department } from "../department/department.model";
+import { CategoryPosition } from "../categoryPosition/category-position.model";
+import { Company } from "../company/company.model";
 import { Language } from "../language/language.model";
 import { Recruiter } from "../recruiter/recruiter.model";
 import { Requirements } from "../requirements/requirements.model";
@@ -12,9 +13,10 @@ export class Position {
     maxHiringQty?: number;
     startDate?: Date;
     endDate?: Date;
-    department?: Department;
+    company?: Company;
     language?: Language;
     recruiter?: Recruiter;
+    categoryPosition?: CategoryPosition;
     isDeleted?: boolean;
     requirements?: Requirements[];
 }
