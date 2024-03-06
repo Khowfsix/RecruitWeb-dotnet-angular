@@ -26,24 +26,24 @@ export class PositionService {
 	//   return this.http.put(`${baseUrl}/${id}`, data);
 	// }
 
-  create(data: any): Observable<any> {
-    console.log('data:......', data)
-    return this.api.POST('/api/Position', data);
-  }
+	create(data: any): Observable<any> {
+		console.log('data:......', data);
+		return this.api.POST('/api/Position', data);
+	}
 
 	// deleteAll(): Observable<any> {
 	//   return this.http.delete(baseUrl);
 	// }
 
-  delete(id: any): Observable<any> {
-    return this.api.DELETE('/api/Position/'+id);
-  }
+	delete(id: any): Observable<any> {
+		return this.api.DELETE('/api/Position/' + id);
+	}
 
-  // deleteAll(): Observable<any> {
-  //   return this.http.delete(baseUrl);
-  // }
+	// deleteAll(): Observable<any> {
+	//   return this.http.delete(baseUrl);
+	// }
 
-  // findByTitle(title: any): Observable<Position[]> {
-  //   return this.http.get<Position[]>(`${baseUrl}?title=${title}`);
-  // }
+	// findByTitle(title: any): Observable<Position[]> {
+	//   return this.http.get<Position[]>(`${baseUrl}?title=${title}`);
+	// }
 }
