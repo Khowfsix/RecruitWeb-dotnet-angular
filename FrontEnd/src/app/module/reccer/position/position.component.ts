@@ -54,7 +54,7 @@ export class PositionComponent implements OnInit {
 	): void {
 		if (positionId !== '') {
 			console.log('before positionId:', positionId);
-			let dialogRef = this.dialog.open(DeleteDialog, {
+			const dialogRef = this.dialog.open(DeleteDialog, {
 				viewContainerRef: this.viewContainerRef,
 				data: {
 					positionId: positionId,
@@ -75,7 +75,7 @@ export class PositionComponent implements OnInit {
 		exitAnimationDuration: string,
 	): void {
 		// console.log('value:', this.currentUser.id)
-		let dialogRef = this.dialog.open(AddFormComponent, {
+		const dialogRef = this.dialog.open(AddFormComponent, {
 			viewContainerRef: this.viewContainerRef,
 			data: {
 				currentUserId: this.currentUser.id,
@@ -103,7 +103,7 @@ export class PositionComponent implements OnInit {
 
 	private fetchedAllPositionsByCurrentUser(): void {
 		this.positionService.getAllPositionsByCurrentUser().subscribe({
-			next: (data) => {
+			next: () => {
 				// this.fetchedPositions = data;
 				// console.log('PositionsByCurrentUser', data);
 			},

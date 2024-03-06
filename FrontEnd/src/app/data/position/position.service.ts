@@ -10,20 +10,16 @@ import { API } from '../api.service';
 export class PositionService {
 	constructor(private api: API) {}
 
-	getAll(): Observable<Position[]> {
+	getAllPositions(): Observable<Position[]> {
 		return this.api.GET('/api/Position');
+	}
+
+	getAllPositionsByCurrentUser(): Observable<Position[]> {
+		return this.api.GET('/api/Position/CurrentUser');
 	}
 
 	// get(id: any): Observable<Position> {
 	//   return this.http.get<Position>(`${baseUrl}/${id}`);
-	// }
-
-	// create(data: any): Observable<any> {
-	//   return this.http.post(baseUrl, data);
-	// }
-
-	// update(id: any, data: any): Observable<any> {
-	//   return this.http.put(`${baseUrl}/${id}`, data);
 	// }
 
 	create(data: any): Observable<any> {
@@ -31,8 +27,8 @@ export class PositionService {
 		return this.api.POST('/api/Position', data);
 	}
 
-	// deleteAll(): Observable<any> {
-	//   return this.http.delete(baseUrl);
+	// update(id: any, data: any): Observable<any> {
+	//   return this.http.put(`${baseUrl}/${id}`, data);
 	// }
 
 	delete(id: any): Observable<any> {

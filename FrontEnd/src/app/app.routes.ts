@@ -23,10 +23,14 @@ export const routes: Routes = [
 		loadChildren: () =>
 			import('./module/auth/auth.module').then((m) => m.AuthModule),
 	},
-	{ path: 'position', component: PositionComponent },
+	// { path: 'position', component: PositionComponent },
 
 	// url for recruiter
 	createRouteWithRoles('companies', CompanyComponent, [
+		role.RECRUITER,
+		role.ADMIN,
+	]),
+	createRouteWithRoles('positions', PositionComponent, [
 		role.RECRUITER,
 		role.ADMIN,
 	]),
