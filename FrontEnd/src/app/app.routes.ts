@@ -4,6 +4,7 @@ import { HomeComponent } from './module/home/home.component';
 import { CompanyComponent } from './module/reccer/company/company.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { Type } from '@angular/core';
+import { ProfileComponent } from './module/auth/profile/profile.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -24,6 +25,14 @@ export const routes: Routes = [
 			import('./module/auth/auth.module').then((m) => m.AuthModule),
 	},
 
+	// need authentication but no roles
+	{
+		path: 'profile',
+		component: ProfileComponent,
+		canActivate: [AuthGuard],
+		data: { roles: [] },
+	},
+
 	// url for recruiter
 	createRouteWithRoles('companies', CompanyComponent, [
 		role.RECRUITER,
@@ -39,6 +48,13 @@ export const routes: Routes = [
 	// url for candidate
 
 	// url for admin
+	{
+		path: 'admin',
+		loadChildren: () =>
+			import('./module/admin/admin.module').then((m) => m.AdminModule),
+		canActivate: [AuthGuard],
+		data: { roles: [role.ADMIN] },
+	},
 
 	// otherwise redirect to home
 	{ path: '**', redirectTo: '' },
