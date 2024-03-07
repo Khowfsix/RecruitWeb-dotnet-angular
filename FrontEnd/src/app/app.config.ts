@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -15,6 +15,7 @@ import {
 import { provideStore } from '@ngrx/store';
 import { AuthInterceptorProvider } from './core/interceptor/token.interceptor';
 import { ErrorInterceptorProvider } from './core/interceptor/error.intercerptor';
+import { CookieService } from 'ngx-cookie-service';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -33,5 +34,8 @@ export const appConfig: ApplicationConfig = {
 		// toasts and animations
 		provideAnimations(),
 		provideToastr(),
+
+		// cookie service
+		importProvidersFrom([CookieService]),
 	],
 };

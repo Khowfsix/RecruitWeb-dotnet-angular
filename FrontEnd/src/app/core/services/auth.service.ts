@@ -4,13 +4,14 @@ import { Observable, first } from 'rxjs';
 import { Register } from '../../data/authen/register.model';
 import { Login } from '../../data/authen/login.model';
 import { noTokenURLs } from '../constants/noTokenURLs.constants';
-import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { WebUser } from '../../data/authentication/web-user.model';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private api: API, private router: Router) {}
+	constructor(private api: API, private cookieService: CookieService) {}
 
 	register(registerModel: Register): Observable<unknown> {
 		return this.api
@@ -24,38 +25,29 @@ export class AuthService {
 
 	logout() {
 		this.api.POST('/api/Authentication/Logout');
-		if (typeof localStorage !== 'undefined') {
-			localStorage.clear();
-		}
+		localStorage.removeItem('currentUser');
+		this.cookieService.delete('jwt');
 	}
 
 	// todo: get current user
-	getCurrentUser(): Observable<string[]> {
+	getCurrentUser(): Observable<WebUser | null> {
 		return this.api.GET('/api/Authentication/UserLogin');
 	}
 
 	getAuthenticationToken(): string | null {
-		if (typeof localStorage !== 'undefined') {
-			const loginDataString = localStorage.getItem('loginData');
-			if (loginDataString !== null) {
-				const loginData: { token: string; expiration: string } =
-					JSON.parse(loginDataString);
-				return loginData.token;
-			}
+		if (this.cookieService.get('jwt')) {
+			return this.cookieService.get('jwt');
 		}
+
 		console.log('User has no token');
 		return null;
 	}
 
 	isInWhiteListUrl(url: string): boolean {
-		// return if url in list no need token
 		return noTokenURLs.some((item) => item.startsWith(url));
 	}
 
-	async isAuthenticated(): Promise<boolean> {
-		if (this.getAuthenticationToken()) {
-			return true;
-		}
-		return false;
+	isAuthenticated(): boolean {
+		return !!localStorage.getItem('currentUser');
 	}
 }
