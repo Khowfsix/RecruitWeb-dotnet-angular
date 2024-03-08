@@ -204,7 +204,7 @@ export class AddFormComponent {
 	}
 
 	public savePosition() {
-		var formValue = this.addForm.value;
+		let formValue = this.addForm.value;
 
 		delete formValue.languageName;
 		delete formValue.categoryPositionName;

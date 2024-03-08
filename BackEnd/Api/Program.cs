@@ -158,13 +158,10 @@ try
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
     //Add Email Configs
-
     var emailConfig = builder.Configuration
      .GetSection("EmailConfiguration")
     .Get<EmailConfiguration>();
-
     builder.Services.AddSingleton(emailConfig!);
-
     builder.Services.AddScoped<IEmailService, EmailService>();
 
     builder.Services.AddHttpClient();

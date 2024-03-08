@@ -11,11 +11,13 @@ namespace Api.Controllers
     public class CompanyController : BaseAPIController
     {
         private readonly ICompanyService _companyService;
+        private readonly IFileService _fileService;
         private readonly IMapper _mapper;
 
-        public CompanyController(ICompanyService companyService, IMapper mapper)
+        public CompanyController(ICompanyService companyService, IFileService fileService, IMapper mapper)
         {
             _companyService = companyService;
+            _fileService = fileService;
             _mapper = mapper;
         }
 
@@ -32,10 +34,18 @@ namespace Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SaveCompany(CompanyAddModel request)
+        public async Task<IActionResult> SaveCompany([FromForm] CompanyAddModel companyInfo, IFormFile? logo)
         {
-            var modelData = _mapper.Map<CompanyModel>(request);
+            var modelData = _mapper.Map<CompanyModel>(companyInfo);
+
+            if (logo != null)
+            {
+                var imageUploadResult = await _fileService.AddFileAsync(logo);
+                modelData.Logo = imageUploadResult.Url.OriginalString;
+            }
+
             var companyList = await _companyService.SaveCompany(modelData);
             if (companyList == null)
             {
