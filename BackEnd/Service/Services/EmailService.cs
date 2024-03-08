@@ -19,10 +19,22 @@ namespace Service.Services
         private MimeMessage CreateEmailMessage(Message message)
         {
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("email", _emailConfig.From));
+            emailMessage.From.Add(new MailboxAddress("Jasmine Recruitment", _emailConfig.From));
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
+
+            // You could use HTML formatting if you want a richer email content
+            var builder = new BodyBuilder
+            {
+                HtmlBody = $@"<p>Hello,</p>
+                      <p>Please click on the following link to verify your account:</p>
+                      <p><a href='{message.Content}'>Click here</a></p>
+                      <p>If you did not request an account, no further action is required.</p>
+                      <p>Regards,<br>~~~Jasmine Recruitment Team~~~</p>"
+            };
+
+            emailMessage.Body = builder.ToMessageBody();
+
             return emailMessage;
         }
 
