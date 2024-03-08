@@ -1,10 +1,10 @@
--- begin TRANSACTION
--- DECLARE @user NVARCHAR(450)
--- DECLARE @role NVARCHAR(450)
+begin TRANSACTION
+DECLARE @user NVARCHAR(450)
+DECLARE @role NVARCHAR(450)
 
--- SELECT @user=id
--- from dbo.AspNetUsers
--- where UserName='lyhongphat'
+SELECT @user=id
+from dbo.AspNetUsers
+where UserName='lyhongphat'
 -- SELECT @role=id
 -- from dbo.AspNetRoles
 -- where Name='Recruiter'
@@ -13,7 +13,11 @@
 --     (UserId, RoleId)
 -- VALUES
 --     (@user, @role)
--- commit TRANSACTION
+
+DELETE Candidate WHERE UserId=@user
+delete AspNetUsers where Id=@user
+
+commit TRANSACTION
 
 -- SELECT *
 -- from dbo.Recruiter

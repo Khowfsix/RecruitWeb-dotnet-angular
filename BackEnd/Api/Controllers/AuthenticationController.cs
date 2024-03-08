@@ -121,8 +121,8 @@ namespace Api.Controllers
                 await _dbContext.SaveChangesAsync();
 
                 //send email confirm
-                //await ConfirmEmail(token, signUp.Email);
-                //SendEmailConfirmation(user.Email!, token);
+                await ConfirmEmail(token, signUp.Email!);
+                SendEmailConfirmation(user.Email!, token);
 
                 //create candidate in database
                 await _authenticationService.CreateCandidate(user.Id);
