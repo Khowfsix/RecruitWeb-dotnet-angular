@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
 import { API } from '../../data/api.service';
+import { Role } from '../../data/authen/role.model';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class PermissionService {
-	constructor(private api: API) {}
+	constructor(private api: API) { }
 
 	getUserRoles(): Promise<string[] | null> {
 		return new Promise((resolve) => {
+			if (sessionStorage !== undefined) {
+				if (sessionStorage.getItem('role')) {
+					resolve(JSON.parse(sessionStorage.getItem('role')!));
+				}
+			}
+
 			this.api.GET('/api/Authentication/Role').subscribe({
-				next: (data) => {
+				next: (data: Role) => {
+					sessionStorage.setItem('role', JSON.stringify(data.role));
 					resolve(data.role);
 				},
 				error: (err) => {

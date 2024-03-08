@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
 		private authService: AuthService,
 		private permissionService: PermissionService,
 		private router: Router,
-	) {}
+	) { }
 
 	async canActivate(
 		next: ActivatedRouteSnapshot,

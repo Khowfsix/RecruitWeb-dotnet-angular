@@ -11,7 +11,7 @@ import { WebUser } from '../../data/authentication/web-user.model';
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private api: API, private cookieService: CookieService) {}
+	constructor(private api: API, private cookieService: CookieService) { }
 
 	register(registerModel: Register): Observable<unknown> {
 		return this.api
@@ -51,3 +51,4 @@ export class AuthService {
 		return localStorage.getItem('currentUser') !== null;
 	}
 }
+
