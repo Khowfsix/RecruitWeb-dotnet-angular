@@ -71,9 +71,13 @@ namespace Service
             return await _positionRepository.RemovePosition(position);
         }
 
-        public async Task<bool> UpdatePosition(PositionModel position, Guid positionId)
+        public async Task<bool> UpdatePosition(PositionModel positionModel, Guid positionId)
         {
-            var data = _mapper.Map<Position>(position);
+            var foundPosition = await this.GetPositionById(positionId);
+
+            _mapper.Map(positionModel, foundPosition);
+
+            var data = _mapper.Map<Position>(foundPosition);
             return await _positionRepository.UpdatePosition(data, positionId);
         }
     }

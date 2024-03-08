@@ -8,7 +8,7 @@ import { API } from '../api.service';
 	providedIn: 'root',
 })
 export class PositionService {
-	constructor(private api: API) {}
+	constructor(private api: API) { }
 
 	getAllPositions(): Observable<Position[]> {
 		return this.api.GET('/api/Position');
@@ -18,20 +18,20 @@ export class PositionService {
 		return this.api.GET('/api/Position/CurrentUser');
 	}
 
-	// get(id: any): Observable<Position> {
-	//   return this.http.get<Position>(`${baseUrl}/${id}`);
-	// }
+	getById(id: string): Observable<Position> {
+		return this.api.GET(`/api/Position/GetPositionById?positionId=${id}`);
+	}
 
-	create(data: any): Observable<any> {
+	create(data: Position): Observable<any> {
 		console.log('data:......', data);
 		return this.api.POST('/api/Position', data);
 	}
 
-	// update(id: any, data: any): Observable<any> {
-	//   return this.http.put(`${baseUrl}/${id}`, data);
-	// }
+	update(id: string, data: Position): Observable<any> {
+		return this.api.PUT(`/api/Position/${id}`, data);
+	}
 
-	delete(id: any): Observable<any> {
+	delete(id: string): Observable<any> {
 		return this.api.DELETE('/api/Position/' + id);
 	}
 

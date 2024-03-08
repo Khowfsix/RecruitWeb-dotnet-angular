@@ -4,6 +4,7 @@ import { HomeComponent } from './module/home/home.component';
 import { CompanyComponent } from './module/reccer/company/company.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { Type } from '@angular/core';
+import { PositionDetailComponent } from './module/position-detail/position-detail/position-detail.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -23,6 +24,8 @@ export const routes: Routes = [
 		loadChildren: () =>
 			import('./module/auth/auth.module').then((m) => m.AuthModule),
 	},
+
+	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 	// { path: 'position', component: PositionComponent },
 
 	// url for recruiter

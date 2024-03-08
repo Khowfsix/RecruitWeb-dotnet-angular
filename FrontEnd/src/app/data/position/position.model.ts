@@ -16,6 +16,7 @@ export class Position {
 	company?: Company;
 	language?: Language;
 	recruiter?: Recruiter;
+	categoryPositionId?: string;
 	categoryPosition?: CategoryPosition;
 	isDeleted?: boolean;
 	requirements?: Requirements[];

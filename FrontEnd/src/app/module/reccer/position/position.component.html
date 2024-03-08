@@ -1,4 +1,4 @@
-<div class="shadow d-flex flex-column justify-content-center" style="margin-left: 7%; margin-right: 7%;">
+<div class="shadow d-flex flex-column justify-content-center" style="margin-left: 10%; margin-right: 10%;">
 	<span class="mt-4 mx-auto" style="font-size: 35px;">POSITION LIST</span>
 	<div class="mx-5">
 		<div class="container py-3">
@@ -16,9 +16,12 @@
 						alt="{{position.company?.companyName + ' logo'}}">
 				</div>
 				<div style="width: 40%; margin-left: 4%;">
-					<div class="fs-5 custom-row" style="font-weight: 500;">{{ position.positionName }}</div>
+					<div class="fs-5 custom-row" style="font-weight: 500; cursor: pointer;">
+						<span [routerLink]="['/positions/detail', position.positionId]">{{
+							position.positionName }}</span>
+					</div>
 					<div class="custom-row"> {{ position.company?.companyName }}</div>
-					<div style="color: rgb(251, 115, 74);">${{ position.salary }}</div>
+					<div class="custom-row" style="color: rgb(251, 115, 74);">${{ position.salary }}</div>
 					<div class="custom-row"> Max hiring quantity: {{ position.maxHiringQty }}</div>
 					<div class="custom-row"> {{ position.startDate | date:'dd/MM/yyyy' }} - {{ position.endDate |
 						date:'dd/MM/yyyy' }}</div>
@@ -36,7 +39,8 @@
 					}
 				</div>
 				<mat-menu #menu="matMenu">
-					<button mat-menu-item><i class="bi bi-pencil-square"></i> Edit</button>
+					<button mat-menu-item (click)="openEditFormDialog(position, '100ms', '0ms')"><i
+							class="bi bi-pencil-square"></i> Edit</button>
 					<button mat-menu-item (click)="openDeleteDialog(position.positionId??'', '100ms', '0ms')"><i
 							class="bi bi-trash3-fill" style="color: red;"></i> Delete</button>
 				</mat-menu>

@@ -23,11 +23,13 @@ import {
 } from '@angular/material/dialog';
 import { AddFormComponent } from './add-form/add-form.component';
 import { ToastrService } from 'ngx-toastr';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
 	selector: 'app-position',
 	standalone: true,
-	imports: [CommonModule, MatMenuModule, MatButtonModule],
+	imports: [CommonModule, MatMenuModule, MatButtonModule, RouterModule],
 	templateUrl: './position.component.html',
 	styleUrl: './position.component.css',
 })
@@ -59,7 +61,7 @@ export class PositionComponent implements OnInit {
 				data: {
 					positionId: positionId,
 				},
-				width: '250px',
+				width: '350px',
 				enterAnimationDuration,
 				exitAnimationDuration,
 			});
@@ -68,6 +70,30 @@ export class PositionComponent implements OnInit {
 				this.fetchedAllPositions();
 			});
 		}
+	}
+
+	public openEditFormDialog(
+		fetchObject: Position,
+		enterAnimationDuration: string,
+		exitAnimationDuration: string,
+	): void {
+		// console.log('value:', this.currentUser.id)
+		const dialogRef = this.dialog.open(AddFormComponent, {
+			viewContainerRef: this.viewContainerRef,
+			data: {
+				currentUserId: this.currentUser.id,
+				isEditForm: true,
+				fetchObject: fetchObject,
+			},
+			width: '600px',
+			height: '600px',
+			enterAnimationDuration,
+			exitAnimationDuration,
+		});
+
+		dialogRef.afterClosed().subscribe(() => {
+			this.fetchedAllPositions();
+		});
 	}
 
 	public openAddFormDialog(
@@ -134,14 +160,16 @@ export class PositionComponent implements OnInit {
 				<button
 					mat-button
 					mat-dialog-close
-					style="background-color: red; color: white">
+					class="mx-4"
+					style="background-color: red; color: white; width: 25%; font-size: 16px;">
 					Cancel
 				</button>
 				<button
+					class="mx-4"
 					(click)="deleteSubmit()"
 					mat-button
 					cdkFocusInitial
-					style="background-color: green; color: white">
+					style="background-color: green; color: white; width: 25%; font-size: 16px;">
 					Ok
 				</button>
 			</mat-dialog-actions>
@@ -158,14 +186,14 @@ export class PositionComponent implements OnInit {
 })
 export class DeleteDialog {
 	public dialogRef = inject(MatDialogRef<DeleteDialog>);
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 	private positionService = inject(PositionService);
 	private toastr = inject(ToastrService);
 
 	public deleteSubmit() {
 		console.log('positionId', this.data.positionId);
 		this.positionService.delete(this.data.positionId).subscribe({
-			next: () => {},
+			next: () => { },
 			error: (err: unknown) => {
 				console.log(err);
 				this.toastr.error('Something wrong...', 'Error!!!');

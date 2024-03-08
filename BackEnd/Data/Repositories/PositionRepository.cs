@@ -144,10 +144,25 @@ namespace Data.Repositories
         {
             /*------------------------------*/
             // If id is not found in db, return false. Else, update in db and return true.
-            if (await Entities.AnyAsync(l => l.PositionId.Equals(positionId)) is false)
+            //if (await Entities.AnyAsync(l => l.PositionId.Equals(positionId)) is false)
+            //    return await Task.FromResult(false);
+
+            var foundEntity = Entities.Find(positionId);
+
+            if (foundEntity == null)
                 return await Task.FromResult(false);
 
-            Entities.Update(position);
+            foundEntity.ImageURL = position.ImageURL;
+            foundEntity.PositionName = position.PositionName;
+            foundEntity.Description = position.Description;
+            foundEntity.Salary = position.Salary;
+            foundEntity.MaxHiringQty = position.MaxHiringQty;
+            foundEntity.StartDate = position.StartDate;
+            foundEntity.EndDate = position.EndDate;
+            foundEntity.LanguageId = position.LanguageId;
+            foundEntity.CategoryPositionId = position.CategoryPositionId;
+
+            Entities.Update(foundEntity);
             _unitOfWork.SaveChanges();
 
             return await Task.FromResult(true);

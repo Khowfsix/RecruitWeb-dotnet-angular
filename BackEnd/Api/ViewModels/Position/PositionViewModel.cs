@@ -30,6 +30,8 @@ namespace Api.ViewModels.Position
 
         public RecruiterViewModel Recruiter { get; set; } = null!;
 
+        public Guid CategoryPositionId { get; set; }
+
         public CategoryPositionViewModel CategoryPosition { get; set; } = null!;
 
         public bool IsDeleted { get; set; } = false;
