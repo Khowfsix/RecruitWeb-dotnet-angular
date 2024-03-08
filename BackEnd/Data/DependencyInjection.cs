@@ -36,7 +36,7 @@ namespace Data
             service.AddTransient(typeof(IBlacklistRepository), typeof(BlackListRepository));
             service.AddTransient(typeof(ICandidateJoinEventRepository), typeof(CandidateJoinEventRepository));
             service.AddTransient(typeof(ICandidateRepository), typeof(CandidateRepository));
-            service.AddTransient(typeof(IUploadFileRepository), typeof(UploadFileRepository));
+            service.AddTransient(typeof(IFileRepository), typeof(FileRepository));
             service.AddTransient(typeof(ISecurityAnswerRepository), typeof(SecurityAnswerRepository));
             service.AddTransient(typeof(ISecurityQuestionRepository), typeof(SecurityQuestionRepository));
             service.AddTransient(typeof(ICategoryPositionRepository), typeof(CategoryPositionRepository));

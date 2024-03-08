@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "api_ApiJasmineRecruitmentWeb_name": {
+      "type": "string"
+    },
+    "api_ApiJasmineRecruitmentWeb_urlSuffix3": {
+      "type": "string"
+    },
+    "api_ApiJasmineRecruitmentWeb_serviceName": {
+      "type": "string"
+    },
+    "apim_ApiJasmineRecruitmentWeb_name": {
+      "type": "string"
+    },
+    "apim_ApiJasmineRecruitmentWeb_LocationId": {
+      "type": "string"
+    },
+    "apim_ApiJasmineRecruitmentWeb_email": {
+      "type": "string"
+    },
+    "apim_ApiJasmineRecruitmentWeb_orgName": {
+      "type": "string"
+    },
+    "apim_ApiJasmineRecruitmentWeb_tier": {
+      "type": "string"
+    },
+    "apim_ApiJasmineRecruitmentWeb_capacity": {
+      "type": "int"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2021-08-01",
+      "type": "Microsoft.ApiManagement/service/apis",
+      "properties": {
+        "protocols": [
+          "https"
+        ],
+        "displayName": "[parameters('api_ApiJasmineRecruitmentWeb_name')]",
+        "path": "[parameters('api_ApiJasmineRecruitmentWeb_urlSuffix3')]"
+      },
+      "name": "[concat(parameters('api_ApiJasmineRecruitmentWeb_serviceName'),'/', parameters('api_ApiJasmineRecruitmentWeb_name'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('apim_ApiJasmineRecruitmentWeb_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('apim_ApiJasmineRecruitmentWeb_name'))]"
+      ]
+    },
+    {
+      "apiVersion": "2021-08-01",
+      "type": "Microsoft.ApiManagement/service",
+      "properties": {
+        "publisherEmail": "[parameters('apim_ApiJasmineRecruitmentWeb_email')]",
+        "publisherName": "[parameters('apim_ApiJasmineRecruitmentWeb_orgName')]"
+      },
+      "name": "[parameters('apim_ApiJasmineRecruitmentWeb_name')]",
+      "location": "[parameters('apim_ApiJasmineRecruitmentWeb_LocationId')]",
+      "sku": {
+        "name": "[parameters('apim_ApiJasmineRecruitmentWeb_tier')]",
+        "capacity": "[parameters('apim_ApiJasmineRecruitmentWeb_capacity')]"
+      }
+    }
+  ]
+}

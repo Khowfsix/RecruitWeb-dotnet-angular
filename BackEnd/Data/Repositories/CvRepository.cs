@@ -9,12 +9,12 @@ namespace Data.Repositories
     {
         private readonly IUnitOfWork _uow;
         private readonly ICandidateRepository _candidateRepository;
-        private readonly IUploadFileRepository _uploadFileRepository;
+        private readonly IFileRepository _uploadFileRepository;
 
         public CvRepository(RecruitmentWebContext context,
             IUnitOfWork uow,
             ICandidateRepository candidateRepository,
-            IUploadFileRepository uploadFileRepository) : base(context)
+            IFileRepository uploadFileRepository) : base(context)
         {
             _uow = uow;
             _candidateRepository = candidateRepository;

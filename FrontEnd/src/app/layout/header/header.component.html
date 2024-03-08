@@ -1,26 +1,64 @@
-<div class="custom-header ">
+<div class="custom-header">
 	<div class="d-flex flex-row">
 		<div class="d-flex flex-row py-3 col-sm-auto col-auto">
 			<div class="px-2">
-				<span class="font-weight-bold fs-4 py-1 mx-2 rounded-3 px-2"
-					style="background-color: white; color: #1c395f;">Recruitment Website</span>
+				<span
+					class="font-weight-bold fs-4 py-1 mx-2 rounded-3 px-2"
+					style="background-color: white; color: #1c395f"
+					>Recruitment Website</span
+				>
 			</div>
 			<div class="text-white mx-2 fs-4 col-auto">Home</div>
 			<div class="text-white mx-2 fs-4 col-auto">About</div>
 			<div class="text-white mx-2 fs-4 col-auto">Contact</div>
-			<div class="text-white mx-2 fs-4 col-auto">Bruh</div>
+			<div class="text-white mx-2 fs-4 col-auto">I hate my job</div>
 		</div>
-		<div class="py-2 col-sm-4 col-md-auto" style="margin-left: 10%; margin-right: 2%; width: 500px; height: 55px;">
+		<div
+			class="py-2 col-sm-4 col-md-auto"
+			style="
+				margin-left: 10%;
+				margin-right: 2%;
+				width: 500px;
+				height: 55px;
+			">
 			<div class="input-group mb-3">
-				<span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-				<input type="text" class="form-control col-md-auto" placeholder="Ex. Dev, Digital Marketing, ..."
-					aria-label="Username" aria-describedby="basic-addon1">
+				<span class="input-group-text" id="basic-addon1"
+					><i class="bi bi-search"></i
+				></span>
+				<input
+					type="text"
+					class="form-control col-md-auto"
+					placeholder="Ex. Dev, Digital Marketing, ..."
+					aria-label="Username"
+					aria-describedby="basic-addon1" />
 			</div>
 		</div>
-		<div class="d-flex justify-content-center py-2 col-md-3"
-			style="margin-left: auto; margin-right: 3%; cursor: pointer;">
-			<i class="bi bi-person-circle my-auto px-1 py-1 rounded-5"
-				style="background-color: white; font-size: 40px; color: #1c395f; height: 48px;"></i>
+		<div
+			class="d-flex justify-content-center py-2 col-md-3"
+			style="margin-left: auto; margin-right: 3%; cursor: pointer">
+			<i
+				[mat-menu-trigger-for]="menu"
+				class="bi bi-person-circle my-auto px-1 py-1 rounded-5"
+				style="
+					background-color: white;
+					font-size: 40px;
+					color: #1c395f;
+					height: 48px;
+				"></i>
 		</div>
+		<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+			<button mat-menu-item>
+				<i class="fa-solid fa-user"></i>
+				<span class="mx-5 align-right">Profile</span>
+			</button>
+			<button mat-menu-item>
+				<i class="fa-solid fa-gear"></i>
+				<span class="mx-5 align-right">Settings</span>
+			</button>
+			<button mat-menu-item>
+				<i class="fa-solid fa-right-from-bracket"></i>
+				<span class="mx-5 align-right">Logout</span>
+			</button>
+		</mat-menu>
 	</div>
 </div>

@@ -29,7 +29,7 @@ namespace Api.Controllers
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAuthService _authenticationService;
-        private readonly IUploadFileService _uploadFileService;
+        private readonly IFileService _uploadFileService;
         private readonly ICandidateService _candidateService;
         private readonly IMapper _mapper;
 
@@ -38,7 +38,7 @@ namespace Api.Controllers
             SignInManager<WebUser> signInManager, IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor,
             IAuthService authenticationService,
-            RecruitmentWebContext dbContext, IUploadFileService uploadFileService,
+            RecruitmentWebContext dbContext, IFileService uploadFileService,
             ICandidateService candidateService,
             IMapper mapper)
         {
@@ -58,7 +58,6 @@ namespace Api.Controllers
         [HttpPost]
         [Route("Register")]
         [AllowAnonymous]
-        //todo: fix register
         public async Task<IActionResult> Register([FromBody] Register signUp)
         {
             var userName = HttpContext.User.Identity!.Name;

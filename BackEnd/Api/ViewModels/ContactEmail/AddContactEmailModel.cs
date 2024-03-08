@@ -2,8 +2,6 @@
 {
     public class AddContactEmailModel
     {
-
         public string ToEmail { get; set; }
-
     }
 }

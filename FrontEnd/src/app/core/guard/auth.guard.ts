@@ -6,24 +6,28 @@ import {
 	Router,
 	UrlTree,
 } from '@angular/router';
+import 'localstorage-polyfill';
 
 import { PermissionService } from '../services/permission.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
 	constructor(
+		private authService: AuthService,
 		private permissionService: PermissionService,
 		private router: Router,
-	) {}
+	) { }
 
 	async canActivate(
 		next: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot,
 	): Promise<boolean | UrlTree> {
-		if (!localStorage.getItem('loginData')) {
-			return this.router.createUrlTree(['/auth/login'], {
+		const isAuthen = this.authService.isAuthenticated();
+		if (isAuthen === false) {
+			return this.router.navigate(['/auth/login'], {
 				queryParams: { returnUrl: state.url },
 			});
 		}

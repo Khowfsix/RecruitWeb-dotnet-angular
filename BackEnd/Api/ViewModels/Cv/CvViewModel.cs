@@ -14,9 +14,7 @@ namespace Api.ViewModels.Cv
 
         public string CvName { get; set; }
 
-
         public string Introduction { get; set; }
-
 
         public string Education { get; set; }
 

@@ -35,7 +35,7 @@ namespace Service
             service.AddTransient<ICandidateJoinEventService, CandidateJoinEventService>();
             service.AddTransient<ICandidateService, CandidateService>();
             service.AddTransient<IJobInterviewHistoryService, JobInterviewHistoryService>();
-            service.AddTransient<IUploadFileService, UploadFileService>();
+            service.AddTransient<IFileService, FileService>();
             service.AddTransient<IApplicationSuggestionService, ApplicationSuggestionService>();
             service.AddTransient<ISecurityAnswerService, SecurityAnswerService>();
             service.AddTransient<ISecurityQuestionService, SecurityQuestionService>();

@@ -8,8 +8,6 @@
 
         public Guid SecurityQuestionId { get; set; }
 
-
         public string WebUserId { get; set; }
-
     }
 }

@@ -2,9 +2,7 @@
 {
     public class RecruiterAddModel
     {
-
         public string UserId { get; set; }
-
 
         public Guid CompanyId { get; set; }
 
