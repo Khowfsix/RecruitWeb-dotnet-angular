@@ -33,7 +33,7 @@ export const routes: Routes = [
 		data: { roles: [] },
 	},
 
-	// url for recruiter
+	// // url for recruiter
 	createRouteWithRoles('companies', CompanyComponent, [
 		role.RECRUITER,
 		role.ADMIN,

@@ -6,9 +6,9 @@ public partial class WebUser : IdentityUser
 {
     public string? FullName { get; set; }
 
-    public DateTime DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
-    public string Address { get; set; } = null!;
+    public string? Address { get; set; } = null!;
 
     public string? ImageURL { get; set; } = null;
 

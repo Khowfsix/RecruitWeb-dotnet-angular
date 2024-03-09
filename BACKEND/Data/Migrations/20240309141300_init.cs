@@ -33,8 +33,8 @@ namespace Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -860,10 +860,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "7a7d2415-f949-472c-b19f-0cfd5566700d", "4", "Admin", "Admin" },
-                    { "bd77dbb8-50a6-4f6b-b107-7730a6606b04", "3", "Recruiter", "Recruiter" },
-                    { "c638b2f4-a3c1-42bb-ad7a-6cd4dbb4e749", "1", "Candidate", "Candidate" },
-                    { "d12c2829-ec43-4d18-957d-17dcebd31990", "2", "Interviewer", "Interviewer" }
+                    { "0721cdb5-5027-457b-ac68-2d1ed8273c58", "2", "Interviewer", "Interviewer" },
+                    { "9f49a9cf-c12c-4cb8-9c08-082cfb7c5f74", "3", "Recruiter", "Recruiter" },
+                    { "ac469261-7a78-439c-84a8-f0f915d2bcc7", "4", "Admin", "Admin" },
+                    { "aec3221d-17a9-4b8a-8a66-c652faa6eca3", "1", "Candidate", "Candidate" }
                 });
 
             migrationBuilder.CreateIndex(

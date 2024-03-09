@@ -6,7 +6,6 @@ import {
 	Router,
 	UrlTree,
 } from '@angular/router';
-import 'localstorage-polyfill';
 
 import { PermissionService } from '../services/permission.service';
 import { AuthService } from '../services/auth.service';
@@ -25,11 +24,13 @@ export class AuthGuard implements CanActivate {
 		next: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot,
 	): Promise<boolean | UrlTree> {
-		const isAuthen = this.authService.isAuthenticated();
-		if (isAuthen === false) {
-			return this.router.navigate(['/auth/login'], {
-				queryParams: { returnUrl: state.url },
-			});
+		// if (await this.authService.isAuthenticated() !== true) {
+		if (typeof localStorage !== 'undefined') {
+			if (localStorage.getItem('currentUser') === null) {
+				return this.router.navigate(['/auth/login'], {
+					queryParams: { returnUrl: state.url },
+				});
+			}
 		}
 
 		// Kiểm tra role hiện tại có khớp với list role yêu cầu không
@@ -45,5 +46,6 @@ export class AuthGuard implements CanActivate {
 		}
 
 		return true;
+
 	}
 }

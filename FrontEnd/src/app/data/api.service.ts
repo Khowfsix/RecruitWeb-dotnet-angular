@@ -9,7 +9,7 @@ const baseUrl = 'https://localhost:7029';
 	providedIn: 'root',
 })
 export class API {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
 	public GET(path: string): Observable<any[] | any> {
 		return this.http.get<any[]>(baseUrl + path);

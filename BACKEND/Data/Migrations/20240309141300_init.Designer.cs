@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RecruitmentWebContext))]
-    [Migration("20240308203704_init")]
+    [Migration("20240309141300_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -972,14 +972,13 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -1070,28 +1069,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c638b2f4-a3c1-42bb-ad7a-6cd4dbb4e749",
+                            Id = "aec3221d-17a9-4b8a-8a66-c652faa6eca3",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "d12c2829-ec43-4d18-957d-17dcebd31990",
+                            Id = "0721cdb5-5027-457b-ac68-2d1ed8273c58",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "bd77dbb8-50a6-4f6b-b107-7730a6606b04",
+                            Id = "9f49a9cf-c12c-4cb8-9c08-082cfb7c5f74",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "7a7d2415-f949-472c-b19f-0cfd5566700d",
+                            Id = "ac469261-7a78-439c-84a8-f0f915d2bcc7",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"

@@ -1,23 +1,23 @@
-begin TRANSACTION
-DECLARE @user NVARCHAR(450)
-DECLARE @role NVARCHAR(450)
+USE RecruitmentWeb
+
+BEGIN TRANSACTION
+DECLARE @user NVARCHAR(450);
+DECLARE @role NVARCHAR(450);
 
 SELECT @user=id
-from dbo.AspNetUsers
-where UserName='lyhongphat'
--- SELECT @role=id
--- from dbo.AspNetRoles
--- where Name='Recruiter'
+from dbo.AspNetUsers AS u
+where UserName='AdminJasmine';
 
--- insert into dbo.AspNetUserRoles
---     (UserId, RoleId)
--- VALUES
---     (@user, @role)
+SELECT @role=id
+from dbo.AspNetRoles
+where Name='Admin';
 
-DELETE Candidate WHERE UserId=@user
-delete AspNetUsers where Id=@user
+insert into dbo.AspNetUserRoles
+    (UserId, RoleId)
+VALUES
+    (@user, @role);
 
-commit TRANSACTION
+commit TRANSACTION;
 
 -- SELECT *
 -- from dbo.Recruiter
@@ -27,7 +27,7 @@ commit TRANSACTION
 -- select *
 -- from AspNetUserRoles;
 
-select u.UserName, ur.RoleId, r.Name
+select u.UserName, ur.RoleId, r.Name as roleName
 from dbo.AspNetUsers as u JOIN dbo.AspNetUserRoles as ur on (u.Id = ur.UserId) JOIN dbo.AspNetRoles as r on (ur.RoleId = r.Id)
 
 

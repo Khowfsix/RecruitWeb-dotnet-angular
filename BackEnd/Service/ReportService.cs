@@ -86,8 +86,8 @@ namespace Service
                 {
                     ApplicationId = item.ApplicationId,
                     FullName = item.Cv.Candidate.User.FullName,
-                    DateOfBirth = item.Cv.Candidate.User.DateOfBirth,
-                    Address = item.Cv.Candidate.User.Address,
+                    DateOfBirth = item.Cv.Candidate.User.DateOfBirth!.Value,
+                    Address = item.Cv.Candidate.User.Address!,
                     Experience = item.Cv.Experience,
                     CvName = item.Cv.CvName,
                     Introduction = item.Cv.Introduction,

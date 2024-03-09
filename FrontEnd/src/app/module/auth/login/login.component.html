@@ -8,7 +8,7 @@
 					alt="Sample image" />
 			</div>
 			<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-				<form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+				<form [formGroup]="loginForm">
 					<!-- <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
 						<p class="lead fw-normal mb-0 me-3">Đăng nhập với</p>
 						<button type="button" class="btn btn-primary btn-floating mx-1 rounded-9">
@@ -74,6 +74,7 @@
 					<div class="text-center text-lg-start mt-4 pt-2">
 						<button
 							type="submit"
+							(click)="onSubmit()"
 							class="btn btn-primary btn-lg"
 							style="padding-left: 2.5rem; padding-right: 2.5rem">
 							Đăng nhập

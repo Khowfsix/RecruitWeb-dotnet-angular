@@ -37,5 +37,10 @@ export const appConfig: ApplicationConfig = {
 
 		// cookie service
 		importProvidersFrom([CookieService]),
+		{ provide: 'LOCALSTORAGE', useFactory: getLocalStorage }
 	],
 };
+
+export function getLocalStorage() {
+	return (typeof window !== "undefined") ? window.localStorage : null;
+}

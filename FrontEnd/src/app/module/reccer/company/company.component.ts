@@ -12,7 +12,7 @@ import { Company } from '../../../data/company/company.model';
 export class CompanyComponent implements OnInit {
 	companies: Company[] = [];
 
-	constructor(private _companyService: CompanyService) {}
+	constructor(private _companyService: CompanyService) { }
 
 	ngOnInit(): void {
 		this._companyService.getAll().subscribe({
@@ -23,7 +23,7 @@ export class CompanyComponent implements OnInit {
 			error: (err: unknown) => {
 				console.log(err);
 			},
-			complete: () => {},
+			complete: () => { },
 		});
 	}
 }

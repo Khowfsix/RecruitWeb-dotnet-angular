@@ -13,7 +13,14 @@ import { JWT } from '../../data/authen/jwt.model';
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private api: API, private cookieService: CookieService) { }
+	// clientUserInfo: string | null = window.localStorage.getItem('currentUser') || null;
+
+	constructor(private api: API, private cookieService: CookieService) {
+		// afterRender(() => {
+		// 	console.log(localStorage);
+		// 	this.clientUserInfo = localStorage.getItem('currentUser') != '' ? localStorage.getItem('currentUser') : null;
+		// });
+	}
 
 	register(registerModel: Register): Observable<unknown> {
 		return this.api
@@ -27,7 +34,7 @@ export class AuthService {
 
 	logout() {
 		this.api.POST('/api/Authentication/Logout');
-		localStorage.removeItem('currentUser');
+		this.cookieService.delete('currentUser');
 		this.cookieService.delete('jwt');
 		this.cookieService.delete('refreshToken');
 	}
@@ -50,8 +57,12 @@ export class AuthService {
 		return noTokenURLs.some((item) => item.startsWith(url));
 	}
 
-	isAuthenticated(): boolean {
-		return localStorage.getItem('currentUser') !== null;
+	async isAuthenticated(): Promise<boolean> {
+		return new Promise((resolve) => {
+			const user = this.cookieService.get('currentUser');
+			// console.log(this.clientUserInfo !== null);
+			resolve(user !== null);
+		})
 	}
 
 	async refreshToken(token: string): Promise<boolean> {
@@ -67,7 +78,7 @@ export class AuthService {
 					"Content-Type": "application/json"
 				})
 			}).subscribe({
-				next: (res: AuthenticatedResponse) => resolve(res),
+				next: (res: { jwt: JWT, refreshToken: string }) => resolve(res),
 				error: () => { reject; isRefreshSuccess = false; }
 			});
 		});

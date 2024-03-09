@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { API } from '../../data/api.service';
 import { Role } from '../../data/authen/role.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class PermissionService {
-	constructor(private api: API) { }
+	constructor(private api: API, private cookieService: CookieService) { }
 
 	getUserRoles(): Promise<string[] | null> {
 		return new Promise((resolve) => {
-			if (sessionStorage !== undefined) {
-				if (sessionStorage.getItem('role')) {
-					resolve(JSON.parse(sessionStorage.getItem('role')!));
-				}
+			const roles = this.cookieService.get('role');
+			if (roles) {
+				resolve(JSON.parse(roles!));
 			}
 
 			this.api.GET('/api/Authentication/Role').subscribe({
@@ -26,6 +26,7 @@ export class PermissionService {
 					resolve(null);
 				},
 			});
+
 		});
 	}
 
