@@ -14,6 +14,7 @@ using Service.Models;
 using Service.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Api.Controllers
@@ -33,13 +34,20 @@ namespace Api.Controllers
         private readonly ICandidateService _candidateService;
         private readonly IMapper _mapper;
 
-        public AuthenticationController(UserManager<WebUser> userManager,
-            RoleManager<IdentityRole> roleManager, IEmailService emailService,
-            SignInManager<WebUser> signInManager, IConfiguration configuration,
-            IHttpContextAccessor httpContextAccessor,
-            IAuthService authenticationService,
-            RecruitmentWebContext dbContext, IFileService uploadFileService,
+        public AuthenticationController(
+            UserManager<WebUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IEmailService emailService,
             ICandidateService candidateService,
+
+            SignInManager<WebUser> signInManager,
+            IAuthService authenticationService,
+            IConfiguration configuration,
+
+            IHttpContextAccessor httpContextAccessor,
+            RecruitmentWebContext dbContext,
+
+            IFileService uploadFileService,
             IMapper mapper)
         {
             _userManager = userManager;
@@ -194,11 +202,14 @@ namespace Api.Controllers
                     new(ClaimTypes.Name, user.UserName),
                     new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
+
+                //get roles
                 var userRoles = await _userManager.GetRolesAsync(user);
                 foreach (var role in userRoles)
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, role));
                 }
+
                 if (user.TwoFactorEnabled)
                 {
                     await _signInManager.SignOutAsync();
@@ -211,6 +222,7 @@ namespace Api.Controllers
                     return StatusCode(StatusCodes.Status200OK,
                      new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
                 }
+
                 var jwtToken = GetToken(authClaims);
                 return Ok(new
                 {
@@ -221,6 +233,45 @@ namespace Api.Controllers
             }
 
             return Unauthorized("Wrong password or username");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("RefreshToken")]
+        public IActionResult RefreshToken()
+        {
+            var token = HttpContext.Request.Cookies["refreshToken"];
+            var identityUser = _dbContext.Users.Include(x => x.RefreshTokens)
+                .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token && y.UserId == x.Id));
+
+            // Get existing refresh token if it is valid and revoke it
+            var existingRefreshToken = GetValidRefreshToken(token!, identityUser!);
+            if (existingRefreshToken == null)
+            {
+                return new BadRequestObjectResult(new { Message = "Failed" });
+            }
+
+            existingRefreshToken.RevokedByIp = HttpContext.Connection.RemoteIpAddress!.ToString();
+            existingRefreshToken.RevokedOn = DateTime.UtcNow;
+
+            // Generate new tokens
+            //var newToken = GetToken(identityUser);
+            var newToken = GenerateTokens(identityUser!);
+            return Ok(new { Token = newToken, Message = "Success" });
+        }
+
+        [HttpPost]
+        [Route("RevokeToken")]
+        public IActionResult RevokeToken(string token)
+        {
+            // If user found, then revoke
+            if (RevokeRefreshToken(token))
+            {
+                return Ok(new { Message = "Success" });
+            }
+
+            // Otherwise, return error
+            return new BadRequestObjectResult(new { Message = "Failed" });
         }
 
         [HttpPost]
@@ -516,7 +567,7 @@ namespace Api.Controllers
 
         [Authorize]
         [HttpGet("Profile/All")]
-        public async Task<IActionResult> GetProfileById()
+        public async Task<IActionResult> GetAllProfile()
         {
             var response = await _authenticationService.GetAllSystemAccount();
             if (response != null)
@@ -543,33 +594,6 @@ namespace Api.Controllers
             return NotFound();
         }
 
-        [Authorize]
-        [HttpGet("GetRole")]
-        public async Task<IActionResult> GetRole()
-        {
-            var userName = HttpContext.User.Identity!.Name;
-            if (!string.IsNullOrEmpty(userName))
-            {
-                var response = await _authenticationService.GetCurrentUserRole(userName);
-                return Ok(response);
-            }
-            return NotFound();
-        }
-
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
-        {
-            var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT: ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
-                );
-            return token;
-        }
-
         private static int GenerateOTP()
         {
             // Create an instance of the Random class
@@ -581,9 +605,147 @@ namespace Api.Controllers
             // Convert the OTP to a string and return it
             return otp;
         }
+
+        private static RefreshToken GetValidRefreshToken(string token, WebUser identityUser)
+        {
+            if (identityUser == null)
+            {
+                return null!;
+            }
+
+            var existingToken = identityUser.RefreshTokens.FirstOrDefault(x => x.Token == token);
+            return IsRefreshTokenValid(existingToken!) ? existingToken! : null!;
+        }
+
+        private bool RevokeRefreshToken(string token = null!)
+        // Revokes the refresh token for the given user.
+        // If no token is provided, the token from the HttpContext.Request.Cookies["refreshToken"] is used.
+        // Returns true if the token is successfully revoked, otherwise false.
+        {
+            token = token == null! ? HttpContext.Request.Cookies["refreshToken"]! : token!;
+            var identityUser = _dbContext.Users.Include(x => x.RefreshTokens)
+                .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token && y.UserId == x.Id));
+            if (identityUser == null)
+            {
+                return false;
+            }
+
+            // Revoke Refresh token
+            var existingToken = identityUser.RefreshTokens.FirstOrDefault(x => x.Token == token);
+            existingToken!.RevokedByIp = HttpContext.Connection.RemoteIpAddress!.ToString();
+            existingToken!.RevokedOn = DateTime.UtcNow;
+            _dbContext.Update(identityUser);
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        private async Task<WebUser> ValidateUser(LogInModel loginData)
+        {
+            var identityUser = await _userManager.FindByNameAsync(loginData.Username);
+            if (identityUser != null)
+            {
+                var result = _userManager.PasswordHasher.VerifyHashedPassword(identityUser, identityUser.PasswordHash, loginData.Password);
+                return result == PasswordVerificationResult.Failed ? null! : identityUser!;
+            }
+
+            return null!;
+        }
+
+        private string GenerateTokens(WebUser identityUser)
+        {
+            // Generate access token
+            string accessToken = GenerateAccessToken(identityUser);
+
+            // Generate refresh token and set it to cookie
+            var ipAddress = HttpContext.Connection.RemoteIpAddress!.ToString();
+            var refreshToken = GenerateRefreshToken(ipAddress, identityUser.Id);
+
+            // Set Refresh Token Cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
+            // Save refresh token to database
+            identityUser.RefreshTokens ??= new List<RefreshToken>();
+
+            identityUser.RefreshTokens.Add(refreshToken);
+            _dbContext.Update(identityUser);
+            _dbContext.SaveChanges();
+            return accessToken;
+        }
+
+        private string GenerateAccessToken(WebUser identityUser)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtSetting = _configuration.GetSection("JWT");
+            //var key = Encoding.ASCII.GetBytes(jwtBearerTokenSettings.SecretKey);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+              new Claim(ClaimTypes.Name, identityUser.UserName.ToString()),
+              new Claim(ClaimTypes.Email, identityUser.Email)
+                }),
+
+                //Expires = DateTime.Now.AddSeconds(jwtBearerTokenSettings.ExpiryTimeInSeconds),
+                //SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                //Audience = jwtBearerTokenSettings.Audience,
+                //Issuer = jwtBearerTokenSettings.Issuer
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        private RefreshToken GenerateRefreshToken(string ipAddress, string userId)
+        {
+            using RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            var randomBytes = new byte[64];
+            rngCryptoServiceProvider.GetBytes(randomBytes);
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomBytes),
+                //ExpiryOn = DateTime.UtcNow.AddDays(jwtBearerTokenSettings.RefreshTokenExpiryInDays),
+                CreatedOn = DateTime.UtcNow,
+                CreatedByIp = ipAddress,
+                UserId = userId
+            };
+        }
+
+        private JwtSecurityToken GetToken(List<Claim> authClaims, int expireTime = 1)
+        {
+            var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT: ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(expireTime),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
+                );
+            return token;
+        }
+
+        // Check if the refresh token is valid based on its properties and return a boolean value.
+        private static bool IsRefreshTokenValid(RefreshToken existingToken)
+        {
+            // Is token already revoked, then return false
+            if (existingToken.RevokedByIp != null && existingToken.RevokedOn != DateTime.MinValue)
+            {
+                return false;
+            }
+
+            // Token already expired, then return false
+            if (existingToken.ExpiryOn <= DateTime.UtcNow)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
-
-/*
- webuser extend identity
- */

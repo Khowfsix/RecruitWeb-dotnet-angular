@@ -6,6 +6,8 @@ import { Login } from '../../data/authen/login.model';
 import { noTokenURLs } from '../constants/noTokenURLs.constants';
 import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
+import { HttpHeaders } from '@angular/common/http';
+import { JWT } from '../../data/authen/jwt.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -27,6 +29,7 @@ export class AuthService {
 		this.api.POST('/api/Authentication/Logout');
 		localStorage.removeItem('currentUser');
 		this.cookieService.delete('jwt');
+		this.cookieService.delete('refreshToken');
 	}
 
 	// todo: get current user
@@ -49,6 +52,32 @@ export class AuthService {
 
 	isAuthenticated(): boolean {
 		return localStorage.getItem('currentUser') !== null;
+	}
+
+	async refreshToken(token: string): Promise<boolean> {
+		const refreshToken = this.cookieService.get('refreshToken');
+		if (!token && !refreshToken) {
+			return false;
+		}
+
+		let isRefreshSuccess = false;
+		const response = await new Promise<{ jwt: JWT, refreshToken: string }>((resolve, reject) => {
+			this.api.POST('Authentication/RefreshToken', {
+				headers: new HttpHeaders({
+					"Content-Type": "application/json"
+				})
+			}).subscribe({
+				next: (res: AuthenticatedResponse) => resolve(res),
+				error: () => { reject; isRefreshSuccess = false; }
+			});
+		});
+
+
+		this.cookieService.set('jwt', JSON.stringify(response.jwt));
+		this.cookieService.set('refreshToken', response.refreshToken);
+		isRefreshSuccess = true;
+
+		return isRefreshSuccess;
 	}
 }
 

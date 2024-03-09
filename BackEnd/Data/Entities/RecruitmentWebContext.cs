@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
-public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
+public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 {
     public RecruitmentWebContext()
     {
@@ -596,10 +596,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
                 .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_AnswerForQues");
 
-            //entity.HasOne(e => e.WebUser).WithMany(r => r.SecurityAnswers)
-            //    .HasForeignKey(e => e.WebUserId)
-            //    .OnDelete(DeleteBehavior.ClientCascade)
-            //    .HasConstraintName("FK_AnswerForUser");
+            entity.HasOne(e => e.WebUser).WithMany(r => r.SecurityAnswers)
+                .HasForeignKey(e => e.WebUserId)
+                .OnDelete(DeleteBehavior.ClientCascade)
+                .HasConstraintName("FK_AnswerForUser");
         });
 
         modelBuilder.Entity<Shift>(entity =>
@@ -674,5 +674,4 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             new IdentityRole() { Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
             );
     }
-
 }

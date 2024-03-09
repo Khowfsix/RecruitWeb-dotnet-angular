@@ -134,7 +134,7 @@ try
         {
             options.SaveToken = true;
             options.RequireHttpsMetadata = false;
-            options.TokenValidationParameters = new TokenValidationParameters
+            options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuer = false,
                 ValidateAudience = true,
@@ -149,9 +149,7 @@ try
 
     //Add Config for Required Email
     builder.Services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
-    builder.Services.Configure<DataProtectionTokenProviderOptions>(
-        option => option.TokenLifespan = TimeSpan.FromHours(1000)
-    );
+    builder.Services.Configure<DataProtectionTokenProviderOptions>(option => option.TokenLifespan = TimeSpan.FromHours(3));
 
     // Add auto mapper
     //builder.Services.AddAutoMapper(typeof(Program));

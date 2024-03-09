@@ -12,15 +12,9 @@ namespace Data.Entities
 
         public Guid SecurityQuestionId;
 
-
-        public string WebUserId;
-
-
-
-        public virtual SecurityQuestion SecurityQuestion { get; set; }
-
-
-        public virtual WebUser WebUser { get; set; }
+        public string WebUserId = null!;
+        public virtual SecurityQuestion SecurityQuestion { get; set; } = new SecurityQuestion();
+        public virtual WebUser WebUser { get; set; } = new WebUser();
 
     }
 }

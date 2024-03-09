@@ -12,5 +12,5 @@ public partial class QuestionLanguage
 
     public virtual Language Language { get; set; } = null!;
 
-    public virtual ICollection<QuestionLanguage> Languages { get; set; } = new List<QuestionLanguage>();
+    //public virtual ICollection<QuestionLanguage> Languages { get; set; } = new List<QuestionLanguage>();
 }

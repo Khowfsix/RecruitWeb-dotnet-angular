@@ -13,10 +13,10 @@ public partial class WebUser : IdentityUser
     public string? ImageURL { get; set; } = null;
 
     public virtual ICollection<Candidate> Candidates { get; set; } = new List<Candidate>();
-
     public virtual ICollection<Interviewer> Interviewers { get; set; } = new List<Interviewer>();
-
     public virtual ICollection<Recruiter> Recruiters { get; set; } = new List<Recruiter>();
 
     public virtual ICollection<SecurityAnswer> SecurityAnswers { get; set; } = new List<SecurityAnswer>();
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }

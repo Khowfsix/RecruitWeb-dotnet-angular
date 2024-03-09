@@ -32,10 +32,9 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -89,6 +88,7 @@ namespace Data.Migrations
                 {
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Phone = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: true),
@@ -319,6 +319,31 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpiryOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RevokedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WebUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshToken_AspNetUsers_WebUserId",
+                        column: x => x.WebUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Question",
                 columns: table => new
                 {
@@ -390,7 +415,7 @@ namespace Data.Migrations
                 {
                     SecurityAnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SecurityQuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WebUserId1 = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    WebUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -401,11 +426,10 @@ namespace Data.Migrations
                         principalTable: "SecurityQuestion",
                         principalColumn: "SecurityQuestionId");
                     table.ForeignKey(
-                        name: "FK_SecurityAnswer_AspNetUsers_WebUserId1",
-                        column: x => x.WebUserId1,
+                        name: "FK_AnswerForUser",
+                        column: x => x.WebUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -483,17 +507,11 @@ namespace Data.Migrations
                 {
                     QuestionLanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuestionLanguageId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    LanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_QuestionLanguageId", x => x.QuestionLanguageId);
-                    table.ForeignKey(
-                        name: "FK_QuestionLanguages_QuestionLanguages_QuestionLanguageId1",
-                        column: x => x.QuestionLanguageId1,
-                        principalTable: "QuestionLanguages",
-                        principalColumn: "QuestionLanguageId");
                     table.ForeignKey(
                         name: "Fk_LanguageQues",
                         column: x => x.QuestionId,
@@ -842,10 +860,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "42ca546d-38bb-4894-818e-9d01aced2684", "1", "Candidate", "Candidate" },
-                    { "615b8564-22f8-45d8-b20a-2829efe636c7", "2", "Interviewer", "Interviewer" },
-                    { "9256779b-19cf-4c57-8ab3-48b9801436e7", "3", "Recruiter", "Recruiter" },
-                    { "ae9e1417-d8b8-42a7-b1d2-ecad6169cbce", "4", "Admin", "Admin" }
+                    { "7a7d2415-f949-472c-b19f-0cfd5566700d", "4", "Admin", "Admin" },
+                    { "bd77dbb8-50a6-4f6b-b107-7730a6606b04", "3", "Recruiter", "Recruiter" },
+                    { "c638b2f4-a3c1-42bb-ad7a-6cd4dbb4e749", "1", "Candidate", "Candidate" },
+                    { "d12c2829-ec43-4d18-957d-17dcebd31990", "2", "Interviewer", "Interviewer" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1025,11 +1043,6 @@ namespace Data.Migrations
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestionLanguages_QuestionLanguageId1",
-                table: "QuestionLanguages",
-                column: "QuestionLanguageId1");
-
-            migrationBuilder.CreateIndex(
                 name: "UQ__Question_LanguageId",
                 table: "QuestionLanguages",
                 columns: new[] { "QuestionId", "LanguageId" },
@@ -1055,6 +1068,11 @@ namespace Data.Migrations
                 name: "IX_Recruiter_UserId",
                 table: "Recruiter",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshToken_WebUserId",
+                table: "RefreshToken",
+                column: "WebUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Report_RecruiterId",
@@ -1093,9 +1111,9 @@ namespace Data.Migrations
                 column: "SecurityQuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SecurityAnswer_WebUserId1",
+                name: "IX_SecurityAnswer_WebUserId",
                 table: "SecurityAnswer",
-                column: "WebUserId1");
+                column: "WebUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SuccessfulCadidate_CandidateId",
@@ -1143,6 +1161,9 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "QuestionSkills");
+
+            migrationBuilder.DropTable(
+                name: "RefreshToken");
 
             migrationBuilder.DropTable(
                 name: "Report");
