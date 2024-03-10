@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { API } from '../../data/api.service';
-import { Role } from '../../data/authen/role.model';
+// import { Role } from '../../data/authen/role.model';
 
 @Injectable({
 	providedIn: 'root',
