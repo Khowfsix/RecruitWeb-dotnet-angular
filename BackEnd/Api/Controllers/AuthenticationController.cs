@@ -594,6 +594,20 @@ namespace Api.Controllers
             return NotFound();
         }
 
+        [Authorize]
+        [HttpGet("hasAuthorize")]
+        public async Task<IActionResult> HasAuthorize(string roleName)
+        {
+            var userName = HttpContext.User.Identity!.Name;
+            var user = await _userManager.FindByNameAsync(userName);
+            var userRole = await _userManager.GetUsersInRoleAsync(roleName);
+            if (user != null)
+            {
+                return Ok(userRole.Contains(user));
+            }
+            return NotFound();
+        }
+
         private static int GenerateOTP()
         {
             // Create an instance of the Random class

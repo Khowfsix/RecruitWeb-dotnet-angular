@@ -1,4 +1,4 @@
-using Common.TrapException;
+﻿using Common.TrapException;
 using Data;
 using Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,7 +45,8 @@ try
                     .SetIsOriginAllowed(origin => true)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowCredentials();
+                    .AllowAnyOrigin();
+                //.AllowCredentials();
             }
         );
     });
@@ -145,6 +146,29 @@ try
                     Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])
                 )
             };
+
+            //options.Events = new JwtBearerEvents
+            //{
+            //    OnTokenValidated = context =>
+            //    {
+            //        // Tùy chỉnh xử lý sau khi token được xác thực thành công
+            //        // ở đây, bạn có thể đọc thông tin từ token và cấu hình tên thuộc tính
+            //        var claims = context.Principal!.Claims.ToList();
+
+            //        // Tìm và đổi tên thuộc tính nếu cần
+            //        var roleClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            //        if (roleClaim != null)
+            //        {
+            //            var newRoleClaim = new Claim("role", roleClaim.Value);
+            //            claims.Remove(roleClaim);
+            //            claims.Add(newRoleClaim);
+            //            var newIdentity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, context.Principal.Identity.Name, ClaimTypes.Role);
+            //            context.Principal = new ClaimsPrincipal(newIdentity);
+            //        }
+
+            //        return Task.CompletedTask;
+            //    }
+            //};
         });
 
     //Add Config for Required Email
