@@ -3,11 +3,12 @@ using Api.ViewModels.Application;
 using Api.ViewModels.BlackList;
 using Api.ViewModels.Candidate;
 using Api.ViewModels.CandidateJoinEvent;
+using Api.ViewModels.CategoryPosition;
 using Api.ViewModels.CategoryQuestion;
 using Api.ViewModels.Certificate;
+using Api.ViewModels.Company;
 using Api.ViewModels.Cv;
 using Api.ViewModels.CvHasSkill;
-using Api.ViewModels.Company;
 using Api.ViewModels.Event;
 using Api.ViewModels.Interview;
 using Api.ViewModels.Interviewer;
@@ -30,7 +31,6 @@ using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
 using Data.Entities;
 using Service.Models;
-using Api.ViewModels.CategoryPosition;
 
 namespace Data.Mapping
 {

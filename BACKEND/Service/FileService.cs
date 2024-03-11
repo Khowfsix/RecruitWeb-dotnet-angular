@@ -5,11 +5,11 @@ using Service.Interfaces;
 
 namespace Service
 {
-    public class UploadFileService : IUploadFileService
+    public class FileService : IFileService
     {
-        private readonly IUploadFileRepository _uploadFileRepository;
+        private readonly IFileRepository _uploadFileRepository;
 
-        public UploadFileService(IUploadFileRepository uploadFileRepository)
+        public FileService(IFileRepository uploadFileRepository)
         {
             _uploadFileRepository = uploadFileRepository;
         }
@@ -32,11 +32,6 @@ namespace Service
         public async Task<DeletionResult> DeleteFileAsync(string path)
         {
             return await _uploadFileRepository.DeleteFileAsync(path);
-        }
-
-        public async Task<bool> DeleteFileAsyncBool(string path)
-        {
-            return await _uploadFileRepository.DeleteFileAsyncBool(path);
         }
     }
 }

@@ -5,7 +5,6 @@ namespace Api.ViewModels.CandidateJoinEvent
 {
     public class CandidateJoinEventViewModel
     {
-
         public EventViewModel Event { get; set; }
 
         public Guid CandidateJoinEventId { get; set; }
@@ -14,8 +13,6 @@ namespace Api.ViewModels.CandidateJoinEvent
 
         public int JoinEventCount { get; set; }
 
-
         public CandidateViewModel Candidate { get; set; }
-
     }
 }

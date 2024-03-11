@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
-public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
+public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 {
     public RecruitmentWebContext()
     {
@@ -83,6 +83,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
          //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
          => optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
          //=> optionsBuilder.UseSqlServer("Server=tcp:jasminerecwebdbserver.database.windows.net,1433;Initial Catalog=RecruitmentWeb;Persist Security Info=False;User ID=jasmine;Password=bruh@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -594,10 +595,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
                 .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_AnswerForQues");
 
-            //entity.HasOne(e => e.WebUser).WithMany(r => r.SecurityAnswers)
-            //    .HasForeignKey(e => e.WebUserId)
-            //    .OnDelete(DeleteBehavior.ClientCascade)
-            //    .HasConstraintName("FK_AnswerForUser");
+            entity.HasOne(e => e.WebUser).WithMany(r => r.SecurityAnswers)
+                .HasForeignKey(e => e.WebUserId)
+                .OnDelete(DeleteBehavior.ClientCascade)
+                .HasConstraintName("FK_AnswerForUser");
         });
 
         modelBuilder.Entity<Shift>(entity =>
@@ -672,5 +673,4 @@ public partial class RecruitmentWebContext : IdentityDbContext<IdentityUser>
             new IdentityRole() { Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
             );
     }
-
 }

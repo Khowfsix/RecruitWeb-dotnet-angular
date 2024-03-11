@@ -15,14 +15,14 @@ namespace Service
         private readonly ICandidateRepository _candidateRepository;
         private readonly ICertificateRepository _certificateRepository;
         private readonly IMapper _mapper;
-        private readonly IUploadFileService _uploadFileService;
+        private readonly IFileService _uploadFileService;
 
         public CvService(
             ICvRepository cvRepository,
             ICvHasSkillrepository cvHasSkillRepository,
             ICandidateRepository candidateRepository,
             ICertificateRepository certificateRepository,
-            IMapper mapper, IUploadFileService uploadFileService)
+            IMapper mapper, IFileService uploadFileService)
         {
             _cvRepository = cvRepository;
             _cvHasSkillRepository = cvHasSkillRepository;

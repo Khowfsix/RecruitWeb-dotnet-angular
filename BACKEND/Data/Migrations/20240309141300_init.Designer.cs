@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RecruitmentWebContext))]
-    [Migration("20240229084851_init")]
+    [Migration("20240309141300_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -250,6 +250,10 @@ namespace Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
                         .HasColumnName("isDeleted");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(40)
@@ -600,15 +604,10 @@ namespace Data.Migrations
                     b.Property<Guid>("QuestionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("QuestionLanguageId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("QuestionLanguageId")
                         .HasName("PK_QuestionLanguageId");
 
                     b.HasIndex("LanguageId");
-
-                    b.HasIndex("QuestionLanguageId1");
 
                     b.HasIndex(new[] { "QuestionId", "LanguageId" }, "UQ__Question_LanguageId")
                         .IsUnique();
@@ -663,6 +662,49 @@ namespace Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Recruiter", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiryOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RevokedByIp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RevokedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WebUserId");
+
+                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>
@@ -818,7 +860,7 @@ namespace Data.Migrations
                     b.Property<Guid>("SecurityQuestionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("WebUserId1")
+                    b.Property<string>("WebUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -827,7 +869,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SecurityQuestionId");
 
-                    b.HasIndex("WebUserId1");
+                    b.HasIndex("WebUserId");
 
                     b.ToTable("SecurityAnswer", (string)null);
                 });
@@ -921,89 +963,7 @@ namespace Data.Migrations
                     b.ToTable("SuccessfulCadidate", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "42ca546d-38bb-4894-818e-9d01aced2684",
-                            ConcurrencyStamp = "1",
-                            Name = "Candidate",
-                            NormalizedName = "Candidate"
-                        },
-                        new
-                        {
-                            Id = "615b8564-22f8-45d8-b20a-2829efe636c7",
-                            ConcurrencyStamp = "2",
-                            Name = "Interviewer",
-                            NormalizedName = "Interviewer"
-                        },
-                        new
-                        {
-                            Id = "9256779b-19cf-4c57-8ab3-48b9801436e7",
-                            ConcurrencyStamp = "3",
-                            Name = "Recruiter",
-                            NormalizedName = "Recruiter"
-                        },
-                        new
-                        {
-                            Id = "ae9e1417-d8b8-42a7-b1d2-ecad6169cbce",
-                            ConcurrencyStamp = "4",
-                            Name = "Admin",
-                            NormalizedName = "Admin"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+            modelBuilder.Entity("Data.Entities.WebUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -1011,13 +971,15 @@ namespace Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -1025,6 +987,12 @@ namespace Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -1070,10 +1038,88 @@ namespace Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.UseTphMappingStrategy();
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "aec3221d-17a9-4b8a-8a66-c652faa6eca3",
+                            ConcurrencyStamp = "1",
+                            Name = "Candidate",
+                            NormalizedName = "Candidate"
+                        },
+                        new
+                        {
+                            Id = "0721cdb5-5027-457b-ac68-2d1ed8273c58",
+                            ConcurrencyStamp = "2",
+                            Name = "Interviewer",
+                            NormalizedName = "Interviewer"
+                        },
+                        new
+                        {
+                            Id = "9f49a9cf-c12c-4cb8-9c08-082cfb7c5f74",
+                            ConcurrencyStamp = "3",
+                            Name = "Recruiter",
+                            NormalizedName = "Recruiter"
+                        },
+                        new
+                        {
+                            Id = "ac469261-7a78-439c-84a8-f0f915d2bcc7",
+                            ConcurrencyStamp = "4",
+                            Name = "Admin",
+                            NormalizedName = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -1155,26 +1201,6 @@ namespace Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Entities.WebUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("WebUser");
                 });
 
             modelBuilder.Entity("Data.Entities.Application", b =>
@@ -1433,10 +1459,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasConstraintName("Fk_LanguageQues");
 
-                    b.HasOne("Data.Entities.QuestionLanguage", null)
-                        .WithMany("Languages")
-                        .HasForeignKey("QuestionLanguageId1");
-
                     b.Navigation("Language");
 
                     b.Navigation("Question");
@@ -1478,6 +1500,13 @@ namespace Data.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Data.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Data.Entities.WebUser", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("WebUserId");
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>
@@ -1540,9 +1569,10 @@ namespace Data.Migrations
 
                     b.HasOne("Data.Entities.WebUser", "WebUser")
                         .WithMany("SecurityAnswers")
-                        .HasForeignKey("WebUserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WebUserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_AnswerForUser");
 
                     b.Navigation("SecurityQuestion");
 
@@ -1579,7 +1609,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Data.Entities.WebUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1588,7 +1618,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Data.Entities.WebUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1603,7 +1633,7 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Data.Entities.WebUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1612,7 +1642,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Data.Entities.WebUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1708,11 +1738,6 @@ namespace Data.Migrations
                     b.Navigation("Rounds");
                 });
 
-            modelBuilder.Entity("Data.Entities.QuestionLanguage", b =>
-                {
-                    b.Navigation("Languages");
-                });
-
             modelBuilder.Entity("Data.Entities.Recruiter", b =>
                 {
                     b.Navigation("Events");
@@ -1760,6 +1785,8 @@ namespace Data.Migrations
                     b.Navigation("Interviewers");
 
                     b.Navigation("Recruiters");
+
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("SecurityAnswers");
                 });

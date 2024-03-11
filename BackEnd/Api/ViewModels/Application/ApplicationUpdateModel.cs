@@ -10,7 +10,6 @@
 
         public string Company_Status { get; set; }
 
-
         public string Priority { get; set; }
 
         public bool IsDeleted { get; set; } = false;

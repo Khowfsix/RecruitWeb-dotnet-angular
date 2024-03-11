@@ -6,7 +6,6 @@ namespace Api.ViewModels.Company
     {
         [Required]
         public string CompanyName { get; set; } = null!;
-
         public string? Address { get; set; }
 
         [DataType(DataType.EmailAddress)]
@@ -17,7 +16,5 @@ namespace Api.ViewModels.Company
 
         [DataType(DataType.Url)]
         public string? Website { get; set; }
-
-        public string? Logo { get; set; }
     }
 }

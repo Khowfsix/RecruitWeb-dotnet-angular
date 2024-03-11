@@ -10,8 +10,6 @@ namespace Api.ViewModels.CandidateJoinEvent
 
         public Guid EventId { get; set; }
 
-
         public EventViewModel Event { get; set; }
-
     }
 }

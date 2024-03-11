@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Login } from '../../../data/authen/login.model';
 import {
@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { JWT } from '../../../data/authen/jwt.model';
 
 @Component({
 	selector: 'app-login',
@@ -18,7 +20,7 @@ import { first } from 'rxjs';
 	styleUrl: './login.component.scss',
 	imports: [FormsModule, ReactiveFormsModule],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 	loginForm: FormGroup;
 	loginData: Login = {
 		username: '',
@@ -29,27 +31,57 @@ export class LoginComponent {
 		private fb: FormBuilder,
 		private authService: AuthService,
 		private router: Router,
+		private CookieService: CookieService,
 	) {
 		this.loginForm = this.fb.group({
 			username: ['', [Validators.required]],
 			password: ['', [Validators.required]],
 		});
 	}
+	ngOnInit(): void {
+		console.error(`init`);
+	}
 
 	onSubmit() {
+		console.error(`aaaaa`);
 		this.loginData = this.loginForm.value;
+		console.log(`Login data: ${JSON.stringify(this.loginData)}`);
 		this.authService
 			.login(this.loginData)
 			.pipe(first())
 			.subscribe({
 				next: (data) => {
+					const jwtData: JWT = data as JWT;
+					console.log(jwtData);
+					this.CookieService.set(
+						'jwt',
+						jwtData.token,
+						Date.parse(jwtData.expiration),
+					);
+					this.authService.getCurrentUser().subscribe({
+						next: (data) => {
+							console.log(data);
+							if (data !== null) {
+								// this.CookieService.set(
+								// 	'currentUser',
+								// 	JSON.stringify(data),
+								// );
+								localStorage.setItem('currentUser', JSON.stringify(data));
+							} else {
+								console.log(`Cann't get user information`);
+							}
+						},
+						error: (error) => {
+							console.log(error);
+						},
+					});
+
 					this.router.navigate(['']);
-					localStorage.setItem('loginData', JSON.stringify(data));
 				},
 				error: (error) => {
 					console.log(error);
 				},
-				complete: () => {},
+				complete: () => { },
 			});
 	}
 }

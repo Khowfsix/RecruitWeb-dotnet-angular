@@ -2,7 +2,6 @@
 {
     public class CandidateJoinEventUpdateModel
     {
-
         public string EventName { get; set; }
 
         public Guid CandidateJoinEventId { get; set; }

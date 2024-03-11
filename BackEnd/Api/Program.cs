@@ -1,4 +1,4 @@
-using Common.TrapException;
+﻿using Common.TrapException;
 using Data;
 using Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,7 +45,8 @@ try
                     .SetIsOriginAllowed(origin => true)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowCredentials();
+                    .AllowAnyOrigin();
+                //.AllowCredentials();
             }
         );
     });
@@ -134,7 +135,7 @@ try
         {
             options.SaveToken = true;
             options.RequireHttpsMetadata = false;
-            options.TokenValidationParameters = new TokenValidationParameters
+            options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuer = false,
                 ValidateAudience = true,
@@ -145,26 +146,44 @@ try
                     Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])
                 )
             };
+
+            //options.Events = new JwtBearerEvents
+            //{
+            //    OnTokenValidated = context =>
+            //    {
+            //        // Tùy chỉnh xử lý sau khi token được xác thực thành công
+            //        // ở đây, bạn có thể đọc thông tin từ token và cấu hình tên thuộc tính
+            //        var claims = context.Principal!.Claims.ToList();
+
+            //        // Tìm và đổi tên thuộc tính nếu cần
+            //        var roleClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            //        if (roleClaim != null)
+            //        {
+            //            var newRoleClaim = new Claim("role", roleClaim.Value);
+            //            claims.Remove(roleClaim);
+            //            claims.Add(newRoleClaim);
+            //            var newIdentity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, context.Principal.Identity.Name, ClaimTypes.Role);
+            //            context.Principal = new ClaimsPrincipal(newIdentity);
+            //        }
+
+            //        return Task.CompletedTask;
+            //    }
+            //};
         });
 
     //Add Config for Required Email
     builder.Services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
-    builder.Services.Configure<DataProtectionTokenProviderOptions>(
-        option => option.TokenLifespan = TimeSpan.FromHours(1000)
-    );
+    builder.Services.Configure<DataProtectionTokenProviderOptions>(option => option.TokenLifespan = TimeSpan.FromHours(3));
 
     // Add auto mapper
     //builder.Services.AddAutoMapper(typeof(Program));
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
     //Add Email Configs
-
     var emailConfig = builder.Configuration
      .GetSection("EmailConfiguration")
     .Get<EmailConfiguration>();
-
     builder.Services.AddSingleton(emailConfig!);
-
     builder.Services.AddScoped<IEmailService, EmailService>();
 
     builder.Services.AddHttpClient();
