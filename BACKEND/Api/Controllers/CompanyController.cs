@@ -22,6 +22,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllCompany(string? name)
         {
             var modelDatas = await _companyService.GetAllCompany(name);
