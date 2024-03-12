@@ -7,7 +7,9 @@ namespace Service.Interfaces
     {
         Task<ImageUploadResult> AddFileAsync(IFormFile file);
         Task<IEnumerable<ImageUploadResult>> AddListFileAsync(List<IFormFile> files);
-        Task<DeletionResult> DeleteFileAsync(string path);
-        Task<IEnumerable<DeletionResult>> DeleteListFileAsync(List<string> listId);
+        Task<DeletionResult> DeleteFileAsync(string url);
+        Task<IEnumerable<DeletionResult>> DeleteListFileAsync(List<string> listUrls);
+        Task<ImageUploadResult> UpdateFileAsync(IFormFile newFile, string oldFileUrl);
+        Task<IEnumerable<Resource>> GetAllFileAsync();
     }
 }

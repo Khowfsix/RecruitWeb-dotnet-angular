@@ -32,17 +32,37 @@ namespace Api.Controllers
 
         [HttpDelete("[action]")]
         [AllowAnonymous]
-        public async Task<IActionResult> DeleteFile(string fileName)
+        public async Task<IActionResult> DeleteFile(string url)
         {
-            var response = await _fileService.DeleteFileAsync(fileName);
+            var response = await _fileService.DeleteFileAsync(url);
             return Ok(response);
         }
 
         [HttpDelete("[action]")]
         [AllowAnonymous]
-        public async Task<IActionResult> DeleteFiles(List<string> fileNames)
+        public async Task<IActionResult> DeleteFiles(List<string> listUrls)
         {
-            var response = await _fileService.DeleteListFileAsync(fileNames);
+            var response = await _fileService.DeleteListFileAsync(listUrls);
+            return Ok(response);
+        }
+
+        [HttpPut("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateFile([FromForm] string oldImageUrl, IFormFile newImage)
+        {
+            var response = await _fileService.UpdateFileAsync(newImage, oldImageUrl);
+            if (response != null)
+            {
+                return Ok(response);
+            }
+            return Ok("Can't update image");
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFile()
+        {
+            var response = await _fileService.GetAllFileAsync();
             return Ok(response);
         }
     }

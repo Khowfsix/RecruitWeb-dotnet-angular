@@ -57,23 +57,44 @@ namespace Data.Repositories
             return listResult;
         }
 
-        public async Task<DeletionResult> DeleteFileAsync(string path)
+        public async Task<DeletionResult> DeleteFileAsync(string publicId)
         {
-            string[] parts = path.Split('/');
-            string publicIdWithExtension = parts[^1];
-            var publicId = publicIdWithExtension.Split('.')[0];
+            //string[] parts = path.Split('/');
+            //string publicIdWithExtension = parts[^1];
+            //var publicId = publicIdWithExtension.Split('.')[0];
+
             var deleteParams = new DeletionParams(publicId);
 
             var result = await _cloudinary.DestroyAsync(deleteParams);
             return result;
         }
 
-        //private static string ConvertFileId(string path)
-        //{
-        //    string[] parts = path.Split('/');
-        //    string publicIdWithExtension = parts[^1];
-        //    var publicId = publicIdWithExtension.Split('.')[0];
-        //    return publicId;
-        //}
+        public async Task<IEnumerable<Resource>> GetAllFileAsync()
+        {
+            var listParams = new ListResourcesParams()
+            {
+                ResourceType = ResourceType.Image,
+                MaxResults = 500, // Số lượng tối đa của kết quả (tùy chọn)
+            };
+            var listResourcesResult = await _cloudinary.ListResourcesAsync(listParams);
+            return listResourcesResult.Resources;
+        }
+
+        public async Task<ImageUploadResult> UpdateFileAsync(IFormFile file, string oldPublicId)
+        {
+            var uploadResult = new ImageUploadResult();
+            if (file.Length > 0)
+            {
+                using var stream = file.OpenReadStream();
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.FileName, stream),
+                    PublicId = oldPublicId,
+                    Overwrite = true
+                };
+                uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            }
+            return uploadResult;
+        }
     }
 }
