@@ -14,6 +14,8 @@ namespace Api.ViewModels.Position
 
         public string? PositionName { get; set; }
 
+        public string? ImageURL { get; set; }
+
         public string? Description { get; set; }
 
         public decimal? Salary { get; set; }

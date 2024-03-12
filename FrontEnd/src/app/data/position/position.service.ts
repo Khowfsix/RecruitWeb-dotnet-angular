@@ -22,12 +22,12 @@ export class PositionService {
 		return this.api.GET(`/api/Position/GetPositionById?positionId=${id}`);
 	}
 
-	create(data: Position): Observable<any> {
+	create(data: any, options?: any): Observable<any> {
 		console.log('data:......', data);
-		return this.api.POST('/api/Position', data);
+		return this.api.POST('/api/Position', data, options);
 	}
 
-	update(id: string, data: Position): Observable<any> {
+	update(id: string, data: any): Observable<any> {
 		return this.api.PUT(`/api/Position/${id}`, data);
 	}
 

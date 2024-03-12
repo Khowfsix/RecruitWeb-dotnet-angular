@@ -18,7 +18,7 @@
 				<div style="width: 40%; margin-left: 4%;">
 					<div class="fs-5 custom-row" style="font-weight: 500; cursor: pointer;">
 						<span [routerLink]="['/positions/detail', position.positionId]">{{
-							position.positionName }}</span>
+							position.positionName | uppercase }}</span>
 					</div>
 					<div class="custom-row"> {{ position.company?.companyName }}</div>
 					<div class="custom-row" style="color: rgb(251, 115, 74);">${{ position.salary }}</div>
@@ -42,7 +42,7 @@
 					<button mat-menu-item (click)="openEditFormDialog(position, '100ms', '0ms')"><i
 							class="bi bi-pencil-square"></i> Edit</button>
 					<button mat-menu-item (click)="openDeleteDialog(position.positionId??'', '100ms', '0ms')"><i
-							class="bi bi-trash3-fill" style="color: red;"></i> Delete</button>
+							class="bi bi-trash3-fill" style="color: red;"></i> Delete </button>
 				</mat-menu>
 			</div>}
 			<!-- </div> -->

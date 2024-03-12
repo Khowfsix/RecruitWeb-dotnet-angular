@@ -15,8 +15,8 @@ export class API {
 		return this.http.get<any[]>(baseUrl + path);
 	}
 
-	public POST(path: string, data?: any): Observable<any> {
-		return this.http.post(baseUrl + path, data);
+	public POST(path: string, data?: any, options?: any): Observable<any> {
+		return this.http.post(baseUrl + path, data, options);
 	}
 
 	public PUT(path: string, data: any): Observable<any> {

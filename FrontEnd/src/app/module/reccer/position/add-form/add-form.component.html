@@ -110,9 +110,9 @@
 
 			<mat-form-field>
 				<mat-label>Background image</mat-label>
-				<div class="file-upload d-flex mt-3">
-					<input matInput hidden placeholder="image">
-					{{ this.addForm.get('imageName')?.value || "No file uploaded yet." }}
+				<div class="file-upload d-flex">
+					<input matInput readonly="true" formControlName="imageName" placeholder="image">
+					<!-- {{ this.addForm.get('imageName')?.value || "No file uploaded yet." }} -->
 					<button mat-mini-fab color="primary" class="upload-btn ms-auto" (click)="fileUpload.click()">
 						<mat-icon>attach_file</mat-icon>
 					</button>
@@ -124,7 +124,13 @@
 				}
 			</mat-form-field>
 
-
+			<!-- <div class="d-flex flex-row" style="height: fit-content;">
+				@if (this.uploadProgress){
+				<mat-progress-bar class="progress-bar my-auto" mode="determinate" [value]="uploadProgress">
+				</mat-progress-bar>
+				<mat-icon class="cancel-upload" (click)="cancelUpload()">delete_forever</mat-icon>
+				}
+			</div> -->
 
 			@if (isEditForm) {
 			@if (isEdit){
@@ -190,9 +196,6 @@
 		</form>
 	</div>
 
-
-
-	<input type="file" (change)="onFileSelected($event)" hidden accept=".jpg, .jpeg, .png" formControlName="imageURL"
-		#fileUpload>
+	<input type="file" (change)="onFileSelected($event)" hidden accept=".jpg, .jpeg, .png" #fileUpload>
 
 </div>

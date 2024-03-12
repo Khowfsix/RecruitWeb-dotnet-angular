@@ -1,8 +1,10 @@
 using Api.ViewModels.Position;
 using AutoMapper;
 using Castle.Core.Internal;
+using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -13,21 +15,32 @@ namespace Api.Controllers
     {
         private readonly IPositionService _positionService;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
-        public PositionController(IPositionService positionService, IMapper mapper)
+        public PositionController(IPositionService positionService, IMapper mapper, IFileService fileService)
         {
             _positionService = positionService;
             _mapper = mapper;
+            _fileService = fileService;
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Authorize(Roles = "Recruiter,Admin")]
-        public async Task<IActionResult> AddPosition(PositionAddModel position)
+        public async Task<IActionResult> AddPosition([FromForm] PositionAddModel positionAddModel)
         {
-            var newModelData = _mapper.Map<PositionModel>(position);
-            var response = await _positionService.AddPosition(newModelData);
-            return response is not null ? Ok(response) : BadRequest(position);
+            var positionModel = _mapper.Map<PositionModel>(positionAddModel);
+
+            if (positionAddModel.ImageFile != null)
+            {
+                var imageUploadResult = await _fileService.AddFileAsync(positionAddModel.ImageFile);
+                positionModel.ImageURL = imageUploadResult.Url.OriginalString;
+            }
+
+
+
+            var response = await _positionService.AddPosition(positionModel);
+            return response is not null ? Ok(response) : BadRequest(positionAddModel);
         }
 
         [HttpGet]
@@ -68,10 +81,22 @@ namespace Api.Controllers
 
         [HttpPut("{positionId:guid}")]
         [Authorize(Roles = "Recruiter,Admin")]
-        public async Task<IActionResult> UpdatePosition(PositionUpdateModel position, Guid positionId)
+        public async Task<IActionResult> UpdatePosition([FromForm] PositionUpdateModel positionUpdateModel, 
+            Guid positionId)
         {
-            var updateModelData = _mapper.Map<PositionModel>(position);
-            var response = await _positionService.UpdatePosition(updateModelData, positionId);
+            var positionModel = _mapper.Map<PositionModel>(positionUpdateModel);
+            if (positionUpdateModel.ImageFile != null)
+            {
+                var oldModel = await _positionService.GetPositionById(positionId);
+                if (oldModel.ImageURL != null)
+                {
+                    var oldImageUploadResult = await _fileService.DeleteFileAsync(oldModel.ImageURL);
+                }
+
+                var newImageUploadResult = await _fileService.AddFileAsync(positionUpdateModel.ImageFile);
+                positionModel.ImageURL = newImageUploadResult.Url.OriginalString;
+            }
+            var response = await _positionService.UpdatePosition(positionModel, positionId);
             return response is true ? Ok(true) : Ok(false);
         }
     }

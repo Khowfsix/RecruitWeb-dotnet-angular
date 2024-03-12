@@ -8,6 +8,8 @@ public class PositionModel
 
     public string? Description { get; set; }
 
+    public string? ImageURL { get; set; }
+
     public decimal? Salary { get; set; }
 
     public int MaxHiringQty { get; set; }

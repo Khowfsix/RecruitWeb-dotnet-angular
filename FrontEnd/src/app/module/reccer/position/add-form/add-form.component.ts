@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
 	FormBuilder,
 	FormGroup,
@@ -25,10 +26,11 @@ import { LanguageService } from '../../../../data/language/language.service';
 import { CategoryPosition } from '../../../../data/categoryPosition/category-position.model';
 import { CategoryPositionService } from '../../../../data/categoryPosition/category-position.service';
 import { AutocompleteComponent } from '../../../../shared/component/inputs/autocomplete/autocomplete.component';
-import { combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Position } from '../../../../data/position/position.model';
 import { MatIcon } from '@angular/material/icon';
+import { isMoment } from 'moment';
 
 export const MY_FORMATS = {
 	parse: {
@@ -50,6 +52,7 @@ export const MY_FORMATS = {
 		{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
 	],
 	imports: [
+		MatProgressBarModule,
 		MatButtonModule,
 		MatInputModule,
 		MatFormFieldModule,
@@ -125,7 +128,7 @@ export class AddFormComponent {
 		this.addForm
 			.get('categoryPositionName')
 			?.setValue(this.isEditForm ? this.fetchCategoryPositions
-				.find(x => x.categoryPositionId = this.fetchObject.categoryPositionId)?.categoryPositionName : '');
+				.find(x => x.categoryPositionId === this.fetchObject.categoryPositionId)?.categoryPositionName : null);
 		this.addForm
 			.get('languageName')
 			?.setValidators([
@@ -181,7 +184,7 @@ export class AddFormComponent {
 		startDate: [this.isEditForm ? this.fetchObject.startDate : null, [Validators.required]],
 		endDate: [this.isEditForm ? this.fetchObject.endDate : null, [Validators.required]],
 		languageName: [this.isEditForm ? this.fetchObject.language?.languageName : '', [Validators.required]],
-		categoryPositionName: [this.isEditForm ? this.fetchCategoryPositions.find(x => x.categoryPositionId = this.fetchObject.categoryPositionId)?.categoryPositionName : '', [Validators.required]],
+		categoryPositionName: [this.isEditForm ? this.fetchCategoryPositions.find(x => x.categoryPositionId === this.fetchObject.categoryPositionId)?.categoryPositionName : null, [Validators.required]],
 	});
 
 	private isInAllowedValues(allowedValues: any[]): ValidatorFn {
@@ -236,6 +239,9 @@ export class AddFormComponent {
 		return `${originalFileName}_${randomString}`;
 	}
 
+	public uploadProgress: number | null = null;
+	public uploadSub: Subscription | null = null;
+
 	public savePosition() {
 		let formValue = this.addForm.value;
 
@@ -245,8 +251,8 @@ export class AddFormComponent {
 
 		formValue = {
 			...formValue,
-			startDate: new Date(this.addForm.get('startDate')?.value.format('YYYY-MM-DD')),
-			endDate: new Date(this.addForm.get('endDate')?.value.format('YYYY-MM-DD')),
+			startDate: new Date(this.addForm.get('startDate')?.value.format('YYYY-MM-DD')).toISOString(),
+			endDate: new Date(this.addForm.get('endDate')?.value.format('YYYY-MM-DD')).toISOString(),
 			recruiterId: this.currentRecruiter?.recruiterId,
 			companyId: this.currentRecruiter?.companyId,
 			languageId: this.fetchLanguages?.find(
@@ -261,9 +267,33 @@ export class AddFormComponent {
 		};
 		console.log('Form Value: ', formValue);
 
-		this.positionService.create(formValue).subscribe({
+		// for (const key in formValue) {
+		// 	if (formValue[key] !== null) {
+		// 		if (formValue[key] instanceof File) {
+		// 			console.log(`[${key}] (File): `, formValue[key]);
+		// 		} else {
+		// 			console.log(`[${key}]: `, formValue[key]);
+		// 		}
+		// 	}
+		// }
+
+
+		const formData = new FormData();
+		for (const key in formValue) {
+			// if (formValue[key] !== null) {
+			if (formValue[key] instanceof File) {
+				formData.append(key, formValue[key], formValue[key].name);
+			} else {
+				formData.append(key, formValue[key]);
+			}
+			// }
+		}
+
+		console.log('formData: ', formData)
+
+		this.toastr.info('Please wait till the form is closed!!!');
+		this.positionService.create(formData).subscribe({
 			next: () => {
-				// this.toastr.success('Position added!!', 'Successfully!');
 			},
 			error: (err: unknown) => {
 				console.log(err);
@@ -276,22 +306,57 @@ export class AddFormComponent {
 				});
 			},
 		});
+
+		// // Xử lý nếu muốn hiển thị thanh loading (tuy nhiên cần phải cấu hình BE server để có thể gửi trạng thái của API)
+		// const upload$ = this.positionService.create(formData, {
+		// 	reportProgress: true,
+		// 	observe: 'events'
+		// }).pipe(
+		// 	finalize(() => {
+		// 		this.dialogRef.close();
+		// 		this.toastr.success('Position Added...', 'Successfully!', {
+		// 			timeOut: 2000,
+		// 		});
+		// 		this.reset();
+		// 	})
+		// );
+
+
+		// this.uploadSub = upload$.subscribe(event => {
+		// 	console.log('this.uploadProgress before', this.uploadProgress);
+		// 	console.log("event", event)
+		// 	if (event.type === HttpEventType.UploadProgress) {
+		// 		// Xử lý khi có tiến trình tải lên
+		// 		this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+		// 		console.log('Upload Progress:', this.uploadProgress);
+		// 	} else if (event.type === HttpEventType.Response) {
+		// 		// Xử lý khi có phản hồi từ server
+		// 		console.log('Upload Complete:', event.body);
+		// 	}
+		// })
+
+		// console.log('this.uploadSub', this.uploadSub);
 	}
 
 	public editPosition() {
 		let formValue = this.addForm.value;
 
+		console.log('Add Form Value: ', this.addForm.value);
+
 		delete formValue.languageName;
 		delete formValue.categoryPositionName;
 		delete formValue.companyId;
 		delete formValue.recruiterId;
+		delete formValue.imageName;
+
+		if (this.fetchObject.imageURL === formValue.imageFile) {
+			formValue.imageFile = null;
+		}
 
 		formValue = {
 			...formValue,
-			startDate: new Date(this.addForm.get('startDate')?.value.format('YYYY-MM-DD')),
-			endDate: new Date(this.addForm.get('endDate')?.value.format('YYYY-MM-DD')),
-			recruiterId: this.currentRecruiter?.recruiterId,
-			companyId: this.currentRecruiter?.companyId,
+			startDate: isMoment(formValue.startDate) ? new Date(formValue.startDate.format('YYYY-MM-DD')).toISOString() : formValue.startDate,
+			endDate: isMoment(formValue.endDate) ? new Date(formValue.endDate.format('YYYY-MM-DD')).toISOString() : formValue.endDate,
 			languageId: this.fetchLanguages?.find(
 				(x) =>
 					x.languageName === this.addForm?.get('languageName')?.value,
@@ -304,7 +369,18 @@ export class AddFormComponent {
 		};
 		console.log('Form Value: ', formValue);
 
-		this.positionService.update(this.fetchObject.positionId ?? '', formValue).subscribe({
+		const formData = new FormData();
+		for (const key in formValue) {
+			// if (formValue[key] !== null) {
+			if (formValue[key] instanceof File) {
+				formData.append(key, formValue[key], formValue[key].name);
+			} else {
+				formData.append(key, formValue[key]);
+			}
+			// }
+		}
+		this.toastr.info('Please wait till the form is closed!!!');
+		this.positionService.update(this.fetchObject.positionId ?? '', formData).subscribe({
 			next: (resp: any) => {
 				if (resp === false) {
 					this.toastr.error('Something wrong...', 'Error!!!');
@@ -326,4 +402,14 @@ export class AddFormComponent {
 			},
 		});
 	}
+
+	// cancelUpload() {
+	// 	this.uploadSub?.unsubscribe();
+	// 	this.reset();
+	// }
+
+	// reset() {
+	// 	this.uploadProgress = null;
+	// 	this.uploadSub = null;
+	// }
 }
