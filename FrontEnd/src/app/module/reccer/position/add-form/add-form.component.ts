@@ -1,4 +1,5 @@
-import { Component, Inject, Input, inject } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Component, Inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -26,11 +27,12 @@ import { LanguageService } from '../../../../data/language/language.service';
 import { CategoryPosition } from '../../../../data/categoryPosition/category-position.model';
 import { CategoryPositionService } from '../../../../data/categoryPosition/category-position.service';
 import { AutocompleteComponent } from '../../../../shared/component/inputs/autocomplete/autocomplete.component';
-import { Subscription, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Position } from '../../../../data/position/position.model';
 import { MatIcon } from '@angular/material/icon';
 import { isMoment } from 'moment';
+import { FileService } from '../../../../data/file/file-service.service';
 
 export const MY_FORMATS = {
 	parse: {
@@ -52,6 +54,7 @@ export const MY_FORMATS = {
 		{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
 	],
 	imports: [
+		MatProgressSpinnerModule,
 		MatProgressBarModule,
 		MatButtonModule,
 		MatInputModule,
@@ -68,31 +71,33 @@ export const MY_FORMATS = {
 	styleUrl: './add-form.component.css',
 })
 export class AddFormComponent {
+	constructor(
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		private toastr: ToastrService,
+		private languageService: LanguageService,
+		private categoryPositionService: CategoryPositionService,
+		private recruiterService: RecruiterService,
+		private positionService: PositionService,
+		public dialogRef: MatDialogRef<AddFormComponent>,
+		private formBuilder: FormBuilder,
+		private FileService: FileService,
+	) { }
+
 	@Input()
 	public isEditForm: boolean = this.data ? this.data.isEditForm ?? false : false;
 	public isEdit: boolean = false;
 	@Input()
 	private fetchObject: Position = this.data ? this.data.fetchObject ?? null : null;
 
-	private toastr = inject(ToastrService);
 
 	private currentRecruiter?: Recruiter;
 
-	private languageService = inject(LanguageService);
 	public observableLanguages = this.languageService.getAllLanguagues();
 	public fetchLanguages: Language[] = [];
 
-	private categoryPositionService = inject(CategoryPositionService);
 	public observableCategoryPositions =
 		this.categoryPositionService.getAllCategoryPositions();
 	public fetchCategoryPositions: CategoryPosition[] = [];
-
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
-
-	private recruiterService = inject(RecruiterService);
-	private positionService = inject(PositionService);
-	public dialogRef = inject(MatDialogRef<AddFormComponent>);
-	private formBuilder = inject(FormBuilder);
 
 	public fetchRecruiterInfor(userId: string | undefined) {
 		// console.log('fetch userId...........', userId);
@@ -224,13 +229,17 @@ export class AddFormComponent {
 		});
 	}
 
+
 	public onFileSelected(event: any) {
 		const file = event.target?.files?.[0];
-		this.addForm.patchValue({ imageName: file.name });
 		if (file) {
 			const newFileName = this.generateNewFileName(file.name);
 			const renamedFile = new File([file], newFileName, { type: file.type });
-			this.addForm.patchValue({ imageFile: renamedFile });
+
+			this.addForm.get('imageName')?.setValue(file.name)
+			this.addForm.get('imageFile')?.setValue(renamedFile)
+			// console.log('renamedFile:', renamedFile);
+			// console.log('imageName:', file.name);
 		}
 	}
 
@@ -239,177 +248,169 @@ export class AddFormComponent {
 		return `${originalFileName}_${randomString}`;
 	}
 
-	public uploadProgress: number | null = null;
-	public uploadSub: Subscription | null = null;
+	// public clearFileInput() {
+	// 	this.addForm.get('imageURL')?.reset();
+	// 	// this.FileService.deleteFile(this.addForm.get('imageURL')?.value).subscribe({
+	// 	// 	next: () => {
+	// 	// 		this.toastr.success('Image deleted...', 'Successfully!', {
+	// 	// 			timeOut: 2000,
+	// 	// 		});
+	// 	// 		this.addForm.get('imageURL')?.reset();
+	// 	// 	},
+	// 	// 	error: (err: unknown) => {
+	// 	// 		console.log(err);
+	// 	// 		this.toastr.error('Cannot delete image...', 'Error!!!');
+	// 	// 	},
+	// 	// 	complete: () => {
+	// 	// 	},
+	// 	// }
+	// 	// );
+	// }
 
-	public savePosition() {
+	public savePosition(): void {
 		let formValue = this.addForm.value;
 
-		delete formValue.languageName;
-		delete formValue.categoryPositionName;
-		delete formValue.imageName;
+		const file: File = this.addForm.get('imageFile')?.value;
+		if (file) {
+			const formData = new FormData();
+			formData.append('formFile', file, file.name);
 
-		formValue = {
-			...formValue,
-			startDate: new Date(this.addForm.get('startDate')?.value.format('YYYY-MM-DD')).toISOString(),
-			endDate: new Date(this.addForm.get('endDate')?.value.format('YYYY-MM-DD')).toISOString(),
-			recruiterId: this.currentRecruiter?.recruiterId,
-			companyId: this.currentRecruiter?.companyId,
-			languageId: this.fetchLanguages?.find(
-				(x) =>
-					x.languageName === this.addForm?.get('languageName')?.value,
-			)?.languageId,
-			categoryPositionId: this.fetchCategoryPositions?.find(
-				(x) =>
-					x.categoryPositionName ===
-					this.addForm?.get('categoryPositionName')?.value,
-			)?.categoryPositionId,
-		};
-		console.log('Form Value: ', formValue);
+			this.FileService.uploadFile(formData).subscribe({
+				next: (response: any) => {
+					// this.addForm.get('imageURL')?.setValue(response.url)
+					formValue.imageURL = response.url;
+					delete formValue.languageName;
+					delete formValue.categoryPositionName;
+					delete formValue.imageName;
+					delete formValue.imageFile;
 
-		// for (const key in formValue) {
-		// 	if (formValue[key] !== null) {
-		// 		if (formValue[key] instanceof File) {
-		// 			console.log(`[${key}] (File): `, formValue[key]);
-		// 		} else {
-		// 			console.log(`[${key}]: `, formValue[key]);
-		// 		}
-		// 	}
-		// }
-
-
-		const formData = new FormData();
-		for (const key in formValue) {
-			// if (formValue[key] !== null) {
-			if (formValue[key] instanceof File) {
-				formData.append(key, formValue[key], formValue[key].name);
-			} else {
-				formData.append(key, formValue[key]);
-			}
-			// }
+					formValue = {
+						...formValue,
+						startDate: new Date(this.addForm.get('startDate')?.value.format('YYYY-MM-DD')).toISOString(),
+						endDate: new Date(this.addForm.get('endDate')?.value.format('YYYY-MM-DD')).toISOString(),
+						recruiterId: this.currentRecruiter?.recruiterId,
+						companyId: this.currentRecruiter?.companyId,
+						languageId: this.fetchLanguages?.find(
+							(x) =>
+								x.languageName === this.addForm?.get('languageName')?.value,
+						)?.languageId,
+						categoryPositionId: this.fetchCategoryPositions?.find(
+							(x) =>
+								x.categoryPositionName ===
+								this.addForm?.get('categoryPositionName')?.value,
+						)?.categoryPositionId,
+					};
+					// console.log('Form Value: ', formValue);
+					this.positionService.create(formValue).subscribe({
+						next: () => {
+							this.dialogRef.close();
+							this.toastr.success('Position Added...', 'Successfully!', {
+								timeOut: 3000,
+							});
+						},
+						error: () => {
+							// console.log(err);
+							this.toastr.error('Something wrong...', 'Error!!!', {
+								timeOut: 3000,
+							});
+						},
+						complete: () => {
+						},
+					});
+				},
+				error: () => {
+					// console.log('Uploading File error:', err);
+					this.toastr.error('File upload failed.', 'Error!', {
+						timeOut: 3000,
+					});
+					return;
+				},
+			});
 		}
-
-		console.log('formData: ', formData)
-
-		this.toastr.info('Please wait till the form is closed!!!');
-		this.positionService.create(formData).subscribe({
-			next: () => {
-			},
-			error: (err: unknown) => {
-				console.log(err);
-				this.toastr.error('Something wrong...', 'Error!!!');
-			},
-			complete: () => {
-				this.dialogRef.close();
-				this.toastr.success('Position Added...', 'Successfully!', {
-					timeOut: 2000,
-				});
-			},
-		});
-
-		// // Xử lý nếu muốn hiển thị thanh loading (tuy nhiên cần phải cấu hình BE server để có thể gửi trạng thái của API)
-		// const upload$ = this.positionService.create(formData, {
-		// 	reportProgress: true,
-		// 	observe: 'events'
-		// }).pipe(
-		// 	finalize(() => {
-		// 		this.dialogRef.close();
-		// 		this.toastr.success('Position Added...', 'Successfully!', {
-		// 			timeOut: 2000,
-		// 		});
-		// 		this.reset();
-		// 	})
-		// );
-
-
-		// this.uploadSub = upload$.subscribe(event => {
-		// 	console.log('this.uploadProgress before', this.uploadProgress);
-		// 	console.log("event", event)
-		// 	if (event.type === HttpEventType.UploadProgress) {
-		// 		// Xử lý khi có tiến trình tải lên
-		// 		this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-		// 		console.log('Upload Progress:', this.uploadProgress);
-		// 	} else if (event.type === HttpEventType.Response) {
-		// 		// Xử lý khi có phản hồi từ server
-		// 		console.log('Upload Complete:', event.body);
-		// 	}
-		// })
-
-		// console.log('this.uploadSub', this.uploadSub);
 	}
 
 	public editPosition() {
 		let formValue = this.addForm.value;
 
-		console.log('Add Form Value: ', this.addForm.value);
+		if (this.fetchObject.imageURL !== formValue.imageName) {
+			const file: File = this.addForm.get('imageFile')?.value;
+			if (file) {
+				const formData = new FormData();
+				formData.append('newImage', file, file.name);
+				formData.append('oldImageUrl', this.fetchObject.imageURL ?? '');
 
-		delete formValue.languageName;
-		delete formValue.categoryPositionName;
-		delete formValue.companyId;
-		delete formValue.recruiterId;
-		delete formValue.imageName;
+				this.FileService.updateFile(formData).subscribe({
+					next: (response: any) => {
+						// this.addForm.get('imageURL')?.setValue(response.url)
+						formValue.imageURL = response.url;
+						delete formValue.languageName;
+						delete formValue.categoryPositionName;
+						delete formValue.companyId;
+						delete formValue.recruiterId;
+						delete formValue.imageName;
+						delete formValue.imageFile;
 
-		if (this.fetchObject.imageURL === formValue.imageFile) {
-			formValue.imageFile = null;
-		}
 
-		formValue = {
-			...formValue,
-			startDate: isMoment(formValue.startDate) ? new Date(formValue.startDate.format('YYYY-MM-DD')).toISOString() : formValue.startDate,
-			endDate: isMoment(formValue.endDate) ? new Date(formValue.endDate.format('YYYY-MM-DD')).toISOString() : formValue.endDate,
-			languageId: this.fetchLanguages?.find(
-				(x) =>
-					x.languageName === this.addForm?.get('languageName')?.value,
-			)?.languageId,
-			categoryPositionId: this.fetchCategoryPositions?.find(
-				(x) =>
-					x.categoryPositionName ===
-					this.addForm?.get('categoryPositionName')?.value,
-			)?.categoryPositionId,
-		};
-		console.log('Form Value: ', formValue);
+						formValue = {
+							...formValue,
+							startDate: isMoment(formValue.startDate) ? new Date(formValue.startDate.format('YYYY-MM-DD')).toISOString() : formValue.startDate,
+							endDate: isMoment(formValue.endDate) ? new Date(formValue.endDate.format('YYYY-MM-DD')).toISOString() : formValue.endDate,
+							languageId: this.fetchLanguages?.find(
+								(x) =>
+									x.languageName === this.addForm?.get('languageName')?.value,
+							)?.languageId,
+							categoryPositionId: this.fetchCategoryPositions?.find(
+								(x) =>
+									x.categoryPositionName ===
+									this.addForm?.get('categoryPositionName')?.value,
+							)?.categoryPositionId,
+						};
+						// console.log('Form Value: ', formValue);
+						// const formData = new FormData();
+						// for (const key in formValue) {
+						// 	// if (formValue[key] !== null) {
+						// 	if (formValue[key] instanceof File) {
+						// 		formData.append(key, formValue[key], formValue[key].name);
+						// 	} else {
+						// 		formData.append(key, formValue[key]);
+						// 	}
+						// 	// }
+						// }
+						this.positionService.update(this.fetchObject.positionId ?? '', formValue).subscribe({
+							next: (resp: any) => {
+								if (resp === false) {
+									this.toastr.error('Something wrong...', 'Error!!!', {
+										timeOut: 3000,
+									});
+									return;
+								} else {
+									this.toastr.success('Position Updated...', 'Successfully!', {
+										timeOut: 2000,
+									});
+									this.dialogRef.close();
+								}
+								// this.toastr.success('Position added!!', 'Successfully!');
+							},
+							error: () => {
+								// console.log(err);
+								this.toastr.error('Something wrong...', 'Error!!!', {
+									timeOut: 3000,
+								});
+							},
+							complete: () => {
 
-		const formData = new FormData();
-		for (const key in formValue) {
-			// if (formValue[key] !== null) {
-			if (formValue[key] instanceof File) {
-				formData.append(key, formValue[key], formValue[key].name);
-			} else {
-				formData.append(key, formValue[key]);
+							},
+						});
+					},
+					error: () => {
+						// console.log('Uploading File error:', err);
+						this.toastr.error('File upload failed.', 'Error!', {
+							timeOut: 3000,
+						});
+						return;
+					},
+				});
 			}
-			// }
 		}
-		this.toastr.info('Please wait till the form is closed!!!');
-		this.positionService.update(this.fetchObject.positionId ?? '', formData).subscribe({
-			next: (resp: any) => {
-				if (resp === false) {
-					this.toastr.error('Something wrong...', 'Error!!!');
-					return;
-				} else {
-					this.dialogRef.close();
-					this.toastr.success('Position Updated...', 'Successfully!', {
-						timeOut: 2000,
-					});
-				}
-				// this.toastr.success('Position added!!', 'Successfully!');
-			},
-			error: (err: unknown) => {
-				console.log(err);
-				this.toastr.error('Something wrong...', 'Error!!!');
-			},
-			complete: () => {
-
-			},
-		});
 	}
-
-	// cancelUpload() {
-	// 	this.uploadSub?.unsubscribe();
-	// 	this.reset();
-	// }
-
-	// reset() {
-	// 	this.uploadProgress = null;
-	// 	this.uploadSub = null;
-	// }
 }

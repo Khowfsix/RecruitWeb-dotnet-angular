@@ -2,12 +2,15 @@
 	<span class="mt-4 mx-auto" style="font-size: 35px;">POSITION LIST</span>
 	<div class="mx-5">
 		<div class="container py-3">
+			@if(this.curentUserRoles?.includes('Admin') || this.curentUserRoles?.includes('Recruiter')) {
 			<div class="">
 				<button color="primary" mat-raised-button class="d-flex justify-content-center align-items-center"
 					(click)="openAddFormDialog('100ms', '0ms')">
 					<i class="bi bi-plus-circle" style="font-size: 20px;"></i> New Position
 				</button>
 			</div>
+			}
+
 			@for (position of fetchedPositions; track position) {
 			<div class="d-flex flex-row rounded-4 hover-overlay my-2"
 				style="padding: 10px 10px 10px 10px; width: 65%; background-color: rgb(230, 241, 250); border: 1px solid rgb(134, 134, 232);">

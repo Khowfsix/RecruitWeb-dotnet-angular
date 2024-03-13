@@ -1,7 +1,6 @@
 import {
 	Component,
 	OnInit,
-	inject,
 	ViewContainerRef,
 	Inject,
 } from '@angular/core';
@@ -24,6 +23,8 @@ import {
 import { AddFormComponent } from './add-form/add-form.component';
 import { ToastrService } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 
 @Component({
@@ -34,18 +35,29 @@ import { RouterModule } from '@angular/router';
 	styleUrl: './position.component.css',
 })
 export class PositionComponent implements OnInit {
-	private positionService = inject(PositionService);
-	private authenticationService = inject(AuthenticationService);
-	private dialog = inject(MatDialog);
-	private viewContainerRef = inject(ViewContainerRef);
-
+	constructor(
+		private positionService: PositionService,
+		private authenticationService: AuthenticationService,
+		private dialog: MatDialog,
+		private viewContainerRef: ViewContainerRef,
+		private cookieService: CookieService,
+	) { }
 	public fetchedPositions?: Position[];
 	public currentUser: WebUser = {};
 	// public title = '';
+	public curentUserRoles: string[] | null = null;
 
 	ngOnInit(): void {
-		this.fetchedAllPositions();
+		const token = this.cookieService.get('jwt');
+		if (token !== '') {
+			const jsonPayload = JSON.stringify(jwtDecode<JwtPayload>(token));
+			this.curentUserRoles = JSON.parse(jsonPayload)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+		}
+		else {
+			this.curentUserRoles = null
+		}
 		this.fetchUserLoginInfo();
+		this.fetchedAllPositions();
 		// this.fetchedAllPositionsByCurrentUser();
 	}
 
@@ -55,7 +67,7 @@ export class PositionComponent implements OnInit {
 		exitAnimationDuration: string,
 	): void {
 		if (positionId !== '') {
-			console.log('before positionId:', positionId);
+			// console.log('before positionId:', positionId);
 			const dialogRef = this.dialog.open(DeleteDialog, {
 				viewContainerRef: this.viewContainerRef,
 				data: {
@@ -185,17 +197,19 @@ export class PositionComponent implements OnInit {
 	],
 })
 export class DeleteDialog {
-	public dialogRef = inject(MatDialogRef<DeleteDialog>);
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
-	private positionService = inject(PositionService);
-	private toastr = inject(ToastrService);
+	constructor(
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		public dialogRef: MatDialogRef<DeleteDialog>,
+		private positionService: PositionService,
+		private toastr: ToastrService,
+	) { }
 
 	public deleteSubmit() {
-		console.log('positionId', this.data.positionId);
+		// console.log('positionId', this.data.positionId);
 		this.positionService.delete(this.data.positionId).subscribe({
 			next: () => { },
-			error: (err: unknown) => {
-				console.log(err);
+			error: () => {
+				// console.log(err);
 				this.toastr.error('Something wrong...', 'Error!!!');
 			},
 			complete: () => {

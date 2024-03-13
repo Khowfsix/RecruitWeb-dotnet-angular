@@ -113,9 +113,17 @@
 				<div class="file-upload d-flex">
 					<input matInput readonly="true" formControlName="imageName" placeholder="image">
 					<!-- {{ this.addForm.get('imageName')?.value || "No file uploaded yet." }} -->
+					<!-- @if(addForm.get('imageURL')?.valid){
+					<button mat-mini-fab color="primary" class="upload-btn ms-auto" (click)="clearFileInput()">
+						<mat-icon>delete_forever</mat-icon>
+					</button>
+					} -->
+					<!-- @else { -->
 					<button mat-mini-fab color="primary" class="upload-btn ms-auto" (click)="fileUpload.click()">
 						<mat-icon>attach_file</mat-icon>
 					</button>
+					<!-- } -->
+
 				</div>
 				@if(addForm.get('imageName')?.invalid){
 				@if(addForm.get('imageName')?.hasError('required')){
@@ -195,7 +203,5 @@
             } -->
 		</form>
 	</div>
-
 	<input type="file" (change)="onFileSelected($event)" hidden accept=".jpg, .jpeg, .png" #fileUpload>
-
 </div>

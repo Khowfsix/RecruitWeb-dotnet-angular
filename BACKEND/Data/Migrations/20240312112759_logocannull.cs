@@ -7,7 +7,7 @@
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class logoCanNull : Migration
+    public partial class logocannull : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,10 +45,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "08583de4-e08f-4030-a746-b8331a833557", "3", "Recruiter", "Recruiter" },
-                    { "2a91956f-f674-40f9-95db-3a313c7ef8de", "4", "Admin", "Admin" },
-                    { "4c9d291c-dce4-4204-a084-18da72e5f077", "1", "Candidate", "Candidate" },
-                    { "bca7e303-59a7-4589-9060-e6fb25fb1b5d", "2", "Interviewer", "Interviewer" }
+                    { "0a71fbd4-10cf-4d64-b583-1456431dfa93", "3", "Recruiter", "Recruiter" },
+                    { "d0527dc4-891a-412e-8ac0-60c6414f5f49", "2", "Interviewer", "Interviewer" },
+                    { "d2d03cf9-a680-42ed-ae13-da6890ef1e06", "4", "Admin", "Admin" },
+                    { "f5d8ddfa-5b05-4066-a3c0-5ed495b508f2", "1", "Candidate", "Candidate" }
                 });
         }
 
@@ -58,22 +58,22 @@ namespace Data.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "08583de4-e08f-4030-a746-b8331a833557");
+                keyValue: "0a71fbd4-10cf-4d64-b583-1456431dfa93");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "2a91956f-f674-40f9-95db-3a313c7ef8de");
+                keyValue: "d0527dc4-891a-412e-8ac0-60c6414f5f49");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "4c9d291c-dce4-4204-a084-18da72e5f077");
+                keyValue: "d2d03cf9-a680-42ed-ae13-da6890ef1e06");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "bca7e303-59a7-4589-9060-e6fb25fb1b5d");
+                keyValue: "f5d8ddfa-5b05-4066-a3c0-5ed495b508f2");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Logo",

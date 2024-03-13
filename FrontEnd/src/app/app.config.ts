@@ -16,6 +16,7 @@ import { provideStore } from '@ngrx/store';
 import { AuthInterceptorProvider } from './core/interceptor/token.interceptor';
 import { ErrorInterceptorProvider } from './core/interceptor/error.intercerptor';
 import { CookieService } from 'ngx-cookie-service';
+import { NetworkInterceptorProvider } from './core/interceptor/network.interceptor';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
 		// provide interceptor
 		AuthInterceptorProvider,
 		ErrorInterceptorProvider,
+		NetworkInterceptorProvider,
 
 		// provide store
 		provideStore(),

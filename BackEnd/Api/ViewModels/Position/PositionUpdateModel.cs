@@ -9,7 +9,7 @@
 
         public string? Description { get; set; }
 
-        public IFormFile? ImageFile { get; set; }
+        public string? ImageURL { get; set; }
 
         public decimal? Salary { get; set; }
 

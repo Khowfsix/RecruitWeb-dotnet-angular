@@ -1,4 +1,10 @@
 <app-header></app-header>
+@if(this.isLoading$ | async){
+<div class="spinner_overlay">
+	<mat-progress-spinner [mode]="'indeterminate'">
+	</mat-progress-spinner>
+</div>
+}
 <router-outlet></router-outlet>
 <app-footer></app-footer>
 

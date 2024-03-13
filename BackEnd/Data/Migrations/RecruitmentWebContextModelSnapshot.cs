@@ -1065,28 +1065,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4c9d291c-dce4-4204-a084-18da72e5f077",
+                            Id = "f5d8ddfa-5b05-4066-a3c0-5ed495b508f2",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "bca7e303-59a7-4589-9060-e6fb25fb1b5d",
+                            Id = "d0527dc4-891a-412e-8ac0-60c6414f5f49",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "08583de4-e08f-4030-a746-b8331a833557",
+                            Id = "0a71fbd4-10cf-4d64-b583-1456431dfa93",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "2a91956f-f674-40f9-95db-3a313c7ef8de",
+                            Id = "d2d03cf9-a680-42ed-ae13-da6890ef1e06",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"

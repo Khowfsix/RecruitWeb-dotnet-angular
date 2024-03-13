@@ -35,17 +35,18 @@ export const routes: Routes = [
 	},
 
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
-	// { path: 'position', component: PositionComponent },
+
+	{ path: 'positions', component: PositionComponent },
 
 	// // url for recruiter
 	createRouteWithRoles('companies', CompanyComponent, [
 		role.RECRUITER,
 		role.ADMIN,
 	]),
-	createRouteWithRoles('positions', PositionComponent, [
-		role.RECRUITER,
-		role.ADMIN,
-	]),
+	// createRouteWithRoles('positions', PositionComponent, [
+	// 	role.RECRUITER,
+	// 	role.ADMIN,
+	// ]),
 
 	// url for interviewer
 

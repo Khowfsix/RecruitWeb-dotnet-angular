@@ -23,7 +23,6 @@ export class PositionService {
 	}
 
 	create(data: any, options?: any): Observable<any> {
-		console.log('data:......', data);
 		return this.api.POST('/api/Position', data, options);
 	}
 
