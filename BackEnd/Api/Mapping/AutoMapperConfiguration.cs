@@ -333,6 +333,8 @@ namespace Data.Mapping
             CreateMap<UserModel, WebUserViewModel>().ReverseMap();
 
             #endregion WebUser
+
+            CreateMap<RefreshToken, RefreshTokenModel>().ReverseMap();
         }
     }
 }

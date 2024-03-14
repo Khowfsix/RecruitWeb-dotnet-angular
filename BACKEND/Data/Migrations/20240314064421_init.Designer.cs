@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RecruitmentWebContext))]
-    [Migration("20240309141300_init")]
+    [Migration("20240314064421_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -252,7 +252,6 @@ namespace Data.Migrations
                         .HasColumnName("isDeleted");
 
                     b.Property<string>("Logo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
@@ -667,26 +666,21 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("CreatedByIp")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExpiryOn")
+                    b.Property<DateTime?>("ExpiryOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RevokedByIp")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RevokedOn")
+                    b.Property<DateTime?>("RevokedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
@@ -695,16 +689,14 @@ namespace Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WebUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PK_refreshToken");
 
-                    b.HasIndex("WebUserId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("RefreshToken", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>
@@ -1069,28 +1061,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aec3221d-17a9-4b8a-8a66-c652faa6eca3",
+                            Id = "d753a884-2a53-42ea-ab00-92fa42e22ea8",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "0721cdb5-5027-457b-ac68-2d1ed8273c58",
+                            Id = "2964e973-8bdb-470c-8722-7aa0a7875366",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "9f49a9cf-c12c-4cb8-9c08-082cfb7c5f74",
+                            Id = "02d72e33-945c-40a2-b08b-6a63e25e08ec",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "ac469261-7a78-439c-84a8-f0f915d2bcc7",
+                            Id = "821de57e-44d2-4225-81c1-7fab50da99a1",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1504,9 +1496,14 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Data.Entities.WebUser", null)
+                    b.HasOne("Data.Entities.WebUser", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("WebUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRefreshToken");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>

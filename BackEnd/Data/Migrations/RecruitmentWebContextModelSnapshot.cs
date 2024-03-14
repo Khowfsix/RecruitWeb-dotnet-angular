@@ -663,26 +663,21 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("CreatedByIp")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExpiryOn")
+                    b.Property<DateTime?>("ExpiryOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RevokedByIp")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RevokedOn")
+                    b.Property<DateTime?>("RevokedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
@@ -691,16 +686,14 @@ namespace Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WebUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PK_refreshToken");
 
-                    b.HasIndex("WebUserId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("RefreshToken", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>
@@ -1065,28 +1058,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4c9d291c-dce4-4204-a084-18da72e5f077",
+                            Id = "d753a884-2a53-42ea-ab00-92fa42e22ea8",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "bca7e303-59a7-4589-9060-e6fb25fb1b5d",
+                            Id = "2964e973-8bdb-470c-8722-7aa0a7875366",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "08583de4-e08f-4030-a746-b8331a833557",
+                            Id = "02d72e33-945c-40a2-b08b-6a63e25e08ec",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "2a91956f-f674-40f9-95db-3a313c7ef8de",
+                            Id = "821de57e-44d2-4225-81c1-7fab50da99a1",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1500,9 +1493,14 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Data.Entities.WebUser", null)
+                    b.HasOne("Data.Entities.WebUser", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("WebUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRefreshToken");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>

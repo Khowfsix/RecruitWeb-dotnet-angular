@@ -40,6 +40,7 @@ namespace Data
             service.AddTransient(typeof(ISecurityAnswerRepository), typeof(SecurityAnswerRepository));
             service.AddTransient(typeof(ISecurityQuestionRepository), typeof(SecurityQuestionRepository));
             service.AddTransient(typeof(ICategoryPositionRepository), typeof(CategoryPositionRepository));
+            service.AddTransient(typeof(IRefreshTokenRepository), typeof(RefreshTokenRepository));
             return service;
         }
     }

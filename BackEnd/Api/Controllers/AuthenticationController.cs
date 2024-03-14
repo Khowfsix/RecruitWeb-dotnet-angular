@@ -8,14 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
 using Service.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Api.Controllers
 {
@@ -32,6 +29,7 @@ namespace Api.Controllers
         private readonly IAuthService _authenticationService;
         private readonly IFileService _uploadFileService;
         private readonly ICandidateService _candidateService;
+        private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
         public AuthenticationController(
@@ -42,6 +40,8 @@ namespace Api.Controllers
 
             SignInManager<WebUser> signInManager,
             IAuthService authenticationService,
+            ITokenService tokenService,
+
             IConfiguration configuration,
 
             IHttpContextAccessor httpContextAccessor,
@@ -60,6 +60,7 @@ namespace Api.Controllers
             _authenticationService = authenticationService;
             _uploadFileService = uploadFileService;
             _candidateService = candidateService;
+            _tokenService = tokenService;
             _mapper = mapper;
         }
 
@@ -189,6 +190,23 @@ namespace Api.Controllers
                    new Response { Status = "Success", Message = "Email Verified Successfully" });
         }
 
+        private async Task<IEnumerable<Claim>> GetClaims(WebUser user)
+        {
+            var authClaims = new List<Claim>
+                {
+                    new("username", user.UserName),
+                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+            //get roles
+            var userRoles = await _userManager.GetRolesAsync(user);
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim("roles", role));
+            }
+            return authClaims;
+        }
+
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]
@@ -197,18 +215,7 @@ namespace Api.Controllers
             var user = await _userManager.FindByNameAsync(userName: loginModel.Username);
             if (user != null && await _userManager.CheckPasswordAsync(user: user, password: loginModel.Password))
             {
-                var authClaims = new List<Claim>
-                {
-                    new(ClaimTypes.Name, user.UserName),
-                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
-
-                //get roles
-                var userRoles = await _userManager.GetRolesAsync(user);
-                foreach (var role in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, role));
-                }
+                var authClaims = await GetClaims(user);
 
                 if (user.TwoFactorEnabled)
                 {
@@ -216,20 +223,25 @@ namespace Api.Controllers
                     await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, true);
                     var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
 
-                    var message = new Message(new string[] { user.Email! }, "OTP Confrimation", token);
+                    var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
                     _emailService.SendEmail(message);
 
                     return StatusCode(StatusCodes.Status200OK,
                      new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
                 }
 
-                var jwtToken = GetToken(authClaims);
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                    expiration = jwtToken.ValidTo,
-                });
+                var authenticationResponse = await _tokenService.GetAuthenticationToken(authClaims, user);
+                //var accessToken = _tokenService.GenerateAccessToken(authClaims, _configuration);
+                //var refreshToken = await _tokenService.GenerateRefreshToken();
+                //return Ok(new
+                //{
+                //    token = new JwtSecurityTokenHandler().WriteToken(accessToken),
+                //    refreshToken = new JwtSecurityTokenHandler().WriteToken(refreshToken.Token),
+                //    expiration = refreshToken.ExpiryOn,
+                //});
                 //returning the token...
+
+                return Ok(authenticationResponse);
             }
 
             return Unauthorized("Wrong password or username");
@@ -238,74 +250,79 @@ namespace Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("RefreshToken")]
-        public IActionResult RefreshToken()
+        public async Task<IActionResult> RefreshToken()
         {
             var token = HttpContext.Request.Cookies["refreshToken"];
-            var identityUser = _dbContext.Users.Include(x => x.RefreshTokens)
-                .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token && y.UserId == x.Id));
-
-            // Get existing refresh token if it is valid and revoke it
-            var existingRefreshToken = GetValidRefreshToken(token!, identityUser!);
-            if (existingRefreshToken == null)
+            if (token == null)
             {
-                return new BadRequestObjectResult(new { Message = "Failed" });
+                return BadRequest("Don't have refresh token");
             }
 
-            existingRefreshToken.RevokedByIp = HttpContext.Connection.RemoteIpAddress!.ToString();
-            existingRefreshToken.RevokedOn = DateTime.UtcNow;
+            //var identityUser = _dbContext.Users.Include(x => x.RefreshTokens)
+            //    .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token.Equals(token) && y.UserId.Equals(x.Id)));
+
+            var identityUser = _dbContext.Users.Include(u => u.RefreshTokens)
+                .Where(u => u.RefreshTokens
+                    .Any(r => r.Token.Equals(token))
+                )
+                .FirstOrDefault();
+
+            if (identityUser == null)
+            {
+                return BadRequest("Cannot find user");
+            }
+
+
+            // Get existing refresh token if it is valid and revoke it
+            var existingRefreshToken = await _tokenService.GetValidRefreshToken(token!, identityUser!);
+            if (existingRefreshToken == null)
+            {
+                return BadRequest("Failed");
+            }
+
+            //existingRefreshToken.RevokedByIp = HttpContext.Connection.RemoteIpAddress!.ToString();
+            //existingRefreshToken.RevokedOn = DateTime.UtcNow;
 
             // Generate new tokens
             //var newToken = GetToken(identityUser);
-            var newToken = GenerateTokens(identityUser!);
-            return Ok(new { Token = newToken, Message = "Success" });
+
+            var newToken = _tokenService.GenerateAccessToken(await GetClaims(identityUser!));
+            return Ok(new { NewAccessToken = await newToken, Message = "Success" });
         }
 
-        [HttpPost]
-        [Route("RevokeToken")]
-        public IActionResult RevokeToken(string token)
-        {
-            // If user found, then revoke
-            if (RevokeRefreshToken(token))
-            {
-                return Ok(new { Message = "Success" });
-            }
+        //[HttpPost]
+        //[Route("RevokeToken")]
+        //public async Task<IActionResult> RevokeToken(string token)
+        //{
+        //    // If user found, then revoke
+        //    if (await _tokenService.RevokeRefreshToken(token))
+        //    {
+        //        return Ok(new { Message = "Success" });
+        //    }
 
-            // Otherwise, return error
-            return new BadRequestObjectResult(new { Message = "Failed" });
-        }
+        //    // Otherwise, return error
+        //    return new BadRequestObjectResult(new { Message = "Failed" });
+        //}
 
         [HttpPost]
         [Route("Login-2FA")]
         [AllowAnonymous]
         public async Task<IActionResult> LoginWithOTP(string code, string username)
         {
-            //get uset
+            //get user
             var user = await _userManager.FindByNameAsync(username);
-            //enable twofacter
+            //enable two factor
             //user.TwoFactorEnabled = true;
             var signIn = await _signInManager.TwoFactorSignInAsync("Email", code, false, false);
             if (signIn.Succeeded)
             {
                 if (user != null)
                 {
-                    var authClaims = new List<Claim>
-                    {
-                        new(ClaimTypes.Name, user.UserName),
-                        new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    };
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    foreach (var role in userRoles)
-                    {
-                        authClaims.Add(new Claim(ClaimTypes.Role, role));
-                    }
+                    var authClaims = await GetClaims(user);
 
-                    var jwtToken = GetToken(authClaims);
+                    var authenticationResponse = await _tokenService.GetAuthenticationToken(authClaims, user);
 
-                    return Ok(new
-                    {
-                        token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                        expiration = jwtToken.ValidTo
-                    });
+                    return Ok(authenticationResponse);
                     //returning the token...
                 }
             }
@@ -558,7 +575,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAccountByUserId(userId);
             if (response != null)
             {
-                var viewModelResponse = _mapper.Map<WebUserViewModel>(response);
+                _ = _mapper.Map<WebUserViewModel>(response);
                 return Ok(response);
             }
             else
@@ -608,51 +625,6 @@ namespace Api.Controllers
             return NotFound();
         }
 
-        private static int GenerateOTP()
-        {
-            // Create an instance of the Random class
-            Random random = new();
-
-            // Generate a random 6-digit OTP (from 100000 to 999999)
-            int otp = random.Next(100000, 999999);
-
-            // Convert the OTP to a string and return it
-            return otp;
-        }
-
-        private static RefreshToken GetValidRefreshToken(string token, WebUser identityUser)
-        {
-            if (identityUser == null)
-            {
-                return null!;
-            }
-
-            var existingToken = identityUser.RefreshTokens.FirstOrDefault(x => x.Token == token);
-            return IsRefreshTokenValid(existingToken!) ? existingToken! : null!;
-        }
-
-        private bool RevokeRefreshToken(string token = null!)
-        // Revokes the refresh token for the given user.
-        // If no token is provided, the token from the HttpContext.Request.Cookies["refreshToken"] is used.
-        // Returns true if the token is successfully revoked, otherwise false.
-        {
-            token = token == null! ? HttpContext.Request.Cookies["refreshToken"]! : token!;
-            var identityUser = _dbContext.Users.Include(x => x.RefreshTokens)
-                .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token && y.UserId == x.Id));
-            if (identityUser == null)
-            {
-                return false;
-            }
-
-            // Revoke Refresh token
-            var existingToken = identityUser.RefreshTokens.FirstOrDefault(x => x.Token == token);
-            existingToken!.RevokedByIp = HttpContext.Connection.RemoteIpAddress!.ToString();
-            existingToken!.RevokedOn = DateTime.UtcNow;
-            _dbContext.Update(identityUser);
-            _dbContext.SaveChanges();
-            return true;
-        }
-
         private async Task<WebUser> ValidateUser(LogInModel loginData)
         {
             var identityUser = await _userManager.FindByNameAsync(loginData.Username);
@@ -665,101 +637,16 @@ namespace Api.Controllers
             return null!;
         }
 
-        private string GenerateTokens(WebUser identityUser)
+        private static int GenerateOTP()
         {
-            // Generate access token
-            string accessToken = GenerateAccessToken(identityUser);
+            // Create an instance of the Random class
+            Random random = new();
 
-            // Generate refresh token and set it to cookie
-            var ipAddress = HttpContext.Connection.RemoteIpAddress!.ToString();
-            var refreshToken = GenerateRefreshToken(ipAddress, identityUser.Id);
+            // Generate a random 6-digit OTP (from 100000 to 999999)
+            int otp = random.Next(100000, 999999);
 
-            // Set Refresh Token Cookie
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
-            };
-            HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
-
-            // Save refresh token to database
-            identityUser.RefreshTokens ??= new List<RefreshToken>();
-
-            identityUser.RefreshTokens.Add(refreshToken);
-            _dbContext.Update(identityUser);
-            _dbContext.SaveChanges();
-            return accessToken;
-        }
-
-        private string GenerateAccessToken(WebUser identityUser)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtSetting = _configuration.GetSection("JWT");
-            //var key = Encoding.ASCII.GetBytes(jwtBearerTokenSettings.SecretKey);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-              new Claim(ClaimTypes.Name, identityUser.UserName.ToString()),
-              new Claim(ClaimTypes.Email, identityUser.Email)
-                }),
-
-                //Expires = DateTime.Now.AddSeconds(jwtBearerTokenSettings.ExpiryTimeInSeconds),
-                //SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                //Audience = jwtBearerTokenSettings.Audience,
-                //Issuer = jwtBearerTokenSettings.Issuer
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        private RefreshToken GenerateRefreshToken(string ipAddress, string userId)
-        {
-            using RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-            var randomBytes = new byte[64];
-            rngCryptoServiceProvider.GetBytes(randomBytes);
-            return new RefreshToken
-            {
-                Token = Convert.ToBase64String(randomBytes),
-                //ExpiryOn = DateTime.UtcNow.AddDays(jwtBearerTokenSettings.RefreshTokenExpiryInDays),
-                CreatedOn = DateTime.UtcNow,
-                CreatedByIp = ipAddress,
-                UserId = userId
-            };
-        }
-
-        private JwtSecurityToken GetToken(List<Claim> authClaims, int expireTime = 1)
-        {
-            var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT: ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(expireTime),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
-                );
-            return token;
-        }
-
-        // Check if the refresh token is valid based on its properties and return a boolean value.
-        private static bool IsRefreshTokenValid(RefreshToken existingToken)
-        {
-            // Is token already revoked, then return false
-            if (existingToken.RevokedByIp != null && existingToken.RevokedOn != DateTime.MinValue)
-            {
-                return false;
-            }
-
-            // Token already expired, then return false
-            if (existingToken.ExpiryOn <= DateTime.UtcNow)
-            {
-                return false;
-            }
-
-            return true;
+            // Convert the OTP to a string and return it
+            return otp;
         }
     }
 }

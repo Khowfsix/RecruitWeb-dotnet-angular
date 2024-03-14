@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -88,7 +87,7 @@ namespace Data.Migrations
                 {
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Phone = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: true),
@@ -322,25 +321,24 @@ namespace Data.Migrations
                 name: "RefreshToken",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpiryOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RevokedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WebUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ExpiryOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RevokedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.PrimaryKey("PK_refreshToken", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshToken_AspNetUsers_WebUserId",
-                        column: x => x.WebUserId,
+                        name: "FK_UserRefreshToken",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -860,10 +858,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0721cdb5-5027-457b-ac68-2d1ed8273c58", "2", "Interviewer", "Interviewer" },
-                    { "9f49a9cf-c12c-4cb8-9c08-082cfb7c5f74", "3", "Recruiter", "Recruiter" },
-                    { "ac469261-7a78-439c-84a8-f0f915d2bcc7", "4", "Admin", "Admin" },
-                    { "aec3221d-17a9-4b8a-8a66-c652faa6eca3", "1", "Candidate", "Candidate" }
+                    { "02d72e33-945c-40a2-b08b-6a63e25e08ec", "3", "Recruiter", "Recruiter" },
+                    { "2964e973-8bdb-470c-8722-7aa0a7875366", "2", "Interviewer", "Interviewer" },
+                    { "821de57e-44d2-4225-81c1-7fab50da99a1", "4", "Admin", "Admin" },
+                    { "d753a884-2a53-42ea-ab00-92fa42e22ea8", "1", "Candidate", "Candidate" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1070,9 +1068,9 @@ namespace Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_WebUserId",
+                name: "IX_RefreshToken_UserId",
                 table: "RefreshToken",
-                column: "WebUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Report_RecruiterId",
