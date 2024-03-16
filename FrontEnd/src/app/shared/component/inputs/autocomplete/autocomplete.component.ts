@@ -38,7 +38,7 @@ export class AutocompleteComponent {
 	public options?: any[];
 
 	ngOnInit(): void {
-		this.observableOptions?.subscribe((x) => this.options = x);
+		this.observableOptions?.subscribe((data) => this.options = data);
 		// this.observableIsDisabled?.subscribe((x) => this.isDisabled = x)
 		this.filteredOptions = this.formGroup?.get(this.fieldName ?? '')?.valueChanges.pipe(
 			startWith(''),
@@ -53,13 +53,13 @@ export class AutocompleteComponent {
 	// }
 	public isDisabled = false;
 
-	public setDisabled(fieldValue: string) {
-		this.isDisabled = true;
-		// console.log('fieldValue:', fieldValue)
-		this.formGroup?.get(this.fieldName ?? '')?.setValue(fieldValue);
-		// console.log('disable', this.isDisabled)
-		// console.log('form Value: ', this.formGroup?.get(this.fieldName??'')?.value)
-	}
+	// public setDisabled() {
+	// 	// this.isDisabled = true;
+	// 	// console.log('fieldValue:', fieldValue)
+	// 	// this.formGroup?.get(this.fieldName ?? '')?.setValue(fieldValue);
+	// 	// console.log('disable', this.isDisabled)
+	// 	// console.log('form Value: ', this.formGroup?.get(this.fieldName??'')?.value)
+	// }
 
 	public clear() {
 		this.isDisabled = false;

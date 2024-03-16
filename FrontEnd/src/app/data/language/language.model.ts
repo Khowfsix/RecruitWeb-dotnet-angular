@@ -1,5 +1,5 @@
 export class Language {
-	languageId?: any;
+	languageId?: string;
 	languageName?: string;
 	isDeleted?: boolean;
 }

@@ -730,7 +730,7 @@ namespace Api.Controllers
             };
         }
 
-        private JwtSecurityToken GetToken(List<Claim> authClaims, int expireTime = 1)
+        private JwtSecurityToken GetToken(List<Claim> authClaims, int expireTime = 36000)
         {
             var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
 

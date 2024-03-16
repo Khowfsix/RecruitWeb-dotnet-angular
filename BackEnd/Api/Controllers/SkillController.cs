@@ -1,7 +1,9 @@
-﻿using Api.ViewModels.Skill;
+﻿using Api.ViewModels.Position;
+using Api.ViewModels.Skill;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -18,6 +20,16 @@ namespace Api.Controllers
         {
             _skillService = skillService;
             _mapper = mapper;
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSkillById(Guid skillId)
+        {
+            var modelData = await _skillService.GetSkillById(skillId);
+            var response = _mapper.Map<SkillViewModel>(modelData);
+
+            return response is not null ? Ok(response) : NotFound(skillId);
         }
 
         [HttpGet]

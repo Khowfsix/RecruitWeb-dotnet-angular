@@ -33,6 +33,10 @@ import { Position } from '../../../../data/position/position.model';
 import { MatIcon } from '@angular/material/icon';
 import { isMoment } from 'moment';
 import { FileService } from '../../../../data/file/file-service.service';
+import { AddRequirementsFormComponent } from '../add-requirements-form/add-requirements-form.component';
+import { RequirementsService } from '../../../../data/requirements/requirements.service';
+import { error } from 'console';
+import { Requirements } from '../../../../data/requirements/requirements.model';
 
 export const MY_FORMATS = {
 	parse: {
@@ -66,6 +70,7 @@ export const MY_FORMATS = {
 		AsyncPipe,
 		AutocompleteComponent,
 		MatIcon,
+		AddRequirementsFormComponent
 	],
 	templateUrl: './add-form.component.html',
 	styleUrl: './add-form.component.css',
@@ -81,6 +86,7 @@ export class AddFormComponent {
 		public dialogRef: MatDialogRef<AddFormComponent>,
 		private formBuilder: FormBuilder,
 		private FileService: FileService,
+		private RequirementService: RequirementsService,
 	) { }
 
 	@Input()
@@ -190,6 +196,12 @@ export class AddFormComponent {
 		endDate: [this.isEditForm ? this.fetchObject.endDate : null, [Validators.required]],
 		languageName: [this.isEditForm ? this.fetchObject.language?.languageName : '', [Validators.required]],
 		categoryPositionName: [this.isEditForm ? this.fetchCategoryPositions.find(x => x.categoryPositionId === this.fetchObject.categoryPositionId)?.categoryPositionName : null, [Validators.required]],
+		requirements: [
+			this.isEditForm ? this.fetchObject.requirements?.filter(e => e.isDeleted === false) : [],
+			[
+				Validators.required,
+			],
+		],
 	});
 
 	private isInAllowedValues(allowedValues: any[]): ValidatorFn {
@@ -211,9 +223,11 @@ export class AddFormComponent {
 
 	ngOnInit(): void {
 		// console.log('currentUserId', this.data.currentUserId);
-		// console.log('fetchObject', this.fetchObject);
-		if (this.isEditForm)
+		console.log('fetchObject', this.fetchObject);
+		if (this.isEditForm) {
 			this.addForm.disable();
+			this.fetchObject.requirements = this.fetchObject.requirements?.filter(e => e.isDeleted === false);
+		}
 		this.fetchRecruiterInfor(this.data.currentUserId);
 		this.fetchAllLanguages();
 		this.fetchAllCategoryPositions();
@@ -302,7 +316,12 @@ export class AddFormComponent {
 					};
 					// console.log('Form Value: ', formValue);
 					this.positionService.create(formValue).subscribe({
-						next: () => {
+						next: (resp: any) => {
+							const requirements: Requirements[] = this.addForm.get('requirements')?.value;
+							requirements.forEach((req) => {
+								req.positionId = resp.positionId;
+								this.callApiSaveRequirement(req);
+							});
 							this.dialogRef.close();
 							this.toastr.success('Position Added...', 'Successfully!', {
 								timeOut: 3000,
@@ -310,7 +329,7 @@ export class AddFormComponent {
 						},
 						error: () => {
 							// console.log(err);
-							this.toastr.error('Something wrong...', 'Error!!!', {
+							this.toastr.error('Something wrong...', 'Save Position Error!!!', {
 								timeOut: 3000,
 							});
 						},
@@ -329,8 +348,102 @@ export class AddFormComponent {
 		}
 	}
 
+	private callApiSaveRequirement(requirement: any) {
+		this.RequirementService.save(requirement).subscribe({
+			next: () => { },
+			error: () => {
+				// console.log(err);
+				this.toastr.error('Something wrong...', 'Save Requirement Error!!!', {
+					timeOut: 3000,
+				});
+			},
+			complete: () => { },
+		});
+	}
+
+	private callApiDeleteRequirement(requirementId: any) {
+		this.RequirementService.delete(requirementId).subscribe({
+			next: () => { },
+			error: () => {
+				// console.log(err);
+				this.toastr.error('Something wrong...', 'Delete Requirement Error!!!', {
+					timeOut: 3000,
+				});
+			},
+			complete: () => { },
+		});
+	}
+
+	private callApiUpdatePosition(formValue: any) {
+		delete formValue.languageName;
+		delete formValue.categoryPositionName;
+		delete formValue.companyId;
+		delete formValue.recruiterId;
+		delete formValue.imageName;
+		delete formValue.imageFile;
+
+		formValue = {
+			...formValue,
+			startDate: isMoment(formValue.startDate) ? new Date(formValue.startDate.format('YYYY-MM-DD')).toISOString() : formValue.startDate,
+			endDate: isMoment(formValue.endDate) ? new Date(formValue.endDate.format('YYYY-MM-DD')).toISOString() : formValue.endDate,
+			languageId: this.fetchLanguages?.find(
+				(x) =>
+					x.languageName === this.addForm?.get('languageName')?.value,
+			)?.languageId,
+			categoryPositionId: this.fetchCategoryPositions?.find(
+				(x) =>
+					x.categoryPositionName ===
+					this.addForm?.get('categoryPositionName')?.value,
+			)?.categoryPositionId,
+		};
+		// console.log('Form Value: ', formValue);
+		// const formData = new FormData();
+		// for (const key in formValue) {
+		// 	// if (formValue[key] !== null) {
+		// 	if (formValue[key] instanceof File) {
+		// 		formData.append(key, formValue[key], formValue[key].name);
+		// 	} else {
+		// 		formData.append(key, formValue[key]);
+		// 	}
+		// 	// }
+		// }
+		this.positionService.update(this.fetchObject.positionId ?? '', formValue).subscribe({
+			next: (resp: any) => {
+				if (resp === false) {
+					this.toastr.error('Something wrong...', 'Error!!!', {
+						timeOut: 3000,
+					});
+					return;
+				} else {
+					this.fetchObject.requirements?.forEach(e => {
+						this.callApiDeleteRequirement(e.requirementId);
+					});
+					formValue.requirements.forEach((e: any) => {
+						e.positionId = this.fetchObject.positionId;
+						this.callApiSaveRequirement(e)
+					});
+					this.toastr.success('Position Updated...', 'Successfully!', {
+						timeOut: 2000,
+					});
+					this.dialogRef.close();
+				}
+				// this.toastr.success('Position added!!', 'Successfully!');
+			},
+			error: () => {
+				// console.log(err);
+				this.toastr.error('Something wrong...', 'Error!!!', {
+					timeOut: 3000,
+				});
+			},
+			complete: () => {
+
+			},
+		});
+	}
+
 	public editPosition() {
-		let formValue = this.addForm.value;
+		const formValue = this.addForm.value;
+		// console.log('aaaaaaa')
 
 		if (this.fetchObject.imageURL !== formValue.imageName) {
 			const file: File = this.addForm.get('imageFile')?.value;
@@ -343,64 +456,8 @@ export class AddFormComponent {
 					next: (response: any) => {
 						// this.addForm.get('imageURL')?.setValue(response.url)
 						formValue.imageURL = response.url;
-						delete formValue.languageName;
-						delete formValue.categoryPositionName;
-						delete formValue.companyId;
-						delete formValue.recruiterId;
-						delete formValue.imageName;
-						delete formValue.imageFile;
-
-
-						formValue = {
-							...formValue,
-							startDate: isMoment(formValue.startDate) ? new Date(formValue.startDate.format('YYYY-MM-DD')).toISOString() : formValue.startDate,
-							endDate: isMoment(formValue.endDate) ? new Date(formValue.endDate.format('YYYY-MM-DD')).toISOString() : formValue.endDate,
-							languageId: this.fetchLanguages?.find(
-								(x) =>
-									x.languageName === this.addForm?.get('languageName')?.value,
-							)?.languageId,
-							categoryPositionId: this.fetchCategoryPositions?.find(
-								(x) =>
-									x.categoryPositionName ===
-									this.addForm?.get('categoryPositionName')?.value,
-							)?.categoryPositionId,
-						};
-						// console.log('Form Value: ', formValue);
-						// const formData = new FormData();
-						// for (const key in formValue) {
-						// 	// if (formValue[key] !== null) {
-						// 	if (formValue[key] instanceof File) {
-						// 		formData.append(key, formValue[key], formValue[key].name);
-						// 	} else {
-						// 		formData.append(key, formValue[key]);
-						// 	}
-						// 	// }
-						// }
-						this.positionService.update(this.fetchObject.positionId ?? '', formValue).subscribe({
-							next: (resp: any) => {
-								if (resp === false) {
-									this.toastr.error('Something wrong...', 'Error!!!', {
-										timeOut: 3000,
-									});
-									return;
-								} else {
-									this.toastr.success('Position Updated...', 'Successfully!', {
-										timeOut: 2000,
-									});
-									this.dialogRef.close();
-								}
-								// this.toastr.success('Position added!!', 'Successfully!');
-							},
-							error: () => {
-								// console.log(err);
-								this.toastr.error('Something wrong...', 'Error!!!', {
-									timeOut: 3000,
-								});
-							},
-							complete: () => {
-
-							},
-						});
+						this.callApiUpdatePosition(formValue);
+						return;
 					},
 					error: () => {
 						// console.log('Uploading File error:', err);
@@ -412,5 +469,9 @@ export class AddFormComponent {
 				});
 			}
 		}
+		else {
+			this.callApiUpdatePosition(formValue);
+		}
+
 	}
 }

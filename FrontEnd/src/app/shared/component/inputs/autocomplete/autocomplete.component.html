@@ -1,32 +1,32 @@
 @if (this.formGroup){
 <form class="d-flex flex-column" [formGroup]="this.formGroup">
-    <mat-form-field class="mt-2">
-        <mat-label>{{this.label}}</mat-label>
-        <div class="d-flex">
-            <input [attr.disabled]="this.isDisabled ? true : null" type="text" placeholder="{{this.placeholder}}"
-                aria-label="Number" matInput formControlName="{{this.fieldName}}" [matAutocomplete]="auto">
-            @if(this.isDisabled){
-            <i class="bi bi-x-circle custom-cancel" (click)="clear()"></i>
-            }
-        </div>
+	<mat-form-field>
+		<mat-label>{{this.label}}</mat-label>
+		<div class="d-flex">
+			<input [attr.disabled]="this.isDisabled ? true : null" type="text" placeholder="{{this.placeholder}}"
+				aria-label="Number" matInput formControlName="{{this.fieldName}}" [matAutocomplete]="auto">
+			@if(this.isDisabled){
+			<i class="bi bi-x-circle custom-cancel" (click)="clear()"></i>
+			}
+		</div>
 
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for (option of filteredOptions | async; track option) {
-            <mat-option (onSelectionChange)="setDisabled(option[this.fieldName??''])"
-                [value]="option[this.fieldName??'']">{{option[this.fieldName??'']}}</mat-option>
-            }
-        </mat-autocomplete>
+		<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+			@for (option of filteredOptions | async; track option) {
+			<mat-option (onSelectionChange)="this.isDisabled = true;"
+				[value]="option[this.fieldName??'']">{{option[this.fieldName??'']}}</mat-option>
+			}
+		</mat-autocomplete>
 
-        @if(formGroup.get(this.fieldName??'')?.invalid){
-        @if(formGroup.get(this.fieldName??'')?.hasError('required')){
-        <div style="color: red;">Required.</div>
-        }
-        @if(formGroup.get(this.fieldName??'')?.hasError('invalid')){
-            <div style="color: red;">Invalid value.</div>
-            }
-        }
-    </mat-form-field>
-    <!-- <button (click)="log()"></button> -->
+		@if(formGroup.get(this.fieldName??'')?.invalid){
+		@if(formGroup.get(this.fieldName??'')?.hasError('required')){
+		<div style="color: red;">Required.</div>
+		}
+		@if(formGroup.get(this.fieldName??'')?.hasError('invalid')){
+		<div style="color: red;">Invalid value.</div>
+		}
+		}
+	</mat-form-field>
+	<!-- <button (click)="log()"></button> -->
 </form>
 }
 @else {

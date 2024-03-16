@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 using Service.Interfaces;
 using Service.Models;
 
@@ -10,6 +11,12 @@ namespace Service
     {
         private readonly ISkillRepository _skillRepository;
         private readonly IMapper _mapper;
+
+        public async Task<SkillModel> GetSkillById(Guid id)
+        {
+            var data = await _skillRepository.GetSkillById(id);
+            return _mapper.Map<SkillModel>(data);
+        }
 
         public SkillService(ISkillRepository skillRepository, IMapper mapper)
         {

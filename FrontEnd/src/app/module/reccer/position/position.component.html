@@ -1,5 +1,5 @@
 <div class="shadow d-flex flex-column justify-content-center" style="margin-left: 10%; margin-right: 10%;">
-	<span class="mt-4 mx-auto" style="font-size: 35px;">POSITION LIST</span>
+	<span class="mt-4 mx-auto" style="font-size: 35px;">POSITIONS</span>
 	<div class="mx-5">
 		<div class="container py-3">
 			@if(this.curentUserRoles?.includes('Admin') || this.curentUserRoles?.includes('Recruiter')) {
@@ -26,7 +26,8 @@
 					<div class="custom-row"> {{ position.company?.companyName }}</div>
 					<div class="custom-row" style="color: rgb(251, 115, 74);">${{ position.salary }}</div>
 					<div class="custom-row"> Max hiring quantity: {{ position.maxHiringQty }}</div>
-					<div class="custom-row"> {{ position.startDate | date:'dd/MM/yyyy' }} - {{ position.endDate |
+					<div class="custom-row"><i class="bi bi-calendar3"></i> {{ position.startDate | date:'dd/MM/yyyy' }}
+						- {{ position.endDate |
 						date:'dd/MM/yyyy' }}</div>
 					<div class="custom-row rounded-2"
 						style="padding: 2px 2px 2px 2px; background-color: rgb(224, 224, 224) ;width: fit-content;"> {{

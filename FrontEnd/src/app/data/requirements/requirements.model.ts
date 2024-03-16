@@ -1,8 +1,11 @@
+import { Skill } from "../skill/skill.model";
+
 export class Requirements {
-    RequirementId?: any;
-    PositionId?: any;
-    SkillId?: any;
-    Experience?: string;
-    Notes?: string;
-    isDeleted?: boolean;
+	requirementId?: string;
+	positionId?: string;
+	skillId?: string;
+	skill?: Skill;
+	experience?: string;
+	notes?: string;
+	isDeleted?: boolean;
 }

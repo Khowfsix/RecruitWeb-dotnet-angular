@@ -9,6 +9,22 @@ namespace Data.Repositories
     {
         private readonly IUnitOfWork _uow;
 
+        public async Task<Skill?> GetSkillById(Guid id)
+        {
+            /*------------------------------*/
+            // Finds the first position entity that has the id asynchronously in db.
+            // Returns it with the related entities if found. Otherwise, return null
+            /*------------------------------*/
+            var skill = await Entities
+                .Where(p => p.SkillId == id)
+                .FirstOrDefaultAsync();
+
+            /*------------------------------*/
+            // Returns mapped model of the found position. If position is not found, return null.
+            /*------------------------------*/
+            return skill is not null ? skill : null;
+        }
+
         public SkillRepository(RecruitmentWebContext dbContext,
             IUnitOfWork uow) : base(dbContext)
         {

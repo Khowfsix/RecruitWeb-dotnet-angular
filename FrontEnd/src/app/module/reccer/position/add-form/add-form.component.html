@@ -78,7 +78,7 @@
 				</span>
 
 				}
-				<mat-hint style="font-size: 15px; font-weight: 500;">DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+				<mat-hint style="font-size: 13px; font-weight: 500;">DD/MM/YYYY – DD/MM/YYYY</mat-hint>
 				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>
@@ -131,6 +131,10 @@
 				}
 				}
 			</mat-form-field>
+
+			<app-add-requirements-form [formGroup]="this.addForm" [label]="'Requirements'" [fieldName]="'requirements'"
+				[placeholder]="'Add requirements'"
+				[isEditForm]="this.isEditForm ? true : false"></app-add-requirements-form>
 
 			<!-- <div class="d-flex flex-row" style="height: fit-content;">
 				@if (this.uploadProgress){

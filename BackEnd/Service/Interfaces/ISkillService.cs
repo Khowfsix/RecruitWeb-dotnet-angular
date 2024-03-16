@@ -4,6 +4,8 @@ namespace Service.Interfaces
 {
     public interface ISkillService
     {
+        Task<SkillModel> GetSkillById(Guid id);
+
         Task<IEnumerable<SkillModel>> GetAllSkills(string? request);
 
         Task<SkillModel> SaveSkill(SkillModel request);
