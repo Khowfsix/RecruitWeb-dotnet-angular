@@ -1,4 +1,5 @@
 export interface JWT {
-	readonly token: string;
-	readonly expiration: string;
+	readonly accessToken: string;
+	readonly refreshToken: string;
+	readonly expirationDate: string;
 }

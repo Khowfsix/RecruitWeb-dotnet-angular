@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service';
 	providedIn: 'root',
 })
 class AuthInterceptor implements HttpInterceptor {
-	constructor(private authService: AuthService) {}
+	constructor(private authService: AuthService) { }
 
 	intercept(
 		req: HttpRequest<unknown>,
