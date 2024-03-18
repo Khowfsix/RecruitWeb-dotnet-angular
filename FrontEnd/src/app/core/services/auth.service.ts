@@ -6,8 +6,6 @@ import { Login } from '../../data/authen/login.model';
 import { noTokenURLs } from '../constants/noTokenURLs.constants';
 import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
-import { HttpHeaders } from '@angular/common/http';
-import { JWT } from '../../data/authen/jwt.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -65,27 +63,43 @@ export class AuthService {
 		})
 	}
 
-	async refreshToken(token: string): Promise<boolean> {
+	async refreshToken(): Promise<boolean> {
+		/*
+			ta đem refresh token
+			gọi cho máy chủ trả về json
+			new string access token
+			cookie lưu lại để xài lần sau
+
+			xem cookie có đang hợp lệ?
+			nếu được rồi ta gọi api
+			response nếu được hàng 2 - http status code = 200 :v
+			lưu token mới, return true nè
+		*/
 		const refreshToken = this.cookieService.get('refreshToken');
-		if (!token && !refreshToken) {
+		const accessToken = this.cookieService.get('jwt');
+		if (!accessToken && !refreshToken) {
 			return false;
 		}
 
 		let isRefreshSuccess = false;
-		const response = await new Promise<{ jwt: JWT, refreshToken: string }>((resolve, reject) => {
-			this.api.POST('Authentication/RefreshToken', {
-				headers: new HttpHeaders({
-					"Content-Type": "application/json"
-				})
-			}).subscribe({
-				next: (res: { jwt: JWT, refreshToken: string }) => resolve(res),
-				error: () => { reject; isRefreshSuccess = false; }
+		const response = await new Promise<string | null>((resolve, reject) => {
+			this.api.POST('Authentication/RefreshToken').subscribe({
+				next: (data) => {
+					if (data.status === 200) {
+						resolve(data.newAccessToken);
+					}
+					resolve(null);
+				},
+				error: (error) => {
+					reject(error);
+				},
 			});
 		});
 
-
-		this.cookieService.set('jwt', JSON.stringify(response.jwt));
-		this.cookieService.set('refreshToken', response.refreshToken);
+		if (!response) {
+			return isRefreshSuccess;
+		}
+		this.cookieService.set('jwt', response);
 		isRefreshSuccess = true;
 
 		return isRefreshSuccess;
