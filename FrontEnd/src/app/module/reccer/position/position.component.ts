@@ -25,6 +25,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { nameTypeInToken } from '../../../core/constants/token.constants';
 
 
 @Component({
@@ -49,9 +50,14 @@ export class PositionComponent implements OnInit {
 
 	ngOnInit(): void {
 		const token = this.cookieService.get('jwt');
+
+		console.log('token is: ', token);
 		if (token !== '') {
-			const jsonPayload = JSON.stringify(jwtDecode<JwtPayload>(token));
-			this.curentUserRoles = JSON.parse(jsonPayload)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+			// const jsonPayload = JSON.stringify(jwtDecode<JwtPayload>(token));
+			// this.curentUserRoles = JSON.parse(jsonPayload)[nameTypeInToken.roles];
+			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(token)));
+			this.curentUserRoles = authenPayload[nameTypeInToken.roles]
+			console.log(this.curentUserRoles);
 		}
 		else {
 			this.curentUserRoles = null

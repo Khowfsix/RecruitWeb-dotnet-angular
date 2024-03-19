@@ -30,7 +30,6 @@ using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
 using Data.Entities;
-using Data.Paging;
 using Service.Models;
 
 namespace Data.Mapping
@@ -59,8 +58,10 @@ namespace Data.Mapping
 
             #region Position
             CreateMap<PositionModel, PositionModel>()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                    if (srcMember is Guid guidValue) {
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is Guid guidValue)
+                    {
                         if (guidValue == Guid.Parse("00000000-0000-0000-0000-000000000000"))
                             return false;
                     }

@@ -17,12 +17,19 @@ namespace Data.Repositories
 
         public async Task<CategoryPosition> AddCategoryPosition(CategoryPosition categoryPosition)
         {
-            categoryPosition.CategoryPositionId = Guid.NewGuid();
+            try
+            {
+                categoryPosition.CategoryPositionId = Guid.NewGuid();
 
-            Entities.Add(categoryPosition);
-            _unitOfWork.SaveChanges();
+                Entities.Add(categoryPosition);
+                _unitOfWork.SaveChanges();
 
-            return await Task.FromResult(categoryPosition);
+                return await Task.FromResult(categoryPosition);
+            }
+            catch (Exception)
+            {
+                return null!;
+            }
         }
         public async Task<IEnumerable<CategoryPosition>> GetAllCategoryPositions()
         {

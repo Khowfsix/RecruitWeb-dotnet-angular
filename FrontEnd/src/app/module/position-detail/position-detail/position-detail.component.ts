@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { SkillService } from '../../../data/skill/skill.service';
+import { nameTypeInToken } from '../../../core/constants/token.constants';
 
 @Component({
 	selector: 'app-position-detail',
@@ -67,7 +68,7 @@ export class PositionDetailComponent implements OnInit {
 		const token = this.cookieService.get('jwt');
 		if (token !== '') {
 			const jsonPayload = JSON.stringify(jwtDecode<JwtPayload>(token));
-			this.curentUserRoles = JSON.parse(jsonPayload)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+			this.curentUserRoles = JSON.parse(jsonPayload)[nameTypeInToken.roles];
 		}
 		else {
 			this.curentUserRoles = null
