@@ -11,6 +11,7 @@ import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../services/auth.service';
 import { PermissionService } from '../services/permission.service';
+import { nameTypeInToken } from '../constants/token.constants';
 
 /*
 auth flow:
@@ -66,6 +67,7 @@ export class AuthGuard implements CanActivate {
 		// redirect to login page
 		if (typeof localStorage !== 'undefined') {
 			if (localStorage.getItem('currentUser') === null) {
+				console.error('no current user')
 				return loginPage;
 			}
 		}
@@ -76,49 +78,55 @@ export class AuthGuard implements CanActivate {
 					redirect to login page*/
 		const accessToken = this.cookieService.get('jwt');
 		const refreshToken = this.cookieService.get('refreshToken');
-		if (!accessToken ||
-			!refreshToken) {
-			return loginPage;
-		}
+
+		// if (!accessToken ||
+		// 	!refreshToken) {
+		// 	console.error('no token or refresh token')
+		// 	return loginPage;
+		// }
 
 		// decode the token to get its payload
-		const authenPayload: { username: string, jti: string, roles: string[], exp: string, aud: string }
-			= JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(accessToken)));
+		// const authenPayload: { username: string, jti: string, roles: string[], exp: string, aud: string }
+		// 	= JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(accessToken)));
+		console.error(accessToken);
+		const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(accessToken)));
 
-		// - if access token is expired:
-		if (new Date(authenPayload.exp).getTime < Date.now) {
-			/*
-					if refresh token is expired:
-						=> remove access token, user information and refresh token from cookie
-						redirect to login page
-			*/
-			const expirationDate = new Date(this.cookieService.get('expirationDate'));
-			if (expirationDate.getTime < Date.now) {
-				this.authService.logout();
-				return loginPage;
-			}
+		// // - if access token is expired:
+		// if (new Date(authenPayload.exp).getTime < Date.now) {
+		// 	/*
+		// 			if refresh token is expired:
+		// 				=> remove access token, user information and refresh token from cookie
+		// 				redirect to login page
+		// 	*/
+		// 	const expirationDate = new Date(localStorage.getItem('expirationDate') as string);
+		// 	if (expirationDate.getTime < Date.now) {
+		// 		this.authService.logout();
+		// 		console.error('token out of date');
+		// 		return loginPage;
+		// 	}
 
-			/*
-			call api refresh token by refresh token in cookie
-					=> if success:
-						set new access token to cookie => continue
-					=> if fail:
-						remove access token, user information and refresh token from cookie
-						redirect to login page
-			*/
-			const newAccessToken = await this.authService.refreshToken();
-			if (!newAccessToken) {
-				this.authService.logout();
-				return loginPage;
-			}
-		}
+		// 	/*
+		// 	call api refresh token by refresh token in cookie
+		// 			=> if success:
+		// 				set new access token to cookie => continue
+		// 			=> if fail:
+		// 				remove access token, user information and refresh token from cookie
+		// 				redirect to login page
+		// 	*/
+		// 	const newAccessToken = await this.authService.refreshToken();
+		// 	if (!newAccessToken) {
+		// 		this.authService.logout();
+		// 		console.error('refresh token fail');
+		// 		return loginPage;
+		// 	}
+		// }
 
 		/*
 		- checking "roles" of user get from access token has been decoded
 				- if not authorized, redirect to home
 				- if authorized, continue
 		*/
-		const currentUserRole: string[] = authenPayload.roles;
+		const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];
 		const requiredRole = next.data['roles'] as string[]; // list roles which is required to access the route
 		// console.log('isAuthorized:', isAuthorized);
 		const userHasRole = requiredRole.some((role) => currentUserRole.includes(role))

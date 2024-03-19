@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 		});
 	}
 	ngOnInit(): void {
-		console.error(`init`);
+		// console.error(`init`);
 	}
 
 	onSubmit() {
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
 
 					this.CookieService.set('jwt', jwtData.accessToken); // save accesstoken
 					this.CookieService.set('refreshToken', jwtData.refreshToken) // save refreshtoken
-					this.CookieService.set('expirationDate', jwtData.expirationDate); // save expirationDate
+					localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
 
 					this.authService.getCurrentUser().subscribe({
 						next: (data) => {

@@ -32,9 +32,11 @@ export class AuthService {
 
 	logout() {
 		this.api.POST('/api/Authentication/Logout');
-		this.cookieService.delete('currentUser');
+		console.error('clear cookie and local storage');
 		this.cookieService.delete('jwt');
 		this.cookieService.delete('refreshToken');
+		localStorage.removeItem('currentUser');
+		localStorage.removeItem('expirationDate');
 	}
 
 	// todo: get current user

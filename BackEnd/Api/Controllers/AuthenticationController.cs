@@ -194,7 +194,7 @@ namespace Api.Controllers
         {
             var authClaims = new List<Claim>
                 {
-                    new("username", user.UserName),
+                    new(ClaimsIdentity.DefaultNameClaimType, user.UserName),
                     new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -202,7 +202,7 @@ namespace Api.Controllers
             var userRoles = await _userManager.GetRolesAsync(user);
             foreach (var role in userRoles)
             {
-                authClaims.Add(new Claim("roles", role));
+                authClaims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role));
             }
             return authClaims;
         }
