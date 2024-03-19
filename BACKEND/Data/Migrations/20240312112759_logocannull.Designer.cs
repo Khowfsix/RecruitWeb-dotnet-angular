@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RecruitmentWebContext))]
+<<<<<<<< HEAD:BACKEND/Data/Migrations/20240312112759_logocannull.Designer.cs
     [Migration("20240312112759_logocannull")]
     partial class logocannull
+========
+    [Migration("20240314064421_init")]
+    partial class init
+>>>>>>>> fix-login-and-guard:BACKEND/Data/Migrations/20240314064421_init.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -666,26 +671,21 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("CreatedByIp")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExpiryOn")
+                    b.Property<DateTime?>("ExpiryOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RevokedByIp")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RevokedOn")
+                    b.Property<DateTime?>("RevokedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
@@ -694,16 +694,14 @@ namespace Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WebUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PK_refreshToken");
 
-                    b.HasIndex("WebUserId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("RefreshToken", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>
@@ -1068,28 +1066,44 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
+<<<<<<<< HEAD:BACKEND/Data/Migrations/20240312112759_logocannull.Designer.cs
                             Id = "f5d8ddfa-5b05-4066-a3c0-5ed495b508f2",
+========
+                            Id = "d753a884-2a53-42ea-ab00-92fa42e22ea8",
+>>>>>>>> fix-login-and-guard:BACKEND/Data/Migrations/20240314064421_init.Designer.cs
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
+<<<<<<<< HEAD:BACKEND/Data/Migrations/20240312112759_logocannull.Designer.cs
                             Id = "d0527dc4-891a-412e-8ac0-60c6414f5f49",
+========
+                            Id = "2964e973-8bdb-470c-8722-7aa0a7875366",
+>>>>>>>> fix-login-and-guard:BACKEND/Data/Migrations/20240314064421_init.Designer.cs
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
+<<<<<<<< HEAD:BACKEND/Data/Migrations/20240312112759_logocannull.Designer.cs
                             Id = "0a71fbd4-10cf-4d64-b583-1456431dfa93",
+========
+                            Id = "02d72e33-945c-40a2-b08b-6a63e25e08ec",
+>>>>>>>> fix-login-and-guard:BACKEND/Data/Migrations/20240314064421_init.Designer.cs
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
+<<<<<<<< HEAD:BACKEND/Data/Migrations/20240312112759_logocannull.Designer.cs
                             Id = "d2d03cf9-a680-42ed-ae13-da6890ef1e06",
+========
+                            Id = "821de57e-44d2-4225-81c1-7fab50da99a1",
+>>>>>>>> fix-login-and-guard:BACKEND/Data/Migrations/20240314064421_init.Designer.cs
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1503,9 +1517,14 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Data.Entities.WebUser", null)
+                    b.HasOne("Data.Entities.WebUser", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("WebUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRefreshToken");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Entities.Report", b =>

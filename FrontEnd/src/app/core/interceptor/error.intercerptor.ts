@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service';
 	providedIn: 'root',
 })
 class ErrorInterceptor implements HttpInterceptor {
-	constructor(private authenticationsService: AuthService) {}
+	constructor(private authenticationsService: AuthService) { }
 	intercept(
 		req: HttpRequest<unknown>,
 		next: HttpHandler,
@@ -24,6 +24,7 @@ class ErrorInterceptor implements HttpInterceptor {
 					// auto logout if 401 Unauthorized or 403 Forbidden response returned from api
 					const authToken =
 						this.authenticationsService.getAuthenticationToken();
+
 					if (authToken) this.authenticationsService.logout();
 				}
 

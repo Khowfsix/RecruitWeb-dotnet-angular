@@ -76,6 +76,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     //public virtual DbSet<WebUser> WebUsers { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     #endregion Dbset
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -656,6 +658,19 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.CategoryPositionId).ValueGeneratedNever();
             entity.Property(e => e.CategoryPositionName).HasMaxLength(255).HasDefaultValue("");
             entity.Property(e => e.CategoryPositionDescription).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_refreshToken");
+            entity.ToTable("RefreshToken");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_UserRefreshToken");
         });
 
         base.OnModelCreating(modelBuilder);

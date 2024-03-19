@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 		});
 	}
 	ngOnInit(): void {
-		console.error(`init`);
+		// console.error(`init`);
 	}
 
 	onSubmit() {
@@ -53,11 +53,11 @@ export class LoginComponent implements OnInit {
 				next: (data) => {
 					const jwtData: JWT = data as JWT;
 					console.log(jwtData);
-					this.CookieService.set(
-						'jwt',
-						jwtData.token,
-						Date.parse(jwtData.expiration),
-					);
+
+					this.CookieService.set('jwt', jwtData.accessToken); // save accesstoken
+					this.CookieService.set('refreshToken', jwtData.refreshToken) // save refreshtoken
+					localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
+
 					this.authService.getCurrentUser().subscribe({
 						next: (data) => {
 							console.log(data);
