@@ -69,7 +69,7 @@ try
         .AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            options.JsonSerializerOptions.MaxDepth = 5;
+            options.JsonSerializerOptions.MaxDepth = 10;
         });
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

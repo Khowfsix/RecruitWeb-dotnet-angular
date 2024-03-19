@@ -1,6 +1,7 @@
 using Data.Entities;
 using Data.Interfaces;
-
+using Data.Paging;
+using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
@@ -24,36 +25,68 @@ namespace Data.Repositories
 
             return await Task.FromResult(position);
         }
-        public async Task<List<Position>> GetAllPositions(bool isAdmin) 
+        public async Task<PageResponse<Position>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, 
+            string sortString, PageRequest pageRequest) 
         {
             /*------------------------------*/
             // Finds all of position entities asynchronously in db.
             // Returns a list of it with the related entities.
             /*------------------------------*/
-            var positionListWithName = new List<Position>();
-            if (isAdmin)
+            var query = isAdmin ? Entities : Entities.Where(o => !o.IsDeleted);
+
+            if (sortString != null)
             {
-                positionListWithName = await Entities
-                .Include(o => o.Requirements)
-                .Include(o => o.Company)
-                .Include(o => o.Language)
-                .Include(o => o.Recruiter)
-                //.Include(o => o.CategoryPosition)
-                .ToListAsync();
-            }
-            else
-            {
-                positionListWithName = await Entities
-                .Where(o => o.IsDeleted == false)
-                .Include(o => o.Requirements)
-                .Include(o => o.Company)
-                .Include(o => o.Language)
-                .Include(o => o.Recruiter)
-                //.Include(o => o.CategoryPosition)
-                .ToListAsync();
+                var sort = new Sort<Position>(sortString);
+                query = sort.getSort(query);
             }
 
-            return positionListWithName;
+            if (!string.IsNullOrEmpty(positionFilter.Search))
+            {
+                query = query
+                    .Where(o => o.PositionName.ToLower().Contains(positionFilter.Search.ToLower()))
+                    .Where(o => o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
+            }
+            
+            if (positionFilter.FromSalary.HasValue && positionFilter.ToSalary.HasValue)
+            {
+                query = query.Where(o => o.Salary >= positionFilter.FromSalary.Value);
+                query = query.Where(o => o.Salary <= positionFilter.ToSalary.Value);
+            }
+
+            if (positionFilter.FromMaxHiringQty.HasValue && positionFilter.ToMaxHiringQty.HasValue)
+            {
+                query = query.Where(o => o.MaxHiringQty >= positionFilter.FromMaxHiringQty.Value);
+                query = query.Where(o => o.MaxHiringQty <= positionFilter.ToMaxHiringQty.Value);
+            }
+
+            if (positionFilter.FromDate.HasValue && positionFilter.ToDate.HasValue)
+            {
+                query = query.Where(o => o.StartDate >= positionFilter.FromDate.Value);
+                query = query.Where(o => o.EndDate <= positionFilter.ToDate.Value);
+            }
+
+            if (positionFilter.CategoryPositionIds != null && positionFilter.CategoryPositionIds.Count > 0)
+            {
+                query = query.Where(o => positionFilter.CategoryPositionIds.Contains(o.CategoryPositionId));
+            }
+
+            if (positionFilter.CompanyIds != null && positionFilter.CompanyIds.Count > 0)
+            {
+                query = query.Where(o => positionFilter.CompanyIds.Contains(o.CompanyId));
+            }
+
+            if (positionFilter.LanguageIds != null && positionFilter.LanguageIds.Count > 0)
+            {
+                query = query.Where(o => positionFilter.LanguageIds.Any(id => o.LanguageId == id));
+            }
+
+            query = query
+                .Include(o => o.Requirements)
+                .Include(o => o.Company)
+                .Include(o => o.Language)
+                .Include(o => o.Recruiter);
+
+            return await PageResponse<Position>.CreateAsync(query, pageRequest.PageIndex, pageRequest.PageSize);
         }
 
         public async Task<List<Position>> GetAllPositionsByUserId(String userId)

@@ -30,6 +30,7 @@ using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
 using Data.Entities;
+using Data.Paging;
 using Service.Models;
 
 namespace Data.Mapping
@@ -78,7 +79,7 @@ namespace Data.Mapping
             CreateMap<PositionModel, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionAddModel>().ReverseMap();
             CreateMap<PositionUpdateModel, PositionModel>().ReverseMap();
-
+            CreateMap<PositionFilter, PositionFilterModel>().ReverseMap();
             #endregion Position
 
             #region Question

@@ -1,7 +1,9 @@
+using Api.ViewModels;
 using Api.ViewModels.Position;
 using AutoMapper;
 using Castle.Core.Internal;
 using Data.Entities;
+using Data.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service;
@@ -34,12 +36,31 @@ namespace Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllPositions(Guid? companyId)
+        public async Task<IActionResult> GetAllPositions
+            (
+            [FromQuery] PositionFilterModel positionFilterModel,
+            string sortString, 
+            int pageIndex, 
+            int pageSize
+            )
         {
             var isAdmin = HttpContext.User.IsInRole("Admin") ? true : false;
-            List<PositionModel> listModelDatas = await _positionService.GetAllPositions(companyId, isAdmin);
-            List<PositionViewModel> response = _mapper.Map<List<PositionViewModel>>(listModelDatas);
-            return Ok(response);
+
+            var filter = _mapper.Map<PositionFilter>(positionFilterModel);
+            filter.CompanyIds = positionFilterModel.getListOfCompanyIds();
+            filter.CategoryPositionIds = positionFilterModel.getListOfCategoryPositionIds();
+            filter.LanguageIds = positionFilterModel.getListOfLanguageIds();
+
+            var pageRequest = new PageRequest(pageIndex, pageSize);
+
+            PageResponse<PositionModel> listModelDatas = await _positionService.GetAllPositions(isAdmin, filter, sortString, pageRequest);
+
+            var listPositionViewModel = _mapper.Map<List<PositionViewModel>>(listModelDatas.Items);
+            var pageResponse = new PageResponse<PositionViewModel>(listPositionViewModel, listModelDatas.TotalMatchedInDb, listModelDatas.PageIndex, listModelDatas.PageSize);
+            return Ok(pageResponse);
+
+            //return Ok(_mapper.Map<PageResponse<PositionViewModel>>(listModelDatas));
+            //return Ok(response);
         }
 
         [HttpGet("[action]")]

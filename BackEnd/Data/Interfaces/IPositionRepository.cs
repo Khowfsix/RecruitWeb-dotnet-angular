@@ -1,10 +1,12 @@
 using Data.Entities;
+using Data.Paging;
 
 namespace Data.Interfaces
 {
     public interface IPositionRepository : IRepository<Position>
     {
-        Task<List<Position>> GetAllPositions(bool isAdmin);
+        Task<PageResponse<Position>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString, PageRequest pageRequest);
+
         Task<List<Position>> GetAllPositionsByUserId(String userId);
 
         Task<Position?> GetPositionById(Guid id);

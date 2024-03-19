@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Paging;
 using Service.Interfaces;
 using Service.Models;
 
@@ -24,28 +25,15 @@ namespace Service
             return _mapper.Map<PositionModel>(response);
         }
 
-        public async Task<List<PositionModel>> GetAllPositions(Guid? companyId, bool isAdmin)
+        public async Task<PageResponse<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString, PageRequest pageRequest)
         {
-            var entityDatas = await _positionRepository.GetAllPositions(isAdmin);
-            List<PositionModel> list = new List<PositionModel>();
-            if (companyId == null)
-            {
-                foreach (var item in entityDatas)
-                {
-                    list.Add(_mapper.Map<PositionModel>(item));
-                }
-            }
-            else
-            {
-                foreach (var item in entityDatas)
-                {
-                    if (item.CompanyId.Equals(companyId))
-                    {
-                        list.Add(_mapper.Map<PositionModel>(item));
-                    }
-                }
-            }
-            return list;
+            PageResponse<Position> entityDatas = await _positionRepository.GetAllPositions(isAdmin, positionFilter, sortString, pageRequest);
+
+            var listPositionModel = _mapper.Map<List<PositionModel>>(entityDatas.Items);
+            var pageResponse = new PageResponse<PositionModel>(listPositionModel, entityDatas.TotalMatchedInDb, entityDatas.PageIndex, entityDatas.PageSize);
+            return pageResponse;
+
+            //return _mapper.Map<PageResponse<PositionModel>>(entityDatas);
         }
 
         public Task<List<PositionModel>> GetAllPositionsByCurrentUser(string userId)
