@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { API } from './../../data/api.service';
-import { Observable, first } from 'rxjs';
+import { Observable, first, lastValueFrom } from 'rxjs';
 import { Register } from '../../data/authen/register.model';
 import { Login } from '../../data/authen/login.model';
 import { noTokenURLs } from '../constants/noTokenURLs.constants';
@@ -82,29 +82,20 @@ export class AuthService {
 		if (!accessToken && !refreshToken) {
 			return false;
 		}
+		console.log(refreshToken);
 
-		let isRefreshSuccess = false;
-		const response = await new Promise<string | null>((resolve, reject) => {
-			this.api.POST('Authentication/RefreshToken').subscribe({
-				next: (data) => {
-					if (data.status === 200) {
-						resolve(data.newAccessToken);
-					}
-					resolve(null);
-				},
-				error: (error) => {
-					reject(error);
-				},
-			});
-		});
-
-		if (!response) {
-			return isRefreshSuccess;
+		try {
+			const response = await lastValueFrom(
+				this.api.POST(`/api/Authentication/RefreshToken?token=${encodeURIComponent(refreshToken)}`)
+			);
+			if (typeof response == 'object') {
+				this.cookieService.set('jwt', response.newAccessToken, undefined, '/');
+				console.log('set new jwt');
+				return true;
+			}
+		} catch (error) {
+			console.error(error);
 		}
-		this.cookieService.set('jwt', response);
-		isRefreshSuccess = true;
-
-		return isRefreshSuccess;
+		return false;
 	}
 }
-

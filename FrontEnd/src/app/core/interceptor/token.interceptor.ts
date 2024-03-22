@@ -28,6 +28,7 @@ class AuthInterceptor implements HttpInterceptor {
 						'Authorization',
 						`Bearer ${authToken}`,
 					),
+					withCredentials: true
 				});
 			}
 		}

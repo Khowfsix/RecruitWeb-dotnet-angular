@@ -47,12 +47,18 @@ auth flow:
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+	_accessToken: string | undefined | null = null;
+	_refreshToken: string | undefined | null = null;
+
 	constructor(
 		private authService: AuthService,
 		private permissionService: PermissionService,
 		private router: Router,
 		private cookieService: CookieService
-	) { }
+	) {
+		this._accessToken = this.cookieService.get('jwt');
+		this._refreshToken = this.cookieService.get('refreshToken');
+	}
 
 	async canActivate(
 		next: ActivatedRouteSnapshot,
@@ -76,11 +82,11 @@ export class AuthGuard implements CanActivate {
 		- check for don't have access token and refresh token in cookie
 				don't have:
 					redirect to login page*/
-		const accessToken = this.cookieService.get('jwt');
-		const refreshToken = this.cookieService.get('refreshToken');
+		// const accessToken = this.cookieService.get('jwt');
+		// const refreshToken = this.cookieService.get('refreshToken');
 
-		// if (!accessToken ||
-		// 	!refreshToken) {
+		// if (!this._accessToken ||
+		// 	!this._refreshToken) {
 		// 	console.error('no token or refresh token')
 		// 	return loginPage;
 		// }
@@ -88,38 +94,43 @@ export class AuthGuard implements CanActivate {
 		// decode the token to get its payload
 		// const authenPayload: { username: string, jti: string, roles: string[], exp: string, aud: string }
 		// 	= JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(accessToken)));
-		console.error(accessToken);
-		const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(accessToken)));
+		let authenPayload;
+		if (this._accessToken != null) {
+			authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(this._accessToken as string)));
+		}
 
-		// // - if access token is expired:
-		// if (new Date(authenPayload.exp).getTime < Date.now) {
-		// 	/*
-		// 			if refresh token is expired:
-		// 				=> remove access token, user information and refresh token from cookie
-		// 				redirect to login page
-		// 	*/
-		// 	const expirationDate = new Date(localStorage.getItem('expirationDate') as string);
-		// 	if (expirationDate.getTime < Date.now) {
-		// 		this.authService.logout();
-		// 		console.error('token out of date');
-		// 		return loginPage;
-		// 	}
+		// - if access token is expired:
+		const expDateInToken = parseInt(authenPayload[nameTypeInToken.exp], 10) * 1000;
+		if (expDateInToken < Date.now()) {
+			console.error('token was expired');
+			/*
+					if refresh token is expired:
+						=> remove access token, user information and refresh token from cookie
+						redirect to login page
+			*/
+			const expirationDate = new Date(localStorage.getItem('expirationDate') as string).getTime();
+			if (expirationDate < Date.now()) {
+				// this.authService.logout();
+				console.error('refresh token out of date');
+				return loginPage;
+			}
 
-		// 	/*
-		// 	call api refresh token by refresh token in cookie
-		// 			=> if success:
-		// 				set new access token to cookie => continue
-		// 			=> if fail:
-		// 				remove access token, user information and refresh token from cookie
-		// 				redirect to login page
-		// 	*/
-		// 	const newAccessToken = await this.authService.refreshToken();
-		// 	if (!newAccessToken) {
-		// 		this.authService.logout();
-		// 		console.error('refresh token fail');
-		// 		return loginPage;
-		// 	}
-		// }
+			/*
+			call api refresh token by refresh token in cookie
+					=> if success:
+						set new access token to cookie => continue
+					=> if fail:
+						remove access token, user information and refresh token from cookie
+						redirect to login page
+			*/
+			const newAccessToken = await this.authService.refreshToken();
+			console.log('newAccessToken', newAccessToken);
+			if (newAccessToken == false) {
+				// this.authService.logout();
+				console.error('refresh token fail');
+				return loginPage;
+			}
+		}
 
 		/*
 		- checking "roles" of user get from access token has been decoded
@@ -139,5 +150,3 @@ export class AuthGuard implements CanActivate {
 		return true;
 	}
 }
-
-

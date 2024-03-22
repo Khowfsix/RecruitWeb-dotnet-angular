@@ -250,9 +250,9 @@ namespace Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("RefreshToken")]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IActionResult> RefreshToken(string token)
         {
-            var token = HttpContext.Request.Cookies["refreshToken"];
+            //var token = HttpContext.Request.Cookies["refreshToken"];
             if (token == null)
             {
                 return BadRequest("Don't have refresh token");

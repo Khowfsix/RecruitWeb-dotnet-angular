@@ -41,12 +41,11 @@ try
             {
                 // FIXME: This is not secure, please specify the origins instead of allowing any origin
                 policy
-                    //.AllowAnyOrigin()
                     .SetIsOriginAllowed(origin => true)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowAnyOrigin();
-                //.AllowCredentials();
+                    .AllowCredentials();
+                //.AllowAnyOrigin();
             }
         );
     });

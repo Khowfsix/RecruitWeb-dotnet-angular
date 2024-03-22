@@ -79,7 +79,7 @@ namespace Service.Services
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT: ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.Now.AddSeconds(10),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSignInKey, SecurityAlgorithms.HmacSha256)
                 );

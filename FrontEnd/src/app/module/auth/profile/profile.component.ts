@@ -8,4 +8,4 @@ import { MatCardModule } from '@angular/material/card';
 	templateUrl: './profile.component.html',
 	styleUrl: './profile.component.scss',
 })
-export class ProfileComponent {}
+export class ProfileComponent { }
