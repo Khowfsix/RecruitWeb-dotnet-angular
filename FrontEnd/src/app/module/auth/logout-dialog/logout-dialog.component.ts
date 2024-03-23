@@ -13,11 +13,11 @@ export class LogoutDialogComponent {
 		public dialogRef: MatDialogRef<LogoutDialogComponent>,
 	) { }
 
-	onNoClick(): void {
+	onNoClick() {
 		this.dialogRef.close();
 	}
 
-	onLogoutClick(): void {
+	onLogoutClick() {
 		this.dialogRef.close(true);
 	}
 }

@@ -57,7 +57,7 @@
 				<span class="mx-5 align-right">Settings</span>
 			</button>
 
-			@if (_user != '') {
+			@if (_user != null) {
 			<button mat-menu-item (click)="handleClick_Logout()">
 				<i class="fa-solid fa-right-from-bracket"></i>
 				<span class="mx-5 align-right">Logout</span>

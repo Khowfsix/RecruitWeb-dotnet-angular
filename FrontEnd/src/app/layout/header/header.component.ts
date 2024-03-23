@@ -17,10 +17,11 @@ import { LogoutDialogComponent } from '../../module/auth/logout-dialog/logout-di
 export class HeaderComponent {
 	_user: string | null = this._cookieService.get('jwt');
 	constructor(
-		private _authService: AuthService,
+		public _authService: AuthService,
 		private _router: Router,
 		private _cookieService: CookieService,
 		public _matdialog: MatDialog) {
+		this.subscribeToLoginStatus();
 	}
 
 
@@ -35,11 +36,33 @@ export class HeaderComponent {
 		});
 	}
 
-	handleClick_Login(): void {
+	handleClick_Login() {
 		this._router.navigate(['/auth/login/']);
 	}
 
 	handleRouteToHomepage() {
 		this._router.navigate(['/']);
+	}
+
+	subscribeToLoginStatus() {
+		this._authService.isLoggedIn.subscribe((loggedIn) => {
+			if (loggedIn) {
+				this.updateHeaderForLoggedInUser();
+			} else {
+				this.updateHeaderForLoggedOutUser();
+			}
+		});
+	}
+
+	updateHeaderForLoggedInUser() {
+		// logic to update header for logged-in user
+		this._user = this._cookieService.get('jwt');
+		// ... other updates
+	}
+
+	updateHeaderForLoggedOutUser() {
+		// logic to update header for logged-out user
+		this._user = null;
+		// ... other updates
 	}
 }
