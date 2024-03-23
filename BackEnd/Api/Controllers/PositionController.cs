@@ -39,9 +39,9 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllPositions
             (
             [FromQuery] PositionFilterModel positionFilterModel,
-            string sortString, 
-            int pageIndex, 
-            int pageSize
+            string? sortString = "PositionName_ASC", 
+            int? pageIndex = 1, 
+            int? pageSize = 20
             )
         {
             var isAdmin = HttpContext.User.IsInRole("Admin") ? true : false;
@@ -51,7 +51,7 @@ namespace Api.Controllers
             filter.CategoryPositionIds = positionFilterModel.getListOfCategoryPositionIds();
             filter.LanguageIds = positionFilterModel.getListOfLanguageIds();
 
-            var pageRequest = new PageRequest(pageIndex, pageSize);
+            var pageRequest = new PageRequest(pageIndex.Value, pageSize.Value);
 
             PageResponse<PositionModel> listModelDatas = await _positionService.GetAllPositions(isAdmin, filter, sortString, pageRequest);
 
