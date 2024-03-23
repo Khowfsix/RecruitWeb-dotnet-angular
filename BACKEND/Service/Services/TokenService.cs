@@ -113,7 +113,7 @@ namespace Service.Services
         {
 
             var accessToken = await GenerateAccessToken(claims);
-            var refreshToken = await GenerateRefreshToken(expiryByDays: 7, webUser: webUser);
+            var refreshToken = await GenerateRefreshToken(expiryByDays: 30, webUser: webUser);
 
             AuthenticationToken newAuthenticationToken = new()
             {
