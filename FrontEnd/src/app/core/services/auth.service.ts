@@ -89,7 +89,7 @@ export class AuthService {
 				this.api.POST(`/api/Authentication/RefreshToken?token=${encodeURIComponent(refreshToken)}`)
 			);
 			if (typeof response == 'object') {
-				this.cookieService.set('jwt', response.newAccessToken, undefined, '/');
+				this.cookieService.set('jwt', response.newAccessToken, Date.now() + 7 * 24 * 60 * 60 * 1000, '/');
 				console.log('set new jwt');
 				return true;
 			}
