@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { API } from './../../data/api.service';
-import { Observable, first, lastValueFrom } from 'rxjs';
+import { BehaviorSubject, Observable, first, lastValueFrom } from 'rxjs';
 import { Register } from '../../data/authen/register.model';
 import { Login } from '../../data/authen/login.model';
 import { noTokenURLs } from '../constants/noTokenURLs.constants';
 import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
+import { Router } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root',
@@ -20,6 +21,18 @@ export class AuthService {
 		// });
 	}
 
+	private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
+
+	checkLoginStatus(): boolean {
+		if (this.cookieService.get('jwt') != '') {
+			return true;
+		} return false;
+	}
+
+	get isLoggedIn() {
+		return this.loginStatus.asObservable();
+	}
+
 	register(registerModel: Register): Observable<unknown> {
 		return this.api
 			.POST('/api/Authentication/Register', registerModel)
@@ -27,6 +40,7 @@ export class AuthService {
 	}
 
 	login(loginModel: Login): Observable<unknown> {
+		this.loginStatus.next(true);
 		return this.api.POST('/api/Authentication/Login', loginModel);
 	}
 
@@ -37,6 +51,9 @@ export class AuthService {
 		this.cookieService.delete('refreshToken');
 		localStorage.removeItem('currentUser');
 		localStorage.removeItem('expirationDate');
+		this.loginStatus.next(false);
+
+		return inject(Router).navigate(['/']);
 	}
 
 	// todo: get current user
@@ -89,7 +106,8 @@ export class AuthService {
 				this.api.POST(`/api/Authentication/RefreshToken?token=${encodeURIComponent(refreshToken)}`)
 			);
 			if (typeof response == 'object') {
-				this.cookieService.set('jwt', response.newAccessToken, undefined, '/');
+				const expTime = new Date().getHours() + 10;
+				this.cookieService.set('jwt', response.newAccessToken, expTime, '/');
 				console.log('set new jwt');
 				return true;
 			}

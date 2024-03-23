@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { JWT } from '../../../data/authen/jwt.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
 		private authService: AuthService,
 		private router: Router,
 		private CookieService: CookieService,
+		private toasts: ToastrService
 	) {
 		this.loginForm = this.fb.group({
 			username: ['', [Validators.required]],
@@ -43,7 +45,6 @@ export class LoginComponent implements OnInit {
 	}
 
 	onSubmit() {
-		console.error(`aaaaa`);
 		this.loginData = this.loginForm.value;
 		console.log(`Login data: ${JSON.stringify(this.loginData)}`);
 		this.authService
@@ -53,9 +54,9 @@ export class LoginComponent implements OnInit {
 				next: (data) => {
 					const jwtData: JWT = data as JWT;
 					console.log(jwtData);
-
-					this.CookieService.set('jwt', jwtData.accessToken, undefined, '/'); // save accesstoken
-					this.CookieService.set('refreshToken', jwtData.refreshToken, undefined, '/') // save refreshtoken
+					const expTime = new Date().getHours() + 10;
+					this.CookieService.set('jwt', jwtData.accessToken, expTime, '/'); // save accesstoken
+					this.CookieService.set('refreshToken', jwtData.refreshToken, expTime, '/') // save refreshtoken
 					localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
 
 					this.authService.getCurrentUser().subscribe({
@@ -67,18 +68,19 @@ export class LoginComponent implements OnInit {
 								// 	JSON.stringify(data),
 								// );
 								localStorage.setItem('currentUser', JSON.stringify(data));
+								this.router.navigate(['']);
+								this.toasts.success("Logged in successfully", "Success", { timeOut: 3000, closeButton: true, progressBar: true });
 							} else {
+								this.toasts.warning("Cann't get user information", "Warning!!!", { timeOut: 3000, closeButton: true, progressBar: true });
 								console.log(`Cann't get user information`);
 							}
-						},
-						error: (error) => {
-							console.log(error);
-						},
+						}
 					});
-
-					this.router.navigate(['']);
 				},
 				error: (error) => {
+					if (error.status === '401') {
+						this.toasts.error(error.message, "Logged in failed", { timeOut: 3000, closeButton: true, progressBar: true });
+					}
 					console.log(error);
 				},
 				complete: () => { },

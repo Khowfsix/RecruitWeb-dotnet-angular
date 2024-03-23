@@ -244,7 +244,7 @@ namespace Api.Controllers
                 return Ok(authenticationResponse);
             }
 
-            return Unauthorized("Wrong password or username");
+            return Unauthorized(new Response { Status = "401", Message = "Wrong password or username" });
         }
 
         [AllowAnonymous]
