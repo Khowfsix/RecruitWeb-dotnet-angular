@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { API } from './../../data/api.service';
 import { Observable, first, lastValueFrom } from 'rxjs';
 import { Register } from '../../data/authen/register.model';
@@ -6,6 +6,7 @@ import { Login } from '../../data/authen/login.model';
 import { noTokenURLs } from '../constants/noTokenURLs.constants';
 import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
+import { Router } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root',
@@ -37,6 +38,8 @@ export class AuthService {
 		this.cookieService.delete('refreshToken');
 		localStorage.removeItem('currentUser');
 		localStorage.removeItem('expirationDate');
+
+		return inject(Router).navigate(['/']);
 	}
 
 	// todo: get current user
