@@ -15,19 +15,22 @@ import { LogoutDialogComponent } from '../../module/auth/logout-dialog/logout-di
 	styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-	_user: string | null;
+	_user: string | null = this._cookieService.get('jwt');
 	constructor(
 		private _authService: AuthService,
 		private _router: Router,
 		private _cookieService: CookieService,
-		public _dialog: MatDialog) {
-		this._user = this._cookieService.get('jwt');
+		public _matdialog: MatDialog) {
 	}
+
+
 	handleClick_Logout(): void {
-		const dialogRef = this._dialog.open(LogoutDialogComponent, {});
+		const dialogRef = this._matdialog.open(LogoutDialogComponent);
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
+				console.log('logout');
 				this._authService.logout();
+				this._user = null;
 			}
 		});
 	}

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-logout-dialog',
@@ -8,4 +8,16 @@ import { MatDialogModule } from '@angular/material/dialog';
 	imports: [MatDialogModule, MatButtonModule],
 	templateUrl: './logout-dialog.component.html',
 })
-export class LogoutDialogComponent { }
+export class LogoutDialogComponent {
+	constructor(
+		public dialogRef: MatDialogRef<LogoutDialogComponent>,
+	) { }
+
+	onNoClick(): void {
+		this.dialogRef.close();
+	}
+
+	onLogoutClick(): void {
+		this.dialogRef.close(true);
+	}
+}
