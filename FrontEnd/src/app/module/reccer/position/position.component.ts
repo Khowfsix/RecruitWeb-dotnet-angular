@@ -26,12 +26,20 @@ import { RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { nameTypeInToken } from '../../../core/constants/token.constants';
-
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
 	selector: 'app-position',
 	standalone: true,
-	imports: [CommonModule, MatMenuModule, MatButtonModule, RouterModule],
+	imports: [
+		CommonModule,
+		MatMenuModule,
+		MatButtonModule,
+		RouterModule,
+		MatPaginatorModule,
+		MatSelectModule
+	],
 	templateUrl: './position.component.html',
 	styleUrl: './position.component.css',
 })
@@ -48,16 +56,22 @@ export class PositionComponent implements OnInit {
 	// public title = '';
 	public curentUserRoles: string[] | null = null;
 
+	public sortString?: string = 'PositionName_ASC';
+	public pageIndex?: number;
+	public totalPages?: number;
+	public pageSize?: number;
+	public totalMatchedInDb?: number;
+
 	ngOnInit(): void {
 		const token = this.cookieService.get('jwt');
 
-		console.log('token is: ', token);
+		// console.log('token is: ', token);
 		if (token !== '') {
 			// const jsonPayload = JSON.stringify(jwtDecode<JwtPayload>(token));
 			// this.curentUserRoles = JSON.parse(jsonPayload)[nameTypeInToken.roles];
 			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(token)));
 			this.curentUserRoles = authenPayload[nameTypeInToken.roles]
-			console.log(this.curentUserRoles);
+			// console.log(this.curentUserRoles);
 		}
 		else {
 			this.curentUserRoles = null
@@ -65,6 +79,20 @@ export class PositionComponent implements OnInit {
 		this.fetchUserLoginInfo();
 		this.fetchedAllPositions();
 		// this.fetchedAllPositionsByCurrentUser();
+	}
+
+	handleSortSelect(value: string) {
+		this.sortString = value;
+		this.fetchedAllPositions();
+	}
+
+	handlePageEvent(e: PageEvent) {
+		// this.pageEvent = e;
+		this.totalMatchedInDb = e.length;
+		this.pageSize = e.pageSize;
+		this.pageIndex = e.pageIndex + 1;
+		console.log('e.pageIndex', e.pageIndex)
+		this.fetchedAllPositions();
 	}
 
 	public openDeleteDialog(
@@ -156,10 +184,24 @@ export class PositionComponent implements OnInit {
 	}
 
 	private fetchedAllPositions(): void {
-		this.positionService.getAllPositions().subscribe({
+		this.positionService.getAllPositions(
+			undefined,
+			this.sortString,
+			this.pageIndex,
+			this.pageSize,
+		).subscribe({
 			next: (data) => {
-				this.fetchedPositions = data;
+				// console.log('data', data)
+				this.fetchedPositions = data.items;
+				this.pageIndex = data.pageIndex;
+				this.pageSize = data.pageSize;
+				this.totalMatchedInDb = data.totalMatchedInDb;
+				this.totalPages = data.totalPages;
 				// console.log('positions', this.fetchedPositions);
+				// console.log('pageIndex', this.pageIndex);
+				// console.log('pageSize', this.pageSize);
+				// console.log('totalMatchedInDb', this.totalMatchedInDb);
+				// console.log('totalPages', this.totalPages);
 			},
 			error: (e) => console.error(e),
 		});

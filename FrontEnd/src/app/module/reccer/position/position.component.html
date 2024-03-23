@@ -61,5 +61,23 @@
 		</div>
 	  </div> -->
 		</div>
+		<div style="width: 67%;" class="d-flex flex-row">
+			<mat-form-field class="p-2">
+				<mat-label>Sort by: </mat-label>
+				<mat-select [value]="this.sortString" (valueChange)="handleSortSelect($event)">
+					<mat-option value="PositionName_ASC">Name (A-Z)</mat-option>
+					<mat-option value="PositionName_DESC">Name (Z-A)</mat-option>
+					<mat-option value="Salary_DESC">Salary (High to low)</mat-option>
+					<mat-option value="Salary_ASC">Salary (Low to high)</mat-option>
+					<mat-option value="MaxHiringQty_DESC">Hiring Quantity (High to low)</mat-option>
+					<mat-option value="MaxHiringQty_ASC">Hiring Quantity (Low to high)</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-paginator class="mb-2" [length]="this.totalMatchedInDb" [pageSize]="this.pageSize"
+				[pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true" (page)="handlePageEvent($event)"
+				aria-label="Select page">
+			</mat-paginator>
+		</div>
+
 	</div>
 </div>

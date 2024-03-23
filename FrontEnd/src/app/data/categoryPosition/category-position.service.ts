@@ -5,18 +5,18 @@ import { CategoryPosition } from './category-position.model';
 import { API } from '../api.service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class CategoryPositionService {
 
-  constructor(private api: API) { }
+	constructor(private api: API) { }
 
-  getAllCategoryPositions(): Observable<CategoryPosition[]> {
-    return this.api.GET('/api/CategoryPosition');
-  }
+	getAllCategoryPositions(): Observable<CategoryPosition[]> {
+		return this.api.GET('/api/CategoryPosition/GetAllCategoryPositions');
+	}
 
-  create(data: any): Observable<any> {
-    // console.log('data:......', data)
-    return this.api.POST('/api/CategoryPosition', data);
-  }
+	create(data: any): Observable<any> {
+		// console.log('data:......', data)
+		return this.api.POST('/api/CategoryPosition/CreateCategoryPosition', data);
+	}
 }

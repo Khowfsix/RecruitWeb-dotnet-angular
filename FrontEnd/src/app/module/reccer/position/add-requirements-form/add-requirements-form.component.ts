@@ -54,19 +54,16 @@ export class AddRequirementsFormComponent {
 
 	public addForm: FormGroup = this.formBuilder.group({
 		skillName: [
-			// this.isEditForm ? this.fetchObject.language?.languageName : '',
 			'',
 			[Validators.required]
 		],
 		experience: [
-			// this.isEditForm ? this.fetchObject.positionName : '',
 			'',
 			[Validators.required]
 		],
 		notes: [
-			// this.isEditForm ? this.fetchObject.description : '',
 			'',
-			[Validators.required]
+			[]
 		],
 
 	});

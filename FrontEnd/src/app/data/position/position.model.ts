@@ -21,3 +21,16 @@ export class Position {
 	isDeleted?: boolean;
 	requirements?: Requirements[];
 }
+
+export class PositionFilterModel {
+	search?: string;
+	fromSalary?: number;
+	toSalary?: number;
+	fromMaxHiringQty?: number;
+	toMaxHiringQty?: number;
+	fromDate?: Date;
+	toDate?: Date;
+	stringOfCategoryPositionIds?: string;
+	stringOfCompanyIds?: string;
+	stringOfLanguageIds?: string;
+}

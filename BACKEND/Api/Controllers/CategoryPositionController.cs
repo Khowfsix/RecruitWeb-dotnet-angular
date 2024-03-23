@@ -30,7 +30,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("[action]")]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCategoryPosition(CategoryPositionAddModel request)
         {
             var modelData = _mapper.Map<CategoryPositionModel>(request);
