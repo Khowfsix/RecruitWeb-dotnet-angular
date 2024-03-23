@@ -106,8 +106,8 @@ export class AuthService {
 				this.api.POST(`/api/Authentication/RefreshToken?token=${encodeURIComponent(refreshToken)}`)
 			);
 			if (typeof response == 'object') {
-				const expTime = new Date().getHours() + 10;
-				this.cookieService.set('jwt', response.newAccessToken, expTime, '/');
+				// const expTime = new Date().getHours() + 10;
+				this.cookieService.set('jwt', response.newAccessToken, undefined, '/');
 				console.log('set new jwt');
 				return true;
 			}

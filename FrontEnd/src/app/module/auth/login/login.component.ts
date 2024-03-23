@@ -54,9 +54,9 @@ export class LoginComponent implements OnInit {
 				next: (data) => {
 					const jwtData: JWT = data as JWT;
 					console.log(jwtData);
-					const expTime = new Date().getHours() + 10;
-					this.CookieService.set('jwt', jwtData.accessToken, expTime, '/'); // save accesstoken
-					this.CookieService.set('refreshToken', jwtData.refreshToken, expTime, '/') // save refreshtoken
+					// const expTime = new Date().getHours() + 10;
+					this.CookieService.set('jwt', jwtData.accessToken, undefined, '/'); // save accesstoken
+					this.CookieService.set('refreshToken', jwtData.refreshToken, undefined, '/') // save refreshtoken
 					localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
 
 					this.authService.getCurrentUser().subscribe({
