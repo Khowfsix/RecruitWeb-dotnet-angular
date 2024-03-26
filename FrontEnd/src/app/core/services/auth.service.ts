@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { API } from './../../data/api.service';
 import { BehaviorSubject, Observable, first, lastValueFrom } from 'rxjs';
 import { Register } from '../../data/authen/register.model';
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 export class AuthService {
 	// clientUserInfo: string | null = window.localStorage.getItem('currentUser') || null;
 
-	constructor(private api: API, private cookieService: CookieService) {
+	constructor(private api: API, private cookieService: CookieService, private router: Router) {
 		// afterRender(() => {
 		// 	console.log(localStorage);
 		// 	this.clientUserInfo = localStorage.getItem('currentUser') != '' ? localStorage.getItem('currentUser') : null;
@@ -53,7 +53,7 @@ export class AuthService {
 		localStorage.removeItem('expirationDate');
 		this.loginStatus.next(false);
 
-		return inject(Router).navigate(['/']);
+		return this.router.navigate(['/']);
 	}
 
 	// todo: get current user

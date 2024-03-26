@@ -4,6 +4,7 @@ using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RecruitmentWebContext))]
-    partial class RecruitmentWebContextModelSnapshot : ModelSnapshot
+    [Migration("20240326152938_floattype")]
+    partial class floattype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -550,7 +553,6 @@ namespace Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("Salary")
-                        .HasPrecision(12, 2)
                         .HasColumnType("decimal(18, 0)");
 
                     b.Property<DateTime?>("StartDate")
@@ -1059,28 +1061,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6feb772b-062f-4996-8e26-a00dc720a076",
+                            Id = "f4d4f4de-85f2-4dc7-8ec7-893c42806506",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "9af5d566-1e95-4a8a-a641-25c93e04151a",
+                            Id = "1d7be195-7da8-48c4-858c-981167c970b1",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "0dce331e-89eb-4058-99a6-178e3e007b7f",
+                            Id = "86244b61-08fb-4f1a-a1a4-6dd4182f14ea",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "ddde4b8d-b3e3-462b-8cf9-14d36e988730",
+                            Id = "3cb8e3c3-346d-4b44-8941-de6b9f2372c1",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
