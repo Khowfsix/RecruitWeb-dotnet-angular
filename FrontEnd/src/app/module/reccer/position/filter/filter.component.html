@@ -1,0 +1,137 @@
+<div (mouseenter)="this.panelOpenState = true" class="shadow">
+	<mat-accordion>
+		<mat-expansion-panel [expanded]="this.panelOpenState" (closed)="this.panelOpenState = false"
+			style="background-color:rgb(230, 241, 250); border: 1px solid rgb(180, 180, 180);">
+			<mat-expansion-panel-header>
+				<mat-panel-title style=" font-size: 17px;">
+					Filter
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			<form class="d-flex flex-column" style="font-size: 17px; font-weight: 400;" [formGroup]="this.formGroup">
+				<mat-form-field>
+					<mat-label>Search</mat-label>
+					<input matInput type="text" placeholder="Type name, description" formControlName="search">
+				</mat-form-field>
+				<!-- <div class="rounded-3 my-2">
+					<mat-label>Search:</mat-label>
+					<div class="input-group mb-3 mt-2">
+						<input matInput type="text" class="form-control" placeholder="Type name, description"
+							formControlName="search">
+					</div>
+				</div> -->
+
+
+				<!-- <input matInput placeholder="Type name, description" type="text" value="" formControlName="search"> -->
+				<!-- @if(filterForm.get('search')?.invalid){
+					@if(filterForm.get('search')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					} -->
+				<div class="mb-3 custom-formfield">
+					<div>
+						<mat-label>Salary:</mat-label>
+						<label class="ms-2">({{fromSalarySlider.value}}$ - </label>
+						<label class="ms-2">{{toSalarySlider.value}}$)</label>
+					</div>
+					<mat-slider style="width: 95%;" min="0" max="6000" step="500">
+						<input matInput matSliderStartThumb #fromSalarySlider formControlName="fromSalary">
+						<input matInput matSliderEndThumb #toSalarySlider formControlName="toSalary">
+					</mat-slider>
+				</div>
+
+				<!-- <div class="d-flex flex-row">
+					<mat-form-field class="" style="width: 120%;">
+						<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
+							Salary (USD)</mat-label>
+						<input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'')" matInput
+							placeholder="" formControlName="salary">
+						@if(filterForm.get('salary')?.invalid){
+						@if(filterForm.get('salary')?.hasError('required')){
+						<div style="color: red;">Required.</div>
+						}
+						@if(filterForm.get('salary')?.hasError('min')){
+						<div style="color: red;">Min is 1</div>
+						}
+						}
+					</mat-form-field>
+					<mat-form-field class="ms-4" style="width: 120%;">
+						<mat-label><i class="bi bi-people-fill" style="font-size: 20px;"></i> Max Hiring
+							Quantity</mat-label>
+						<input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'')" matInput
+							placeholder="" formControlName="maxHiringQty">
+						@if(filterForm.get('maxHiringQty')?.invalid){
+						@if(filterForm.get('maxHiringQty')?.hasError('required')){
+						<div style="color: red;">Required.</div>
+						}
+						@if(filterForm.get('maxHiringQty')?.hasError('min')){
+						<div style="color: red;">Min is 1</div>
+						}
+						}
+					</mat-form-field>
+				</div> -->
+
+				<div class="my-2">
+					<mat-form-field style="width: 100%;">
+						<mat-label>Time</mat-label>
+						<mat-date-range-input [rangePicker]="picker">
+							<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+								formControlName="fromDate" placeholder="From date">
+							<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+								formControlName="toDate" placeholder="To date">
+						</mat-date-range-input>
+						@if(this.formGroup.get('fromDate')?.invalid || this.formGroup.get('toDate')?.invalid){
+						<span style="color: red;">
+							<span>Required: </span>
+							@if(this.formGroup.get('fromDate')?.hasError('required')){
+							<span>From Date; </span>
+							}
+							@if(this.formGroup.get('toDate')?.hasError('required')){
+							<span>To Date; </span>
+							}
+						</span>
+
+						}
+						<mat-hint style="font-size: 13px; font-weight: 500;">DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+						<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-date-range-picker #picker></mat-date-range-picker>
+					</mat-form-field>
+				</div>
+
+				<div class="mb-4 custom-formfield">
+					<div>
+						<mat-label>Hiring quantity:</mat-label>
+						<label class="ms-2">({{fromHiringQtySlider.value}} - </label>
+						<label class="ms-2">{{toHiringQtySlider.value}})</label>
+					</div>
+					<mat-slider min="0" max="1000" step="100" style="width: 95%;">
+						<input matInput matSliderStartThumb #fromHiringQtySlider formControlName="fromMaxHiringQty">
+						<input matInput matSliderEndThumb #toHiringQtySlider formControlName="toMaxHiringQty">
+					</mat-slider>
+				</div>
+
+				<div class="">
+					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Category Position'"
+						[formGroup]="this.formGroup" [formField]="'stringOfCategoryPositionIds'"
+						[displayFieldName]="'categoryPositionName'" [valueFieldName]="'categoryPositionId'"
+						[observableData]="this.categoryPositionService.getAllCategoryPositions()"></app-chips-autocomplete>
+				</div>
+
+				<div class="">
+					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Language'"
+						[formGroup]="this.formGroup" [formField]="'stringOfLanguageIds'"
+						[displayFieldName]="'languageName'" [valueFieldName]="'languageId'"
+						[observableData]="this.languageService.getAllLanguagues()"></app-chips-autocomplete>
+				</div>
+
+				<div class="">
+					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Company'"
+						[formGroup]="this.formGroup" [formField]="'stringOfCompanyIds'"
+						[displayFieldName]="'companyName'" [valueFieldName]="'companyId'"
+						[observableData]="this.companyService.getAll()"></app-chips-autocomplete>
+				</div>
+			</form>
+			<!-- <app-chips-autocomplete [formGroup]="this.formGroup"></app-chips-autocomplete> -->
+		</mat-expansion-panel>
+	</mat-accordion>
+
+</div>

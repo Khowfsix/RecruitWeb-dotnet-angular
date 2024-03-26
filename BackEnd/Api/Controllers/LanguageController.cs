@@ -20,6 +20,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllLanguages(Guid? languageId, string? languageName)
         {
             if (languageId != null)

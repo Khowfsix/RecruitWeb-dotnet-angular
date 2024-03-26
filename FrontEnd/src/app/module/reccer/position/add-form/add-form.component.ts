@@ -35,7 +35,6 @@ import { isMoment } from 'moment';
 import { FileService } from '../../../../data/file/file-service.service';
 import { AddRequirementsFormComponent } from '../add-requirements-form/add-requirements-form.component';
 import { RequirementsService } from '../../../../data/requirements/requirements.service';
-import { error } from 'console';
 import { Requirements } from '../../../../data/requirements/requirements.model';
 
 export const MY_FORMATS = {

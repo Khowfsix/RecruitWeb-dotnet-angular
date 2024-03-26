@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 // import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -38,21 +39,23 @@ export class PositionService {
 	}
 
 	private buildQueryParams(positionFilterModel: PositionFilterModel): string {
+		// console.log('service: positionFilterModel: ', positionFilterModel);
+		// console.log('service: positionFilterModel.fromSalary: ', positionFilterModel.fromSalary);
 		let params = '';
 
 		if (positionFilterModel.search) {
 			params += `&search=${encodeURIComponent(positionFilterModel.search)}`;
 		}
-		if (positionFilterModel.fromSalary) {
+		if (positionFilterModel.fromSalary !== undefined) {
 			params += `&fromSalary=${encodeURIComponent(positionFilterModel.fromSalary)}`;
 		}
-		if (positionFilterModel.toSalary) {
+		if (positionFilterModel.toSalary !== undefined) {
 			params += `&toSalary=${encodeURIComponent(positionFilterModel.toSalary)}`;
 		}
-		if (positionFilterModel.fromMaxHiringQty) {
+		if (positionFilterModel.fromMaxHiringQty !== undefined) {
 			params += `&fromMaxHiringQty=${encodeURIComponent(positionFilterModel.fromMaxHiringQty)}`;
 		}
-		if (positionFilterModel.toMaxHiringQty) {
+		if (positionFilterModel.toMaxHiringQty !== undefined) {
 			params += `&toMaxHiringQty=${encodeURIComponent(positionFilterModel.toMaxHiringQty)}`;
 		}
 		if (positionFilterModel.fromDate) {

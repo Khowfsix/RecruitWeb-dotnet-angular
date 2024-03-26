@@ -1,0 +1,24 @@
+<!-- <form class="d-flex flex-column" style="font-size: 17px; font-weight: 400;" [formGroup]="this.formGroup"> -->
+<mat-form-field style="width: 100%;">
+	<mat-label>{{this.label}}</mat-label>
+	<mat-chip-grid #chipGrid>
+		@for (item of displaySelectedData; track item) {
+		<mat-chip-row (removed)="remove(item)">
+			{{item}}
+			<button matChipRemove [attr.aria-label]="'remove ' + item">
+				<mat-icon>cancel</mat-icon>
+			</button>
+		</mat-chip-row>
+		}
+	</mat-chip-grid>
+	<input class="mt-2" placeholder="{{this.placeholder}}" #chipsInput [formControl]="autocompleteCtrl"
+		[matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+		(matChipInputTokenEnd)="add($event)" />
+	<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+		@for (item of filteredDatas | async; track item) {
+		<mat-option [value]="item">{{item}}</mat-option>
+		}
+	</mat-autocomplete>
+	<!-- <button (click)="showAllData()">aa</button> -->
+</mat-form-field>
+<!-- </form> -->

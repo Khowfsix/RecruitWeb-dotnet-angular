@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Component,
 	OnInit,
@@ -28,6 +29,8 @@ import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { nameTypeInToken } from '../../../core/constants/token.constants';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { FilterComponent } from './filter/filter.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-position',
@@ -38,7 +41,8 @@ import { MatSelectModule } from '@angular/material/select';
 		MatButtonModule,
 		RouterModule,
 		MatPaginatorModule,
-		MatSelectModule
+		MatSelectModule,
+		FilterComponent
 	],
 	templateUrl: './position.component.html',
 	styleUrl: './position.component.css',
@@ -50,6 +54,7 @@ export class PositionComponent implements OnInit {
 		private dialog: MatDialog,
 		private viewContainerRef: ViewContainerRef,
 		private cookieService: CookieService,
+		private formBuilder: FormBuilder,
 	) { }
 	public fetchedPositions?: Position[];
 	public currentUser: WebUser = {};
@@ -61,6 +66,49 @@ export class PositionComponent implements OnInit {
 	public totalPages?: number;
 	public pageSize?: number;
 	public totalMatchedInDb?: number;
+
+	public filterForm: FormGroup = this.formBuilder.group({
+		search: [
+			'',
+			[]
+		],
+		fromSalary: [
+			0,
+			[Validators.pattern('^[0-9]*$')]
+		],
+		toSalary: [
+			6000,
+			[Validators.pattern('^[0-9]*$'),]
+		],
+		fromMaxHiringQty: [
+			0,
+			[Validators.pattern('^[0-9]*$'),]
+		],
+		toMaxHiringQty: [
+			1000,
+			[Validators.pattern('^[0-9]*$'),]
+		],
+		fromDate: [
+			null,
+			[]
+		],
+		toDate: [
+			null,
+			[]
+		],
+		stringOfCategoryPositionIds: [
+			'',
+			[Validators.min(1),],
+		],
+		stringOfCompanyIds: [
+			'',
+			[Validators.min(1),],
+		],
+		stringOfLanguageIds: [
+			'',
+			[Validators.min(1),],
+		],
+	});
 
 	ngOnInit(): void {
 		const token = this.cookieService.get('jwt');
@@ -78,12 +126,36 @@ export class PositionComponent implements OnInit {
 		}
 		this.fetchUserLoginInfo();
 		this.fetchedAllPositions();
+
+		this.filterForm?.valueChanges.subscribe(() => {
+
+			// console.log('filterModel', filterModel);
+			this.fetchedAllPositions(this.formatFilterModel());
+		});
 		// this.fetchedAllPositionsByCurrentUser();
 	}
 
-	handleSortSelect(value: string) {
+	handleSortSelect(event: Event) {
+		const selectedOption = event.target as HTMLSelectElement;
+		const value = selectedOption.value;
+
+		// console.log('value', value);
 		this.sortString = value;
-		this.fetchedAllPositions();
+		this.fetchedAllPositions(this.formatFilterModel());
+	}
+
+	private formatFilterModel() {
+		// eslint-disable-next-line prefer-const
+		let filterModel = this.filterForm.value;
+		if (filterModel.fromDate && filterModel.toDate) {
+			filterModel.fromDate = new Date(filterModel.fromDate.format('YYYY-MM-DD')).toISOString();
+			filterModel.toDate = new Date(filterModel.toDate.format('YYYY-MM-DD')).toISOString();
+		}
+		else {
+			filterModel.fromDate = null
+			filterModel.toDate = null
+		}
+		return filterModel;
 	}
 
 	handlePageEvent(e: PageEvent) {
@@ -92,7 +164,7 @@ export class PositionComponent implements OnInit {
 		this.pageSize = e.pageSize;
 		this.pageIndex = e.pageIndex + 1;
 		console.log('e.pageIndex', e.pageIndex)
-		this.fetchedAllPositions();
+		this.fetchedAllPositions(this.formatFilterModel());
 	}
 
 	public openDeleteDialog(
@@ -169,7 +241,7 @@ export class PositionComponent implements OnInit {
 				this.currentUser = data;
 				// console.log('currentUser', data);
 			},
-			error: (e) => console.error(e),
+			// error: (e) => console.error(e),
 		});
 	}
 
@@ -179,25 +251,25 @@ export class PositionComponent implements OnInit {
 				// this.fetchedPositions = data;
 				// console.log('PositionsByCurrentUser', data);
 			},
-			error: (e) => console.error(e),
+			// error: (e) => console.error(e),
 		});
 	}
 
-	private fetchedAllPositions(): void {
+	public fetchedAllPositions(positionFilterModel?: any): void {
 		this.positionService.getAllPositions(
-			undefined,
+			positionFilterModel,
 			this.sortString,
 			this.pageIndex,
 			this.pageSize,
 		).subscribe({
 			next: (data) => {
-				// console.log('data', data)
+				console.log('data', data)
 				this.fetchedPositions = data.items;
 				this.pageIndex = data.pageIndex;
 				this.pageSize = data.pageSize;
 				this.totalMatchedInDb = data.totalMatchedInDb;
 				this.totalPages = data.totalPages;
-				// console.log('positions', this.fetchedPositions);
+				console.log('fetchedPositions', this.fetchedPositions);
 				// console.log('pageIndex', this.pageIndex);
 				// console.log('pageSize', this.pageSize);
 				// console.log('totalMatchedInDb', this.totalMatchedInDb);

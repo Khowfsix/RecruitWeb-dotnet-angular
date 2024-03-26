@@ -16,35 +16,35 @@
 
         public DateTime? ToDate { get; set; }
 
-        public string? stringOfCategoryPositionIds { get; set; }
+        public string? StringOfCategoryPositionIds { get; set; }
 
-        public string? stringOfCompanyIds { get; set; }
+        public string? StringOfCompanyIds { get; set; }
 
-        public string? stringOfLanguageIds { get; set; }
+        public string? StringOfLanguageIds { get; set; }
 
         public List<Guid> getListOfCategoryPositionIds()
         {
-            if (this.stringOfCategoryPositionIds != null)
+            if (this.StringOfCategoryPositionIds != null)
             {
-                return this.stringOfCategoryPositionIds.Split(',').Select(Guid.Parse).ToList();
+                return this.StringOfCategoryPositionIds.Split(',').Select(Guid.Parse).ToList();
             }
             return null;
         }
 
         public List<Guid> getListOfCompanyIds()
         {
-            if (this.stringOfCompanyIds != null)
+            if (this.StringOfCompanyIds != null)
             {
-                return this.stringOfCompanyIds.Split(',').Select(Guid.Parse).ToList();
+                return this.StringOfCompanyIds.Split(',').Select(Guid.Parse).ToList();
             }
             return null;
         }
 
         public List<Guid> getListOfLanguageIds()
         {
-            if (this.stringOfLanguageIds != null)
+            if (this.StringOfLanguageIds != null)
             {
-                return this.stringOfLanguageIds.Split(',').Select(Guid.Parse).ToList();
+                return this.StringOfLanguageIds.Split(',').Select(Guid.Parse).ToList();
             }
             return null;
         }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -38,12 +39,15 @@ export class AutocompleteComponent {
 	public options?: any[];
 
 	ngOnInit(): void {
-		this.observableOptions?.subscribe((data) => this.options = data);
+		this.observableOptions?.subscribe((data) => {
+			this.options = data;
+			this.filteredOptions = this.formGroup?.get(this.fieldName ?? '')?.valueChanges.pipe(
+				startWith(''),
+				map(value => this._filter(value || '')),
+			);
+		});
 		// this.observableIsDisabled?.subscribe((x) => this.isDisabled = x)
-		this.filteredOptions = this.formGroup?.get(this.fieldName ?? '')?.valueChanges.pipe(
-			startWith(''),
-			map(value => this._filter(value || '')),
-		);
+
 	}
 
 	// public log(){
