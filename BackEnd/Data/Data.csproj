@@ -7,14 +7,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <!--<Compile Remove="Migrations\**" />-->
 	  <Compile Remove="Model\**" />
+	  <EmbeddedResource Remove="Migrations\**" />
 	  <EmbeddedResource Remove="Model\**" />
+	  <None Remove="Migrations\**" />
 	  <None Remove="Model\**" />
 	</ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

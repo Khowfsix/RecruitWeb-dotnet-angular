@@ -12,7 +12,7 @@
         public string Education { get; set; } = null!;
         public string? PositionName { get; set; }
         public string? Description { get; set; }
-        public decimal? Salary { get; set; }
+        public double? Salary { get; set; }
         public string CompanyName { get; set; } = null!;
         public string LanguageName { get; set; } = null!;
         public DateTime DateTime { get; set; } = DateTime.Now;

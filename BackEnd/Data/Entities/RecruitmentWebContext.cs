@@ -89,6 +89,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Position>().Property(p => p.Salary).HasPrecision(12, 2);
         base.OnModelCreating(modelBuilder);
 
         //modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();

@@ -16,21 +16,21 @@
 //        private readonly ICvService _cvService;
 //        private readonly UserManager<WebUser> _userManager;
 //        private readonly IApplicationSuggestionService _applicationSuggestionService;
-//        private readonly IUploadFileService _uploadFileService;
+//        private readonly IFileService _fileService;
 //        private readonly IHttpClientFactory _httpClientFactory;
 //        private readonly IMapper _mapper;
 
 //        public CvController(ICvService cvService,
 //            UserManager<WebUser> userManager,
 //            IApplicationSuggestionService applicationSuggestionService,
-//            IUploadFileService uploadFileService,
+//            IFileService uploadFileService,
 //            IHttpClientFactory httpClientFactory,
 //            IMapper mapper)
 //        {
 //            _cvService = cvService;
 //            _userManager = userManager;
 //            _applicationSuggestionService = applicationSuggestionService;
-//            _uploadFileService = uploadFileService;
+//            _fileService = uploadFileService;
 //            _httpClientFactory = httpClientFactory;
 
 //            _mapper = mapper;
@@ -93,7 +93,7 @@
 //        {
 //            if (ModelState.IsValid)
 //            {
-//                //var cvpdf = await _uploadFileService.AddFileAsync(request.CvPDF);
+//                //var cvpdf = await _fileService.AddFileAsync(request.CvPDF);
 //                var cvList = await _cvService.UpdateCv(request, requestId);
 //                if (cvList == false)
 //                {
@@ -182,14 +182,12 @@
 //                };
 //                return (CurUser);
 //            }
-//#pragma warning disable CS8603 // Possible null reference return.
-//            return (null);
-//#pragma warning restore CS8603 // Possible null reference return.
+//            return (null!);
 //        }
 //        [HttpDelete("DeleteFile")]
 //        public async Task<IActionResult> DeleteFile(string path)
 //        {
-//            var data = await _uploadFileService.DeleteFileAsyncBool(path);
+//            var data = await _fileService.DeleteFileAsync(path);
 //            return Ok(data);
 //        }
 
@@ -244,11 +242,7 @@
 
 //    public class IdAndRoleModel
 //    {
-//
 //        public string Id { get; set; }
-//
-//
 //        public List<string> Role { get; set; }
-//
 //    }
 //}
