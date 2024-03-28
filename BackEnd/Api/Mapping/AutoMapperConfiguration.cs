@@ -29,6 +29,7 @@ using Api.ViewModels.Shift;
 using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
+using Data.CustomModel.Position;
 using Data.Entities;
 using Service.Models;
 

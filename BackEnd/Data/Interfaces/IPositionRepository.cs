@@ -1,15 +1,18 @@
+using Data.CustomModel.Position;
 using Data.Entities;
-using Data.Paging;
 
 namespace Data.Interfaces
 {
     public interface IPositionRepository : IRepository<Position>
     {
-        Task<PageResponse<Position>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString, PageRequest pageRequest);
+        Task<List<Position>> GetAllPositions(PositionFilter positionFilter,
+            string sortString);
 
         Task<List<Position>> GetAllPositionsByUserId(String userId);
 
         Task<Position?> GetPositionById(Guid id);
+        
+        Task<PositionAllMinMaxRange> GetAllMinMaxRange();
 
         Task<List<Position>> GetPositionByName(string name);
 

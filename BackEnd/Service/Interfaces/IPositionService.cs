@@ -1,13 +1,15 @@
-using Data.Entities;
-using Data.Paging;
+using Data.CustomModel.Position;
 using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IPositionService
     {
-        Task<PageResponse<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString, PageRequest pageRequest);
+        Task<List<PositionModel>> GetAllPositions(PositionFilter positionFilter, string sortString);
+        
         Task<List<PositionModel>> GetAllPositionsByCurrentUser(String userId);
+
+        Task<PositionAllMinMaxRange> GetAllMinMaxRange();
 
         Task<PositionModel> GetPositionById(Guid id);
 
