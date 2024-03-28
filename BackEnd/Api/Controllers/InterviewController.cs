@@ -1,5 +1,3 @@
-//todo: interview api
-
 //using Api.ViewModels.Interview;
 //using AutoMapper;
 //using Microsoft.AspNetCore.Authorization;
@@ -12,9 +10,9 @@
 //{
 //    private readonly IInterviewService _interviewService;
 //    private readonly IItrsinterviewService _itrsinterviewService;
-//#pragma warning disable CS0414 // The field 'InterviewController._roundService' is assigned but its value is never used
+
 //    private readonly IRoundService _roundService;
-//#pragma warning restore CS0414 // The field 'InterviewController._roundService' is assigned but its value is never used
+
 //    private readonly IMapper _mapper;
 
 //    #region comment

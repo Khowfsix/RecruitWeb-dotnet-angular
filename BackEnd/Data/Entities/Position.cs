@@ -12,7 +12,7 @@ public partial class Position
 
     public string? ImageURL { get; set; }
 
-    public decimal? Salary { get; set; }
+    public double? Salary { get; set; }
 
     public int MaxHiringQty { get; set; }
 
