@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-// import { Observable } from 'rxjs';
-// import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
@@ -83,10 +82,7 @@ export class AddRequirementsFormComponent {
 
 	private isInAllowedValues(allowedValues: any[]): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
-			// console.log('allowedValues:', allowedValues)
 			const value = control.value;
-
-			// console.log('vallue', value)
 
 			if (!value) {
 				return null;
@@ -118,7 +114,6 @@ export class AddRequirementsFormComponent {
 	public clearAllRequirements() {
 		this.displayRequirements = [];
 		this.formGroup?.get(this.fieldName ?? '')?.setValue([]);
-		console.log('requirements: this.formGroup?.value', this.formGroup?.value)
 	}
 
 	public getRequirement(skillId: string) {
@@ -143,8 +138,6 @@ export class AddRequirementsFormComponent {
 			}
 		})
 		this.formGroup?.get(this.fieldName ?? '')?.setValue(formatedRequirements);
-		console.log('requirements: this.formGroup?.value', this.formGroup?.value)
-		// // console.log('this.requirements', this.displayRequirements)
 	}
 
 	public addRequirementToList(): void {
@@ -168,9 +161,6 @@ export class AddRequirementsFormComponent {
 		this.formGroup?.get(this.fieldName ?? '')?.setValue(currentRequirements);
 
 		this.displayRequirements.push(requirement);
-
-		console.log('requirements: this.formGroup?.value', this.formGroup?.value)
-		// // console.log('this.requirements', this.displayRequirements)
 	}
 
 	public updateRequirement(): void {
@@ -202,28 +192,20 @@ export class AddRequirementsFormComponent {
 		this.formGroup?.get(this.fieldName ?? '')?.setValue(formatedRequirements);
 
 		this.isUpdateRequirement = false;
-		console.log('requirements: this.formGroup?.value', this.formGroup?.value)
-		// console.log('this.requirements', this.displayRequirements)
 	}
 
 	private fetchAllSkill() {
 		this.skillService.getAllSkills().subscribe({
 			next: (data: any) => {
 				this.fetchedSkills = data;
-				console.log("fetchedSkills: ", data);
 				if (this.isEditForm)
 					if (this.displayRequirements) {
 						this.displayRequirements = this.displayRequirements.map(x => {
 							x.skillName = this.fetchedSkills?.find(y => y.skillId === x.skillId)?.skillName;
 							return x;
 						})
-
-						console.log('this.displayRequirements', this.displayRequirements);
 					}
 			},
-			error: (err: any) => {
-				console.log('fetchedSkills ERROR:', err);
-			}
 		}
 		);
 	}

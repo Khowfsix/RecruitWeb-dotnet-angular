@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Component,
@@ -31,6 +32,10 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { FilterComponent } from './filter/filter.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, startWith } from 'rxjs/operators';
+import moment, { Moment } from 'moment';
+
 
 @Component({
 	selector: 'app-position',
@@ -58,7 +63,6 @@ export class PositionComponent implements OnInit {
 	) { }
 	public fetchedPositions?: Position[];
 	public currentUser: WebUser = {};
-	// public title = '';
 	public curentUserRoles: string[] | null = null;
 
 	public sortString?: string = 'PositionName_ASC';
@@ -67,25 +71,28 @@ export class PositionComponent implements OnInit {
 	public pageSize?: number;
 	public totalMatchedInDb?: number;
 
+	private filterSubject = new Subject<any>();
+	private readonly debounceTimeMs = 300;
+
 	public filterForm: FormGroup = this.formBuilder.group({
 		search: [
 			'',
 			[]
 		],
 		fromSalary: [
-			0,
+			null,
 			[Validators.pattern('^[0-9]*$')]
 		],
 		toSalary: [
-			6000,
+			null,
 			[Validators.pattern('^[0-9]*$'),]
 		],
 		fromMaxHiringQty: [
-			0,
+			null,
 			[Validators.pattern('^[0-9]*$'),]
 		],
 		toMaxHiringQty: [
-			1000,
+			null,
 			[Validators.pattern('^[0-9]*$'),]
 		],
 		fromDate: [
@@ -110,16 +117,16 @@ export class PositionComponent implements OnInit {
 		],
 	});
 
+	ngOnDestroy() {
+		this.filterSubject.complete();
+	}
+
 	ngOnInit(): void {
 		const token = this.cookieService.get('jwt');
 
-		// console.log('token is: ', token);
 		if (token !== '') {
-			// const jsonPayload = JSON.stringify(jwtDecode<JwtPayload>(token));
-			// this.curentUserRoles = JSON.parse(jsonPayload)[nameTypeInToken.roles];
 			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(token)));
 			this.curentUserRoles = authenPayload[nameTypeInToken.roles]
-			// console.log(this.curentUserRoles);
 		}
 		else {
 			this.curentUserRoles = null
@@ -127,29 +134,41 @@ export class PositionComponent implements OnInit {
 		this.fetchUserLoginInfo();
 		this.fetchedAllPositions();
 
-		this.filterForm?.valueChanges.subscribe(() => {
+		this.initFilterValuesChange();
+	}
 
-			// console.log('filterModel', filterModel);
-			this.fetchedAllPositions(this.formatFilterModel());
+	private initFilterValuesChange() {
+		this.filterForm.valueChanges
+			.pipe(startWith(null))
+			.subscribe(() => {
+				const formValue = this.formatFilterModel(this.filterForm.value);
+				if ((formValue.fromSalary !== null) === (formValue.toSalary !== null)
+					&& (formValue.fromMaxHiringQty !== null) === (formValue.toMaxHiringQty !== null)) {
+					this.filterSubject.next(formValue);
+				}
+			})
+
+		this.filterSubject.pipe(debounceTime(300)).subscribe((formValue) => {
+			this.fetchedAllPositions(formValue);
 		});
-		// this.fetchedAllPositionsByCurrentUser();
 	}
 
 	handleSortSelect(event: Event) {
 		const selectedOption = event.target as HTMLSelectElement;
 		const value = selectedOption.value;
 
-		// console.log('value', value);
 		this.sortString = value;
-		this.fetchedAllPositions(this.formatFilterModel());
+		this.fetchedAllPositions(this.formatFilterModel(this.filterForm.value));
 	}
 
-	private formatFilterModel() {
+	private formatFilterModel(data: any) {
 		// eslint-disable-next-line prefer-const
-		let filterModel = this.filterForm.value;
-		if (filterModel.fromDate && filterModel.toDate) {
-			filterModel.fromDate = new Date(filterModel.fromDate.format('YYYY-MM-DD')).toISOString();
-			filterModel.toDate = new Date(filterModel.toDate.format('YYYY-MM-DD')).toISOString();
+		let filterModel = data;
+		if (filterModel.fromDate !== null && filterModel.toDate !== null) {
+			if (moment.isMoment(filterModel.fromDate as Moment) && (moment.isMoment(filterModel.toDate as Moment))) {
+				filterModel.fromDate = new Date(filterModel.fromDate.add(7, 'hours')).toISOString();
+				filterModel.toDate = new Date(filterModel.toDate.add(7, 'hours')).toISOString();
+			}
 		}
 		else {
 			filterModel.fromDate = null
@@ -159,12 +178,10 @@ export class PositionComponent implements OnInit {
 	}
 
 	handlePageEvent(e: PageEvent) {
-		// this.pageEvent = e;
 		this.totalMatchedInDb = e.length;
 		this.pageSize = e.pageSize;
 		this.pageIndex = e.pageIndex + 1;
-		console.log('e.pageIndex', e.pageIndex)
-		this.fetchedAllPositions(this.formatFilterModel());
+		this.fetchedAllPositions(this.formatFilterModel(this.filterForm.value));
 	}
 
 	public openDeleteDialog(
@@ -173,7 +190,6 @@ export class PositionComponent implements OnInit {
 		exitAnimationDuration: string,
 	): void {
 		if (positionId !== '') {
-			// console.log('before positionId:', positionId);
 			const dialogRef = this.dialog.open(DeleteDialog, {
 				viewContainerRef: this.viewContainerRef,
 				data: {
@@ -195,7 +211,6 @@ export class PositionComponent implements OnInit {
 		enterAnimationDuration: string,
 		exitAnimationDuration: string,
 	): void {
-		// console.log('value:', this.currentUser.id)
 		const dialogRef = this.dialog.open(AddFormComponent, {
 			viewContainerRef: this.viewContainerRef,
 			data: {
@@ -218,7 +233,6 @@ export class PositionComponent implements OnInit {
 		enterAnimationDuration: string,
 		exitAnimationDuration: string,
 	): void {
-		// console.log('value:', this.currentUser.id)
 		const dialogRef = this.dialog.open(AddFormComponent, {
 			viewContainerRef: this.viewContainerRef,
 			data: {
@@ -239,19 +253,7 @@ export class PositionComponent implements OnInit {
 		this.authenticationService.userLogin().subscribe({
 			next: (data) => {
 				this.currentUser = data;
-				// console.log('currentUser', data);
 			},
-			// error: (e) => console.error(e),
-		});
-	}
-
-	private fetchedAllPositionsByCurrentUser(): void {
-		this.positionService.getAllPositionsByCurrentUser().subscribe({
-			next: () => {
-				// this.fetchedPositions = data;
-				// console.log('PositionsByCurrentUser', data);
-			},
-			// error: (e) => console.error(e),
 		});
 	}
 
@@ -263,19 +265,12 @@ export class PositionComponent implements OnInit {
 			this.pageSize,
 		).subscribe({
 			next: (data) => {
-				console.log('data', data)
 				this.fetchedPositions = data.items;
 				this.pageIndex = data.pageIndex;
 				this.pageSize = data.pageSize;
 				this.totalMatchedInDb = data.totalMatchedInDb;
 				this.totalPages = data.totalPages;
-				console.log('fetchedPositions', this.fetchedPositions);
-				// console.log('pageIndex', this.pageIndex);
-				// console.log('pageSize', this.pageSize);
-				// console.log('totalMatchedInDb', this.totalMatchedInDb);
-				// console.log('totalPages', this.totalPages);
 			},
-			error: (e) => console.error(e),
 		});
 	}
 }
@@ -325,11 +320,9 @@ export class DeleteDialog {
 	) { }
 
 	public deleteSubmit() {
-		// console.log('positionId', this.data.positionId);
 		this.positionService.delete(this.data.positionId).subscribe({
 			next: () => { },
 			error: () => {
-				// console.log(err);
 				this.toastr.error('Something wrong...', 'Error!!!');
 			},
 			complete: () => {

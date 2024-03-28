@@ -31,8 +31,7 @@
 				<mat-form-field class="" style="width: 120%;">
 					<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
 						Salary (USD)</mat-label>
-					<input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'')" matInput placeholder=""
-						formControlName="salary">
+					<input type="number" matInput placeholder="" formControlName="salary">
 					@if(addForm.get('salary')?.invalid){
 					@if(addForm.get('salary')?.hasError('required')){
 					<div style="color: red;">Required.</div>
@@ -85,24 +84,6 @@
 
 			<app-autocomplete [fieldName]="'languageName'" [label]="'Language'" [placeholder]="'Ex. English, French'"
 				[observableOptions]="this.observableLanguages" [formGroup]="this.addForm"></app-autocomplete>
-			<!-- <button (click)="aaa()"></button> -->
-			<!-- <mat-form-field class="mt-2">
-                <mat-label>Language</mat-label>
-                <input type="text" placeholder="Language" aria-label="Number" matInput formControlName="languageName"
-                    [matAutocomplete]="auto">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                    @for (option of filteredOptions | async; track option) {
-                    <mat-option [value]="option.languageName">{{option.languageName}}</mat-option>
-                    }
-                </mat-autocomplete>
-
-                <input matInput placeholder="" value="" formControlName="languageId">
-                @if(addForm.get('languageName')?.invalid){
-                @if(addForm.get('languageName')?.hasError('required')){
-                <div style="color: red;">Required.</div>
-                }
-                }
-            </mat-form-field> -->
 
 			<app-autocomplete [fieldName]="'categoryPositionName'" [label]="'Category'"
 				[placeholder]="'Ex. Digital, Technical'" [observableOptions]="this.observableCategoryPositions"
@@ -112,17 +93,9 @@
 				<mat-label>Background image</mat-label>
 				<div class="file-upload d-flex">
 					<input matInput readonly="true" formControlName="imageName" placeholder="image">
-					<!-- {{ this.addForm.get('imageName')?.value || "No file uploaded yet." }} -->
-					<!-- @if(addForm.get('imageURL')?.valid){
-					<button mat-mini-fab color="primary" class="upload-btn ms-auto" (click)="clearFileInput()">
-						<mat-icon>delete_forever</mat-icon>
-					</button>
-					} -->
-					<!-- @else { -->
 					<button mat-mini-fab color="primary" class="upload-btn ms-auto" (click)="fileUpload.click()">
 						<mat-icon>attach_file</mat-icon>
 					</button>
-					<!-- } -->
 
 				</div>
 				@if(addForm.get('imageName')?.invalid){
@@ -135,14 +108,6 @@
 			<app-add-requirements-form [formGroup]="this.addForm" [label]="'Requirements'" [fieldName]="'requirements'"
 				[placeholder]="'Add requirements'"
 				[isEditForm]="this.isEditForm ? true : false"></app-add-requirements-form>
-
-			<!-- <div class="d-flex flex-row" style="height: fit-content;">
-				@if (this.uploadProgress){
-				<mat-progress-bar class="progress-bar my-auto" mode="determinate" [value]="uploadProgress">
-				</mat-progress-bar>
-				<mat-icon class="cancel-upload" (click)="cancelUpload()">delete_forever</mat-icon>
-				}
-			</div> -->
 
 			@if (isEditForm) {
 			@if (isEdit){
@@ -182,29 +147,6 @@
 			}
 			}
 
-			<!-- <mat-form-field class="mt-2">
-                <mat-label>Category</mat-label>
-                <input type="text" placeholder="Category" aria-label="Number" matInput formControlName="categoryPositionName"
-                    [matAutocomplete]="auto">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                    @for (option of filteredCategories | async; track option) {
-                    <mat-option [value]="option.CategoryPositionName">{{option.CategoryPositionName}}</mat-option>
-                    }
-                </mat-autocomplete>
-
-                <input matInput placeholder="" value="" formControlName="languageId">
-                @if(addForm.get('categoryPositionName')?.invalid){
-                @if(addForm.get('categoryPositionName')?.hasError('required')){
-                <div style="color: red;">Required.</div>
-                }
-                }
-            </mat-form-field>
-            @if (addForm.invalid){
-            <button color="primary" disabled="true" mat-raised-button (click)="savePosition()"> Submit </button>
-            }
-            @else {
-            <button color="primary" mat-raised-button (click)="savePosition()"> Submit </button>
-            } -->
 		</form>
 	</div>
 	<input type="file" (change)="onFileSelected($event)" hidden accept=".jpg, .jpeg, .png" #fileUpload>

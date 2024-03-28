@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Component, Inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +15,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-// import { provideNativeDateAdapter } from '@angular/material/core';
 import { Validators } from '@angular/forms';
 import { PositionService } from '../../../../data/position/position.service';
 import { RecruiterService } from '../../../../data/recruiter/recruiter.service';
@@ -52,7 +52,6 @@ export const MY_FORMATS = {
 	selector: 'app-add-form',
 	standalone: true,
 	providers: [
-		// provideNativeDateAdapter(),
 		{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
 		{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
 	],
@@ -105,12 +104,10 @@ export class AddFormComponent {
 	public fetchCategoryPositions: CategoryPosition[] = [];
 
 	public fetchRecruiterInfor(userId: string | undefined) {
-		// console.log('fetch userId...........', userId);
 		if (userId) {
 			this.recruiterService.getRecruiterByUserId(userId).subscribe({
 				next: (data) => {
 					this.currentRecruiter = data;
-					// console.log('Current Recruiter: ...........', data);
 				},
 				error: (e) => console.error(e),
 			});
@@ -121,7 +118,6 @@ export class AddFormComponent {
 		this.languageService.getAllLanguagues().subscribe({
 			next: (data) => {
 				this.fetchLanguages = data;
-				// console.log('fetchLanguages: ...........', data);
 			},
 			error: (e) => console.error(e),
 		});
@@ -130,7 +126,6 @@ export class AddFormComponent {
 	private fetchAllCategoryPositions() {
 		this.observableCategoryPositions.subscribe((data) => {
 			this.fetchCategoryPositions = data;
-			// console.log('fetchCategoryPositions:', this.fetchCategoryPositions);
 		});
 	}
 
@@ -173,7 +168,7 @@ export class AddFormComponent {
 		],
 		salary: [
 			this.isEditForm ? this.fetchObject.salary : null,
-			[Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$'),]
+			[Validators.required, Validators.min(1),]
 		],
 		imageName: [
 			this.isEditForm ? this.fetchObject.imageURL : null,
@@ -205,10 +200,7 @@ export class AddFormComponent {
 
 	private isInAllowedValues(allowedValues: any[]): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
-			// console.log('allowedValues:', allowedValues)
 			const value = control.value;
-
-			// console.log('vallue', value)
 
 			if (!value) {
 				return null;
@@ -221,8 +213,6 @@ export class AddFormComponent {
 	}
 
 	ngOnInit(): void {
-		// console.log('currentUserId', this.data.currentUserId);
-		console.log('fetchObject', this.fetchObject);
 		if (this.isEditForm) {
 			this.addForm.disable();
 			this.fetchObject.requirements = this.fetchObject.requirements?.filter(e => e.isDeleted === false);
@@ -251,8 +241,6 @@ export class AddFormComponent {
 
 			this.addForm.get('imageName')?.setValue(file.name)
 			this.addForm.get('imageFile')?.setValue(renamedFile)
-			// console.log('renamedFile:', renamedFile);
-			// console.log('imageName:', file.name);
 		}
 	}
 
@@ -260,25 +248,6 @@ export class AddFormComponent {
 		const randomString = Math.random().toString(36).substring(2, 8);
 		return `${originalFileName}_${randomString}`;
 	}
-
-	// public clearFileInput() {
-	// 	this.addForm.get('imageURL')?.reset();
-	// 	// this.FileService.deleteFile(this.addForm.get('imageURL')?.value).subscribe({
-	// 	// 	next: () => {
-	// 	// 		this.toastr.success('Image deleted...', 'Successfully!', {
-	// 	// 			timeOut: 2000,
-	// 	// 		});
-	// 	// 		this.addForm.get('imageURL')?.reset();
-	// 	// 	},
-	// 	// 	error: (err: unknown) => {
-	// 	// 		console.log(err);
-	// 	// 		this.toastr.error('Cannot delete image...', 'Error!!!');
-	// 	// 	},
-	// 	// 	complete: () => {
-	// 	// 	},
-	// 	// }
-	// 	// );
-	// }
 
 	public savePosition(): void {
 		let formValue = this.addForm.value;
@@ -290,7 +259,6 @@ export class AddFormComponent {
 
 			this.FileService.uploadFile(formData).subscribe({
 				next: (response: any) => {
-					// this.addForm.get('imageURL')?.setValue(response.url)
 					formValue.imageURL = response.url;
 					delete formValue.languageName;
 					delete formValue.categoryPositionName;
@@ -313,7 +281,6 @@ export class AddFormComponent {
 								this.addForm?.get('categoryPositionName')?.value,
 						)?.categoryPositionId,
 					};
-					// console.log('Form Value: ', formValue);
 					this.positionService.create(formValue).subscribe({
 						next: (resp: any) => {
 							const requirements: Requirements[] = this.addForm.get('requirements')?.value;
@@ -327,7 +294,6 @@ export class AddFormComponent {
 							});
 						},
 						error: () => {
-							// console.log(err);
 							this.toastr.error('Something wrong...', 'Save Position Error!!!', {
 								timeOut: 3000,
 							});
@@ -337,7 +303,6 @@ export class AddFormComponent {
 					});
 				},
 				error: () => {
-					// console.log('Uploading File error:', err);
 					this.toastr.error('File upload failed.', 'Error!', {
 						timeOut: 3000,
 					});
@@ -351,7 +316,6 @@ export class AddFormComponent {
 		this.RequirementService.save(requirement).subscribe({
 			next: () => { },
 			error: () => {
-				// console.log(err);
 				this.toastr.error('Something wrong...', 'Save Requirement Error!!!', {
 					timeOut: 3000,
 				});
@@ -364,7 +328,6 @@ export class AddFormComponent {
 		this.RequirementService.delete(requirementId).subscribe({
 			next: () => { },
 			error: () => {
-				// console.log(err);
 				this.toastr.error('Something wrong...', 'Delete Requirement Error!!!', {
 					timeOut: 3000,
 				});
@@ -395,17 +358,7 @@ export class AddFormComponent {
 					this.addForm?.get('categoryPositionName')?.value,
 			)?.categoryPositionId,
 		};
-		// console.log('Form Value: ', formValue);
-		// const formData = new FormData();
-		// for (const key in formValue) {
-		// 	// if (formValue[key] !== null) {
-		// 	if (formValue[key] instanceof File) {
-		// 		formData.append(key, formValue[key], formValue[key].name);
-		// 	} else {
-		// 		formData.append(key, formValue[key]);
-		// 	}
-		// 	// }
-		// }
+
 		this.positionService.update(this.fetchObject.positionId ?? '', formValue).subscribe({
 			next: (resp: any) => {
 				if (resp === false) {
@@ -426,10 +379,8 @@ export class AddFormComponent {
 					});
 					this.dialogRef.close();
 				}
-				// this.toastr.success('Position added!!', 'Successfully!');
 			},
 			error: () => {
-				// console.log(err);
 				this.toastr.error('Something wrong...', 'Error!!!', {
 					timeOut: 3000,
 				});
@@ -442,7 +393,6 @@ export class AddFormComponent {
 
 	public editPosition() {
 		const formValue = this.addForm.value;
-		// console.log('aaaaaaa')
 
 		if (this.fetchObject.imageURL !== formValue.imageName) {
 			const file: File = this.addForm.get('imageFile')?.value;
@@ -453,13 +403,11 @@ export class AddFormComponent {
 
 				this.FileService.updateFile(formData).subscribe({
 					next: (response: any) => {
-						// this.addForm.get('imageURL')?.setValue(response.url)
 						formValue.imageURL = response.url;
 						this.callApiUpdatePosition(formValue);
 						return;
 					},
 					error: () => {
-						// console.log('Uploading File error:', err);
 						this.toastr.error('File upload failed.', 'Error!', {
 							timeOut: 3000,
 						});

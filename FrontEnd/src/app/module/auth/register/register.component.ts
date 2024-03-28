@@ -65,12 +65,6 @@ export class RegisterComponent {
 
 	onSubmit() {
 		this.authService.register(this.registerData).subscribe({
-			next: (data: unknown) => {
-				console.log(data);
-			},
-			error: (error: unknown) => {
-				console.log(error);
-			},
 			complete: () => {
 				this.router.navigate(['/auth/login']);
 			},

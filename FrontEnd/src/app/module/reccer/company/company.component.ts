@@ -18,10 +18,6 @@ export class CompanyComponent implements OnInit {
 		this._companyService.getAll().subscribe({
 			next: (data: Company[]) => {
 				this.companies = data;
-				console.log(this.companies);
-			},
-			error: (err: unknown) => {
-				console.log(err);
 			},
 			complete: () => { },
 		});

@@ -45,7 +45,6 @@ export class ChipsAutocompleteComponent implements OnInit {
 	@Input({ required: true })
 	public placeholder!: string;
 
-	// public allData: any[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 	public allData!: any[];
 	public autocompleteCtrl = new FormControl('');
 	public filteredDatas!: Observable<any[]>;
@@ -57,7 +56,6 @@ export class ChipsAutocompleteComponent implements OnInit {
 	announcer = inject(LiveAnnouncer);
 
 	ngOnInit(): void {
-		console.log("observableData", this.observableData);
 		this.observableData?.subscribe((data) => {
 			this.allData = data;
 			this.filteredDatas = this.autocompleteCtrl.valueChanges.pipe(
@@ -66,10 +64,6 @@ export class ChipsAutocompleteComponent implements OnInit {
 			);
 		});
 	}
-
-	// showAllData() {
-	// 	console.log("allData", this.allData)
-	// }
 
 	add(event: MatChipInputEvent): void {
 		const value = (event.value || '').trim();
@@ -111,8 +105,6 @@ export class ChipsAutocompleteComponent implements OnInit {
 	}
 
 	private _filter(value: string): string[] {
-		console.log('_filter() - value: ', value)
-		console.log('_filter() - this.allData[0]: ', this.allData[0][this.displayFieldName])
 		const filterValue = value.toLowerCase();
 		const filteredData = this.allData.filter(item => item[this.displayFieldName].toLowerCase().includes(filterValue) && !this.displaySelectedData.includes(item[this.displayFieldName]));
 		return filteredData.map(item => item[this.displayFieldName]);

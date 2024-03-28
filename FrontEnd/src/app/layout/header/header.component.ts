@@ -29,7 +29,6 @@ export class HeaderComponent {
 		const dialogRef = this._matdialog.open(LogoutDialogComponent);
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				console.log('logout');
 				this._authService.logout();
 				this._user = null;
 			}

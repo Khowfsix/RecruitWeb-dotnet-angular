@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddRequirementsFormComponent } from './AddRequirementsFormComponent';
+import { AddRequirementsFormComponent } from './add-requirements-form.component';
 
 describe('AddRequirementsFormComponent', () => {
-  let component: AddRequirementsFormComponent;
-  let fixture: ComponentFixture<AddRequirementsFormComponent>;
+	let component: AddRequirementsFormComponent;
+	let fixture: ComponentFixture<AddRequirementsFormComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AddRequirementsFormComponent]
-    })
-      .compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [AddRequirementsFormComponent]
+		})
+			.compileComponents();
 
-    fixture = TestBed.createComponent(AddRequirementsFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(AddRequirementsFormComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

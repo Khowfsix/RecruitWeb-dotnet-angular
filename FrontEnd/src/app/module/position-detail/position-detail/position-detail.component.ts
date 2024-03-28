@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { Position } from '../../../data/position/position.model';
 import { PositionService } from '../../../data/position/position.service';
@@ -39,13 +40,11 @@ export class PositionDetailComponent implements OnInit {
 					next: (data) => {
 						if (data.isDeleted) {
 							if (this.curentUserRoles === null || !this.curentUserRoles.includes("Admin")) {
-								// this.toastr.error('Some thing wrong. Redirect to home page', 'Error');
 								this.router.navigate(['/home']);
 							}
 						}
 
 						this.fetchPosition = data;
-						// console.log('fetchPosition: ', data);
 						this.fetchPosition.requirements?.forEach(x => {
 							this.skillService.getSkillById(x.skillId).subscribe({
 								next: (response: any) => {
@@ -57,7 +56,6 @@ export class PositionDetailComponent implements OnInit {
 						this.fetchPosition.requirements = this.fetchPosition.requirements?.filter(e => e.isDeleted === false);
 					},
 					error: () => {
-						// this.toastr.error('Some thing wrong. Redirect to home page', 'Error');
 						this.router.navigate(['/home']);
 					}
 				}
@@ -77,7 +75,6 @@ export class PositionDetailComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.paramPositionId = this.route.snapshot.paramMap.get('positionId') ?? ''
-		// console.log('paramPositionId', this.paramPositionId)
 		this.callApiGetPositionById();
 	}
 }
