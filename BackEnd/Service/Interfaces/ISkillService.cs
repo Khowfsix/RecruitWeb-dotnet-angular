@@ -6,7 +6,7 @@ namespace Service.Interfaces
     {
         Task<SkillModel> GetSkillById(Guid id);
 
-        Task<IEnumerable<SkillModel>> GetAllSkills(string? request);
+        Task<IEnumerable<SkillModel>> GetAllSkills(bool isAdmin, string? request);
 
         Task<SkillModel> SaveSkill(SkillModel request);
 

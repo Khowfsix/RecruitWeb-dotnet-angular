@@ -1,3 +1,13 @@
+.custom-button {
+	cursor: pointer;
+	opacity: 0.5;
+	transition: background-color 0.3s;
+}
+
+.custom-button:hover {
+	background-color: #d5d5d5;
+}
+
 .custom-formfield {
 	background-color: #f1f1f1;
 	padding: 15px 15px 15px 15px;

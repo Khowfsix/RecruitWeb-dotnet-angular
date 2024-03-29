@@ -1,6 +1,4 @@
-﻿using Castle.Core.Internal;
-using Microsoft.EntityFrameworkCore;
-using PagedList;
+﻿using PagedList;
 
 namespace Api.Paging
 {
@@ -17,7 +15,7 @@ namespace Api.Paging
         public bool IsLastPage { get; set; }
 
         public PageResponse(IPagedList<T>? paged) {
-            this.PageIndex = paged.PageNumber;
+            this.PageIndex = paged!.PageNumber;
             this.PageSize = paged.PageSize;
             this.TotalPages = paged.PageCount;
             this.TotalMatchedInDb = paged.TotalItemCount;

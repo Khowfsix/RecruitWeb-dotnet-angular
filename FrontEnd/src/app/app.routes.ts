@@ -1,5 +1,5 @@
 import { Route, Routes } from '@angular/router';
-import { PositionComponent } from './module/reccer/position/position.component';
+import { PositionComponent } from './module/position/position.component';
 import { HomeComponent } from './module/home/home.component';
 import { CompanyComponent } from './module/reccer/company/company.component';
 import { AuthGuard } from './core/guard/auth.guard';

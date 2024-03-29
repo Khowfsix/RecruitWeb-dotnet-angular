@@ -6,13 +6,13 @@ import {
 	ViewContainerRef,
 	Inject,
 } from '@angular/core';
-import { PositionService } from '../../../data/position/position.service';
-import { Position } from '../../../data/position/position.model';
+import { PositionService } from '../../data/position/position.service';
+import { Position } from '../../data/position/position.model';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { AuthenticationService } from '../../../data/authentication/authentication.service';
-import { WebUser } from '../../../data/authentication/web-user.model';
+import { AuthenticationService } from '../../data/authentication/authentication.service';
+import { WebUser } from '../../data/authentication/web-user.model';
 import {
 	MAT_DIALOG_DATA,
 	MatDialog,
@@ -27,7 +27,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { nameTypeInToken } from '../../../core/constants/token.constants';
+import { nameTypeInToken } from '../../core/constants/token.constants';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { FilterComponent } from './filter/filter.component';

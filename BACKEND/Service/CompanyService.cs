@@ -23,13 +23,13 @@ namespace Service
             return await _companyRepository.DeleteCompany(requestId);
         }
 
-        public async Task<IEnumerable<CompanyModel>> GetAllCompany(string? request)
+        public async Task<IEnumerable<CompanyModel>> GetAllCompany(bool isAdmin, string? request)
         {
             var data = await _companyRepository.GetAllCompany(request);
             if (!data.IsNullOrEmpty())
             {
                 List<CompanyModel> result = _mapper.Map<List<CompanyModel>>(data);
-                return result;
+                return !isAdmin ? result.Where(o => !o.IsDeleted).ToList() : result;
             }
             return null!;
         }

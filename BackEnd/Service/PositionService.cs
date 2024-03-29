@@ -2,6 +2,7 @@ using AutoMapper;
 using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Service.Interfaces;
 using Service.Models;
 
@@ -25,10 +26,13 @@ namespace Service
             return _mapper.Map<PositionModel>(response);
         }
 
-        public async Task<List<PositionModel>> GetAllPositions(PositionFilter positionFilter, string sortString)
+        public async Task<List<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString)
         {
             var entityDatas = await _positionRepository.GetAllPositions(positionFilter, sortString);
             var listPositionModel = _mapper.Map<List<PositionModel>>(entityDatas);
+
+            if (!isAdmin)
+                return listPositionModel.Where(o => o.IsDeleted == false).ToList();
             return listPositionModel;
         }
 

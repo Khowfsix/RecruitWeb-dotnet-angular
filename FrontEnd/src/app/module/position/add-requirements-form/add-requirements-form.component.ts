@@ -5,12 +5,12 @@ import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { SkillService } from '../../../../data/skill/skill.service';
-import { Skill } from '../../../../data/skill/skill.model';
-import { AutocompleteComponent } from '../../../../shared/component/inputs/autocomplete/autocomplete.component';
+import { SkillService } from '../../../data/skill/skill.service';
+import { Skill } from '../../../data/skill/skill.model';
+import { AutocompleteComponent } from '../../../shared/component/inputs/autocomplete/autocomplete.component';
 import { combineLatest } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import { Requirements } from '../../../../data/requirements/requirements.model';
+import { Requirements } from '../../../data/requirements/requirements.model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

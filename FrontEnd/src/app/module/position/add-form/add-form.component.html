@@ -39,6 +39,9 @@
 					@if(addForm.get('salary')?.hasError('min')){
 					<div style="color: red;">Min is 1</div>
 					}
+					@if(addForm.get('salary')?.hasError('max')){
+					<div style="color: red;">Max is 6 digits</div>
+					}
 					}
 				</mat-form-field>
 				<mat-form-field class="ms-4" style="width: 120%;">
@@ -52,6 +55,9 @@
 					}
 					@if(addForm.get('maxHiringQty')?.hasError('min')){
 					<div style="color: red;">Min is 1</div>
+					}
+					@if(addForm.get('maxHiringQty')?.hasError('max')){
+					<div style="color: red;">Max is 3 digits</div>
 					}
 					}
 				</mat-form-field>

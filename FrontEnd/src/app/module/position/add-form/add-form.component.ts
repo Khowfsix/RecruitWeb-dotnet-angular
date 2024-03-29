@@ -16,26 +16,26 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Validators } from '@angular/forms';
-import { PositionService } from '../../../../data/position/position.service';
-import { RecruiterService } from '../../../../data/recruiter/recruiter.service';
-import { Recruiter } from '../../../../data/recruiter/recruiter.model';
+import { PositionService } from '../../../data/position/position.service';
+import { RecruiterService } from '../../../data/recruiter/recruiter.service';
+import { Recruiter } from '../../../data/recruiter/recruiter.model';
 import { AsyncPipe } from '@angular/common';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Language } from '../../../../data/language/language.model';
-import { LanguageService } from '../../../../data/language/language.service';
-import { CategoryPosition } from '../../../../data/categoryPosition/category-position.model';
-import { CategoryPositionService } from '../../../../data/categoryPosition/category-position.service';
-import { AutocompleteComponent } from '../../../../shared/component/inputs/autocomplete/autocomplete.component';
+import { Language } from '../../../data/language/language.model';
+import { LanguageService } from '../../../data/language/language.service';
+import { CategoryPosition } from '../../../data/categoryPosition/category-position.model';
+import { CategoryPositionService } from '../../../data/categoryPosition/category-position.service';
+import { AutocompleteComponent } from '../../../shared/component/inputs/autocomplete/autocomplete.component';
 import { combineLatest } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { Position } from '../../../../data/position/position.model';
+import { Position } from '../../../data/position/position.model';
 import { MatIcon } from '@angular/material/icon';
 import { isMoment } from 'moment';
-import { FileService } from '../../../../data/file/file-service.service';
+import { FileService } from '../../../data/file/file-service.service';
 import { AddRequirementsFormComponent } from '../add-requirements-form/add-requirements-form.component';
-import { RequirementsService } from '../../../../data/requirements/requirements.service';
-import { Requirements } from '../../../../data/requirements/requirements.model';
+import { RequirementsService } from '../../../data/requirements/requirements.service';
+import { Requirements } from '../../../data/requirements/requirements.model';
 
 export const MY_FORMATS = {
 	parse: {
@@ -168,7 +168,7 @@ export class AddFormComponent {
 		],
 		salary: [
 			this.isEditForm ? this.fetchObject.salary : null,
-			[Validators.required, Validators.min(1),]
+			[Validators.required, Validators.min(1), Validators.max(999999)]
 		],
 		imageName: [
 			this.isEditForm ? this.fetchObject.imageURL : null,
@@ -184,6 +184,7 @@ export class AddFormComponent {
 				Validators.required,
 				Validators.min(1),
 				Validators.pattern('^[0-9]*$'),
+				Validators.max(999),
 			],
 		],
 		startDate: [this.isEditForm ? this.fetchObject.startDate : null, [Validators.required]],

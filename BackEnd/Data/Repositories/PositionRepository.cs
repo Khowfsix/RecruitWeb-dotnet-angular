@@ -24,16 +24,16 @@ namespace Data.Repositories
             var result = new PositionAllMinMaxRange();
 
             var highestSalary = await Entities.OrderByDescending(p => p.Salary).FirstOrDefaultAsync();
-            result.MaxSalary = highestSalary is not null ? (int)(highestSalary.Salary.Value) + 1 : 0;
+            result.MaxSalary = highestSalary is not null ? (int)(highestSalary.Salary!.Value) : 0;
 
             var lowestSalary = await Entities.OrderBy(p => p.Salary).FirstOrDefaultAsync();
-            result.MinSalary = lowestSalary is not null ? (int)(lowestSalary.Salary.Value) + 1 : 0;
+            result.MinSalary = lowestSalary is not null ? (int)(lowestSalary.Salary!.Value) : 0;
 
-            var highestHiringQty = await Entities.OrderByDescending(p => p.Salary).FirstOrDefaultAsync();
-            result.MaxMaxHiringQty = highestHiringQty is not null ? (int)(highestHiringQty.MaxHiringQty) + 1 : 0;
+            var highestHiringQty = await Entities.OrderByDescending(p => p.MaxHiringQty).FirstOrDefaultAsync();
+            result.MaxMaxHiringQty = highestHiringQty is not null ? (int)(highestHiringQty.MaxHiringQty) : 0;
 
-            var lowestHiringQty = await Entities.OrderBy(p => p.Salary).FirstOrDefaultAsync();
-            result.MinMaxHiringQty = lowestHiringQty is not null ? (int)(lowestHiringQty.MaxHiringQty) + 1 : 0;
+            var lowestHiringQty = await Entities.OrderBy(p => p.MaxHiringQty).FirstOrDefaultAsync();
+            result.MinMaxHiringQty = lowestHiringQty is not null ? (int)(lowestHiringQty.MaxHiringQty) : 0;
 
             return result is not null ? result : null;
         }
@@ -68,8 +68,8 @@ namespace Data.Repositories
             if (!string.IsNullOrEmpty(positionFilter.Search))
             {
                 query = query
-                    .Where(o => o.PositionName.ToLower().Contains(positionFilter.Search.ToLower()))
-                    .Where(o => o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
+                    .Where(o => o.PositionName.ToLower().Contains(positionFilter.Search.ToLower())
+                    || o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
             }
 
             if (positionFilter.FromSalary.HasValue && positionFilter.ToSalary.HasValue)

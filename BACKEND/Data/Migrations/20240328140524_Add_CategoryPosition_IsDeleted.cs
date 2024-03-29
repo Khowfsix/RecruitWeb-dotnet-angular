@@ -7,7 +7,7 @@
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class floattype : Migration
+    public partial class Add_CategoryPosition_IsDeleted : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,32 +15,39 @@ namespace Data.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "71552bf3-8aab-4c93-b9cf-183402b5000d");
+                keyValue: "0dce331e-89eb-4058-99a6-178e3e007b7f");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "b4751d9b-b515-4b58-bfc6-cdb1c1ac46c3");
+                keyValue: "6feb772b-062f-4996-8e26-a00dc720a076");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "f7d61ecf-78b2-4873-9987-603501f6075f");
+                keyValue: "9af5d566-1e95-4a8a-a641-25c93e04151a");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "fb57f142-4c4b-48d2-a722-5d6236c7ad32");
+                keyValue: "ddde4b8d-b3e3-462b-8cf9-14d36e988730");
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsDeleted",
+                table: "CategoryPosition",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1d7be195-7da8-48c4-858c-981167c970b1", "2", "Interviewer", "Interviewer" },
-                    { "3cb8e3c3-346d-4b44-8941-de6b9f2372c1", "4", "Admin", "Admin" },
-                    { "86244b61-08fb-4f1a-a1a4-6dd4182f14ea", "3", "Recruiter", "Recruiter" },
-                    { "f4d4f4de-85f2-4dc7-8ec7-893c42806506", "1", "Candidate", "Candidate" }
+                    { "15299902-41e8-491f-a0af-4eeddf5222c2", "2", "Interviewer", "Interviewer" },
+                    { "594bd4f8-8319-4db5-b04c-e8e79f2bcbda", "3", "Recruiter", "Recruiter" },
+                    { "947a1791-781d-47ac-9b05-5d955b91b515", "1", "Candidate", "Candidate" },
+                    { "97d8b4a5-6b01-4f36-baae-2188a9c98268", "4", "Admin", "Admin" }
                 });
         }
 
@@ -50,32 +57,36 @@ namespace Data.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "1d7be195-7da8-48c4-858c-981167c970b1");
+                keyValue: "15299902-41e8-491f-a0af-4eeddf5222c2");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "3cb8e3c3-346d-4b44-8941-de6b9f2372c1");
+                keyValue: "594bd4f8-8319-4db5-b04c-e8e79f2bcbda");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "86244b61-08fb-4f1a-a1a4-6dd4182f14ea");
+                keyValue: "947a1791-781d-47ac-9b05-5d955b91b515");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "f4d4f4de-85f2-4dc7-8ec7-893c42806506");
+                keyValue: "97d8b4a5-6b01-4f36-baae-2188a9c98268");
+
+            migrationBuilder.DropColumn(
+                name: "IsDeleted",
+                table: "CategoryPosition");
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "244dfc81-5c33-443a-b009-d62a255940a6", "3", "Recruiter", "Recruiter" },
-                    { "8be07cc6-efa1-4ecb-8a35-c28aaa44ed13", "1", "Candidate", "Candidate" },
-                    { "9044432c-7417-4dd9-9bc8-d4c8258d7fd7", "4", "Admin", "Admin" },
-                    { "d4786767-adf2-4b41-90a6-55b9ade6ca58", "2", "Interviewer", "Interviewer" }
+                    { "0dce331e-89eb-4058-99a6-178e3e007b7f", "3", "Recruiter", "Recruiter" },
+                    { "6feb772b-062f-4996-8e26-a00dc720a076", "1", "Candidate", "Candidate" },
+                    { "9af5d566-1e95-4a8a-a641-25c93e04151a", "2", "Interviewer", "Interviewer" },
+                    { "ddde4b8d-b3e3-462b-8cf9-14d36e988730", "4", "Admin", "Admin" }
                 });
         }
     }

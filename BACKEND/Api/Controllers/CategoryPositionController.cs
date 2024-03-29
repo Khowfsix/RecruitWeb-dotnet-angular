@@ -24,7 +24,9 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllCategoryPositions()
         {
-            var listModelDatas = await _categoryPositionService.GetAllCategoryPositions();
+
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            var listModelDatas = await _categoryPositionService.GetAllCategoryPositions(isAdmin);
             var response = _mapper.Map<List<CategoryPositionViewModel>>(listModelDatas);
             return Ok(response);
         }

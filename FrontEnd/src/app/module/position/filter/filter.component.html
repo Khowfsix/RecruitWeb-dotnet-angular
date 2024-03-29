@@ -7,34 +7,50 @@
 					Filter
 				</mat-panel-title>
 			</mat-expansion-panel-header>
-			<form class="d-flex flex-column" style="font-size: 17px; font-weight: 400;" [formGroup]="this.formGroup">
+			<div class="d-flex flex-column" style="font-size: 17px; font-weight: 400;">
 				<mat-form-field>
 					<mat-label>Search</mat-label>
-					<input matInput type="text" placeholder="Type name, description" formControlName="search">
+					<input matInput type="text" placeholder="Type name, description"
+						[formControl]="getMyControl('search')">
 				</mat-form-field>
 
 				<div class="mb-3 custom-formfield">
-					<div>
-						<mat-label>Salary:</mat-label>
-						<label class="ms-2">({{fromSalarySlider.value}}$ - </label>
-						<label class="ms-2">{{toSalarySlider.value}}$)</label>
+					<mat-label>Salary:</mat-label>
+					<div class="d-flex flex-row mt-2">
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="fromSalaryValue" />
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="toSalaryValue" />
+						</mat-form-field>
 					</div>
-					<mat-slider style="width: 95%;" min="0" max="{{this.maxSalary}}" step="{{this.salaryStep}}">
-						<input matInput matSliderStartThumb #fromSalarySlider formControlName="fromSalary">
-						<input matInput matSliderEndThumb #toSalarySlider formControlName="toSalary">
+
+					<mat-slider discrete="true" [displayWith]="formatLabel" style="width: 95%;" min="0"
+						max="{{this.maxSalary}}" step="{{this.salaryStep}}">
+						<input [(ngModel)]="fromSalaryValue" [formControl]="getMyControl('fromSalary')"
+							matSliderStartThumb #fromSalarySlider />
+						<input [(ngModel)]="toSalaryValue" [formControl]="getMyControl('toSalary')" matSliderEndThumb
+							#toSalarySlider />
 					</mat-slider>
 				</div>
 
-				<div class="mb-4 custom-formfield">
-					<div>
-						<mat-label>Hiring quantity:</mat-label>
-						<label class="ms-2">({{fromHiringQtySlider.value}} - </label>
-						<label class="ms-2">{{toHiringQtySlider.value}})</label>
+				<div class="mb-3 custom-formfield">
+					<mat-label>Hiring Quantity:</mat-label>
+					<div class="d-flex flex-row mt-2">
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="fromMaxHiringQtyValue" />
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="toMaxHiringQtyValue" />
+						</mat-form-field>
 					</div>
-					<mat-slider min="0" max="{{this.maxMaxHiringQty}}" step="{{this.maxHiringQtyStep}}"
-						style="width: 95%;">
-						<input matInput matSliderStartThumb #fromHiringQtySlider formControlName="fromMaxHiringQty">
-						<input matInput matSliderEndThumb #toHiringQtySlider formControlName="toMaxHiringQty">
+
+					<mat-slider discrete="true" [displayWith]="formatLabel" style="width: 95%;" min="0"
+						max="{{this.maxMaxHiringQty}}" step="{{this.maxHiringQtyStep}}">
+						<input [(ngModel)]="fromMaxHiringQtyValue" [formControl]="getMyControl('fromMaxHiringQty')"
+							matSliderStartThumb #fromMaxHiringQtySlider />
+						<input [(ngModel)]="toMaxHiringQtyValue" [formControl]="getMyControl('toMaxHiringQty')"
+							matSliderEndThumb #toMaxHiringQtySlider />
 					</mat-slider>
 				</div>
 
@@ -43,10 +59,19 @@
 						<mat-label>Time</mat-label>
 						<mat-date-range-input [rangePicker]="picker">
 							<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
-								formControlName="fromDate" placeholder="From date">
+								[formControl]="getMyControl('fromDate')" placeholder="From date" #fromDatePicker>
 							<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
-								formControlName="toDate" placeholder="To date">
+								[formControl]="getMyControl('toDate')" placeholder="To date" #toDatePicker>
 						</mat-date-range-input>
+						@if( fromDatePicker.value || toDatePicker.value){
+						<div matRipple [matRippleCentered]="true" style="height: fit-content; width: fit-content;"
+							class="custom-button rounded-5 p-2" (click)="fromDatePicker.value=''; toDatePicker.value='' ;
+this.formGroup.get('fromDate')?.setValue(''); this.formGroup.get('toDate')?.setValue('')">
+							<div style="height: 24px; width: 24px;">
+								<mat-icon style="color: red;">delete</mat-icon>
+							</div>
+						</div>
+						}
 						@if(this.formGroup.get('fromDate')?.invalid || this.formGroup.get('toDate')?.invalid){
 						<span style="color: red;">
 							<span>Required: </span>
@@ -85,7 +110,7 @@
 						[displayFieldName]="'companyName'" [valueFieldName]="'companyId'"
 						[observableData]="this.companyService.getAll()"></app-chips-autocomplete>
 				</div>
-			</form>
+			</div>
 		</mat-expansion-panel>
 	</mat-accordion>
 

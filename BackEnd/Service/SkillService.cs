@@ -24,19 +24,12 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SkillModel>> GetAllSkills(string? request)
+        public async Task<IEnumerable<SkillModel>> GetAllSkills(bool isAdmin, string? request)
         {
             var entities = await _skillRepository.GetAllSkills(request);
-            if (entities != null)
-            {
-                List<SkillModel> models = new List<SkillModel>();
-                foreach (var item in entities)
-                {
-                    models.Add(_mapper.Map<SkillModel>(item));
-                }
-                return models;
-            }
-            return null!;
+            var models = _mapper.Map<List<SkillModel>>(entities);
+            
+            return !isAdmin ? models.Where(o => !o.IsDeleted).ToList() : models;
         }
 
         public async Task<SkillModel> SaveSkill(SkillModel request)

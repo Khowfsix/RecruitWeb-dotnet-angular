@@ -9,6 +9,8 @@ namespace Service.Models
 
         public string? CategoryPositionDescription { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public virtual ICollection<PositionModel> Positions { get; set; } = new List<PositionModel>();
     }
 }

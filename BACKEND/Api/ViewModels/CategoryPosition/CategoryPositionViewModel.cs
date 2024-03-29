@@ -11,6 +11,8 @@ namespace Api.ViewModels.CategoryPosition
         public string? CategoryPositionName { get; set; }
 
         public string? CategoryPositionDescription { get; set; }
+        
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<PositionViewModel> Positions { get; set; } = new List<PositionViewModel>();
     }

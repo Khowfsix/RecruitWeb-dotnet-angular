@@ -10,10 +10,10 @@ namespace Service.Interfaces
 
         Task<bool> RemoveLanguage(Guid id);
 
-        Task<List<LanguageModel>> GetAllLanguages();
+        Task<List<LanguageModel>> GetAllLanguages(bool isAdmin);
 
         Task<LanguageModel> GetLanguage(Guid id);
 
-        Task<List<LanguageModel>> GetLanguage(string name);
+        Task<List<LanguageModel>> GetLanguage(bool isAdmin, string name);
     }
 }

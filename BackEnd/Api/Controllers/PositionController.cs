@@ -57,16 +57,13 @@ namespace Api.Controllers
             filter.CategoryPositionIds = positionFilterModel.getListOfCategoryPositionIds();
             filter.LanguageIds = positionFilterModel.getListOfLanguageIds();
 
-            var listModelDatas = await _positionService.GetAllPositions(filter, sortString);
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            var listModelDatas = await _positionService.GetAllPositions(isAdmin, filter, sortString!);
 
             var listPositionViewModel = _mapper.Map<List<PositionViewModel>>(listModelDatas);
 
-            var isAdmin = HttpContext.User.IsInRole("Admin") ? true : false;
-            if (!isAdmin)
-                listPositionViewModel.Where(o => o.IsDeleted == false);
-
             var pageResponse = new PageResponse<PositionViewModel>(
-                listPositionViewModel.ToPagedList(pageIndex.Value, pageSize.Value)
+                listPositionViewModel.ToPagedList(pageIndex!.Value, pageSize!.Value)
                 );
 
             return Ok(pageResponse);
