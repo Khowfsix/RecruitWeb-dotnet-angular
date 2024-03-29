@@ -75,8 +75,11 @@ namespace Api.Controllers
         {
             var modelData = await _positionService.GetPositionById(positionId);
             var response = _mapper.Map<PositionViewModel>(modelData);
+            var isAdmin = HttpContext.User.IsInRole("Admin");
 
-            return response is not null ? Ok(response) : NotFound(positionId);
+            return response is not null 
+                ? (response.IsDeleted && !isAdmin ? NotFound(positionId) : Ok(response)) 
+                : NotFound(positionId);
         }
 
         [HttpGet("[action]")]
