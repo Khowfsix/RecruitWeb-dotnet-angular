@@ -1,27 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { AuthService } from '../../core/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
-import { CookieService } from 'ngx-cookie-service';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from '../../core/services/auth.service';
 import { LogoutDialogComponent } from '../../module/auth/logout-dialog/logout-dialog.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @Component({
 	selector: 'app-header',
 	standalone: true,
-	imports: [MatMenuModule, MatIconModule],
+	imports: [
+		MatMenuModule,
+		MatToolbarModule,
+		MatButtonModule,
+		MatIconModule,
+		FlexLayoutModule
+	],
 	templateUrl: './header.component.html',
 	styleUrl: './header.component.css',
 })
 export class HeaderComponent {
 	_user: string | null = this._cookieService.get('jwt');
+
+	@Input() deviceXs: boolean | null = null;
+
 	constructor(
 		public _authService: AuthService,
 		private _router: Router,
 		private _cookieService: CookieService,
 		public _matdialog: MatDialog) {
 		this.subscribeToLoginStatus();
+		// console.log(this.deviceXs);
 	}
 
 

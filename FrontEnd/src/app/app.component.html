@@ -1,12 +1,11 @@
-<app-header></app-header>
+<app-header [deviceXs]="deviceXs"></app-header>
 @if(this.isLoading$ | async){
 <div class="spinner_overlay">
-	<mat-progress-spinner [mode]="'indeterminate'">
-	</mat-progress-spinner>
+	<mat-progress-spinner [mode]="'indeterminate'"> </mat-progress-spinner>
 </div>
 }
 <router-outlet></router-outlet>
-<app-footer></app-footer>
+<app-footer [deviceXs]="deviceXs"></app-footer>
 
 <!-- MDB -->
 <!-- <script type="text/javascript" src=></script> -->
