@@ -1,11 +1,20 @@
-<app-header [deviceXs]="deviceXs"></app-header>
-@if(this.isLoading$ | async){
-<div class="spinner_overlay">
-	<mat-progress-spinner [mode]="'indeterminate'"> </mat-progress-spinner>
+<div fxLayout="column" fxLayoutAlign="space-between" fxFill fxLayoutGap="20px">
+	<div>
+		<app-header [deviceXs]="deviceXs"></app-header>
+		@if(this.isLoading$ | async){
+		<div class="spinner_overlay">
+			<mat-progress-spinner [mode]="'indeterminate'">
+			</mat-progress-spinner>
+		</div>
+		}
+	</div>
+	<div>
+		<router-outlet></router-outlet>
+	</div>
+	<div>
+		<app-footer [deviceXs]="deviceXs"></app-footer>
+	</div>
 </div>
-}
-<router-outlet></router-outlet>
-<app-footer [deviceXs]="deviceXs"></app-footer>
 
 <!-- MDB -->
 <!-- <script type="text/javascript" src=></script> -->
