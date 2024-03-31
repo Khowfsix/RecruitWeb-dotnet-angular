@@ -91,13 +91,12 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     {
         modelBuilder.Entity<Position>().Property(p => p.Salary).HasPrecision(12, 2);
         base.OnModelCreating(modelBuilder);
+        new DbInitializer(modelBuilder).Seed();
 
         //modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
         //modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
         //modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
         //modelBuilder.Entity<WebUser>().ToTable("AspNetUsers");
-
-        SeedRoles(modelBuilder);
 
         modelBuilder.Entity<Application>(entity =>
         {
@@ -678,15 +677,39 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     }
 
     //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
 
-    private void SeedRoles(ModelBuilder builder)
+public class DbInitializer
+{
+    private readonly ModelBuilder modelBuilder;
+
+    public DbInitializer(ModelBuilder modelBuilder)
     {
-        builder.Entity<IdentityRole>().HasData
+        this.modelBuilder = modelBuilder;
+    }
+
+    public void Seed()
+    {
+        // seed role
+        modelBuilder.Entity<IdentityRole>().HasData
             (
             new IdentityRole() { Name = "Candidate", ConcurrencyStamp = "1", NormalizedName = "Candidate" },
             new IdentityRole() { Name = "Interviewer", ConcurrencyStamp = "2", NormalizedName = "Interviewer" },
             new IdentityRole() { Name = "Recruiter", ConcurrencyStamp = "3", NormalizedName = "Recruiter" },
             new IdentityRole() { Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
             );
+
+        // seed user
+        //modelBuilder.Entity<WebUser>().HasData
+        //    (
+        //        new WebUser() { UserName = "AdminJasmine", }
+        //    );
+
+        //modelBuilder.Entity<Company>().HasData(new Company()
+        //{
+        //    CompanyId = Guid.NewGuid(),
+        //    CompanyName = "Test",
+        //    IsDeleted = false,
+        //});
     }
 }
