@@ -2,7 +2,7 @@
 {
     public class CandidateJoinEventUpdateModel
     {
-        public string EventName { get; set; }
+        public string EventName { get; set; } = string.Empty;
 
         public Guid CandidateJoinEventId { get; set; }
 

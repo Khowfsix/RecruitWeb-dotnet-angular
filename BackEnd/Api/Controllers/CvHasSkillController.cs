@@ -48,10 +48,10 @@ namespace Api.Controllers
         {
             var modelData = _mapper.Map<CvHasSkillModel>(request);
             var cvHasSkillList = await _cvHasSkillService.UpdateCvHasSkillService(modelData, requestId);
-            if (cvHasSkillList == null)
-            {
-                return Ok("Not found");
-            }
+            //if (cvHasSkillList == null)
+            //{
+            //    return Ok("Not found");
+            //}
             return Ok(cvHasSkillList);
         }
 

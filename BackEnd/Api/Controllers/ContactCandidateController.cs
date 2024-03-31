@@ -1,5 +1,4 @@
 ﻿using Api.ViewModels.ContactEmail;
-using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,23 +12,24 @@ namespace Api.Controllers
     [Authorize]
     public class ContactCandidateController : ControllerBase
     {
-        private readonly UserManager<WebUser> _userManager;
-        private readonly SignInManager<WebUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        //private readonly UserManager<WebUser> _userManager;
+        //private readonly SignInManager<WebUser> _signInManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
 
-        public ContactCandidateController(UserManager<WebUser> userManager,
-            SignInManager<WebUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
-            IEmailService emailService,
-            IConfiguration configuration)
+        public ContactCandidateController(
+            //UserManager<WebUser> userManager,
+            //SignInManager<WebUser> signInManager,
+            //RoleManager<IdentityRole> roleManager,
+            //IConfiguration configuration,
+            IEmailService emailService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _roleManager = roleManager;
+            //_userManager = userManager;
+            //_signInManager = signInManager;
+            //_roleManager = roleManager;
             _emailService = emailService;
-            _configuration = configuration;
+            //_configuration = configuration;
         }
 
         /*[HttpPost]
@@ -54,8 +54,7 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("ConfirmCVReceipted")]
-        public async Task<IActionResult> ConfirmCVReceipted([FromBody] AddContactEmailModel contact)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public IActionResult ConfirmCVReceipted([FromBody] AddContactEmailModel contact)
         {
             IdentityUser user = new()
             {
@@ -73,8 +72,7 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("ConfirmCVApproval")]
-        public async Task<IActionResult> ConfirmCVApproval([FromBody] AddContactEmailModel contact)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public IActionResult ConfirmCVApproval([FromBody] AddContactEmailModel contact)
         {
             IdentityUser user = new()
             {
@@ -92,8 +90,7 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("ConfirmPassed")]
-        public async Task<IActionResult> ConfirmPassed([FromBody] AddContactEmailModel contact)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public IActionResult ConfirmPassed([FromBody] AddContactEmailModel contact)
         {
             IdentityUser user = new()
             {
@@ -111,8 +108,7 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("ConfirmInterviewSchedule")]
-        public async Task<IActionResult> ConfirmInterviewSchedule([FromBody] UpdateContacEmailModel contact)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public IActionResult ConfirmInterviewSchedule([FromBody] UpdateContacEmailModel contact)
         {
             IdentityUser user = new()
             {

@@ -7,7 +7,7 @@ public partial class Interviewer
     public Guid InterviewerId { get; set; }
 
 
-    public string UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 
     [Column("CompanyId")]
     public Guid CompanyId { get; set; }

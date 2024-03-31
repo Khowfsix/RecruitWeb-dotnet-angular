@@ -8,9 +8,9 @@
         public Guid PositionId { get; set; }
         public DateTime DateTime { get; set; }
 
-        public string Company_Status { get; set; }
+        public string Company_Status { get; set; } = string.Empty;
 
-        public string Priority { get; set; }
+        public string Priority { get; set; } = string.Empty;
 
         public bool IsDeleted { get; set; } = false;
     }

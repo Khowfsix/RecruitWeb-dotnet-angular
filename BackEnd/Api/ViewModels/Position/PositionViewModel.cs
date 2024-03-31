@@ -26,9 +26,9 @@ namespace Api.ViewModels.Position
 
         public DateTime? EndDate { get; set; }
 
-        public CompanyViewModel Company { get; set; }
+        public CompanyViewModel Company { get; set; } = new();
 
-        public LanguageViewModel Language { get; set; }
+        public LanguageViewModel Language { get; set; } = new();
 
         public RecruiterViewModel Recruiter { get; set; } = null!;
 

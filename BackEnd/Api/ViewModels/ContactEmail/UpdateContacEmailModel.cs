@@ -2,10 +2,8 @@
 {
     public class UpdateContacEmailModel
     {
-        public string ToEmail { get; set; }
-
-        public string DateTime { get; set; }
-
-        public string Room { get; set; }
+        public string ToEmail { get; set; } = string.Empty;
+        public string DateTime { get; set; } = string.Empty;
+        public string Room { get; set; } = string.Empty;
     }
 }

@@ -199,50 +199,46 @@
 //                return BadRequest("Image URL is required.");
 //            }
 
-//            using (var httpClient = _httpClientFactory.CreateClient())
+//            using var httpClient = _httpClientFactory.CreateClient();
+//            try
 //            {
-//                try
+//                // Gửi yêu cầu GET để download tấm hình từ Cloudinary
+//                var response = await httpClient.GetAsync(imageUrl);
+
+//                // Kiểm tra xem yêu cầu có thành công không
+//                if (response.IsSuccessStatusCode)
 //                {
-//                    // Gửi yêu cầu GET để download tấm hình từ Cloudinary
-//                    var response = await httpClient.GetAsync(imageUrl);
+//                    // Lấy nội dung của tấm hình từ response
+//                    var imageStream = await response.Content.ReadAsStreamAsync();
 
-//                    // Kiểm tra xem yêu cầu có thành công không
-//                    if (response.IsSuccessStatusCode)
+//                    // Chuyển Stream thành mảng byte
+//                    using var memoryStream = new MemoryStream();
+//                    await imageStream.CopyToAsync(memoryStream);
+//                    var imageBytes = memoryStream.ToArray();
+
+//                    // Trả về FileContentResult để download tấm hình
+//                    return new FileContentResult(imageBytes, "image/jpeg")
 //                    {
-//                        // Lấy nội dung của tấm hình từ response
-//                        var imageStream = await response.Content.ReadAsStreamAsync();
-
-//                        // Chuyển Stream thành mảng byte
-//                        using (var memoryStream = new MemoryStream())
-//                        {
-//                            await imageStream.CopyToAsync(memoryStream);
-//                            var imageBytes = memoryStream.ToArray();
-
-//                            // Trả về FileContentResult để download tấm hình
-//                            return new FileContentResult(imageBytes, "image/jpeg")
-//                            {
-//                                FileDownloadName = "downloaded_image.jpg"
-//                            };
-//                        }
-//                    }
-//                    else
-//                    {
-//                        // Xử lý lỗi nếu yêu cầu không thành công
-//                        return BadRequest("Error while downloading image from Cloudinary.");
-//                    }
+//                        FileDownloadName = "downloaded_image.jpg"
+//                    };
 //                }
-//                catch (HttpRequestException)
+//                else
 //                {
-//                    // Xử lý lỗi nếu URL không hợp lệ hoặc không thể kết nối đến Cloudinary
-//                    return BadRequest("Invalid image URL or failed to connect to Cloudinary.");
+//                    // Xử lý lỗi nếu yêu cầu không thành công
+//                    return BadRequest("Error while downloading image from Cloudinary.");
 //                }
+//            }
+//            catch (HttpRequestException)
+//            {
+//                // Xử lý lỗi nếu URL không hợp lệ hoặc không thể kết nối đến Cloudinary
+//                return BadRequest("Invalid image URL or failed to connect to Cloudinary.");
 //            }
 //        }
 //    }
 
 //    public class IdAndRoleModel
 //    {
-//        public string Id { get; set; }
-//        public List<string> Role { get; set; }
+//        public string Id { get; set; } = string.Empty;
+//        public List<string> Role { get; set; } = new();
 //    }
 //}

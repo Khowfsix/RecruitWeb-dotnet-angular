@@ -5,18 +5,18 @@ namespace Api.ViewModels.Application
 {
     public class ApplicationViewModel
     {
-        public Guid ApplicationId { get; set; }
+        public Guid ApplicationId { get; set; } = new();
 
-        public virtual CvViewModel Cv { get; set; }
+        public virtual CvViewModel Cv { get; set; } = new();
 
-        public PositionViewModel Position { get; set; }
+        public PositionViewModel Position { get; set; } = new();
 
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; set; } = new();
 
-        public string Company_Status { get; set; }
+        public string Company_Status { get; set; } = string.Empty;
 
-        public string Candidate_Status { get; set; }
+        public string Candidate_Status { get; set; } = string.Empty;
 
-        public string Priority { get; set; }
+        public string Priority { get; set; } = string.Empty;
     }
 }

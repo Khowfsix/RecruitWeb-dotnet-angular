@@ -5,16 +5,16 @@ namespace Api.ViewModels.Authentication.LogIn
     public class ChangePasswordModel
     {
         [Required(ErrorMessage = "Username is reqired")]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Current password is reqired")]
-        public string CurrentPassword { get; set; }
+        public string CurrentPassword { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "New password is reqired")]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Confirm password is reqired")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmpassword do not match")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

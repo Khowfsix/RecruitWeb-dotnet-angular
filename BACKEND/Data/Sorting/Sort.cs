@@ -22,13 +22,7 @@ public class Sort<T>
         string sortValue = sortList[1];
 
         var entityType = typeof(T);
-        var property = entityType.GetProperty(fieldName);
-
-        if (property == null)
-        {
-            throw new ArgumentException($"Property {fieldName} not found on type {entityType.Name}");
-        }
-
+        var property = entityType.GetProperty(fieldName) ?? throw new ArgumentException($"Property {fieldName} not found on type {entityType.Name}");
         var parameter = Expression.Parameter(entityType, "x");
 
         var propertyAccess = Expression.MakeMemberAccess(parameter, property);
@@ -44,6 +38,6 @@ public class Sort<T>
                 && method.GetParameters().Length == 2)
             .MakeGenericMethod(entityType, property.PropertyType);
 
-        return (IQueryable<T>)orderByMethod.Invoke(null, new object[] { query, orderByExp });
+        return (IQueryable<T>)orderByMethod.Invoke(null, new object[] { query, orderByExp })!;
     }
 }

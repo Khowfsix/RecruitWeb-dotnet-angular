@@ -14,7 +14,7 @@ public partial class Cv
 
     [Required]
     [DataType(DataType.ImageUrl)]
-    public string CvName { get; set; }
+    public string CvName { get; set; } = string.Empty;
 
 
 

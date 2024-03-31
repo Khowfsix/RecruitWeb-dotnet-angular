@@ -9,31 +9,18 @@
 				>
 			</button>
 
-			<!-- @if(!deviceXs){ -->
 			<button mat-button>About</button>
 			<button mat-button>Contact</button>
 			<button mat-button>I hate my job</button>
-			<!-- } -->
 		</div>
 
 		<div>
 			<button mat-button [mat-menu-trigger-for]="menu">
-				<!-- @if(deviceXs){ -->
 				<mat-icon class="mat-18">more_vert</mat-icon>
-				<!-- } @if(!deviceXs){ -->
 				<span>Menu</span>
-				<!-- } -->
 			</button>
 		</div>
 	</mat-toolbar-row>
-
-	@if(deviceXs) {
-	<mat-toolbar-row>
-		<button mat-button>About</button>
-		<button mat-button>Contact</button>
-		<button mat-button>I hate my job</button>
-	</mat-toolbar-row>
-	}
 
 	<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
 		<button mat-menu-item>

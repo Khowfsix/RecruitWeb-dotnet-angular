@@ -12,8 +12,7 @@ namespace Service.Models
 
         public string? CvPdf { get; set; }
 
-        public string CvName { get; set; }
-
+        public string CvName { get; set; } = string.Empty;
 
         public string Introduction { get; set; } = null!;
 
