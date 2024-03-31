@@ -4,21 +4,64 @@
 			<button mat-button (click)="handleRouteToHomepage()">
 				<!-- <i class="fa-solid fa-house"></i> -->
 				<mat-icon class="mat-18">home</mat-icon>
-				<span class="font-monospace fs-5" mat-button
-					>Recruitment Website</span
-				>
+				<span class="font-monospace fs-5" mat-button>Recruitment Website</span>
 			</button>
 
-			<button mat-button>About</button>
-			<button mat-button>Contact</button>
-			<button mat-button>I hate my job</button>
+			<div class="d-none d-md-inline">
+				<button mat-button>About</button>
+				<button mat-button>Contact</button>
+				<button mat-button>I hate my job</button>
+			</div>
+		</div>
+
+		<div class="d-none d-lg-inline col-lg-3 col-xl-4">
+			<div class="input-group">
+				<input
+					type="search"
+					class="form-control rounded"
+					placeholder="Search"
+					aria-label="Search"
+					aria-describedby="search-addon" />
+				<button type="button" class="btn btn-outline-info text-white">search</button>
+			</div>
 		</div>
 
 		<div>
 			<button mat-button [mat-menu-trigger-for]="menu">
 				<mat-icon class="mat-18">more_vert</mat-icon>
-				<span>Menu</span>
+				<span class="d-none d-sm-inline">Menu</span>
 			</button>
+		</div>
+	</mat-toolbar-row>
+
+	<mat-toolbar-row class="d-lg-none" fxLayout="row" fxLayoutAlign="space-between center">
+		<div class="d-inline d-md-none">
+			<button mat-button>About</button>
+			<button mat-button>Contact</button>
+			<button mat-button>I hate my job</button>
+		</div>
+		<div class="d-none d-sm-inline d-lg-none col-md-12">
+			<div class="input-group">
+				<input
+					type="search"
+					class="form-control rounded"
+					placeholder="Search"
+					aria-label="Search"
+					aria-describedby="search-addon" />
+				<button type="button" class="btn btn-outline-info text-white">search</button>
+			</div>
+		</div>
+	</mat-toolbar-row>
+
+	<mat-toolbar-row class="d-sm-none">
+		<div class="input-group">
+			<input
+				type="search"
+				class="form-control rounded"
+				placeholder="Search"
+				aria-label="Search"
+				aria-describedby="search-addon" />
+			<button type="button" class="btn btn-outline-info text-white">search</button>
 		</div>
 	</mat-toolbar-row>
 

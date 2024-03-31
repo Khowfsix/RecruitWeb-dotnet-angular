@@ -1,10 +1,9 @@
-<div fxLayout="column" fxLayoutAlign="space-between" fxFill fxLayoutGap="20px">
+<div fxLayout="column" fxLayoutAlign="space-between" fxFill fxLayoutGap="10px">
 	<div>
 		<app-header [deviceXs]="deviceXs"></app-header>
 		@if(this.isLoading$ | async){
 		<div class="spinner_overlay">
-			<mat-progress-spinner [mode]="'indeterminate'">
-			</mat-progress-spinner>
+			<mat-progress-spinner [mode]="'indeterminate'"> </mat-progress-spinner>
 		</div>
 		}
 	</div>
