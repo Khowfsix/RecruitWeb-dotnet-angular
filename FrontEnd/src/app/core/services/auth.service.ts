@@ -39,6 +39,14 @@ export class AuthService {
 			.pipe(first());
 	}
 
+	isValidUsername(username: string): Observable<boolean> {
+		return this.api.GET(`api/Authentication/IsValidUserName?username=${username}`);
+	}
+
+	isValidEmail(email: string): Observable<boolean> {
+		return this.api.GET(`api/Authentication/IsValidEmail?email=${email}`);
+	}
+
 	login(loginModel: Login): Observable<unknown> {
 		this.loginStatus.next(true);
 		return this.api.POST('/api/Authentication/Login', loginModel);
