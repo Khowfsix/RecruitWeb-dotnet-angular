@@ -690,20 +690,26 @@ public class DbInitializer
     public void Seed()
     {
         // seed role
+        string candidateId = Guid.NewGuid().ToString();
+        string interviewerId = Guid.NewGuid().ToString();
+        string recruiterId = Guid.NewGuid().ToString();
+        string adminId = Guid.NewGuid().ToString();
         modelBuilder.Entity<IdentityRole>().HasData
             (
-            new IdentityRole() { Name = "Candidate", ConcurrencyStamp = "1", NormalizedName = "Candidate" },
-            new IdentityRole() { Name = "Interviewer", ConcurrencyStamp = "2", NormalizedName = "Interviewer" },
-            new IdentityRole() { Name = "Recruiter", ConcurrencyStamp = "3", NormalizedName = "Recruiter" },
-            new IdentityRole() { Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
+            new IdentityRole() { Id = candidateId, Name = "Candidate", ConcurrencyStamp = "1", NormalizedName = "Candidate" },
+            new IdentityRole() { Id = interviewerId, Name = "Interviewer", ConcurrencyStamp = "2", NormalizedName = "Interviewer" },
+            new IdentityRole() { Id = recruiterId, Name = "Recruiter", ConcurrencyStamp = "3", NormalizedName = "Recruiter" },
+            new IdentityRole() { Id = adminId, Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
             );
 
         // seed user
+        string lyhongphatId = Guid.NewGuid().ToString();
+        string jasmineId = Guid.NewGuid().ToString();
         modelBuilder.Entity<WebUser>().HasData
             (
                 new WebUser()
                 {
-                    Id = "6a88c5e8-654f-4f57-8f71-2b56d7c5ccab",
+                    Id = lyhongphatId,
                     FullName = "ly hong phat",
                     DateOfBirth = null,
                     Address = null,
@@ -725,7 +731,7 @@ public class DbInitializer
                 },
                 new WebUser()
                 {
-                    Id = "f5a82199-6892-458d-bc9f-8d8372d0fd24",
+                    Id = jasmineId,
                     FullName = "Jasmine",
                     DateOfBirth = null,
                     Address = null,
@@ -748,6 +754,14 @@ public class DbInitializer
             );
 
         // seed user role
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string> { UserId = lyhongphatId, RoleId = candidateId },
+            new IdentityUserRole<string> { UserId = lyhongphatId, RoleId = recruiterId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = adminId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = candidateId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = interviewerId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = recruiterId }
+            );
 
         //modelBuilder.Entity<Company>().HasData(new Company()
         //{
