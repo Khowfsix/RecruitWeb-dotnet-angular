@@ -6,8 +6,11 @@ namespace Service.Interfaces
     public interface ITokenService
     {
         Task<AuthenticationToken> GetAuthenticationToken(IEnumerable<Claim> claims, WebUser webUser);
+
         Task<string> GenerateAccessToken(IEnumerable<Claim> authClaims);
+
         Task<RefreshToken> GenerateRefreshToken(int expiryByDays, WebUser webUser);
+
         Task<RefreshToken> GetValidRefreshToken(string token, WebUser identityUser);
 
         //Task<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token);

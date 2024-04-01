@@ -6,6 +6,7 @@ using Service.Interfaces;
 using Service.Models;
 
 namespace Api.Controllers;
+
 [Authorize]
 public class InterviewController : BaseAPIController
 {
@@ -17,6 +18,7 @@ public class InterviewController : BaseAPIController
     private readonly IMapper _mapper;
 
     #region comment
+
     //public InterviewController(IInterviewService interviewService,
     //    IItrsinterviewService itrsinterviewService,
     //    IRoundService roundService)
@@ -33,7 +35,8 @@ public class InterviewController : BaseAPIController
     /// <param name="itrsinterviewService"></param>
     ///
 
-    #endregion
+    #endregion comment
+
     public InterviewController(
         IInterviewService interviewService,
         IItrsinterviewService itrsinterviewService,
@@ -89,13 +92,11 @@ public class InterviewController : BaseAPIController
                 return Ok();
             }
             return Ok(dataList);
-
         }
         catch (Exception)
         {
             return BadRequest();
         }
-
     }
 
     [HttpGet("[action]/{requestId}")]

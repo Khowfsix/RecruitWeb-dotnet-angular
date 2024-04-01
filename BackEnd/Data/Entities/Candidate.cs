@@ -4,9 +4,7 @@ public partial class Candidate
 {
     public Guid CandidateId { get; set; }
 
-
     public string UserId { get; set; }
-
 
     public string? Experience { get; set; }
 
@@ -20,7 +18,5 @@ public partial class Candidate
 
     public virtual ICollection<SuccessfulCadidate> SuccessfulCadidates { get; set; } = new List<SuccessfulCadidate>();
 
-
     public virtual WebUser User { get; set; }
-
 }

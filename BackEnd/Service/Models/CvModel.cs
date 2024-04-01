@@ -14,7 +14,6 @@ namespace Service.Models
 
         public string CvName { get; set; }
 
-
         public string Introduction { get; set; } = null!;
 
         public string Education { get; set; } = null!;

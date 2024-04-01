@@ -7,8 +7,10 @@ namespace Api.ViewModels.Cv
     {
         [Required]
         public Guid Cvid { get; set; }
+
         [Required]
         public Guid CandidateId { get; set; }
+
         public string? Experience { get; set; }
         public string? CvPdf { get; set; }
 
@@ -27,6 +29,7 @@ namespace Api.ViewModels.Cv
     {
         [Required]
         public Guid SkillId { get; set; }
+
         public int ExperienceYear { get; set; }
     }
 }

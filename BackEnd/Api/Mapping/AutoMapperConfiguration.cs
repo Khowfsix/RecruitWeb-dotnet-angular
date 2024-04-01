@@ -57,6 +57,7 @@ namespace Data.Mapping
             #endregion Language
 
             #region Position
+
             CreateMap<PositionModel, PositionModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
                 {
@@ -73,14 +74,15 @@ namespace Data.Mapping
 
                     return true;
                 }));
-            //.ForMember(dest => dest.CompanyId, opt => opt.Ignore()) 
-            //.ForMember(dest => dest.RecruiterId, opt => opt.Ignore()) 
+            //.ForMember(dest => dest.CompanyId, opt => opt.Ignore())
+            //.ForMember(dest => dest.RecruiterId, opt => opt.Ignore())
             //.ForMember(dest => dest.Requirements, opt => opt.Ignore());
             CreateMap<Position, PositionModel>().ReverseMap();
             CreateMap<PositionModel, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionAddModel>().ReverseMap();
             CreateMap<PositionUpdateModel, PositionModel>().ReverseMap();
             CreateMap<PositionFilter, PositionFilterModel>().ReverseMap();
+
             #endregion Position
 
             #region Question

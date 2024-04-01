@@ -83,9 +83,9 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     // => optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection");
     => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+
     //=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
     //=> optionsBuilder.UseSqlServer("Server=tcp:jasminerecwebdbserver.database.windows.net,1433;Initial Catalog=RecruitmentWeb;Persist Security Info=False;User ID=jasmine;Password=bruh@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -699,10 +699,55 @@ public class DbInitializer
             );
 
         // seed user
-        //modelBuilder.Entity<WebUser>().HasData
-        //    (
-        //        new WebUser() { UserName = "AdminJasmine", }
-        //    );
+        modelBuilder.Entity<WebUser>().HasData
+            (
+                new WebUser()
+                {
+                    Id = "6a88c5e8-654f-4f57-8f71-2b56d7c5ccab",
+                    FullName = "ly hong phat",
+                    DateOfBirth = null,
+                    Address = null,
+                    ImageURL = null,
+                    UserName = "lyhongphat",
+                    NormalizedUserName = "LYHONGPHAT",
+                    Email = "lyhongphat261202@gmail.com",
+                    NormalizedEmail = "LYHONGPHAT261202@GMAIL.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = "AQAAAAEAACcQAAAAED/UcvE0mbg31jAMWDqc7wtANLZ9+xQrwe4GvRoEW7VHQ4mGKsXvvhv9J367awYVfA==",
+                    SecurityStamp = "NQBJBUONTUAPYIE7UZDHYJD2NE7VJZEF",
+                    ConcurrencyStamp = "d00d37a8-0c8d-4b37-a8b7-823901b3b98d",
+                    PhoneNumber = null,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                },
+                new WebUser()
+                {
+                    Id = "f5a82199-6892-458d-bc9f-8d8372d0fd24",
+                    FullName = "Jasmine",
+                    DateOfBirth = null,
+                    Address = null,
+                    ImageURL = null,
+                    UserName = "AdminJasmine",
+                    NormalizedUserName = "ADMINJASMINE",
+                    Email = "jasmineandhongphat@gmail.com",
+                    NormalizedEmail = "JASMINEANDHONGPHAT@GMAIL.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = "AQAAAAEAACcQAAAAECIlpgtWCyAhui2Dipuu9aK3ICiIStVY9hgOJwdooCgjRvENgPXaHCtjyM43zqc1Bg==",
+                    SecurityStamp = "KDB5T3VMZDHW3C2T2O3JFSP2TK4OQYRC",
+                    ConcurrencyStamp = "37a3f448-08e1-4d5b-8d9d-97edd7ed2441",
+                    PhoneNumber = null,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                }
+            );
+
+        // seed user role
 
         //modelBuilder.Entity<Company>().HasData(new Company()
         //{

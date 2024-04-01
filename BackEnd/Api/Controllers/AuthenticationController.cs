@@ -272,7 +272,6 @@ namespace Api.Controllers
                 return BadRequest("Cannot find user");
             }
 
-
             // Get existing refresh token if it is valid and revoke it
             var existingRefreshToken = await _tokenService.GetValidRefreshToken(token!, identityUser!);
             if (existingRefreshToken == null)

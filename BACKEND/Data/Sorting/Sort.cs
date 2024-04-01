@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+
 namespace Data.Sorting;
 
 public class Sort<T>

@@ -13,5 +13,6 @@ public interface IRecruiterRepository : IRepository<Recruiter>
     Task<bool> UpdateRecruiter(Recruiter request, Guid requestId);
 
     Task<bool> DeleteRecruiter(Guid requestId);
+
     Task<Recruiter> GetRecruiterByUserId(string userId);
 }

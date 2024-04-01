@@ -23,7 +23,7 @@ namespace Data.Paging
 
         public bool HasPreviousPage => PageIndex > 1;
 
-        public bool HasNextPage => PageIndex < TotalPages;  
+        public bool HasNextPage => PageIndex < TotalPages;
 
         public static async Task<PageResponse<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
         {

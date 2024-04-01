@@ -15,6 +15,5 @@ namespace Data.Entities
         public string WebUserId = null!;
         public virtual SecurityQuestion SecurityQuestion { get; set; } = new SecurityQuestion();
         public virtual WebUser WebUser { get; set; } = new WebUser();
-
     }
 }

@@ -16,8 +16,6 @@ public partial class Cv
     [DataType(DataType.ImageUrl)]
     public string CvName { get; set; }
 
-
-
     [Required]
     public string Introduction { get; set; } = null!;
 

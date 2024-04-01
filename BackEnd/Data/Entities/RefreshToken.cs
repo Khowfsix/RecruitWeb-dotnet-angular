@@ -6,6 +6,7 @@ namespace Data.Entities
     {
         [Key]
         public int Id { get; set; }
+
         public string Token { get; set; } = string.Empty;
         public DateTime? ExpiryOn { get; set; } = DateTime.MinValue;
         public DateTime? CreatedOn { get; set; } = DateTime.Now;

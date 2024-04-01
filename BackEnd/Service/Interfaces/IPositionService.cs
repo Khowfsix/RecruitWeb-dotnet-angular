@@ -7,6 +7,7 @@ namespace Service.Interfaces
     public interface IPositionService
     {
         Task<PageResponse<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString, PageRequest pageRequest);
+
         Task<List<PositionModel>> GetAllPositionsByCurrentUser(String userId);
 
         Task<PositionModel> GetPositionById(Guid id);

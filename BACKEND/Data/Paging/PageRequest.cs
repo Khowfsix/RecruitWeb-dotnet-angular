@@ -7,7 +7,7 @@
 
         public PageRequest(int pageIndex, int pageSize)
         {
-            this.PageIndex = pageIndex; 
+            this.PageIndex = pageIndex;
             this.PageSize = pageSize;
         }
     }

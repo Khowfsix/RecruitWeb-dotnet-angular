@@ -12,9 +12,7 @@
 
         public SkillModel Skill { get; set; } = null!;
 
-
         public string Experience { get; set; }
-
 
         public string? Notes { get; set; }
 
