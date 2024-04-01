@@ -14,6 +14,6 @@ namespace Data.Entities
         public string? RevokedByIp { get; set; } = string.Empty;
 
         public string UserId { get; set; } = string.Empty;
-        public virtual WebUser User { get; set; } = null!;
+        public virtual WebUser User { get; set; } = new();
     }
 }

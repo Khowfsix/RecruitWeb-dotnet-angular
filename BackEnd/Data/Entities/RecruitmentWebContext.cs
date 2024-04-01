@@ -669,7 +669,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_UserRefreshToken");
         });
 
