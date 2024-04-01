@@ -25,8 +25,8 @@ namespace Data.Repositories
 
             return await Task.FromResult(position);
         }
-        public async Task<PageResponse<Position>> GetAllPositions(bool isAdmin, PositionFilter positionFilter,
-            string sortString, PageRequest pageRequest)
+        public async Task<PageResponse<Position>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, 
+            string sortString, PageRequest pageRequest) 
         {
             /*------------------------------*/
             // Finds all of position entities asynchronously in db.
@@ -43,10 +43,10 @@ namespace Data.Repositories
             if (!string.IsNullOrEmpty(positionFilter.Search))
             {
                 query = query
-                    .Where(o => o.PositionName!.ToLower().Contains(positionFilter.Search.ToLower()))
-                    .Where(o => o.Description!.ToLower().Contains(positionFilter.Search.ToLower()));
+                    .Where(o => o.PositionName.ToLower().Contains(positionFilter.Search.ToLower()))
+                    .Where(o => o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
             }
-
+            
             if (positionFilter.FromSalary.HasValue && positionFilter.ToSalary.HasValue)
             {
                 query = query.Where(o => o.Salary >= positionFilter.FromSalary.Value);

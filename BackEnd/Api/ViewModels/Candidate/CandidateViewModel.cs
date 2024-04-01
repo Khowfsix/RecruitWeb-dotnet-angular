@@ -4,11 +4,11 @@
     {
         public Guid CandidateId { get; set; }
 
-        public string UserId { get; set; } = string.Empty;
+        public string UserId { get; set; }
 
         public string? Experience { get; set; }
         public bool IsDeleted { get; set; } = false;
 
-        public WebUserViewModel User { get; set; } = new();
+        public WebUserViewModel User { get; set; }
     }
 }

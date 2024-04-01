@@ -2,7 +2,7 @@
 {
     public class UserViewModel
     {
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; set; }
 
         public string? FullName { get; set; }
         public DateTime DateOfBirth { get; set; }

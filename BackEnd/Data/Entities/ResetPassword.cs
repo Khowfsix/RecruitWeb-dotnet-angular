@@ -6,10 +6,17 @@ namespace Data.Entities
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
-        public string UserId { get; set; } = string.Empty;
+        public string UserId { get; set; }
+
+
+
         [Required]
-        public string OTP { get; set; } = string.Empty;
+        public string OTP { get; set; }
+
+
+
         [Required]
         public DateTime InsertDateTimeUTC { get; set; }
     }

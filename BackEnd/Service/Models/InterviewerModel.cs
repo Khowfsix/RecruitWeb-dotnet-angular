@@ -4,10 +4,18 @@ namespace Service.Models
 {
     public class InterviewerModel
     {
-        public Guid InterviewerId { get; set; } = new();
-        public string UserId { get; set; } = string.Empty;
-        public virtual WebUser User { get; set; } = new();
-        public Guid CompanyId { get; set; } = new();
+        public Guid InterviewerId { get; set; }
+
+
+        public string UserId { get; set; }
+
+
+
+        public virtual WebUser User { get; set; }
+
+
+        public Guid CompanyId { get; set; }
+
         public bool IsDeleted { get; set; } = false;
     }
 }

@@ -2,8 +2,10 @@
 {
     public class CandidateAddModel
     {
-        public string UserId { get; set; } = string.Empty;
+        public string UserId { get; set; }
+
         public string? Experience { get; set; }
+
         public bool IsDeleted { get; set; } = false;
     }
 }

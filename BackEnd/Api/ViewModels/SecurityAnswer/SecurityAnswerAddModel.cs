@@ -6,6 +6,6 @@
 
         public Guid SecurityQuestionId { get; set; }
 
-        public string WebUserId { get; set; } = string.Empty;
+        public string WebUserId { get; set; }
     }
 }

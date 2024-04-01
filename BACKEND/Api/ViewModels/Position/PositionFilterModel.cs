@@ -28,7 +28,7 @@
             {
                 return this.StringOfCategoryPositionIds.Split(',').Select(Guid.Parse).ToList();
             }
-            return null!;
+            return null;
         }
 
         public List<Guid> getListOfCompanyIds()
@@ -37,7 +37,7 @@
             {
                 return this.StringOfCompanyIds.Split(',').Select(Guid.Parse).ToList();
             }
-            return null!;
+            return null;
         }
 
         public List<Guid> getListOfLanguageIds()
@@ -46,7 +46,7 @@
             {
                 return this.StringOfLanguageIds.Split(',').Select(Guid.Parse).ToList();
             }
-            return null!;
+            return null;
         }
     }
 }
