@@ -27,33 +27,14 @@ commit TRANSACTION;
 -- select *
 -- from AspNetUserRoles;
 
-select u.UserName, ur.RoleId, r.Name as roleName
+select u.Id, u.UserName, ur.RoleId, r.Name as roleName
 from dbo.AspNetUsers as u JOIN dbo.AspNetUserRoles as ur on (u.Id = ur.UserId) JOIN dbo.AspNetRoles as r on (ur.RoleId = r.Id)
-
-
-select *
-from dbo.AspNetRoles
-
-
-select *
-from dbo.AspNetUsers
 
 select *
 from dbo.[Position]
 select *
-from dbo.Recruiter
-
+from dbo.Candidate
 update dbo.[Position] set isDeleted = 0
-
-
-select *
-from dbo.RefreshToken
-SELECT *
-from AspNetUsers
-WHEre id='65ea8443-a768-4581-b60c-f0ef7b060971'
-
--- delete RefreshToken
--- delete AspNetUsers WHERE id='65ea8443-a768-4581-b60c-f0ef7b060971'
 
 select *
 from dbo.CategoryPosition;
@@ -77,6 +58,3 @@ from Company;
 insert into Recruiter
 VALUES
     (NEWID() , '17d997d5-cd99-485f-8785-a7a8897a44ba', '6194c385-2a47-42b0-aaa0-ad05fad09510', 0)
-
-
--- add column createdDate

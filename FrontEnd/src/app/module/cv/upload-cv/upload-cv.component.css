@@ -1,0 +1,11 @@
+.file-drop-zone {
+	border: 2px dashed #ccc;
+	border-radius: 4px;
+	padding: 20px;
+	text-align: center;
+	transition: border-color 0.3s;
+}
+
+.file-drop-zone:hover {
+	border-color: #3f51b5;
+}

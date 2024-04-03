@@ -78,4 +78,8 @@ export class HeaderComponent {
 		this._user = null;
 		// ... other updates
 	}
+
+	handleRouteToCVManage() {
+		this._router.navigate(['/cvManagement/'])
+	}
 }

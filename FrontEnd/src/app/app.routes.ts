@@ -4,8 +4,10 @@ import { HomeComponent } from './module/home/home.component';
 import { CompanyComponent } from './module/reccer/company/company.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { Type } from '@angular/core';
-import { ProfileComponent } from './module/auth/profile/profile.component';
 import { PositionDetailComponent } from './module/position-detail/position-detail/position-detail.component';
+import { UploadCvComponent } from './module/cv/upload-cv/upload-cv.component';
+import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
+import { ProfileComponent } from './module/auth/profile/profile.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -51,6 +53,8 @@ export const routes: Routes = [
 	// url for interviewer
 
 	// url for candidate
+	createRouteWithRoles('uploadCV', UploadCvComponent, [role.CANDIDATE]),
+	createRouteWithRoles('cvManagement', CvManageComponent, [role.CANDIDATE]),
 
 	// url for admin
 	{

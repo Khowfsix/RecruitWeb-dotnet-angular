@@ -95,58 +95,63 @@ export class AuthGuard implements CanActivate {
 		// const authenPayload: { username: string, jti: string, roles: string[], exp: string, aud: string }
 		// 	= JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(accessToken)));
 		let authenPayload;
-		if (this._accessToken != null) {
-			authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(this._accessToken as string)));
-		}
+		if (this._accessToken) {
+			try {
+				authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(this._accessToken as string)));
+				// - if access token is expired:
+				const expDateInToken = parseInt(authenPayload[nameTypeInToken.exp], 10) * 1000;
+				if (expDateInToken < Date.now()) {
+					console.error('token was expired, token is ', this._accessToken);
+					/*
+							if refresh token is expired:
+								=> remove access token, user information and refresh token from cookie
+								redirect to login page
+					*/
+					const expirationDate = new Date(localStorage.getItem('expirationDate') as string).getTime();
+					if (expirationDate < Date.now()) {
+						// this.authService.logout();
+						console.error('refresh token out of date');
+						return loginPage;
+					}
 
-		// - if access token is expired:
-		const expDateInToken = parseInt(authenPayload[nameTypeInToken.exp], 10) * 1000;
-		if (expDateInToken < Date.now()) {
-			console.error('token was expired');
-			/*
-					if refresh token is expired:
-						=> remove access token, user information and refresh token from cookie
-						redirect to login page
-			*/
-			const expirationDate = new Date(localStorage.getItem('expirationDate') as string).getTime();
-			if (expirationDate < Date.now()) {
-				// this.authService.logout();
-				console.error('refresh token out of date');
-				return loginPage;
+					/*
+					call api refresh token by refresh token in cookie
+							=> if success:
+								set new access token to cookie => continue
+							=> if fail:
+								remove access token, user information and refresh token from cookie
+								redirect to login page
+					*/
+					const newAccessToken = await this.authService.refreshToken();
+					console.log('newAccessToken', newAccessToken);
+					if (newAccessToken == false) {
+						// this.authService.logout();
+						console.error('refresh token fail');
+						return loginPage;
+					}
+				}
+
+				/*
+				- checking "roles" of user get from access token has been decoded
+						- if not authorized, redirect to home
+						- if authorized, continue
+				*/
+				const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];
+				const requiredRole = next.data['roles'] as string[]; // list roles which is required to access the route
+				// console.log('isAuthorized:', isAuthorized);
+				const userHasRole = requiredRole.some((role) => currentUserRole.includes(role))
+
+				if (!userHasRole) {
+					console.log('User is not authorized, redirecting to home page');
+					return this.router.createUrlTree(['/home']);
+				}
+
+				return true;
+			} catch (error) {
+				console.error(error);
+				// return loginPage;
 			}
-
-			/*
-			call api refresh token by refresh token in cookie
-					=> if success:
-						set new access token to cookie => continue
-					=> if fail:
-						remove access token, user information and refresh token from cookie
-						redirect to login page
-			*/
-			const newAccessToken = await this.authService.refreshToken();
-			console.log('newAccessToken', newAccessToken);
-			if (newAccessToken == false) {
-				// this.authService.logout();
-				console.error('refresh token fail');
-				return loginPage;
-			}
 		}
-
-		/*
-		- checking "roles" of user get from access token has been decoded
-				- if not authorized, redirect to home
-				- if authorized, continue
-		*/
-		const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];
-		const requiredRole = next.data['roles'] as string[]; // list roles which is required to access the route
-		// console.log('isAuthorized:', isAuthorized);
-		const userHasRole = requiredRole.some((role) => currentUserRole.includes(role))
-
-		if (!userHasRole) {
-			console.log('User is not authorized, redirecting to home page');
-			return this.router.createUrlTree(['/home']);
-		}
-
-		return true;
+		return false;
 	}
 }
