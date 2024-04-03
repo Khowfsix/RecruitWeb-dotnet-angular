@@ -57,7 +57,7 @@
 //            //Arrange
 
 //            //
-//            List<BlacklistModel> blacklistModels = new();
+//            List<BlacklistModel> blacklistModels
 
 //            var expectedCreatedBlacklist1 = new BlacklistModel
 //            {

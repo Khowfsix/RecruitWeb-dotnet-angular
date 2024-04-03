@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
+import { UploadCvComponent } from '../upload-cv/upload-cv.component';
 
 @Component({
 	selector: 'app-cv-manage',
 	standalone: true,
-	imports: [MatTabsModule],
+	imports: [
+		UploadCvComponent,
+	],
 	templateUrl: './cv-manage.component.html',
 	styleUrl: './cv-manage.component.css'
 })

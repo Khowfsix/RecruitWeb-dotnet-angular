@@ -55,7 +55,7 @@
 //        public async Task Get_Certificate_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<CertificateModel> list = new();
+//            List<CertificateModel> list
 //            var expectedCreatedCertificate1 = new CertificateModel
 //            {
 //                CertificateId = Guid.NewGuid(),

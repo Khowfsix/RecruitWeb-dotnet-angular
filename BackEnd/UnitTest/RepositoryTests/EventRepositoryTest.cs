@@ -55,7 +55,7 @@
 //        public async Task Get_Event_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<EventModel> list = new();
+//            List<EventModel> list
 //            var expectedCreatedEvent1 = new EventModel
 //            {
 //                EventId = Guid.NewGuid(),

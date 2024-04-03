@@ -80,6 +80,6 @@ export class HeaderComponent {
 	}
 
 	handleRouteToCVManage() {
-		this._router.navigate(['/cvManagement/'])
+		this._router.navigate(['/cv/'])
 	}
 }

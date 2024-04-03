@@ -55,7 +55,7 @@
 //        public async Task Get_SecurityAnswer_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<SecurityAnswerModel> list = new();
+//            List<SecurityAnswerModel> list
 //            var expectedCreatedSecurityAnswer1 = new SecurityAnswerModel
 //            {
 //                SecurityAnswerId = Guid.NewGuid(),

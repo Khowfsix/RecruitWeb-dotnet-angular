@@ -57,7 +57,7 @@
 //        public async Task Get_Requirement_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<RequirementModel> list = new();
+//            List<RequirementModel> list
 //            var expectedCreatedRequirement1 = new RequirementModel
 //            {
 //                RequirementId = Guid.NewGuid(),

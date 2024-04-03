@@ -54,7 +54,7 @@
 //        public async Task Get_Shift_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<ShiftModel> list = new();
+//            List<ShiftModel> list
 //            var expectedCreatedShift1 = new ShiftModel
 //            {
 //                ShiftId = Guid.NewGuid(),

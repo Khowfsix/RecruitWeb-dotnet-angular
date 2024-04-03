@@ -4,7 +4,9 @@
 			<i class="fa-regular fa-user"></i>
 			<span class="px-3">Candiate's profile</span>
 		</ng-template>
-		Content 1
+		<div class="d-block justify-content-center p-5 border-info rounded">
+			<app-candidate-profile></app-candidate-profile>
+		</div>
 	</mat-tab>
 
 	<mat-tab>
@@ -12,7 +14,9 @@
 			<i class="fa-regular fa-file"></i>
 			<span class="px-3">Manage CVs</span>
 		</ng-template>
-		Content 2
+		<div class="d-block justify-content-center p-5 border-info rounded">
+			<app-cv-manage></app-cv-manage>
+		</div>
 	</mat-tab>
 
 	<mat-tab>
@@ -20,6 +24,8 @@
 			<i class="fa-solid fa-magnifying-glass"></i>
 			<span class="px-3">Job preferences</span>
 		</ng-template>
-		Content 3
+		<div class="d-block justify-content-center p-5 border-info rounded">
+			<app-job-preference></app-job-preference>
+		</div>
 	</mat-tab>
 </mat-tab-group>

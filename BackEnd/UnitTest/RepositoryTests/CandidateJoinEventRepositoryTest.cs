@@ -56,7 +56,7 @@
 //        public async Task Get_CandidateJoinEvent_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<CandidateJoinEventModel> list = new();
+//            List<CandidateJoinEventModel> list
 
 //            var expectedCreatedCandidateJoinEvent1 = new CandidateJoinEventModel
 //            {

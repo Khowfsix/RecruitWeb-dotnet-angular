@@ -55,7 +55,7 @@
 //        public async Task Get_Result_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<ResultModel> list = new();
+//            List<ResultModel> list
 //            var expectedCreatedResult1 = new ResultModel
 //            {
 //                ResultId = Guid.NewGuid(),

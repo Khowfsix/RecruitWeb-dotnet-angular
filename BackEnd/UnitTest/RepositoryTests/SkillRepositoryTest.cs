@@ -56,7 +56,7 @@
 //        public async Task Get_Skill_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<SkillModel> list = new();
+//            List<SkillModel> list
 //            var expectedCreatedSkill1 = new SkillModel
 //            {
 //                SkillId = Guid.NewGuid(),
