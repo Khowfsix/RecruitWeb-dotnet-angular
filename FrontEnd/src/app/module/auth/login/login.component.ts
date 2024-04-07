@@ -8,7 +8,7 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { JWT } from '../../../data/authen/jwt.model';
@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
 		private fb: FormBuilder,
 		private authService: AuthService,
 		private router: Router,
+		private route: ActivatedRoute,
 		private CookieService: CookieService,
 		private toasts: ToastrService
 	) {
@@ -68,7 +69,7 @@ export class LoginComponent implements OnInit {
 								// 	JSON.stringify(data),
 								// );
 								localStorage.setItem('currentUser', JSON.stringify(data));
-								this.router.navigate(['']);
+								this.navigate_before();
 								this.toasts.success("Logged in successfully", "Success", { timeOut: 3000, closeButton: true, progressBar: true });
 							} else {
 								this.toasts.warning("Cann't get user information", "Warning!!!", { timeOut: 3000, closeButton: true, progressBar: true });
@@ -85,5 +86,12 @@ export class LoginComponent implements OnInit {
 				},
 				complete: () => { },
 			});
+	}
+
+	navigate_before(): void {
+		this.route.queryParams.subscribe(params => {
+			const returnUrl = params['returnUrl'] || '/';
+			this.router.navigateByUrl(decodeURIComponent(returnUrl));
+		});
 	}
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'app-candidate-profile',
@@ -9,7 +9,8 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 	imports: [
 		MatDividerModule,
 		MatButtonModule,
-		NgbProgressbarModule
+		NgbProgressbarModule,
+		NgbScrollSpyModule
 	],
 	templateUrl: './candidate-profile.component.html',
 	styleUrl: './candidate-profile.component.css'

@@ -57,6 +57,14 @@ export class HeaderComponent {
 		this._router.navigate(['/']);
 	}
 
+	handleRouteToCompanies() {
+		this._router.navigate(['/companies']);
+	}
+
+	handleRouteToJobs() {
+		this._router.navigate(['/positions']);
+	}
+
 	subscribeToLoginStatus() {
 		this._authService.isLoggedIn.subscribe((loggedIn) => {
 			if (loggedIn) {

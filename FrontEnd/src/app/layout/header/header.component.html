@@ -8,9 +8,9 @@
 			</button>
 
 			<div class="d-none d-md-inline">
-				<button mat-button>About</button>
-				<button mat-button>Contact</button>
-				<button mat-button>I hate my job</button>
+				<button mat-button (click)="handleRouteToJobs()">All Jobs</button>
+				<button mat-button (click)="handleRouteToCompanies()">Companies</button>
+				<button mat-button>Events</button>
 			</div>
 		</div>
 
@@ -22,7 +22,7 @@
 					placeholder="Search"
 					aria-label="Search"
 					aria-describedby="search-addon" />
-				<button type="button" class="btn btn-outline-info text-white">search</button>
+				<button type="button" class="btn btn-outline-primary text-white">search</button>
 			</div>
 		</div>
 
@@ -37,9 +37,9 @@
 
 	<mat-toolbar-row class="d-lg-none" fxLayout="row" fxLayoutAlign="space-between center">
 		<div class="d-inline d-md-none">
-			<button mat-button>About</button>
-			<button mat-button>Contact</button>
-			<button mat-button>I hate my job</button>
+			<button mat-button (click)="handleRouteToJobs()">All Jobs</button>
+			<button mat-button (click)="handleRouteToCompanies()">Companies</button>
+			<button mat-button>Events</button>
 		</div>
 		<div class="d-none d-sm-inline d-lg-none col-md-12">
 			<div class="input-group">
@@ -49,7 +49,7 @@
 					placeholder="Search"
 					aria-label="Search"
 					aria-describedby="search-addon" />
-				<button type="button" class="btn btn-outline-info text-white">search</button>
+				<button type="button" class="btn btn-outline-primary text-white">search</button>
 			</div>
 		</div>
 	</mat-toolbar-row>
@@ -62,7 +62,7 @@
 				placeholder="Search"
 				aria-label="Search"
 				aria-describedby="search-addon" />
-			<button type="button" class="btn btn-outline-info text-white">search</button>
+			<button type="button" class="btn btn-outline-primary text-white">search</button>
 		</div>
 	</mat-toolbar-row>
 
