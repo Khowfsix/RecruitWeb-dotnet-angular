@@ -45,7 +45,7 @@ namespace Data.Repositories
                 else
                 {
                     listData = await Entities
-                        .Where(rp => rp.CertificateName.Contains(request))
+                        .Where(rp => rp.CertificateName!.Contains(request))
                         .ToListAsync();
                 }
                 return listData;
@@ -59,7 +59,7 @@ namespace Data.Repositories
         public async Task<IEnumerable<Certificate>> GetForeignKey(Guid requestId)
         {
             var data = await Entities
-                .Where(x => x.Cvid == requestId)
+                //.Where(x => x.Cvid == requestId)
                 .ToListAsync();
 
             return data;

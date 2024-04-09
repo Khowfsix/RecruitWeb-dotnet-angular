@@ -27,7 +27,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     public virtual DbSet<CategoryQuestion> CategoryQuestions { get; set; }
 
-    public virtual DbSet<Certificate> Certificates { get; set; }
 
     public virtual DbSet<Cv> Cvs { get; set; }
 
@@ -77,6 +76,13 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     //public virtual DbSet<WebUser> WebUsers { get; set; }
 
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    public virtual DbSet<Education> Educations { get; set; }
+    public virtual DbSet<WorkExperience> WorkExperiences { get; set; }
+    public virtual DbSet<CandidateHasSkill> CandidateHasSkills { get; set; }
+    public virtual DbSet<PersonalProject> PersonalProjects { get; set; }
+    public virtual DbSet<Certificate> Certificates { get; set; }
+    public virtual DbSet<Award> Awards { get; set; }
 
     #endregion Dbset
 
@@ -203,16 +209,21 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.Property(e => e.CertificateId).ValueGeneratedNever();
             entity.Property(e => e.CertificateName).HasMaxLength(255);
-            entity.Property(e => e.Cvid).HasColumnName("Cvid");
-            entity.Property(e => e.DateEarned).HasColumnType("date");
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.ExpirationDate).HasColumnType("date");
-            entity.Property(e => e.OrganizationName).HasMaxLength(255);
 
-            entity.HasOne(d => d.Cv).WithMany(p => p.Certificates)
-                .HasForeignKey(d => d.Cvid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CertificateInCV");
+            entity.Property(e => e.IssueDate).HasDefaultValue(DateTime.Now);
+            entity.HasOne(e => e.Candidate).WithMany(c => c.Certificates)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_candidateHasCertificate");
+
+            //entity.Property(e => e.Cvid).HasColumnName("Cvid");
+            //entity.Property(e => e.DateEarned).HasColumnType("date");
+            //entity.Property(e => e.Description).HasMaxLength(255);
+            //entity.Property(e => e.ExpirationDate).HasColumnType("date");
+            //entity.Property(e => e.OrganizationName).HasMaxLength(255);
+
+            //entity.HasOne(d => d.Cv).WithMany(p => p.Certificates)
+            //    .HasForeignKey(d => d.Cvid)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_CertificateInCV");
         });
 
         modelBuilder.Entity<Cv>(entity =>
@@ -226,8 +237,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasColumnName("Cvid");
 
             entity.Property(e => e.CvPdf).HasColumnName("CvPdf");
-            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted")
-                .HasDefaultValue(false);
+            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted").HasDefaultValue(false);
+            entity.Property(e => e.IsDefault).HasDefaultValue(false);
 
             entity.HasOne(d => d.Candidate).WithMany(p => p.Cvs)
                 .HasForeignKey(d => d.CandidateId)
@@ -247,10 +258,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.Cvid).HasColumnName("Cvid");
             entity.Property(e => e.ExperienceYear).HasDefaultValueSql("((0))");
 
-            entity.HasOne(d => d.Cv).WithMany(p => p.CvHasSkills)
-                .HasForeignKey(d => d.Cvid)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_ofCV");
+            //entity.HasOne(d => d.Cv).WithMany(p => p.CvHasSkills)
+            //    .HasForeignKey(d => d.Cvid)
+            //    .OnDelete(DeleteBehavior.Cascade)
+            //    .HasConstraintName("FK_ofCV");
 
             entity.HasOne(d => d.Skill).WithMany(p => p.CvHasSkills)
                 .HasForeignKey(d => d.SkillId)
@@ -670,6 +681,68 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_UserRefreshToken");
+        });
+
+        modelBuilder.Entity<Education>(entity =>
+        {
+            entity.HasKey(e => e.EducationId).HasName("PK_education");
+            entity.ToTable("Education");
+
+            entity.Property(e => e.EducationId).ValueGeneratedNever();
+            entity.Property(e => e.From).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.Educations)
+                .HasForeignKey(e => e.CandidateId)
+                .HasConstraintName("FK_CandidateHasEducations");
+        });
+
+        modelBuilder.Entity<WorkExperience>(entity =>
+        {
+            entity.HasKey(e => e.WorkExperienceId).HasName("PK_workExperience");
+            entity.ToTable("WorkExperience");
+            entity.Property(e => e.WorkExperienceId).ValueGeneratedNever();
+
+            entity.Property(e => e.From).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.WorkExperiences)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_CandidateHasWorkExperience");
+        });
+
+        modelBuilder.Entity<CandidateHasSkill>(entity =>
+        {
+            entity.HasKey(e => e.CandidateHasSkillId).HasName("PK_candidateHasSkill");
+            entity.ToTable("CandidateHasSkill");
+            entity.Property(e => e.CandidateHasSkillId).ValueGeneratedNever();
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.CandidateHasSkills)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("PK_candidateHasSkill_candidate");
+
+            entity.HasOne(e => e.Skill).WithMany(c => c.CandidateHasSkills)
+                .HasForeignKey(e => e.SkillId).HasConstraintName("PK_candidateHasSkill_skill");
+        });
+
+        modelBuilder.Entity<PersonalProject>(entity =>
+        {
+            entity.HasKey(e => e.PersonalProjectId).HasName("PK_personalProject");
+            entity.ToTable("PersonalProject");
+            entity.Property(e => e.PersonalProjectId).ValueGeneratedNever();
+
+            entity.Property(e => e.From).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.PersonalProjects)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_candidateHasPersonalProject");
+        });
+
+        modelBuilder.Entity<Award>(entity =>
+        {
+            entity.HasKey(e => e.AwardId).HasName("PK_award");
+            entity.ToTable("Award");
+            entity.Property(e => e.AwardId).ValueGeneratedNever();
+
+            entity.Property(e => e.IssueDate).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.Awards)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_candidateHasAward");
         });
 
         base.OnModelCreating(modelBuilder);
