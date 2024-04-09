@@ -14,8 +14,7 @@ public partial class Cv
     [Required]
     public string? CvName { get; set; }
 
-    [Required]
-    public string AboutMe { get; set; } = null!;
+    public string? AboutMe { get; set; }
 
     public bool IsDeleted { get; set; } = false;
     public bool IsDefault { get; set; } = false;
