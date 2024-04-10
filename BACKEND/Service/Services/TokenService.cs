@@ -56,6 +56,7 @@ namespace Service.Services
             }
             return true;
         }
+
         public Task<RefreshToken> GetValidRefreshToken(string token, WebUser identityUser)
         {
             if (identityUser == null)
@@ -111,7 +112,6 @@ namespace Service.Services
 
         public async Task<AuthenticationToken> GetAuthenticationToken(IEnumerable<Claim> claims, WebUser webUser)
         {
-
             var accessToken = await GenerateAccessToken(claims);
             var refreshToken = await GenerateRefreshToken(expiryByDays: 30, webUser: webUser);
 

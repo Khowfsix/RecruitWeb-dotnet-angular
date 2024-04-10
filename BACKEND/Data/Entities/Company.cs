@@ -15,6 +15,7 @@ public partial class Company
 
     [DataType(DataType.ImageUrl)]
     public string? Logo { get; set; } = null!;
+
     public string? Address { get; set; }
 
     [DataType(DataType.EmailAddress)]

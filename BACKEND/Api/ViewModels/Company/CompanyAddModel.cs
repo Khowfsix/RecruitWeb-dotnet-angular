@@ -6,6 +6,7 @@ namespace Api.ViewModels.Company
     {
         [Required]
         public string CompanyName { get; set; } = null!;
+
         public string? Address { get; set; }
 
         [DataType(DataType.EmailAddress)]

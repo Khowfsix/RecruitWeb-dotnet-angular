@@ -59,7 +59,7 @@
 //        public async Task Get_Report_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<ReportModel> list = new();
+//            List<ReportModel> list
 //            var expectedCreatedReport1 = new ReportModel
 //            {
 //                ReportId = Guid.NewGuid(),

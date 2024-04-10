@@ -2,13 +2,13 @@
 {
     public class RefreshTokenModel
     {
-        public string Token { get; set; } = string.Empty;
-        public string UserId { get; set; } = string.Empty;
+        public string Token { get; set; }
+        public string UserId { get; set; }
         public DateTime ExpiryOn { get; set; }
         public DateTime CreatedOn { get; set; }
 
-        //public string CreatedByIp { get; set; } = string.Empty;
+        //public string CreatedByIp { get; set; }
         //public DateTime RevokedOn { get; set; }
-        //public string RevokedByIp { get; set; } = string.Empty;
+        //public string RevokedByIp { get; set; }
     }
 }

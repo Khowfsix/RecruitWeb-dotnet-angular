@@ -1,9 +1,7 @@
-﻿using Api.ViewModels.Position;
-using Api.ViewModels.Skill;
+﻿using Api.ViewModels.Skill;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service;
 using Service.Interfaces;
 using Service.Models;
 

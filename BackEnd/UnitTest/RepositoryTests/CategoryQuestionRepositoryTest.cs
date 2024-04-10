@@ -55,7 +55,7 @@
 //        public async Task Get_CategoryQuestion_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<CategoryQuestionModel> list = new();
+//            List<CategoryQuestionModel> list
 //            var expectedCreatedCategoryQuestion1 = new CategoryQuestionModel
 //            {
 //                CategoryQuestionId = Guid.NewGuid(),

@@ -6,8 +6,11 @@ namespace Service.Interfaces
     public interface ITokenService
     {
         Task<AuthenticationToken> GetAuthenticationToken(IEnumerable<Claim> claims, WebUser webUser);
+
         Task<string> GenerateAccessToken(IEnumerable<Claim> authClaims);
+
         Task<RefreshToken> GenerateRefreshToken(int expiryByDays, WebUser webUser);
+
         Task<RefreshToken> GetValidRefreshToken(string token, WebUser identityUser);
 
         //Task<ClaimsPrincipal> GetPrincipalFromExpiredToken(string token);
@@ -16,8 +19,8 @@ namespace Service.Interfaces
 
     public class AuthenticationToken
     {
-        public string AccessToken { get; set; } = string.Empty;
-        public string RefreshToken { get; set; } = string.Empty;
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
         public DateTime? ExpirationDate { get; set; } = DateTime.MinValue;
     }
 }

@@ -56,7 +56,7 @@
 //        public async Task Get_Room_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<RoomModel> list = new();
+//            List<RoomModel> list
 //            var expectedCreatedRoom1 = new RoomModel
 //            {
 //                RoomId = Guid.NewGuid(),

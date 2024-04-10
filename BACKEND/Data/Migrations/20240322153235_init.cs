@@ -858,10 +858,10 @@ namespace Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "71552bf3-8aab-4c93-b9cf-183402b5000d", "3", "Recruiter", "Recruiter" },
-                    { "b4751d9b-b515-4b58-bfc6-cdb1c1ac46c3", "1", "Candidate", "Candidate" },
-                    { "f7d61ecf-78b2-4873-9987-603501f6075f", "4", "Admin", "Admin" },
-                    { "fb57f142-4c4b-48d2-a722-5d6236c7ad32", "2", "Interviewer", "Interviewer" }
+                    { "244dfc81-5c33-443a-b009-d62a255940a6", "3", "Recruiter", "Recruiter" },
+                    { "8be07cc6-efa1-4ecb-8a35-c28aaa44ed13", "1", "Candidate", "Candidate" },
+                    { "9044432c-7417-4dd9-9bc8-d4c8258d7fd7", "4", "Admin", "Admin" },
+                    { "d4786767-adf2-4b41-90a6-55b9ade6ca58", "2", "Interviewer", "Interviewer" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,11 +1,11 @@
-using Api.Paging;
+using Api.ViewModels;
 using Api.ViewModels.Position;
 using AutoMapper;
 using Castle.Core.Internal;
 using Data.CustomModel.Position;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PagedList;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -46,8 +46,8 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllPositions
             (
             [FromQuery] PositionFilterModel positionFilterModel,
-            string? sortString = "PositionName_ASC", 
-            int? pageIndex = 1, 
+            string? sortString = "PositionName_ASC",
+            int? pageIndex = 1,
             int? pageSize = 20
             )
         {

@@ -64,6 +64,38 @@ namespace Data.Migrations
                     b.ToTable("Application", (string)null);
                 });
 
+            modelBuilder.Entity("Data.Entities.Award", b =>
+                {
+                    b.Property<Guid>("AwardId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AwardName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AwardOrganization")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("IssueDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 249, DateTimeKind.Local).AddTicks(3825));
+
+                    b.HasKey("AwardId")
+                        .HasName("PK_award");
+
+                    b.HasIndex("CandidateId");
+
+                    b.ToTable("Award", (string)null);
+                });
+
             modelBuilder.Entity("Data.Entities.BlackList", b =>
                 {
                     b.Property<Guid>("BlackListId")
@@ -72,7 +104,7 @@ namespace Data.Migrations
                     b.Property<Guid>("CandidateId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
@@ -101,7 +133,7 @@ namespace Data.Migrations
                     b.Property<Guid>("CandidateId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Experience")
+                    b.Property<string>("AboutMe")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -118,6 +150,31 @@ namespace Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Candidate", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.CandidateHasSkill", b =>
+                {
+                    b.Property<Guid>("CandidateHasSkillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SkillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CandidateHasSkillId")
+                        .HasName("PK_candidateHasSkill");
+
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("CandidateHasSkill", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.CandidateJoinEvent", b =>
@@ -193,36 +250,29 @@ namespace Data.Migrations
                     b.Property<Guid>("CertificateId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("CertificateName")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("Cvid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Cvid");
-
-                    b.Property<DateTime>("DateEarned")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime?>("ExpirationDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Link")
+                    b.Property<string>("CertificateURL")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OrganizationName")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("IssueDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 242, DateTimeKind.Local).AddTicks(325));
 
                     b.HasKey("CertificateId")
                         .HasName("PK__Certific__BBF8A7C122402FA9");
 
-                    b.HasIndex("Cvid");
+                    b.HasIndex("CandidateId");
 
                     b.ToTable("Certificate", (string)null);
                 });
@@ -275,6 +325,9 @@ namespace Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Cvid");
 
+                    b.Property<string>("AboutMe")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("CandidateId")
                         .HasColumnType("uniqueidentifier");
 
@@ -283,22 +336,14 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CvPdf")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("CvPdf");
 
-                    b.Property<string>("Education")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Experience")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Introduction")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -340,6 +385,42 @@ namespace Data.Migrations
                     b.HasIndex("SkillId");
 
                     b.ToTable("CV_has_Skills", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.Education", b =>
+                {
+                    b.Property<Guid>("EducationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdditionalDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CandidateId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("From")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 248, DateTimeKind.Local).AddTicks(186));
+
+                    b.Property<string>("Major")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("School")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EducationId")
+                        .HasName("PK_education");
+
+                    b.HasIndex("CandidateId");
+
+                    b.ToTable("Education", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Event", b =>
@@ -512,6 +593,41 @@ namespace Data.Migrations
                         .HasName("PK__Language__B93855AB02B6E2A3");
 
                     b.ToTable("Language", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.PersonalProject", b =>
+                {
+                    b.Property<Guid>("PersonalProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("From")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 249, DateTimeKind.Local).AddTicks(1227));
+
+                    b.Property<string>("ProjectName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PersonalProjectId")
+                        .HasName("PK_personalProject");
+
+                    b.HasIndex("CandidateId");
+
+                    b.ToTable("PersonalProject", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Position", b =>
@@ -1031,6 +1147,81 @@ namespace Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "41d399a3-20ab-4d13-b556-c3d00a8cfa1d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d00d37a8-0c8d-4b37-a8b7-823901b3b98d",
+                            Email = "lyhongphat261202@gmail.com",
+                            EmailConfirmed = true,
+                            FullName = "ly hong phat",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "LYHONGPHAT261202@GMAIL.COM",
+                            NormalizedUserName = "LYHONGPHAT",
+                            PasswordHash = "AQAAAAEAACcQAAAAED/UcvE0mbg31jAMWDqc7wtANLZ9+xQrwe4GvRoEW7VHQ4mGKsXvvhv9J367awYVfA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "NQBJBUONTUAPYIE7UZDHYJD2NE7VJZEF",
+                            TwoFactorEnabled = false,
+                            UserName = "lyhongphat"
+                        },
+                        new
+                        {
+                            Id = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "37a3f448-08e1-4d5b-8d9d-97edd7ed2441",
+                            Email = "jasmineandhongphat@gmail.com",
+                            EmailConfirmed = true,
+                            FullName = "Jasmine",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "JASMINEANDHONGPHAT@GMAIL.COM",
+                            NormalizedUserName = "ADMINJASMINE",
+                            PasswordHash = "AQAAAAEAACcQAAAAECIlpgtWCyAhui2Dipuu9aK3ICiIStVY9hgOJwdooCgjRvENgPXaHCtjyM43zqc1Bg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "KDB5T3VMZDHW3C2T2O3JFSP2TK4OQYRC",
+                            TwoFactorEnabled = false,
+                            UserName = "AdminJasmine"
+                        });
+                });
+
+            modelBuilder.Entity("Data.Entities.WorkExperience", b =>
+                {
+                    b.Property<Guid>("WorkExperienceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Company")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("From")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 248, DateTimeKind.Local).AddTicks(3794));
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Project")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("WorkExperienceId")
+                        .HasName("PK_workExperience");
+
+                    b.HasIndex("CandidateId");
+
+                    b.ToTable("WorkExperience", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1062,28 +1253,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "947a1791-781d-47ac-9b05-5d955b91b515",
+                            Id = "9a27fafe-fd30-415f-99bb-ffcad6e91050",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "15299902-41e8-491f-a0af-4eeddf5222c2",
+                            Id = "e6c0841c-151b-4a83-8815-42b9384ad1b6",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "594bd4f8-8319-4db5-b04c-e8e79f2bcbda",
+                            Id = "65c0becb-694d-40a1-9f30-68a69e6a07a4",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "97d8b4a5-6b01-4f36-baae-2188a9c98268",
+                            Id = "c702f67a-f866-4856-b6c2-71b5ad0e3dbd",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1175,6 +1366,38 @@ namespace Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "41d399a3-20ab-4d13-b556-c3d00a8cfa1d",
+                            RoleId = "9a27fafe-fd30-415f-99bb-ffcad6e91050"
+                        },
+                        new
+                        {
+                            UserId = "41d399a3-20ab-4d13-b556-c3d00a8cfa1d",
+                            RoleId = "65c0becb-694d-40a1-9f30-68a69e6a07a4"
+                        },
+                        new
+                        {
+                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
+                            RoleId = "c702f67a-f866-4856-b6c2-71b5ad0e3dbd"
+                        },
+                        new
+                        {
+                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
+                            RoleId = "9a27fafe-fd30-415f-99bb-ffcad6e91050"
+                        },
+                        new
+                        {
+                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
+                            RoleId = "e6c0841c-151b-4a83-8815-42b9384ad1b6"
+                        },
+                        new
+                        {
+                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
+                            RoleId = "65c0becb-694d-40a1-9f30-68a69e6a07a4"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -1215,6 +1438,18 @@ namespace Data.Migrations
                     b.Navigation("Position");
                 });
 
+            modelBuilder.Entity("Data.Entities.Award", b =>
+                {
+                    b.HasOne("Data.Entities.Candidate", "Candidate")
+                        .WithMany("Awards")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_candidateHasAward");
+
+                    b.Navigation("Candidate");
+                });
+
             modelBuilder.Entity("Data.Entities.BlackList", b =>
                 {
                     b.HasOne("Data.Entities.Candidate", "Candidate")
@@ -1235,6 +1470,27 @@ namespace Data.Migrations
                         .HasConstraintName("FK_CandidateUser");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Data.Entities.CandidateHasSkill", b =>
+                {
+                    b.HasOne("Data.Entities.Candidate", "Candidate")
+                        .WithMany("CandidateHasSkills")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("PK_candidateHasSkill_candidate");
+
+                    b.HasOne("Data.Entities.Skill", "Skill")
+                        .WithMany("CandidateHasSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("PK_candidateHasSkill_skill");
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("Skill");
                 });
 
             modelBuilder.Entity("Data.Entities.CandidateJoinEvent", b =>
@@ -1258,13 +1514,14 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Certificate", b =>
                 {
-                    b.HasOne("Data.Entities.Cv", "Cv")
+                    b.HasOne("Data.Entities.Candidate", "Candidate")
                         .WithMany("Certificates")
-                        .HasForeignKey("Cvid")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_CertificateInCV");
+                        .HasConstraintName("FK_candidateHasCertificate");
 
-                    b.Navigation("Cv");
+                    b.Navigation("Candidate");
                 });
 
             modelBuilder.Entity("Data.Entities.Cv", b =>
@@ -1281,11 +1538,10 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Entities.CvHasSkill", b =>
                 {
                     b.HasOne("Data.Entities.Cv", "Cv")
-                        .WithMany("CvHasSkills")
+                        .WithMany()
                         .HasForeignKey("Cvid")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_ofCV");
+                        .IsRequired();
 
                     b.HasOne("Data.Entities.Skill", "Skill")
                         .WithMany("CvHasSkills")
@@ -1297,6 +1553,18 @@ namespace Data.Migrations
                     b.Navigation("Cv");
 
                     b.Navigation("Skill");
+                });
+
+            modelBuilder.Entity("Data.Entities.Education", b =>
+                {
+                    b.HasOne("Data.Entities.Candidate", "Candidate")
+                        .WithMany("Educations")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_CandidateHasEducations");
+
+                    b.Navigation("Candidate");
                 });
 
             modelBuilder.Entity("Data.Entities.Event", b =>
@@ -1388,6 +1656,18 @@ namespace Data.Migrations
                     b.Navigation("Room");
 
                     b.Navigation("Shift");
+                });
+
+            modelBuilder.Entity("Data.Entities.PersonalProject", b =>
+                {
+                    b.HasOne("Data.Entities.Candidate", "Candidate")
+                        .WithMany("PersonalProjects")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_candidateHasPersonalProject");
+
+                    b.Navigation("Candidate");
                 });
 
             modelBuilder.Entity("Data.Entities.Position", b =>
@@ -1596,6 +1876,18 @@ namespace Data.Migrations
                     b.Navigation("Position");
                 });
 
+            modelBuilder.Entity("Data.Entities.WorkExperience", b =>
+                {
+                    b.HasOne("Data.Entities.Candidate", "Candidate")
+                        .WithMany("WorkExperiences")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_CandidateHasWorkExperience");
+
+                    b.Navigation("Candidate");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1654,13 +1946,25 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Candidate", b =>
                 {
+                    b.Navigation("Awards");
+
                     b.Navigation("BlackLists");
+
+                    b.Navigation("CandidateHasSkills");
 
                     b.Navigation("CandidateJoinEvents");
 
+                    b.Navigation("Certificates");
+
                     b.Navigation("Cvs");
 
+                    b.Navigation("Educations");
+
+                    b.Navigation("PersonalProjects");
+
                     b.Navigation("SuccessfulCadidates");
+
+                    b.Navigation("WorkExperiences");
                 });
 
             modelBuilder.Entity("Data.Entities.CategoryPosition", b =>
@@ -1685,10 +1989,6 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Entities.Cv", b =>
                 {
                     b.Navigation("Applications");
-
-                    b.Navigation("Certificates");
-
-                    b.Navigation("CvHasSkills");
                 });
 
             modelBuilder.Entity("Data.Entities.Event", b =>
@@ -1769,6 +2069,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Skill", b =>
                 {
+                    b.Navigation("CandidateHasSkills");
+
                     b.Navigation("CvHasSkills");
 
                     b.Navigation("QuestionSkills");

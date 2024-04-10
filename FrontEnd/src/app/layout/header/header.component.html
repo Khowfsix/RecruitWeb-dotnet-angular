@@ -1,73 +1,95 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-	<div class="d-flex flex-row">
-		<div class="d-flex flex-row py-4 col-sm-auto col-auto">
-			<div class="px-2">
-				<span
-					(click)="handleRouteToHomepage()"
-					class="font-weight-bold fs-4 py-1 mx-2 rounded-3 px-2"
-					style="background-color: white; color: #1c395f"
-					>Recruitment Website</span
-				>
-			</div>
-			<div class="text-white mx-2 fs-4 col-auto">Home</div>
-			<div class="text-white mx-2 fs-4 col-auto">About</div>
-			<div class="text-white mx-2 fs-4 col-auto">Contact</div>
-			<div class="text-white mx-2 fs-4 col-auto">I hate my job</div>
-		</div>
-		<div
-			class="py-2 col-sm-4 col-md-auto"
-			style="
-				margin-left: 10%;
-				margin-right: 2%;
-				width: 500px;
-				height: 55px;
-			">
-			<div class="input-group mb-3">
-				<span class="input-group-text" id="basic-addon1"
-					><i class="bi bi-search"></i
-				></span>
-				<input
-					type="text"
-					class="form-control col-md-auto"
-					placeholder="Ex. Dev, Digital Marketing, ..."
-					aria-label="Username"
-					aria-describedby="basic-addon1" />
-			</div>
-		</div>
-		<div
-			class="d-flex justify-content-center py-2 col-md-3"
-			style="margin-left: auto; margin-right: 3%; cursor: pointer">
-			<i
-				[mat-menu-trigger-for]="menu"
-				class="bi bi-person-circle my-auto px-1 py-1 rounded-5"
-				style="
-					background-color: white;
-					font-size: 40px;
-					color: #1c395f;
-					height: 48px;
-				"></i>
-		</div>
-		<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
-			<button mat-menu-item>
-				<i class="fa-solid fa-user"></i>
-				<span class="mx-5 align-right">Profile</span>
-			</button>
-			<button mat-menu-item>
-				<i class="fa-solid fa-gear"></i>
-				<span class="mx-5 align-right">Settings</span>
+<mat-toolbar color="primary" class="rounded">
+	<mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+		<div class="gap-2">
+			<button mat-button (click)="handleRouteToHomepage()">
+				<!-- <i class="fa-solid fa-house"></i> -->
+				<mat-icon class="mat-18">home</mat-icon>
+				<span class="font-monospace fs-5" mat-button>Recruitment Website</span>
 			</button>
 
-			@if (_user != null) {
-			<button mat-menu-item (click)="handleClick_Logout()">
-				<i class="fa-solid fa-right-from-bracket"></i>
-				<span class="mx-5 align-right">Logout</span>
+			<div class="d-none d-md-inline">
+				<button mat-button (click)="handleRouteToJobs()">All Jobs</button>
+				<button mat-button (click)="handleRouteToCompanies()">Companies</button>
+				<button mat-button>Events</button>
+			</div>
+		</div>
+
+		<div class="d-none d-lg-inline col-lg-3 col-xl-4">
+			<div class="input-group">
+				<input
+					type="search"
+					class="form-control rounded"
+					placeholder="Search"
+					aria-label="Search"
+					aria-describedby="search-addon" />
+				<button type="button" class="btn btn-outline-primary text-white">search</button>
+			</div>
+		</div>
+
+		<div>
+			<button mat-button [mat-menu-trigger-for]="menu">
+				<!-- @if(deviceXs){ -->
+				<mat-icon class="mat-18">more_vert</mat-icon>
+				<span class="d-none d-sm-inline">Menu</span>
 			</button>
-			} @else {
-			<button mat-menu-item (click)="handleClick_Login()">
-				<i class="fa-solid fa-right-to-bracket"></i>
-				<span class="mx-5 align-right">Login</span>
-			</button>
-			}
-		</mat-menu>
-	</div>
-</nav>
+		</div>
+	</mat-toolbar-row>
+
+	<mat-toolbar-row class="d-lg-none" fxLayout="row" fxLayoutAlign="space-between center">
+		<div class="d-inline d-md-none">
+			<button mat-button (click)="handleRouteToJobs()">All Jobs</button>
+			<button mat-button (click)="handleRouteToCompanies()">Companies</button>
+			<button mat-button>Events</button>
+		</div>
+		<div class="d-none d-sm-inline d-lg-none col-md-12">
+			<div class="input-group">
+				<input
+					type="search"
+					class="form-control rounded"
+					placeholder="Search"
+					aria-label="Search"
+					aria-describedby="search-addon" />
+				<button type="button" class="btn btn-outline-primary text-white">search</button>
+			</div>
+		</div>
+	</mat-toolbar-row>
+
+	<mat-toolbar-row class="d-sm-none">
+		<div class="input-group">
+			<input
+				type="search"
+				class="form-control rounded"
+				placeholder="Search"
+				aria-label="Search"
+				aria-describedby="search-addon" />
+			<button type="button" class="btn btn-outline-primary text-white">search</button>
+		</div>
+	</mat-toolbar-row>
+
+	<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+		<button mat-menu-item>
+			<i class="fa-solid fa-user"></i>
+			<span class="mx-5 align-right">Profile</span>
+		</button>
+		<button mat-menu-item (click)="handleRouteToCVManage()">
+			<i class="fa-solid fa-file"></i>
+			<span class="mx-5 align-right">CV manage</span>
+		</button>
+		<button mat-menu-item>
+			<i class="fa-solid fa-gear"></i>
+			<span class="mx-5 align-right">Settings</span>
+		</button>
+
+		@if (_user != null) {
+		<button mat-menu-item (click)="handleClick_Logout()">
+			<i class="fa-solid fa-right-from-bracket"></i>
+			<span class="mx-5 align-right">Logout</span>
+		</button>
+		} @else {
+		<button mat-menu-item (click)="handleClick_Login()">
+			<i class="fa-solid fa-right-to-bracket"></i>
+			<span class="mx-5 align-right">Login</span>
+		</button>
+		}
+	</mat-menu>
+</mat-toolbar>

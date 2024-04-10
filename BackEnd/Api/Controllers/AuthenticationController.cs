@@ -272,7 +272,6 @@ namespace Api.Controllers
                 return BadRequest("Cannot find user");
             }
 
-
             // Get existing refresh token if it is valid and revoke it
             var existingRefreshToken = await _tokenService.GetValidRefreshToken(token!, identityUser!);
             if (existingRefreshToken == null)
@@ -623,6 +622,22 @@ namespace Api.Controllers
                 return Ok(userRole.Contains(user));
             }
             return NotFound();
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsValidUserName(string username)
+        {
+            var existUsername = await _userManager.FindByNameAsync(username) is null;
+            return Ok(existUsername);
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsValidEmail(string email)
+        {
+            var existUsername = await _userManager.FindByEmailAsync(email) is null;
+            return Ok(existUsername);
         }
 
         private async Task<WebUser> ValidateUser(LogInModel loginData)

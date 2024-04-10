@@ -1,5 +1,6 @@
 ﻿//using Api.Controllers;
 //using Api.ViewModels.Shift;
+//using AutoMapper;
 //using Microsoft.AspNetCore.Mvc;
 //using Moq;
 //using Service.Interfaces;
@@ -9,12 +10,14 @@
 //    public class ShiftControllerTests
 //    {
 //        private readonly Mock<IShiftService> _mockShiftService;
+//        private readonly Mock<IMapper> _mockMapper;
 //        private readonly ShiftController _ShiftController;
 
 //        public ShiftControllerTests()
 //        {
 //            _mockShiftService = new Mock<IShiftService>();
-//            _ShiftController = new ShiftController(_mockShiftService.Object);
+//            _mockMapper = new Mock<IMapper>();
+//            _ShiftController = new ShiftController(_mockShiftService.Object, _mockMapper.Object);
 //        }
 
 //        [Fact]

@@ -56,7 +56,7 @@
 //        public async Task Get_CvHasSkill_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<CvHasSkillModel> list = new();
+//            List<CvHasSkillModel> list
 //            var expectedCreatedCvHasSkill1 = new CvHasSkillModel
 //            {
 //                CvSkillsId = Guid.NewGuid(),

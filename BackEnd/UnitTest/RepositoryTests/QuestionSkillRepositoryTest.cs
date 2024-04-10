@@ -56,7 +56,7 @@
 //        public async Task Get_QuestionSkill_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<QuestionSkillModel> list = new();
+//            List<QuestionSkillModel> list
 //            var expectedCreatedQuestionSkill1 = new QuestionSkillModel
 //            {
 //                QuestionSkillsId = Guid.NewGuid(),

@@ -118,15 +118,8 @@ namespace Data.Repositories
 
         public async Task<List<CvHasSkill>> GetAllSkillsFromOneCV(Guid Cvid)
         {
-            var cvHasSkillList = Entities.AsAsyncEnumerable();
-            List<CvHasSkill> result = new();
-            await foreach (var skill in cvHasSkillList)
-            {
-                if (skill.Cvid == Cvid)
-                {
-                    result.Add(skill);
-                }
-            }
+            var cvHasSkillList = Entities.Include(c => c.Skill).Where(c => c.Cvid == Cvid).ToListAsync();
+            List<CvHasSkill> result = await cvHasSkillList;
             return result;
         }
     }

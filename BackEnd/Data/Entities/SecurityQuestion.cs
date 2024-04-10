@@ -8,9 +8,11 @@ namespace Data.Entities
     {
         [Key]
         public Guid SecurityQuestionId { get; set; }
+
         [Required]
         [Column(TypeName = "nvarchar(max)")]
         public string QuestionString { get; set; } = null!;
+
         public virtual IList<SecurityAnswer>? SecurityAnswers { get; set; }
     }
 }

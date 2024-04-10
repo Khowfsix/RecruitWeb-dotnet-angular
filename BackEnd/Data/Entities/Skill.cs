@@ -1,14 +1,19 @@
-﻿namespace Data.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Data.Entities;
 
 public partial class Skill
 {
     public Guid SkillId { get; set; }
 
-    public string SkillName { get; set; } = null!;
+    [Required]
+    public string? SkillName { get; set; }
 
     public string? Description { get; set; }
 
     public bool IsDeleted { get; set; }
+
+    public virtual ICollection<CandidateHasSkill> CandidateHasSkills { get; set; } = new List<CandidateHasSkill>();
 
     public virtual ICollection<CvHasSkill> CvHasSkills { get; set; } = new List<CvHasSkill>();
 

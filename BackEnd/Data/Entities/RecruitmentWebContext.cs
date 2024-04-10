@@ -27,7 +27,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     public virtual DbSet<CategoryQuestion> CategoryQuestions { get; set; }
 
-    public virtual DbSet<Certificate> Certificates { get; set; }
 
     public virtual DbSet<Cv> Cvs { get; set; }
 
@@ -78,26 +77,32 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
+    public virtual DbSet<Education> Educations { get; set; }
+    public virtual DbSet<WorkExperience> WorkExperiences { get; set; }
+    public virtual DbSet<CandidateHasSkill> CandidateHasSkills { get; set; }
+    public virtual DbSet<PersonalProject> PersonalProjects { get; set; }
+    public virtual DbSet<Certificate> Certificates { get; set; }
+    public virtual DbSet<Award> Awards { get; set; }
+
     #endregion Dbset
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     // => optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection");
-    //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
-    => optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
-    //=> optionsBuilder.UseSqlServer("Server=tcp:jasminerecwebdbserver.database.windows.net,1433;Initial Catalog=RecruitmentWeb;Persist Security Info=False;User ID=jasmine;Password=bruh@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+    => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
 
+    //=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+    //=> optionsBuilder.UseSqlServer("Server=tcp:jasminerecwebdbserver.database.windows.net,1433;Initial Catalog=RecruitmentWeb;Persist Security Info=False;User ID=jasmine;Password=bruh@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Position>().Property(p => p.Salary).HasPrecision(12, 2);
         base.OnModelCreating(modelBuilder);
+        new DbInitializer(modelBuilder).Seed();
 
         //modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
         //modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
         //modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
         //modelBuilder.Entity<WebUser>().ToTable("AspNetUsers");
-
-        SeedRoles(modelBuilder);
 
         modelBuilder.Entity<Application>(entity =>
         {
@@ -204,16 +209,21 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.Property(e => e.CertificateId).ValueGeneratedNever();
             entity.Property(e => e.CertificateName).HasMaxLength(255);
-            entity.Property(e => e.Cvid).HasColumnName("Cvid");
-            entity.Property(e => e.DateEarned).HasColumnType("date");
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.ExpirationDate).HasColumnType("date");
-            entity.Property(e => e.OrganizationName).HasMaxLength(255);
 
-            entity.HasOne(d => d.Cv).WithMany(p => p.Certificates)
-                .HasForeignKey(d => d.Cvid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CertificateInCV");
+            entity.Property(e => e.IssueDate).HasDefaultValue(DateTime.Now);
+            entity.HasOne(e => e.Candidate).WithMany(c => c.Certificates)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_candidateHasCertificate");
+
+            //entity.Property(e => e.Cvid).HasColumnName("Cvid");
+            //entity.Property(e => e.DateEarned).HasColumnType("date");
+            //entity.Property(e => e.Description).HasMaxLength(255);
+            //entity.Property(e => e.ExpirationDate).HasColumnType("date");
+            //entity.Property(e => e.OrganizationName).HasMaxLength(255);
+
+            //entity.HasOne(d => d.Cv).WithMany(p => p.Certificates)
+            //    .HasForeignKey(d => d.Cvid)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_CertificateInCV");
         });
 
         modelBuilder.Entity<Cv>(entity =>
@@ -227,8 +237,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasColumnName("Cvid");
 
             entity.Property(e => e.CvPdf).HasColumnName("CvPdf");
-            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted")
-                .HasDefaultValue(false);
+            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted").HasDefaultValue(false);
+            entity.Property(e => e.IsDefault).HasDefaultValue(false);
 
             entity.HasOne(d => d.Candidate).WithMany(p => p.Cvs)
                 .HasForeignKey(d => d.CandidateId)
@@ -248,10 +258,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.Cvid).HasColumnName("Cvid");
             entity.Property(e => e.ExperienceYear).HasDefaultValueSql("((0))");
 
-            entity.HasOne(d => d.Cv).WithMany(p => p.CvHasSkills)
-                .HasForeignKey(d => d.Cvid)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_ofCV");
+            //entity.HasOne(d => d.Cv).WithMany(p => p.CvHasSkills)
+            //    .HasForeignKey(d => d.Cvid)
+            //    .OnDelete(DeleteBehavior.Cascade)
+            //    .HasConstraintName("FK_ofCV");
 
             entity.HasOne(d => d.Skill).WithMany(p => p.CvHasSkills)
                 .HasForeignKey(d => d.SkillId)
@@ -670,23 +680,167 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_UserRefreshToken");
+        });
+
+        modelBuilder.Entity<Education>(entity =>
+        {
+            entity.HasKey(e => e.EducationId).HasName("PK_education");
+            entity.ToTable("Education");
+
+            entity.Property(e => e.EducationId).ValueGeneratedNever();
+            entity.Property(e => e.From).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.Educations)
+                .HasForeignKey(e => e.CandidateId)
+                .HasConstraintName("FK_CandidateHasEducations");
+        });
+
+        modelBuilder.Entity<WorkExperience>(entity =>
+        {
+            entity.HasKey(e => e.WorkExperienceId).HasName("PK_workExperience");
+            entity.ToTable("WorkExperience");
+            entity.Property(e => e.WorkExperienceId).ValueGeneratedNever();
+
+            entity.Property(e => e.From).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.WorkExperiences)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_CandidateHasWorkExperience");
+        });
+
+        modelBuilder.Entity<CandidateHasSkill>(entity =>
+        {
+            entity.HasKey(e => e.CandidateHasSkillId).HasName("PK_candidateHasSkill");
+            entity.ToTable("CandidateHasSkill");
+            entity.Property(e => e.CandidateHasSkillId).ValueGeneratedNever();
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.CandidateHasSkills)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("PK_candidateHasSkill_candidate");
+
+            entity.HasOne(e => e.Skill).WithMany(c => c.CandidateHasSkills)
+                .HasForeignKey(e => e.SkillId).HasConstraintName("PK_candidateHasSkill_skill");
+        });
+
+        modelBuilder.Entity<PersonalProject>(entity =>
+        {
+            entity.HasKey(e => e.PersonalProjectId).HasName("PK_personalProject");
+            entity.ToTable("PersonalProject");
+            entity.Property(e => e.PersonalProjectId).ValueGeneratedNever();
+
+            entity.Property(e => e.From).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.PersonalProjects)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_candidateHasPersonalProject");
+        });
+
+        modelBuilder.Entity<Award>(entity =>
+        {
+            entity.HasKey(e => e.AwardId).HasName("PK_award");
+            entity.ToTable("Award");
+            entity.Property(e => e.AwardId).ValueGeneratedNever();
+
+            entity.Property(e => e.IssueDate).HasDefaultValue(DateTime.Now);
+
+            entity.HasOne(e => e.Candidate).WithMany(c => c.Awards)
+                .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_candidateHasAward");
         });
 
         base.OnModelCreating(modelBuilder);
     }
 
     //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
 
-    private void SeedRoles(ModelBuilder builder)
+public class DbInitializer
+{
+    private readonly ModelBuilder modelBuilder;
+
+    public DbInitializer(ModelBuilder modelBuilder)
     {
-        builder.Entity<IdentityRole>().HasData
+        this.modelBuilder = modelBuilder;
+    }
+
+    public void Seed()
+    {
+        // seed role
+        string candidateId = Guid.NewGuid().ToString();
+        string interviewerId = Guid.NewGuid().ToString();
+        string recruiterId = Guid.NewGuid().ToString();
+        string adminId = Guid.NewGuid().ToString();
+        modelBuilder.Entity<IdentityRole>().HasData
             (
-            new IdentityRole() { Name = "Candidate", ConcurrencyStamp = "1", NormalizedName = "Candidate" },
-            new IdentityRole() { Name = "Interviewer", ConcurrencyStamp = "2", NormalizedName = "Interviewer" },
-            new IdentityRole() { Name = "Recruiter", ConcurrencyStamp = "3", NormalizedName = "Recruiter" },
-            new IdentityRole() { Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
+            new IdentityRole() { Id = candidateId, Name = "Candidate", ConcurrencyStamp = "1", NormalizedName = "Candidate" },
+            new IdentityRole() { Id = interviewerId, Name = "Interviewer", ConcurrencyStamp = "2", NormalizedName = "Interviewer" },
+            new IdentityRole() { Id = recruiterId, Name = "Recruiter", ConcurrencyStamp = "3", NormalizedName = "Recruiter" },
+            new IdentityRole() { Id = adminId, Name = "Admin", ConcurrencyStamp = "4", NormalizedName = "Admin" }
             );
+
+        // seed user
+        string lyhongphatId = Guid.NewGuid().ToString();
+        string jasmineId = Guid.NewGuid().ToString();
+        modelBuilder.Entity<WebUser>().HasData
+            (
+                new WebUser()
+                {
+                    Id = lyhongphatId,
+                    FullName = "ly hong phat",
+                    DateOfBirth = null,
+                    Address = null,
+                    ImageURL = null,
+                    UserName = "lyhongphat",
+                    NormalizedUserName = "LYHONGPHAT",
+                    Email = "lyhongphat261202@gmail.com",
+                    NormalizedEmail = "LYHONGPHAT261202@GMAIL.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = "AQAAAAEAACcQAAAAED/UcvE0mbg31jAMWDqc7wtANLZ9+xQrwe4GvRoEW7VHQ4mGKsXvvhv9J367awYVfA==",
+                    SecurityStamp = "NQBJBUONTUAPYIE7UZDHYJD2NE7VJZEF",
+                    ConcurrencyStamp = "d00d37a8-0c8d-4b37-a8b7-823901b3b98d",
+                    PhoneNumber = null,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                },
+                new WebUser()
+                {
+                    Id = jasmineId,
+                    FullName = "Jasmine",
+                    DateOfBirth = null,
+                    Address = null,
+                    ImageURL = null,
+                    UserName = "AdminJasmine",
+                    NormalizedUserName = "ADMINJASMINE",
+                    Email = "jasmineandhongphat@gmail.com",
+                    NormalizedEmail = "JASMINEANDHONGPHAT@GMAIL.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = "AQAAAAEAACcQAAAAECIlpgtWCyAhui2Dipuu9aK3ICiIStVY9hgOJwdooCgjRvENgPXaHCtjyM43zqc1Bg==",
+                    SecurityStamp = "KDB5T3VMZDHW3C2T2O3JFSP2TK4OQYRC",
+                    ConcurrencyStamp = "37a3f448-08e1-4d5b-8d9d-97edd7ed2441",
+                    PhoneNumber = null,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                }
+            );
+
+        // seed user role
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string> { UserId = lyhongphatId, RoleId = candidateId },
+            new IdentityUserRole<string> { UserId = lyhongphatId, RoleId = recruiterId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = adminId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = candidateId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = interviewerId },
+            new IdentityUserRole<string> { UserId = jasmineId, RoleId = recruiterId }
+            );
+
+        //modelBuilder.Entity<Company>().HasData(new Company()
+        //{
+        //    CompanyId = Guid.NewGuid(),
+        //    CompanyName = "Test",
+        //    IsDeleted = false,
+        //});
     }
 }

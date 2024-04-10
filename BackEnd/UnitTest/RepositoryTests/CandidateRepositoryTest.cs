@@ -56,7 +56,7 @@
 //        public async Task Get_Candidate_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<CandidateModel> list = new();
+//            List<CandidateModel> list
 //            var expectedCreatedCandidate1 = new CandidateModel
 //            {
 //                CandidateId = Guid.NewGuid(),

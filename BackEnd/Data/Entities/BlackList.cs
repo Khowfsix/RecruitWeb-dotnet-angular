@@ -8,7 +8,7 @@ public partial class BlackList
 
     public string? Reason { get; set; }
 
-    public DateTime DateTime { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public int? Status { get; set; }
 

@@ -6,13 +6,9 @@ namespace Service.Models
     {
         public Guid InterviewerId { get; set; }
 
-
         public string UserId { get; set; }
 
-
-
         public virtual WebUser User { get; set; }
-
 
         public Guid CompanyId { get; set; }
 

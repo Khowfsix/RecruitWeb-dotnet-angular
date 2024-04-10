@@ -55,7 +55,7 @@
 //        public async Task Get_SuccessfulCadidate_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<SuccessfulCadidateModel> list = new();
+//            List<SuccessfulCadidateModel> list
 //            var expectedCreatedSuccessfulCadidate1 = new SuccessfulCadidateModel
 //            {
 //                SuccessfulCadidateId = Guid.NewGuid(),

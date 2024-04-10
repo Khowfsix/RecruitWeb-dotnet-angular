@@ -55,7 +55,7 @@
 //        public async Task Get_Company_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<CompanyModel> companyList = new();
+//            List<CompanyModel> companyList
 //            var expectedCreatedCompany1 = new CompanyModel
 //            {
 //                CompanyId = Guid.NewGuid(),

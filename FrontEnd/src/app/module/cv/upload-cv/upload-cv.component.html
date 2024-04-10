@@ -1,0 +1,15 @@
+<div>
+	<div></div>
+	<div
+		class="file-drop-zone"
+		(drop)="onDrop($event)"
+		(dragover)="onDragOver($event)"
+		(dragleave)="onDragLeave($event)">
+		<input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+		<button mat-raised-button (click)="fileInput.click()">Choose File</button>
+		<p class="p-2">or drag and drop files here</p>
+	</div>
+	<div class="d-flex justify-content-center p-5 rounded">
+		<button mat-raised-button class="col-4" color="primary">UPLOAD</button>
+	</div>
+</div>

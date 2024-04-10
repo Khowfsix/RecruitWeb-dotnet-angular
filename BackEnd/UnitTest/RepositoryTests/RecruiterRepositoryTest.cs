@@ -56,7 +56,7 @@
 //        public async Task Get_Recruiter_Returns_Correctly()
 //        {
 //            //Arrange
-//            List<RecruiterModel> list = new();
+//            List<RecruiterModel> list
 //            var expectedCreatedRecruiter1 = new RecruiterModel
 //            {
 //                RecruiterId = Guid.NewGuid(),

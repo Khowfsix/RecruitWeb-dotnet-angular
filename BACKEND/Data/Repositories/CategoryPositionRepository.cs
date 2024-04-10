@@ -31,6 +31,7 @@ namespace Data.Repositories
                 return null!;
             }
         }
+
         public async Task<IEnumerable<CategoryPosition>> GetAllCategoryPositions()
         {
             /*------------------------------*/
