@@ -33,6 +33,14 @@ namespace Data.Repositories
             }
         }
 
+        public async Task<IEnumerable<CvHasSkill>> GetAllByCvId(Guid? cvId)
+        {
+            var listData = await Entities.Where(e => e.Cvid == cvId)
+                .Include(e => e.Skill)
+                .ToListAsync();
+            return listData!;
+        }
+
         public async Task<IEnumerable<CvHasSkill>> GetAllCvHasSkillService(string? request)
         {
             try

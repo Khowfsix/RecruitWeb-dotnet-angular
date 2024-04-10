@@ -1,5 +1,8 @@
+using Data.CustomModel.Application;
+using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
@@ -41,6 +44,26 @@ namespace Data.Repositories
                                      .ToListAsync();
             return listData;
         }
+
+        public async Task<IEnumerable<Application>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString)
+        {
+            var query = Entities.Select(o => o);
+            if (!String.IsNullOrEmpty(applicationFilter.Search))
+            {
+                query = query.Where(o => o.Cv.Candidate.User.FullName.ToLower().Contains(applicationFilter.Search.ToLower()));
+            }
+            if (sortString != null)
+            {
+                var sort = new Sort<Application>(sortString);
+                query = sort.getSort(query);
+            }
+            var listData = await query.Where(e => e.PositionId == positionId)
+                .Include(a => a.Position)
+                .Include(a => a.Cv)
+                .ToListAsync();
+            return listData;
+        }
+
 
         public async Task<Application> SaveApplication(Application request)
         {

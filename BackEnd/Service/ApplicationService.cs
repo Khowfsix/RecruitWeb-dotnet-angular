@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data.CustomModel.Application;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +31,24 @@ namespace Service
         public async Task<bool> DeleteApplication(Guid applicationId)
         {
             return await _applicationRepository.DeleteApplication(applicationId);
+        }
+
+        public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString)
+        {
+            var data = await _applicationRepository.GetAllApplicationsByPositionId(positionId, applicationFilter, sortString);
+            if (!data.IsNullOrEmpty())
+            {
+                if (applicationFilter.NotInBlackList.Value)
+                {
+                    var blackLists = await _blacklistRepository.GetAllBlackLists();
+                    var candidateIdsInBlackList = blackLists.Select(o => o.CandidateId);
+                    List<ApplicationModel> models = _mapper.Map<List<ApplicationModel>>(data);
+                    return models.Where(o => !candidateIdsInBlackList.Contains(o.Cv.CandidateId));
+                }
+                List<ApplicationModel> listData = _mapper.Map<List<ApplicationModel>>(data);
+                return listData;
+            }
+            return null!;
         }
 
         public async Task<IEnumerable<ApplicationModel>> GetAllApplications()

@@ -29,6 +29,7 @@ using Api.ViewModels.Shift;
 using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
+using Data.CustomModel.Application;
 using Data.CustomModel.Position;
 using Data.Entities;
 using Service.Models;
@@ -185,6 +186,7 @@ namespace Data.Mapping
 
             #region Application
 
+            CreateMap<ApplicationFilter, ApplicationFilterModel>().ReverseMap();
             CreateMap<Application, ApplicationModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationAddModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationUpdateModel>().ReverseMap();

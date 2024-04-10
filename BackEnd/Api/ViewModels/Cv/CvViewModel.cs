@@ -11,13 +11,9 @@ namespace Api.ViewModels.Cv
         public virtual CandidateViewModel Candidate { get; set; } = null!;
         public string? Experience { get; set; }
         public string? CvPdf { get; set; }
-
         public string CvName { get; set; }
-
         public string Introduction { get; set; }
-
         public string Education { get; set; }
-
         public bool IsDeleted { get; set; } = false;
         public IList<SkillViewModel> Skills { get; set; } = new List<SkillViewModel>();
         public IList<CertificateViewModel> Certificates { get; set; } = new List<CertificateViewModel>();

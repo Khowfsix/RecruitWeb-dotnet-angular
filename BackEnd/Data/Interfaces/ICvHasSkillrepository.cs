@@ -4,6 +4,8 @@ namespace Data.Interfaces
 {
     public interface ICvHasSkillrepository
     {
+        Task<IEnumerable<CvHasSkill>> GetAllByCvId(Guid? cvId);
+
         Task<IEnumerable<CvHasSkill>> GetAllCvHasSkillService(string? request);
 
         Task<CvHasSkill> SaveCvHasSkillService(CvHasSkill request);

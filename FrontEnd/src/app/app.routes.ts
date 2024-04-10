@@ -6,6 +6,7 @@ import { AuthGuard } from './core/guard/auth.guard';
 import { Type } from '@angular/core';
 import { ProfileComponent } from './module/auth/profile/profile.component';
 import { PositionDetailComponent } from './module/position-detail/position-detail/position-detail.component';
+import { ApplicationComponent } from './module/reccer/application/application.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -37,6 +38,11 @@ export const routes: Routes = [
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 
 	{ path: 'positions', component: PositionComponent },
+
+	createRouteWithRoles('applications/:positionId', ApplicationComponent, [
+		role.RECRUITER,
+		role.ADMIN,
+	]),
 
 	// // url for recruiter
 	createRouteWithRoles('companies', CompanyComponent, [

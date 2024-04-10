@@ -9,5 +9,7 @@
         public Guid SkillId { get; set; }
 
         public int? ExperienceYear { get; set; }
+
+        public virtual SkillModel? Skill { get; set; }
     }
 }

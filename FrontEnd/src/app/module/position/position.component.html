@@ -58,6 +58,9 @@
 						}
 					</div>
 					<mat-menu #menu="matMenu">
+						<button mat-menu-item [routerLink]="['/applications', position.positionId]"><i
+								style="color: blue;" class="bi bi-eye-fill"></i> Application
+							List</button>
 						<button mat-menu-item (click)="openEditFormDialog(position, '100ms', '0ms')"><i
 								class="bi bi-pencil-square"></i> Edit</button>
 						<button mat-menu-item (click)="openDeleteDialog(position.positionId??'', '100ms', '0ms')"><i

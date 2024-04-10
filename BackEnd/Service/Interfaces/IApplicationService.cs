@@ -1,9 +1,12 @@
-﻿using Service.Models;
+﻿using Data.CustomModel.Application;
+using Service.Models;
 
 namespace Service.Interfaces
 {
     public interface IApplicationService
     {
+        Task<IEnumerable<ApplicationModel>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString);
+
         Task<IEnumerable<ApplicationModel>> GetAllApplications();
 
         Task<IEnumerable<ApplicationModel>> GetAllApplicationsOfPosition(Guid? positionId, string? status, string? priority);

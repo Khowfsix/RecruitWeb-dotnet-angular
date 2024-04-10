@@ -1,5 +1,6 @@
 ﻿using Api.ViewModels.Application;
 using AutoMapper;
+using Data.CustomModel.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -20,8 +21,16 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllApplications(string? status, string? priority)
+        public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, string? status, string? priority, Guid? positionId, string? sortString = "DateTime_DESC")
         {
+            if (positionId.HasValue)
+            {
+                var filterModel = _mapper.Map<ApplicationFilter>(applicationFilterModel);
+                var models = await _applicationService.GetAllApplicationsByPositionId(positionId.Value, filterModel, sortString);
+                var response = _mapper.Map<List<ApplicationViewModel>>(models);
+                return Ok(response);
+            }
+
             if (string.IsNullOrEmpty(status) && string.IsNullOrEmpty(priority))
             {
                 var modelDatas = await _applicationService.GetAllApplications();

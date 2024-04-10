@@ -20,8 +20,14 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCvHasSkill(string? request)
+        public async Task<IActionResult> GetAllCvHasSkill(string? request, Guid? cvId)
         {
+            if (cvId.HasValue)
+            {
+                var models = await _cvHasSkillService.GetAllByCvId(cvId.Value);
+                return models != null ? Ok(_mapper.Map<List<CvHasSkillViewModel>>(models)) : Ok("Not found");
+            }
+
             var cvHasSkillList = await _cvHasSkillService.GetAllCvHasSkillService(request);
             if (cvHasSkillList == null)
             {
