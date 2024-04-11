@@ -93,7 +93,7 @@ namespace Api.Controllers
         {
             //var response = await _candidateService.GetProfile(candidateId);
             var modelData = await _candidateService.FindById(candidateId);
-            var response = _mapper.Map<CandidateViewModel>(modelData);
+            var response = _mapper.Map<ViewModels.Candidate.CandidateViewModel>(modelData);
             if (response == null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);

@@ -15,9 +15,22 @@ namespace Data.Repositories
             _uow = uow;
         }
 
+        public async Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId)
+        {
+            var listData = await Entities
+                .Where(o => o.CandidateId == candidateId)
+                .Include(o => o.Event)
+                .Include(o => o.Candidate)
+                .OrderByDescending(o => o.DateJoin)
+                .ToListAsync();
+            return listData;
+        }
         public async Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEvents()
         {
-            var listData = await Entities.ToListAsync();
+            var listData = await Entities
+                .Include(o => o.Event)
+                .Include(o => o.Candidate)
+                .ToListAsync();
             return listData;
         }
 

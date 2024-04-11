@@ -1,0 +1,8 @@
+.custom-button {
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.custom-button:hover {
+	background-color: #d5d5d5;
+}

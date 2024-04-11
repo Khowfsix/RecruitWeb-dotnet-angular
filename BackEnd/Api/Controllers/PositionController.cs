@@ -1,11 +1,11 @@
-using Api.ViewModels;
+using Api.Paging;
 using Api.ViewModels.Position;
 using AutoMapper;
 using Castle.Core.Internal;
 using Data.CustomModel.Position;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service;
+using PagedList;
 using Service.Interfaces;
 using Service.Models;
 

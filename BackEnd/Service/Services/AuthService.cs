@@ -87,7 +87,7 @@ namespace Service.Services
             {
                 //CandidateId = Guid.Empty,
                 UserId = userId,
-                Experience = "",
+                AboutMe = "",
                 IsDeleted = false,
             };
             var response = await _candidateService.SaveCandidate(candidate);

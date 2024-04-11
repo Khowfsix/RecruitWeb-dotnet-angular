@@ -48,9 +48,12 @@ namespace Data.Repositories
         public async Task<IEnumerable<Application>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString)
         {
             var query = Entities.Select(o => o);
-            if (!String.IsNullOrEmpty(applicationFilter.Search))
+            if (!String.IsNullOrEmpty(applicationFilter!.Search))
             {
-                query = query.Where(o => o.Cv.Candidate.User.FullName.ToLower().Contains(applicationFilter.Search.ToLower()));
+                query = query.Where(o => 
+                (o.Cv.Candidate.User.FullName.ToLower().Contains(applicationFilter.Search.ToLower())
+                || o.Cv.CvHasSkills.First(o => o.Skill.SkillName.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
+
             }
             if (sortString != null)
             {
@@ -104,10 +107,10 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<Application>> GetApplicationHistory(Guid Cvid)
+        public async Task<IEnumerable<Application>> GetApplicationHistory(Guid candidateId)
         {
             var data = await Entities
-                .Where(entity => entity.Cvid == Cvid)
+                .Where(entity => entity.Cv.CandidateId == candidateId)
                 .Include(entity => entity.Position)
                 .OrderByDescending(entity => entity.DateTime)
                 .ToListAsync();

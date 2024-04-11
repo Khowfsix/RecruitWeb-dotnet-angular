@@ -4,6 +4,8 @@ namespace Service.Interfaces
 {
     public interface ICandidateJoinEventService
     {
+        Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId);
+
         Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents();
 
         Task<CandidateJoinEventModel> SaveCandidateJoinEvent(CandidateJoinEventModel request);

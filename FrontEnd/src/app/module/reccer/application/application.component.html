@@ -9,7 +9,7 @@
 			<form class="p-4" style="width: 100%;" [formGroup]="this.filterForm">
 				<mat-form-field style="width: 100%;">
 					<mat-label>Search</mat-label>
-					<input matInput type="text" formControlName="search" placeholder="Type candidate name">
+					<input matInput type="text" formControlName="search" placeholder="Candidate name, skill name">
 				</mat-form-field>
 				<mat-form-field style="width: 100%;">
 					<mat-label>Sort</mat-label>
@@ -28,23 +28,22 @@
 			</form>
 		</div>
 		<div class="p-2" style="width: 75%;">
-			<!-- for item in ... -->
-			@for (item of fetchedApplications; track item) {
+			@for (item of fetchedApplications ; track item) {
 			<div class="d-flex flex-row align-items-center p-2" style="width: 100%; height: fit-content;">
-				<div class=" d-flex flex-row"
-					style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; width: 60%; height: 150px; background-color: rgb(241, 199, 136);">
+				<div class="d-flex flex-row"
+					style="width: 60%; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; width: 60%; height: 150px; background-color: rgb(241, 199, 136);">
 					<div style="width: 80%;">
 						<div class="p-1 ps-4 shadow"
 							style="color: #ffffff; font-weight: 500; font-size: 17px; border-top-left-radius: 0.25rem; border-bottom-right-radius: 0.9rem; width: 100%; background-color: rgb(0, 32, 149);">
 							{{item.dateTime | date:'fullDate'}}
 						</div>
 						<div class="p-2 mt-2 d-flex flex-row" style="width: 100%;">
-							@for (cvHasSkill of item.cv?.cvHasSkills; track cvHasSkill) {
-							<div
-								matTooltip="{{cvHasSkill.experienceYear + (cvHasSkill.experienceYear !== 1 ? ' years' : ' year')}}">
+							@for (candidateHasSkill of item.cv?.candidate?.candidateHasSkills; track candidateHasSkill)
+							{
+							<div matTooltip="{{candidateHasSkill.level}}">
 								<div class="p-2 m-2 rounded-3"
 									style="background-color: rgb(107, 107, 107); color: #ffffff; font-weight: 500; border:  rgb(49, 49, 49) solid 1px;">
-									{{cvHasSkill?.skill?.skillName}}</div>
+									{{candidateHasSkill?.skill?.skillName}}</div>
 							</div>
 							}
 						</div>
@@ -53,20 +52,43 @@
 				<div class="rounded-2 d-flex flex-column justify-content-between"
 					style="border: rgb(106, 106, 106) solid 2px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); width: 400px; background-color: rgb(241, 199, 136); color:black; font-size: 16px; font-weight: 500; height: 170px;">
 					<div class="d-flex flex-row">
-						<div class="ps-3 pe-3 pt-3" style="width: 85%; font-size: 20px;">
-							{{item.cv?.candidate?.user?.fullName| uppercase}}
+						<div class=" ps-3 pe-3 pt-4" style="width: 70%; font-size: 20px;">
+							<div>{{item.cv?.candidate?.user?.fullName| uppercase}}</div>
 						</div>
-						@if (this.isInBlackList(item.cv?.candidateId)) {
-						<div style="font-size: 40px; color: black" matTooltip="This candidate is in blacklist">
-							<i class="bi bi-bookmark-x-fill"></i>
+						<div style="font-size: 40px; color: black; width: 14%;">
+							@if (this.isInBlackList(item.cv?.candidateId)) {
+							<div style="font-size: 40px; color: black; width: 14%;"
+								matTooltip="This candidate is in blacklist">
+								<i class="bi bi-bookmark-x-fill"></i>
+							</div>
+							}
 						</div>
-						}
-					</div>
+						<div class="">
+							<div matRipple [matRippleCentered]="true" style="height: fit-content; width: fit-content;"
+								class="custom-button rounded-5 p-2 mt-3">
+								<div style="height: 24px; width: 24px;" [matMenuTriggerFor]="menu">
+									<mat-icon>more_vert</mat-icon>
+								</div>
+								<!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
+								<mat-menu style="font-size: 15px;" #menu="matMenu">
+									<button mat-menu-item><i class="bi bi-clock-history"></i> View History</button>
+									<!-- <button mat-menu-item>Item 2</button> -->
+								</mat-menu>
 
-					<div class="ps-3 pe-3 pb-3">
-						<div>Experience: <span style="font-weight: 400;">{{item.cv?.experience}}</span></div>
-						<div>Education: <span style="font-weight: 400;">{{item.cv?.education}}</span></div>
-						<div style="font-size: 15px; font-weight: 400;">{{item.cv?.introduction}}</div>
+							</div>
+							<!-- <mat-icon>more_vert</mat-icon> -->
+							<!-- <i class="bi bi-three-dots-vertical" style="font-size: 20px; font-weight: 500;"></i> -->
+						</div>
+					</div>
+					<div class="ps-3 pe-3 pb-4" style="font-size: 17px; line-height: 25px; width: 350px;">
+						<span>
+							Date of birth:
+							<span style="font-weight:400;">{{item.cv?.candidate?.user?.dateOfBirth
+								|
+								date:'dd/MM/yyyy' }}</span>
+						</span>
+						<div style="font-weight: 400; overflow: hidden;
+						text-overflow: ellipsis;">{{item.cv?.candidate?.aboutMe}}</div>
 						<div>CV: <a href="{{item.cv?.cvPdf}}">{{item.cv?.cvName}}</a></div>
 					</div>
 				</div>

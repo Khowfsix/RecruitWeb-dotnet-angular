@@ -6,7 +6,7 @@
 
         public string UserId { get; set; }
 
-        public string? Experience { get; set; }
+        public string? AboutMe { get; set; }
 
         public bool IsDeleted { get; set; } = false;
     }

@@ -15,22 +15,22 @@ namespace Data.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "71552bf3-8aab-4c93-b9cf-183402b5000d");
+                keyValue: "244dfc81-5c33-443a-b009-d62a255940a6");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "b4751d9b-b515-4b58-bfc6-cdb1c1ac46c3");
+                keyValue: "8be07cc6-efa1-4ecb-8a35-c28aaa44ed13");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "f7d61ecf-78b2-4873-9987-603501f6075f");
+                keyValue: "9044432c-7417-4dd9-9bc8-d4c8258d7fd7");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "fb57f142-4c4b-48d2-a722-5d6236c7ad32");
+                keyValue: "d4786767-adf2-4b41-90a6-55b9ade6ca58");
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",

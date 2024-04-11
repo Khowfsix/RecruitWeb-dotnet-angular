@@ -6,7 +6,6 @@ import { AuthGuard } from './core/guard/auth.guard';
 import { Type } from '@angular/core';
 import { PositionDetailComponent } from './module/position-detail/position-detail/position-detail.component';
 import { ProfileComponent } from './module/auth/profile/profile.component';
-import { PositionDetailComponent } from './module/position-detail/position-detail/position-detail.component';
 import { ApplicationComponent } from './module/reccer/application/application.component';
 import { CvComponent } from './module/cv/cv.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
@@ -51,10 +50,6 @@ export const routes: Routes = [
 		role.RECRUITER,
 		role.ADMIN,
 	]),
-	// createRouteWithRoles('positions', PositionComponent, [
-	// 	role.RECRUITER,
-	// 	role.ADMIN,
-	// ]),
 
 	// url for interviewer
 

@@ -9,7 +9,7 @@ namespace Data.Interfaces
 
         Task<IEnumerable<Application>> GetAllApplications();
 
-        Task<IEnumerable<Application>> GetApplicationHistory(Guid Cvid);
+        Task<IEnumerable<Application>> GetApplicationHistory(Guid candidateId);
 
         Task<Application?> GetApplicationById(Guid ApplicationId);
 
