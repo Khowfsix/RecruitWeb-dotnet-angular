@@ -112,7 +112,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.Property(e => e.ApplicationId).ValueGeneratedNever();
             entity.Property(e => e.Cvid).HasColumnName("Cvid");
-            entity.Property(e => e.DateTime)
+            entity.Property(e => e.CreatedTime)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
@@ -142,7 +142,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.ToTable("BlackList");
 
             entity.Property(e => e.BlackListId).ValueGeneratedNever();
-            entity.Property(e => e.DateTime)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");

@@ -159,7 +159,7 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
             .Include(x => x.Interviewer)
             .Include(x => x.Result)
             .Include(x => x.Rounds)
-            .Where(x => fromDate <= x.Application.DateTime && x.Application.DateTime <= toDate)
+            .Where(x => fromDate <= x.Application.CreatedTime && x.Application.CreatedTime <= toDate)
             .ToListAsync();
 
         return interview;
