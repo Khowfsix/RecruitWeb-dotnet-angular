@@ -8,9 +8,13 @@ public class EventModel
 
     public Guid RecruiterId { get; set; }
 
+    public RecruiterModel Recruiter { get; set; }
+
     public string? Description { get; set; }
 
     public string Place { get; set; } = null!;
+
+    public string? ImageURL { get; set; }
 
     public DateTime? DatetimeEvent { get; set; }
 

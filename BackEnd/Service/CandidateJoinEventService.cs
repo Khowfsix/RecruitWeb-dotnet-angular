@@ -27,9 +27,9 @@ namespace Service
         {
             return await _candidateJoinEventRepository.DeleteCandidateJoinEvent(requestId);
         }
-        public async Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId)
+        public async Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId, string sortString)
         {
-            var data = await _candidateJoinEventRepository.GetAllCandidateJoinEventsByCandidateId(candidateId);
+            var data = await _candidateJoinEventRepository.GetAllCandidateJoinEventsByCandidateId(candidateId, sortString);
             if (!data.IsNullOrEmpty())
             {
                 List<CandidateJoinEventModel> listData = _mapper.Map<List<CandidateJoinEventModel>>(data);

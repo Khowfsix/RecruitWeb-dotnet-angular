@@ -1,0 +1,67 @@
+<div class="p-3">
+	<mat-tab-group mat-stretch-tabs="false" animationDuration="0ms" mat-align-tabs="start">
+		<mat-tab>
+			<ng-template mat-tab-label>
+				<span style="font-weight: 500; font-size: 18px;">
+					Applications History
+				</span>
+			</ng-template>
+			<div style="overflow-y: scroll; height: 500px;">
+				@if (this.applicationHistoryData.length === 0) {
+				<div class="p-4 mt-2 m-3 fs-5">No data</div>
+				}
+				@for (item of this.applicationHistoryData; track $index) {
+				<div class="card p-4 mt-2 m-3 shadow">
+					<div class="d-flex justify-content-between">
+						<div class="d-flex flex-row align-items-center">
+							<div class="icon"><img class="rounded-5" width="50px" height="50px"
+									src="{{item.position?.company?.logo}}"
+									alt="{{item.position?.company?.companyName}} logo" />
+							</div>
+							<div class="ms-2 c-details">
+								<div class="mb-1 fs-5">{{item.position?.company?.companyName}}</div>
+								<span>{{item.dateTime
+									| date:'fullDate'}}</span>
+							</div>
+						</div>
+					</div>
+					<div class="mt-3">
+						<div class="heading fs-4">{{item.position?.positionName}}</div>
+					</div>
+				</div>
+				}
+			</div>
+
+		</mat-tab>
+		<mat-tab>
+			<ng-template mat-tab-label style="font-size: 25x;">
+				<span style="font-weight: 500; font-size: 18px;">
+					Events History
+				</span>
+			</ng-template>
+			<div class="" style="overflow-y: scroll; height: 500px;">
+				@if (this.candidateJoinEventData.length === 0) {
+				<div class="p-4 mt-2 m-3 fs-5">No data</div>
+				}
+				@for (item of this.candidateJoinEventData; track $index) {
+				<div class="card p-4 mt-2 m-3 shadow d-flex flex-row ">
+					<div style=" width: 80%;">
+						<div class="heading fs-4">{{item.event?.eventName}}</div>
+						<div class="mt-1 ms-2" style="font-size: 15px; font-weight: 400;">{{item.event?.datetimeEvent |
+							date:'fullDate'}}</div>
+						<div class="ms-2" style="font-size: 15px; font-weight: 400;">{{item.event?.place}}</div>
+						<div style="font-size: 17px; font-weight: 500; margin-top: 2px;">Recruiter: <span
+								style="font-weight: 400;">{{item.event?.recruiter?.user?.fullName}}</span></div>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<div class="icon"><img style="border-radius: 50%;" width="80px" height="80px"
+								src="{{item.event?.imageURL}}" alt=" logo" />
+						</div>
+					</div>
+				</div>
+				}
+			</div>
+		</mat-tab>
+	</mat-tab-group>
+
+</div>

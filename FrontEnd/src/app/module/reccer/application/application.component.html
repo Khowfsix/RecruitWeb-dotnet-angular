@@ -52,16 +52,16 @@
 				<div class="rounded-2 d-flex flex-column justify-content-between"
 					style="border: rgb(106, 106, 106) solid 2px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); width: 400px; background-color: rgb(241, 199, 136); color:black; font-size: 16px; font-weight: 500; height: 170px;">
 					<div class="d-flex flex-row">
-						<div class=" ps-3 pe-3 pt-4" style="width: 70%; font-size: 20px;">
-							<div>{{item.cv?.candidate?.user?.fullName| uppercase}}</div>
-						</div>
-						<div style="font-size: 40px; color: black; width: 14%;">
-							@if (this.isInBlackList(item.cv?.candidateId)) {
-							<div style="font-size: 40px; color: black; width: 14%;"
-								matTooltip="This candidate is in blacklist">
-								<i class="bi bi-bookmark-x-fill"></i>
+						<div class=" ps-3 pe-3 pt-4" style="width: 85%; font-size: 20px;">
+							<div class="d-flex flex-row" style="width: 100%;">
+								<div style="width: 100%;">{{item.cv?.candidate?.user?.fullName| uppercase }}</div>
+								@if (this.isInBlackList(item.cv?.candidateId)) {
+								<div style="font-size: 30px; color: black; width: 14%;"
+									matTooltip="This candidate is in blacklist">
+									<i class="bi bi-exclamation-circle-fill"></i>
+								</div>
+								}
 							</div>
-							}
 						</div>
 						<div class="">
 							<div matRipple [matRippleCentered]="true" style="height: fit-content; width: fit-content;"
@@ -69,15 +69,15 @@
 								<div style="height: 24px; width: 24px;" [matMenuTriggerFor]="menu">
 									<mat-icon>more_vert</mat-icon>
 								</div>
-								<!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
 								<mat-menu style="font-size: 15px;" #menu="matMenu">
-									<button mat-menu-item><i class="bi bi-clock-history"></i> View History</button>
-									<!-- <button mat-menu-item>Item 2</button> -->
+									<button
+										(click)="openViewApplicationHistoryDialog(item.cv?.candidateId, '100ms', '0ms')"
+										mat-menu-item><i class="bi bi-clock-history"></i>
+										View
+										History</button>
 								</mat-menu>
 
 							</div>
-							<!-- <mat-icon>more_vert</mat-icon> -->
-							<!-- <i class="bi bi-three-dots-vertical" style="font-size: 20px; font-weight: 500;"></i> -->
 						</div>
 					</div>
 					<div class="ps-3 pe-3 pb-4" style="font-size: 17px; line-height: 25px; width: 350px;">

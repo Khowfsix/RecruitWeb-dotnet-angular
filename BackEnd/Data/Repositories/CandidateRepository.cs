@@ -47,11 +47,10 @@ namespace Data.Repositories
                 .Where(x => x.CandidateId == id)
                 .Include(c => c.User)
                 .Include(o => o.CandidateHasSkills)
+                .ThenInclude(o => o.Skill)
                 .FirstOrDefaultAsync();
 
-#pragma warning disable CS8603 // Possible null reference return.
             return entity;
-#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<Candidate?> GetCandidateByUserId(string userId)

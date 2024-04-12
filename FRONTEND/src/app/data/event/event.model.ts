@@ -8,7 +8,7 @@ export class Event {
 	description?: string;
 	imageURL?: string;
 	place?: string;
-	dateTimeEvent?: Date;
+	datetimeEvent?: Date;
 	maxParticipants?: number;
 	isDeleted?: boolean;
 }

@@ -1,4 +1,6 @@
-﻿namespace Api.ViewModels.Event
+﻿using Api.ViewModels.Recruiter;
+
+namespace Api.ViewModels.Event
 {
     public class EventViewModel
     {
@@ -7,9 +9,13 @@
 
         public Guid RecruiterId { get; set; }
 
+        public RecruiterViewModel Recruiter { get; set; }   
+
         public string? Description { get; set; }
 
         public string Place { get; set; } = null!;
+
+        public string? ImageURL { get; set; }
 
         public DateTime? DatetimeEvent { get; set; }
 
