@@ -30,6 +30,8 @@ namespace Api.ViewModels.Position
 
         public LanguageViewModel Language { get; set; }
 
+        public Guid RecruiterId { get; set; }
+
         public RecruiterViewModel Recruiter { get; set; } = null!;
 
         public Guid CategoryPositionId { get; set; }

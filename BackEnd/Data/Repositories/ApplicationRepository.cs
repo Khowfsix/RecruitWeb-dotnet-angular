@@ -64,6 +64,7 @@ namespace Data.Repositories
                 .Include(a => a.Position)
                 .Include(a => a.Cv)
                 .ToListAsync();
+
             return listData;
         }
 

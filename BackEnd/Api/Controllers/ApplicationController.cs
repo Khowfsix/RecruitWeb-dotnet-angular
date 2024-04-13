@@ -3,6 +3,7 @@ using AutoMapper;
 using Data.CustomModel.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -12,19 +13,30 @@ namespace Api.Controllers
     public class ApplicationController : BaseAPIController
     {
         private readonly IApplicationService _applicationService;
+        private readonly IPositionService _positionService;
+        private readonly IRecruiterService _recruiterService;
         private readonly IMapper _mapper;
 
-        public ApplicationController(IApplicationService applicationService, IMapper mapper)
+        public ApplicationController(IApplicationService applicationService, IPositionService positionService, IRecruiterService recruiterService, IMapper mapper)
         {
             _applicationService = applicationService;
+            _positionService = positionService;
+            _recruiterService = recruiterService;
             _mapper = mapper;
         }
-
+            
         [HttpGet]
         public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, string? status, string? priority, Guid? positionId, string? sortString = "DateTime_DESC")
         {
             if (positionId.HasValue)
             {
+                var userName = HttpContext.User.Identity.Name;
+                var foundPosition = await _positionService.GetPositionById(positionId.Value);
+                var foundRecruiter = await _recruiterService.GetRecruiterById(foundPosition.RecruiterId);
+                if (userName != foundRecruiter.User.UserName)
+                {
+                    return Ok("Not found");
+                }
                 var filterModel = _mapper.Map<ApplicationFilter>(applicationFilterModel);
                 var models = await _applicationService.GetAllApplicationsByPositionId(positionId.Value, filterModel, sortString);
                 var response = _mapper.Map<List<ApplicationViewModel>>(models);

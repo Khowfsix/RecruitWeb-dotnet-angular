@@ -15,6 +15,7 @@ export class Position {
 	endDate?: Date;
 	company?: Company;
 	language?: Language;
+	recruiterId?: string;
 	recruiter?: Recruiter;
 	categoryPositionId?: string;
 	categoryPosition?: CategoryPosition;
