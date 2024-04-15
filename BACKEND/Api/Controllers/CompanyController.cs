@@ -43,8 +43,8 @@ namespace Api.Controllers
 
             if (logo != null)
             {
-                var imageUploadResult = await _fileService.AddFileAsync(logo);
-                modelData.Logo = imageUploadResult.Url.OriginalString;
+                var RawUploadResult = await _fileService.AddFileAsync(logo);
+                modelData.Logo = RawUploadResult.Url.OriginalString;
             }
 
             var companyList = await _companyService.SaveCompany(modelData);

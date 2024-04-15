@@ -5,9 +5,9 @@ namespace Data.Interfaces
 {
     public interface IFileRepository
     {
-        Task<ImageUploadResult> AddFileAsync(IFormFile file);
+        Task<RawUploadResult> AddFileAsync(IFormFile file);
 
-        Task<IEnumerable<ImageUploadResult>> AddListFileAsync(List<IFormFile> files);
+        Task<IEnumerable<RawUploadResult>> AddListFileAsync(List<IFormFile> files);
 
         Task<DeletionResult> DeleteFileAsync(string publicId);
 
@@ -15,6 +15,6 @@ namespace Data.Interfaces
 
         Task<IEnumerable<Resource>> GetAllFileAsync();
 
-        Task<ImageUploadResult> UpdateFileAsync(IFormFile file, string oldPublicId);
+        Task<RawUploadResult> UpdateFileAsync(IFormFile file, string oldPublicId);
     }
 }
