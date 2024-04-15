@@ -40,7 +40,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     public virtual DbSet<Interviewer> Interviewers { get; set; }
 
-    public virtual DbSet<Itrsinterview> Itrsinterviews { get; set; }
+    //public virtual DbSet<Itrsinterview> Itrsinterviews { get; set; }
 
     public virtual DbSet<Language> Languages { get; set; }
 
@@ -60,13 +60,13 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     public virtual DbSet<Result> Results { get; set; }
 
-    public virtual DbSet<Room> Rooms { get; set; }
+    //public virtual DbSet<Room> Rooms { get; set; }
 
     public virtual DbSet<Round> Rounds { get; set; }
 
     public virtual DbSet<SecurityQuestion> SecurityQuestions { get; set; }
 
-    public virtual DbSet<Shift> Shifts { get; set; }
+    //public virtual DbSet<Shift> Shifts { get; set; }
 
     public virtual DbSet<Skill> Skills { get; set; }
 
@@ -311,7 +311,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.InterviewId).ValueGeneratedNever();
 
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
-            entity.Property(e => e.ItrsinterviewId).HasColumnName("ITRSInterviewId");
+            //entity.Property(e => e.ItrsinterviewId).HasColumnName("ITRSInterviewId");
             entity.Property(e => e.Company_Status).HasMaxLength(255);
             entity.Property(e => e.Candidate_Status).HasMaxLength(255);
 
@@ -325,10 +325,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_IsConductes");
 
-            entity.HasOne(d => d.Itrsinterview).WithMany(p => p.Interviews)
-                .HasForeignKey(d => d.ItrsinterviewId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ITRS");
+            //entity.HasOne(d => d.Itrsinterview).WithMany(p => p.Interviews)
+            //    .HasForeignKey(d => d.ItrsinterviewId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_ITRS");
 
             entity.HasOne(d => d.Recruiter).WithMany(p => p.Interviews)
                 .HasForeignKey(d => d.RecruiterId)
@@ -362,29 +362,29 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasConstraintName("Fk_InterviewerUser");
         });
 
-        modelBuilder.Entity<Itrsinterview>(entity =>
-        {
-            entity.HasKey(e => e.ItrsinterviewId).HasName("PK__ITRSInte__689D871CEED2E961");
+        //modelBuilder.Entity<Itrsinterview>(entity =>
+        //{
+        //    entity.HasKey(e => e.ItrsinterviewId).HasName("PK__ITRSInte__689D871CEED2E961");
 
-            entity.ToTable("ITRSInterview");
+        //    entity.ToTable("ITRSInterview");
 
-            entity.HasIndex(e => new { e.DateInterview, e.ShiftId, e.RoomId }, "UNIQUE_InterviewTime").IsUnique();
+        //    entity.HasIndex(e => new { e.DateInterview, e.ShiftId, e.RoomId }, "UNIQUE_InterviewTime").IsUnique();
 
-            entity.Property(e => e.ItrsinterviewId)
-                .ValueGeneratedNever()
-                .HasColumnName("ITRSInterviewId");
-            entity.Property(e => e.DateInterview).HasColumnType("date");
+        //    entity.Property(e => e.ItrsinterviewId)
+        //        .ValueGeneratedNever()
+        //        .HasColumnName("ITRSInterviewId");
+        //    entity.Property(e => e.DateInterview).HasColumnType("date");
 
-            entity.HasOne(d => d.Room).WithMany(p => p.Itrsinterviews)
-                .HasForeignKey(d => d.RoomId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Fk_ITRS_Room");
+        //    entity.HasOne(d => d.Room).WithMany(p => p.Itrsinterviews)
+        //        .HasForeignKey(d => d.RoomId)
+        //        .OnDelete(DeleteBehavior.ClientSetNull)
+        //        .HasConstraintName("Fk_ITRS_Room");
 
-            entity.HasOne(d => d.Shift).WithMany(p => p.Itrsinterviews)
-                .HasForeignKey(d => d.ShiftId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Fk_ITRS_Shift");
-        });
+        //    entity.HasOne(d => d.Shift).WithMany(p => p.Itrsinterviews)
+        //        .HasForeignKey(d => d.ShiftId)
+        //        .OnDelete(DeleteBehavior.ClientSetNull)
+        //        .HasConstraintName("Fk_ITRS_Shift");
+        //});
 
         modelBuilder.Entity<Language>(entity =>
         {
@@ -553,18 +553,18 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.ResultString).HasMaxLength(255);
         });
 
-        modelBuilder.Entity<Room>(entity =>
-        {
-            entity.HasKey(e => e.RoomId).HasName("PK__Room__3286393943AEBB6D");
+        //modelBuilder.Entity<Room>(entity =>
+        //{
+        //    entity.HasKey(e => e.RoomId).HasName("PK__Room__3286393943AEBB6D");
 
-            entity.ToTable("Room");
+        //    entity.ToTable("Room");
 
-            entity.HasIndex(e => e.RoomName, "UQ__Room__6B500B55E5A0FA95").IsUnique();
+        //    entity.HasIndex(e => e.RoomName, "UQ__Room__6B500B55E5A0FA95").IsUnique();
 
-            entity.Property(e => e.RoomId).ValueGeneratedNever();
+        //    entity.Property(e => e.RoomId).ValueGeneratedNever();
 
-            entity.Property(e => e.RoomName).HasMaxLength(255);
-        });
+        //    entity.Property(e => e.RoomName).HasMaxLength(255);
+        //});
 
         modelBuilder.Entity<Round>(entity =>
         {
@@ -614,14 +614,14 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasConstraintName("FK_AnswerForUser");
         });
 
-        modelBuilder.Entity<Shift>(entity =>
-        {
-            entity.HasKey(e => e.ShiftId).HasName("PK__Shift__C0A83881EF08EB13");
+        //modelBuilder.Entity<Shift>(entity =>
+        //{
+        //    entity.HasKey(e => e.ShiftId).HasName("PK__Shift__C0A83881EF08EB13");
 
-            entity.ToTable("Shift");
+        //    entity.ToTable("Shift");
 
-            entity.Property(e => e.ShiftId).ValueGeneratedNever();
-        });
+        //    entity.Property(e => e.ShiftId).ValueGeneratedNever();
+        //});
 
         modelBuilder.Entity<Skill>(entity =>
         {

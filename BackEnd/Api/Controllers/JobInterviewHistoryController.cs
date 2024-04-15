@@ -45,12 +45,12 @@ namespace Api.Controllers
             return response is not null ? Ok(response) : NotFound(applicationId);
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetRoomInfo(Guid applicationId)
-        {
-            var response =
-                await _jobInterviewHistoryService.GetRoomInformation(applicationId);
-            return response is not null ? Ok(response) : NotFound(applicationId);
-        }
+        //[HttpGet("[action]")]
+        //public async Task<IActionResult> GetRoomInfo(Guid applicationId)
+        //{
+        //    var response =
+        //        await _jobInterviewHistoryService.GetRoomInformation(applicationId);
+        //    return response is not null ? Ok(response) : NotFound(applicationId);
+        //}
     }
 }
