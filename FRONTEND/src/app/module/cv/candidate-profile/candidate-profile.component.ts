@@ -2,6 +2,13 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { NgbProgressbarModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
+import { PersonalDetailComponent } from './personal-detail/personal-detail.component';
+import { CandidateEducationComponent } from './candidate-education/candidate-education.component';
+import { WorkExperienceComponent } from './work-experience/work-experience.component';
+import { CandidateSkillsComponent } from './candidate-skills/candidate-skills.component';
+import { PersonalProjectComponent } from './personal-project/personal-project.component';
+import { CandidateCertificateComponent } from './candidate-certificate/candidate-certificate.component';
+import { CandidateAwardsComponent } from './candidate-awards/candidate-awards.component';
 
 @Component({
 	selector: 'app-candidate-profile',
@@ -10,7 +17,15 @@ import { NgbProgressbarModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-boots
 		MatDividerModule,
 		MatButtonModule,
 		NgbProgressbarModule,
-		NgbScrollSpyModule
+		NgbScrollSpyModule,
+
+		PersonalDetailComponent,
+		CandidateEducationComponent,
+		WorkExperienceComponent,
+		CandidateSkillsComponent,
+		PersonalProjectComponent,
+		CandidateCertificateComponent,
+		CandidateAwardsComponent
 	],
 	templateUrl: './candidate-profile.component.html',
 	styleUrl: './candidate-profile.component.css'

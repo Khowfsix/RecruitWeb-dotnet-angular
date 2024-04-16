@@ -21,9 +21,9 @@ namespace Data.Repositories
             _cloudinary = new Cloudinary(acc);
         }
 
-        public async Task<IEnumerable<ImageUploadResult>> AddListFileAsync(List<IFormFile> files)
+        public async Task<IEnumerable<RawUploadResult>> AddListFileAsync(List<IFormFile> files)
         {
-            var listUploadResult = new List<ImageUploadResult>();
+            var listUploadResult = new List<RawUploadResult>();
             foreach (IFormFile file in files)
             {
                 listUploadResult.Add(await AddFileAsync(file));
@@ -31,19 +31,22 @@ namespace Data.Repositories
             return listUploadResult;
         }
 
-        public async Task<ImageUploadResult> AddFileAsync(IFormFile file)
+        public async Task<RawUploadResult> AddFileAsync(IFormFile file)
         {
-            var uploadResult = new ImageUploadResult();
+            var uploadResult = new RawUploadResult();
             if (file.Length > 0)
             {
                 using var stream = file.OpenReadStream();
-                var uploadParams = new ImageUploadParams
+
+                var uploadParams = new RawUploadParams
                 {
                     File = new FileDescription(file.FileName, stream),
-                    Overwrite = true
+                    Overwrite = true,
                 };
+
                 uploadResult = await _cloudinary.UploadAsync(uploadParams);
             }
+
             return uploadResult;
         }
 
@@ -80,9 +83,9 @@ namespace Data.Repositories
             return listResourcesResult.Resources;
         }
 
-        public async Task<ImageUploadResult> UpdateFileAsync(IFormFile file, string oldPublicId)
+        public async Task<RawUploadResult> UpdateFileAsync(IFormFile file, string oldPublicId)
         {
-            var uploadResult = new ImageUploadResult();
+            var uploadResult = new RawUploadResult();
             if (file.Length > 0)
             {
                 using var stream = file.OpenReadStream();

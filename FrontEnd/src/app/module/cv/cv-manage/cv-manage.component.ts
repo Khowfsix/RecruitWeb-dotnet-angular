@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadCvComponent } from '../upload-cv/upload-cv.component';
+import { UploadCvComponent } from './upload-cv/upload-cv.component';
 
 @Component({
 	selector: 'app-cv-manage',

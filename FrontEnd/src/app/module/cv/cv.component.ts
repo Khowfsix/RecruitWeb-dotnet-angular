@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { CvManageComponent } from './cv-manage/cv-manage.component';
-import { UploadCvComponent } from './upload-cv/upload-cv.component';
+import { UploadCvComponent } from './cv-manage/upload-cv/upload-cv.component';
 import { JobPreferenceComponent } from './job-preference/job-preference.component';
 
 @Component({

@@ -8,7 +8,7 @@ public partial class Application
 
     public Guid PositionId { get; set; }
 
-    public DateTime DateTime { get; set; }
+    public DateTime CreatedTime { get; set; }
 
     public string? Company_Status { get; set; }
 

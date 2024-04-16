@@ -15,6 +15,6 @@ namespace Service.Interfaces
 
         Task<CvModel> GetCV(Guid id);
 
-        Task<RoomModel> GetRoomInformation(Guid id);
+        //Task<RoomModel> GetRoomInformation(Guid id);
     }
 }
