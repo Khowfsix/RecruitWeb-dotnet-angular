@@ -11,5 +11,7 @@ namespace Api.ViewModels.Interviewer
         public WebUserViewModel User { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+
+        public int? daysToLastInterview { get; set; } = null;
     }
 }

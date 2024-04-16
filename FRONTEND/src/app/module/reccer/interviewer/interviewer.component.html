@@ -1,0 +1,125 @@
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
+		<div class="fs-3 p-4 " style="margin: auto;">{{this.recruiter?.company?.companyName |
+			uppercase }}
+			INTERVIEWERS
+		</div>
+	</div>
+
+
+	<div class="d-flex flex-row" style="height: fit-content;">
+		<div class="p-2 rounded-2 mt-4"
+			style="width: 25%; height: fit-content; border: green solid 1px; background: linear-gradient(to right, #4b07a3, #1838ed);">
+			<form class="p-4" style="width: 100%;" [formGroup]="this.filterForm">
+				<mat-form-field style="width: 100%;">
+					<mat-label>Search</mat-label>
+					<input matInput type="text" formControlName="search" placeholder="Interviewer name">
+				</mat-form-field>
+
+				<mat-form-field style="width: 100%;">
+					<mat-label>Sort</mat-label>
+					<mat-select formControlName="sortString">
+						<mat-option value="FullName_ASC">Name: A -> Z</mat-option>
+						<mat-option value="FullName_DESC">Name: Z -> A</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<section
+					style="width: 100%; background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+					<p class="p-3">
+						<mat-slide-toggle formControlName="isFreeTime"> Is Free Time </mat-slide-toggle>
+						<mat-slide-toggle class="mt-2" formControlName="isBusyTime"> Is Busy Time </mat-slide-toggle>
+					</p>
+				</section>
+
+				<div class="d-flex flex-row mt-4">
+					<mat-form-field>
+						<mat-label>From time</mat-label>
+						<input matInput type="time" placeholder="From time" formControlName="fromTime">
+					</mat-form-field>
+					<mat-form-field class="ms-2">
+						<mat-label>To time</mat-label>
+						<input matInput type="time" placeholder="To time" formControlName="toTime">
+					</mat-form-field>
+				</div>
+
+				<mat-form-field style="width: 100%;">
+					<mat-label>Date</mat-label>
+					<mat-date-range-input [rangePicker]="picker">
+						<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+							formControlName="fromDate" placeholder="From date" #fromDatePicker>
+						<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+							formControlName="toDate" placeholder="To date" #toDatePicker>
+					</mat-date-range-input>
+					@if( fromDatePicker.value || toDatePicker.value){
+					<button (click)="fromDatePicker.value=''; toDatePicker.value='' ;
+					this.filterForm.get('fromDate')?.setValue(''); this.filterForm.get('toDate')?.setValue('')" mat-icon-button>
+						<mat-icon style="color: red;">delete</mat-icon>
+					</button>
+					}
+					<mat-hint style="font-size: 13px; font-weight: 500; color: white;">DD/MM/YYYY –
+						DD/MM/YYYY</mat-hint>
+					<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-date-range-picker #picker></mat-date-range-picker>
+				</mat-form-field>
+
+			</form>
+		</div>
+		<div class="ms-2 p-2 rounded-1" style="width: 75%; height: 600px; overflow-y: scroll;">
+			@for (item of fetchedInterviewers; track item) {
+			<div>
+				<div class="d-flex flex-row card py-4 m-3 shadow custom-hover"
+					style=" padding-left: 30px; padding-right: 40px;">
+					<div class="d-flex justify-content-between" style="width: 15%;">
+						<div class="d-flex flex-row align-items-center">
+							<div class="icon"><img style="border-radius: 50%;" width="125px" height="125px"
+									src="{{item.user?.imageURL}}" alt="{{item.user?.fullName}} avatar" />
+							</div>
+						</div>
+					</div>
+					<div class="py-2" style="width: 60%; margin-left: 30px;">
+						<div class="heading fs-4">{{item.user?.fullName}}</div>
+						<div style="line-height: 20px; margin-top: 15px;">
+							<div><i class="bi bi-cake2"></i> {{item.user?.dateOfBirth | date: "dd/MM/yyyy"}}
+							</div>
+							<div><i class="bi bi-envelope-at"></i>
+								<a href="mailto:{{item.user?.email}}" class="mt-3 ms-2"
+									style="line-height: 1.5; font-size: 16px;">{{item.user?.email}}
+								</a>
+							</div>
+						</div>
+						<div class="mt-2" style="font-size: 16px;">
+							@switch (item.daysToLastInterview) {
+							@case (-1) {
+							Haven't had any interview
+							}
+							@case (0) {
+							Last interview was today
+							}
+							@case (1) {
+							Last interview was 1 day ago
+							}
+							@default {
+							Last interview was {{item.daysToLastInterview}} days ago
+							}
+							}
+						</div>
+					</div>
+					<div class="py-2 ms-4 d-flex flex-row justify-content-center" style=" width: 25%;">
+
+						<button mat-icon-button matTooltip="New interview">
+							<mat-icon>group_add</mat-icon>
+						</button>
+						<button mat-icon-button matTooltip="All interviews">
+							<mat-icon>list</mat-icon>
+						</button>
+					</div>
+
+				</div>
+			</div>
+
+			}
+		</div>
+
+	</div>
+</div>

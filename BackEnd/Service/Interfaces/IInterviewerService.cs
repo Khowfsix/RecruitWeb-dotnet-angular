@@ -1,3 +1,4 @@
+using Data.CustomModel.Interviewer;
 using Service.Models;
 
 namespace Service.Interfaces;
@@ -8,7 +9,7 @@ public interface IInterviewerService
 
     Task<InterviewerModel?> GetInterviewerById(Guid id);
 
-    Task<IEnumerable<InterviewerModel?>> GetInterviewersInCompany(Guid companyId);
+    Task<IEnumerable<InterviewerModel?>> GetInterviewersInCompany(Guid companyId, InterviewerFilter interviewerFilter, string sortString);
 
     Task<InterviewerModel> SaveInterviewer(InterviewerModel addModel);
 

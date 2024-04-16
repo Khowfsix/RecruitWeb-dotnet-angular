@@ -1,6 +1,8 @@
+using Data.CustomModel.Interviewer;
+using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
-
+using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories;
@@ -12,6 +14,79 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
     public InterviewerRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
     {
         _uow = uow;
+    }
+
+    public async Task<IEnumerable<Interviewer>> GetInterviewersInCompany(Guid companyId, InterviewerFilter interviewerFilter, string sortString)
+    {
+        var query = Entities.Where(o => o.CompanyId.Equals(companyId));
+
+        if (sortString != null)
+        {
+            switch (sortString)
+            {
+                case "FullName_ASC":
+                    query = query.Include(e => e.User).OrderBy(e => e.User.FullName);
+                    break;
+                case "FullName_DESC":
+                    query = query.Include(e => e.User).OrderByDescending(e => e.User.FullName);
+                    break;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(interviewerFilter.Search))
+        {
+            query = query.Where(o => o.User.FullName!.ToLower().Contains(interviewerFilter.Search.ToLower()));
+        }
+        //if (interviewerFilter.FromTime != null && interviewerFilter.ToTime != null)
+        //{
+        //    TimeSpan fromTimeSpan = TimeSpan.Parse(interviewerFilter.FromTime);
+        //    TimeSpan toTimeSpan = TimeSpan.Parse(interviewerFilter.ToTime);
+        //    query = query.Include(o => o.Interviews).ThenInclude(o => o.Itrsinterview);
+        //    query = query.Where(o =>
+        //                o.Interviews != null &&
+        //                o.Interviews.Any(x => x.Itrsinterview != null
+        //                    && x.Itrsinterview.DateInterview.TimeOfDay <= toTimeSpan
+        //                    && x.Itrsinterview.DateInterview.TimeOfDay >= fromTimeSpan)
+        //                );
+        //}
+
+        if (interviewerFilter.FromDate.HasValue && interviewerFilter.ToDate.HasValue)
+        {
+            query = query.Include(o => o.Interviews).ThenInclude(o => o.Itrsinterview);
+            
+            if (interviewerFilter.IsFreeTime!.Value)
+            {
+                query = query.Where(o =>
+                    o.Interviews == null ||
+                    !o.Interviews.Any(x => x.Itrsinterview != null
+                        && x.Itrsinterview.DateInterview <= interviewerFilter.ToDate.Value
+                        && x.Itrsinterview.DateInterview >= interviewerFilter.FromDate.Value)
+                    );
+            }
+            if (interviewerFilter.IsBusyTime!.Value)
+            {
+                query = query.Where(o =>
+                    o.Interviews != null &&
+                    o.Interviews.Any(x => x.Itrsinterview != null
+                        && x.Itrsinterview.DateInterview <= interviewerFilter.ToDate.Value
+                        && x.Itrsinterview.DateInterview >= interviewerFilter.FromDate.Value)
+                    );
+            } 
+           
+        }
+        else {
+            if (interviewerFilter.IsFreeTime!.Value != interviewerFilter.IsBusyTime!.Value)
+            {
+                if (interviewerFilter.IsFreeTime.Value)
+                    query = query.Include(e => e.Interviews).Where(o => o.Interviews.Count() == 0);
+                else
+                    query = query.Include(e => e.Interviews).Where(o => o.Interviews.Count() != 0);
+            }
+        }
+
+        var result = await query
+                .ToListAsync();
+        return result;
     }
 
     public async Task<IEnumerable<Interviewer>> GetAllInterviewer()

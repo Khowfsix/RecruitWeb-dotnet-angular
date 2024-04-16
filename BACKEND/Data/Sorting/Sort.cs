@@ -45,6 +45,6 @@ public class Sort<T>
                 && method.GetParameters().Length == 2)
             .MakeGenericMethod(entityType, property.PropertyType);
 
-        return (IQueryable<T>)orderByMethod.Invoke(null, new object[] { query, orderByExp });
+        return (IQueryable<T>)orderByMethod.Invoke(null, new object[] { query, orderByExp })!;
     }
 }

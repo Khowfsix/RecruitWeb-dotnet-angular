@@ -24,6 +24,15 @@ public class InterviewService : IInterviewService
         _roundRepository = roundRepository;
         _mapper = mapper;
     }
+    public async Task<InterviewModel> GetLastInterviewByInterviewerId(Guid interviewerId)
+    {
+        var data = await this.GetInterviewsByInterviewer(interviewerId);
+        if (data == null || data.Count() == 0)
+            return null;
+        data.OrderByDescending(o => o.Itrsinterview.DateInterview);
+        var result = _mapper.Map<InterviewModel>(data.First());
+        return result;
+    }
 
     public async Task<InterviewModel?> GetInterviewById(Guid id)
     {
@@ -100,6 +109,7 @@ public class InterviewService : IInterviewService
         {
             var filterdDatas = data.Where(i => i.InterviewerId.Equals(requestId));
             List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filterdDatas);
+            return result!;
         }
         return null!;
     }

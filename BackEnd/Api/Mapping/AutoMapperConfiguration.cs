@@ -31,6 +31,7 @@ using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
 using Data.CustomModel.Application;
+using Data.CustomModel.Interviewer;
 using Data.CustomModel.Position;
 using Data.Entities;
 using Service.Models;
@@ -317,6 +318,7 @@ namespace Data.Mapping
 
             #region Interviewer
 
+            CreateMap<InterviewerFilter, InterviewerFilterModel>().ReverseMap();
             CreateMap<Interviewer, InterviewerModel>().ReverseMap();
             CreateMap<InterviewerModel, InterviewerAddModel>().ReverseMap();
             CreateMap<InterviewerModel, InterviewerUpdateModel>().ReverseMap();

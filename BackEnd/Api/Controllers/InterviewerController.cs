@@ -1,5 +1,7 @@
 using Api.ViewModels.Interviewer;
 using AutoMapper;
+using Data.CustomModel.Interviewer;
+using Data.CustomModel.Position;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -11,21 +13,22 @@ namespace Api.Controllers;
 public class InterviewerController : BaseAPIController
 {
     private readonly IInterviewerService _interviewerService;
+    private readonly IInterviewService _interviewService;
     private readonly IMapper _mapper;
 
-    public InterviewerController(IInterviewerService interviewerService, IMapper mapper)
+    public InterviewerController(IInterviewerService interviewerService, IInterviewService interviewService, IMapper mapper)
     {
         _interviewerService = interviewerService;
+        _interviewService = interviewService;
         _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllInterviewer(Guid? id, Guid? companyId)
+    public async Task<IActionResult> GetAllInterviewer([FromQuery] InterviewerFilterModel interviewerFilterModel, 
+        Guid? id, 
+        Guid? companyId,
+        string? sortString = "FullName_ASC")
     {
-        //if (companyId != null)
-        //{
-        //    var response = await _interviewerService.GetInterviewersInCompany((Guid)companyId);
-        //}
         if (id != null)
         {
             var data = await _interviewerService.GetInterviewerById((Guid)id);
@@ -37,13 +40,22 @@ public class InterviewerController : BaseAPIController
         }
         else if (companyId != null)
         {
-            var response = await _interviewerService.GetInterviewersInCompany((Guid)companyId);
-
-            if (response != null)
+            var filter = _mapper.Map<InterviewerFilter>(interviewerFilterModel);
+            var models = await _interviewerService.GetInterviewersInCompany((Guid)companyId, filter, sortString);
+            var response = _mapper.Map<List<InterviewerViewModel>>(models);
+            foreach (var interviewer in response)
             {
-                return Ok(response);
+                var lastInterview = await _interviewService.GetLastInterviewByInterviewerId(interviewer.InterviewerId);
+                if (lastInterview == null)
+                {
+                    interviewer.daysToLastInterview = -1;
+                    continue;
+                }
+                TimeSpan date = DateTime.Now - lastInterview.Itrsinterview.DateInterview;
+                interviewer.daysToLastInterview = date.Days;
             }
-            return Ok();
+
+            return response != null ? Ok(response) : Ok();
         }
 
         var reportList = await _interviewerService.GetAllInterviewer();

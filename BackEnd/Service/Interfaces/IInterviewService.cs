@@ -12,6 +12,8 @@ public interface IInterviewService
 
     Task<IEnumerable<InterviewModel>> GetInterviewsByCompany(Guid requestId);
 
+    Task<InterviewModel> GetLastInterviewByInterviewerId(Guid interviewerId);
+
     Task<InterviewModel?> GetInterviewById(Guid id);
 
     Task<InterviewModel> SaveInterview(InterviewModel viewModel);
