@@ -35,7 +35,7 @@
 					<div style="width: 80%;">
 						<div class="p-1 ps-4 shadow"
 							style="color: #ffffff; font-weight: 500; font-size: 17px; border-top-left-radius: 0.25rem; border-bottom-right-radius: 0.9rem; width: 100%; background-color: rgb(0, 32, 149);">
-							{{item.dateTime | date:'fullDate'}}
+							{{item.createdTime | date:'fullDate'}}
 						</div>
 						<div class="p-2 mt-2 d-flex flex-row" style="width: 100%;">
 							@for (candidateHasSkill of item.cv?.candidate?.candidateHasSkills; track candidateHasSkill)

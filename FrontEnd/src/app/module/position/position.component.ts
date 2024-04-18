@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
@@ -34,7 +35,7 @@ import { FilterComponent } from './filter/filter.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
-import moment, { Moment } from 'moment';
+import { CustomDateTimeService } from '../../shared/utils/custom-datetime.service';
 
 
 @Component({
@@ -54,12 +55,13 @@ import moment, { Moment } from 'moment';
 })
 export class PositionComponent implements OnInit {
 	constructor(
-		private positionService: PositionService,
-		private authenticationService: AuthenticationService,
 		private dialog: MatDialog,
 		private viewContainerRef: ViewContainerRef,
-		private cookieService: CookieService,
 		private formBuilder: FormBuilder,
+		private cookieService: CookieService,
+		private positionService: PositionService,
+		private authenticationService: AuthenticationService,
+		private customDateTimeService: CustomDateTimeService,
 	) { }
 	public fetchedPositions?: Position[];
 	public currentUser: WebUser = {};
@@ -141,7 +143,9 @@ export class PositionComponent implements OnInit {
 		this.filterForm.valueChanges
 			.pipe(startWith(null))
 			.subscribe(() => {
-				const formValue = this.formatFilterModel(this.filterForm.value);
+				const formValue = this.filterForm.value;
+				formValue.fromDate = this.customDateTimeService.sameValueToUTC(formValue.fromDate, true);
+				formValue.toDate = this.customDateTimeService.sameValueToUTC(formValue.toDate, true);
 				if ((formValue.fromSalary !== null) === (formValue.toSalary !== null)
 					&& (formValue.fromMaxHiringQty !== null) === (formValue.toMaxHiringQty !== null)) {
 					this.filterSubject.next(formValue);
@@ -158,30 +162,20 @@ export class PositionComponent implements OnInit {
 		const value = selectedOption.value;
 
 		this.sortString = value;
-		this.fetchedAllPositions(this.formatFilterModel(this.filterForm.value));
-	}
-
-	private formatFilterModel(data: any) {
-		// eslint-disable-next-line prefer-const
-		let filterModel = data;
-		if (filterModel.fromDate !== null && filterModel.toDate !== null) {
-			if (moment.isMoment(filterModel.fromDate as Moment) && (moment.isMoment(filterModel.toDate as Moment))) {
-				filterModel.fromDate = new Date(filterModel.fromDate.add(7, 'hours')).toISOString();
-				filterModel.toDate = new Date(filterModel.toDate.add(7, 'hours')).toISOString();
-			}
-		}
-		else {
-			filterModel.fromDate = null
-			filterModel.toDate = null
-		}
-		return filterModel;
+		let formValue = this.filterForm.value;
+		formValue.fromDate = this.customDateTimeService.sameValueToUTC(formValue.fromDate, true);
+		formValue.toDate = this.customDateTimeService.sameValueToUTC(formValue.toDate, true);
+		this.fetchedAllPositions(formValue);
 	}
 
 	handlePageEvent(e: PageEvent) {
 		this.totalMatchedInDb = e.length;
 		this.pageSize = e.pageSize;
 		this.pageIndex = e.pageIndex + 1;
-		this.fetchedAllPositions(this.formatFilterModel(this.filterForm.value));
+		let formValue = this.filterForm.value;
+		formValue.fromDate = this.customDateTimeService.sameValueToUTC(formValue.fromDate, true);
+		formValue.toDate = this.customDateTimeService.sameValueToUTC(formValue.toDate, true);
+		this.fetchedAllPositions(formValue);
 	}
 
 	public openDeleteDialog(

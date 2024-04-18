@@ -31,11 +31,11 @@ import { combineLatest } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Position } from '../../../data/position/position.model';
 import { MatIcon } from '@angular/material/icon';
-import { isMoment } from 'moment';
 import { FileService } from '../../../data/file/file-service.service';
 import { AddRequirementsFormComponent } from '../add-requirements-form/add-requirements-form.component';
 import { RequirementsService } from '../../../data/requirements/requirements.service';
 import { Requirements } from '../../../data/requirements/requirements.model';
+import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
 
 export const MY_FORMATS = {
 	parse: {
@@ -76,14 +76,15 @@ export const MY_FORMATS = {
 export class AddFormComponent {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
+		public dialogRef: MatDialogRef<AddFormComponent>,
+		private formBuilder: FormBuilder,
+		private FileService: FileService,
 		private toastr: ToastrService,
 		private languageService: LanguageService,
 		private categoryPositionService: CategoryPositionService,
 		private recruiterService: RecruiterService,
 		private positionService: PositionService,
-		public dialogRef: MatDialogRef<AddFormComponent>,
-		private formBuilder: FormBuilder,
-		private FileService: FileService,
+		private customDateService: CustomDateTimeService,
 		private RequirementService: RequirementsService,
 	) { }
 
@@ -268,8 +269,8 @@ export class AddFormComponent {
 
 					formValue = {
 						...formValue,
-						startDate: new Date(this.addForm.get('startDate')?.value.format('YYYY-MM-DD')).toISOString(),
-						endDate: new Date(this.addForm.get('endDate')?.value.format('YYYY-MM-DD')).toISOString(),
+						startDate: this.customDateService.sameValueToUTC(formValue.startDate, true),
+						endDate: this.customDateService.sameValueToUTC(formValue.endDate, true),
 						recruiterId: this.currentRecruiter?.recruiterId,
 						companyId: this.currentRecruiter?.companyId,
 						languageId: this.fetchLanguages?.find(
@@ -347,8 +348,8 @@ export class AddFormComponent {
 
 		formValue = {
 			...formValue,
-			startDate: isMoment(formValue.startDate) ? new Date(formValue.startDate.format('YYYY-MM-DD')).toISOString() : formValue.startDate,
-			endDate: isMoment(formValue.endDate) ? new Date(formValue.endDate.format('YYYY-MM-DD')).toISOString() : formValue.endDate,
+			startDate: this.customDateService.sameValueToUTC(formValue.startDate, true),
+			endDate: this.customDateService.sameValueToUTC(formValue.endDate, true),
 			languageId: this.fetchLanguages?.find(
 				(x) =>
 					x.languageName === this.addForm?.get('languageName')?.value,
