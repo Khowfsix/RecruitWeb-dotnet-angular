@@ -48,10 +48,10 @@ public class InterviewerController : BaseAPIController
                 var lastInterview = await _interviewService.GetLastInterviewByInterviewerId(interviewer.InterviewerId);
                 if (lastInterview == null)
                 {
-                    interviewer.daysToLastInterview = -1;
+                    interviewer.daysToLastInterview = null;
                     continue;
                 }
-                TimeSpan date = DateTime.Now - lastInterview.Itrsinterview.DateInterview;
+                TimeSpan date = (TimeSpan)(lastInterview.MeetingDate - DateTime.Now);
                 interviewer.daysToLastInterview = date.Days;
             }
 

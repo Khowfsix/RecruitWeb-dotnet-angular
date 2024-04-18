@@ -10,7 +10,7 @@ public class ApplicationHistoryViewModel
     public Guid PositionId { get; set; }
     public PositionViewModel Position { get; set; }
     public Guid Cvid { get; set; }
-    public DateTime DateTime { get; set; }
+    public DateTime CreatedTime { get; set; }
 
     [JsonPropertyName("Status")]
     public string? Candidate_status { get; set; }

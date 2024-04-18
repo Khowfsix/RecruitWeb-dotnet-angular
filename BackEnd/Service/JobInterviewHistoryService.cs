@@ -55,7 +55,7 @@ namespace Service
                 var applicationHistory = await _applicationRepository.GetApplicationHistory(cv.Cvid);
                 result = _mapper.Map<List<ApplicationModel>>(applicationHistory);
             }
-            return result.AsEnumerable().OrderByDescending(application => application.DateTime).ToList();
+            return result.AsEnumerable().OrderByDescending(application => application.CreatedTime).ToList();
         }
 
         public async Task<CvModel> GetCV(Guid Cvid)

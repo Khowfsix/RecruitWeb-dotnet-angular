@@ -84,19 +84,19 @@ public class InterviewController : BaseAPIController
     [HttpGet("[action]/{requestId}")]
     public async Task<IActionResult> GetInterviewsByInterviewer(Guid requestId)
     {
-        try
-        {
+        //try
+        //{
             var dataList = await _interviewService.GetInterviewsByInterviewer(requestId);
             if (dataList == null)
             {
                 return Ok();
             }
-            return Ok(dataList);
-        }
-        catch (Exception)
-        {
-            return BadRequest();
-        }
+            return Ok(_mapper.Map<List<InterviewViewModel>>(dataList.ToList()));
+        //}
+        //catch (Exception)
+        //{
+        //    return BadRequest();
+        //}
     }
 
     [HttpGet("[action]/{requestId}")]

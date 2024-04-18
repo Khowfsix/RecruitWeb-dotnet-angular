@@ -26,16 +26,19 @@ namespace Api.Controllers
         }
             
         [HttpGet]
-        public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, string? status, string? priority, Guid? positionId, string? sortString = "DateTime_DESC")
+        public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, string? status, 
+            string? priority, Guid? positionId, string? sortString = "CreatedTime_DESC")
         {
             if (positionId.HasValue)
             {
                 var userName = HttpContext.User.Identity.Name;
                 var foundPosition = await _positionService.GetPositionById(positionId.Value);
                 var foundRecruiter = await _recruiterService.GetRecruiterById(foundPosition.RecruiterId);
-                if (userName != foundRecruiter.User.UserName)
-                {
-                    return Ok("Not found");
+                if (!HttpContext.User.IsInRole("Admin")){
+                    if (userName != foundRecruiter.User.UserName)
+                    {
+                        return Ok("Not found");
+                    }
                 }
                 var filterModel = _mapper.Map<ApplicationFilter>(applicationFilterModel);
                 var models = await _applicationService.GetAllApplicationsByPositionId(positionId.Value, filterModel, sortString);

@@ -6,7 +6,7 @@
         public Guid CandidateId { get; set; }
         public Guid Cvid { get; set; }
         public Guid PositionId { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime CreatedTime { get; set; }
 
         public string Company_Status { get; set; }
 

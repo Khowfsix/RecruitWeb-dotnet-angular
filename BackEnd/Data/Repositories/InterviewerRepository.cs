@@ -37,45 +37,103 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
         {
             query = query.Where(o => o.User.FullName!.ToLower().Contains(interviewerFilter.Search.ToLower()));
         }
-        //if (interviewerFilter.FromTime != null && interviewerFilter.ToTime != null)
-        //{
-        //    TimeSpan fromTimeSpan = TimeSpan.Parse(interviewerFilter.FromTime);
-        //    TimeSpan toTimeSpan = TimeSpan.Parse(interviewerFilter.ToTime);
-        //    query = query.Include(o => o.Interviews).ThenInclude(o => o.Itrsinterview);
-        //    query = query.Where(o =>
-        //                o.Interviews != null &&
-        //                o.Interviews.Any(x => x.Itrsinterview != null
-        //                    && x.Itrsinterview.DateInterview.TimeOfDay <= toTimeSpan
-        //                    && x.Itrsinterview.DateInterview.TimeOfDay >= fromTimeSpan)
-        //                );
-        //}
 
-        if (interviewerFilter.FromDate.HasValue && interviewerFilter.ToDate.HasValue)
+        if (interviewerFilter.IsFreeTime!.Value != interviewerFilter.IsBusyTime!.Value)
         {
-            query = query.Include(o => o.Interviews).ThenInclude(o => o.Itrsinterview);
-            
-            if (interviewerFilter.IsFreeTime!.Value)
+            if (interviewerFilter.FromDate.HasValue)
             {
-                query = query.Where(o =>
-                    o.Interviews == null ||
-                    !o.Interviews.Any(x => x.Itrsinterview != null
-                        && x.Itrsinterview.DateInterview <= interviewerFilter.ToDate.Value
-                        && x.Itrsinterview.DateInterview >= interviewerFilter.FromDate.Value)
-                    );
+                query = query.Include(o => o.Interviews);
+
+                if (interviewerFilter.IsFreeTime!.Value)
+                {
+                    query = query.Where(o =>
+                        o.Interviews == null ||
+                        !o.Interviews.Any(x => x.MeetingDate >= interviewerFilter.FromDate.Value)
+                        );
+                }
+                if (interviewerFilter.IsBusyTime!.Value)
+                {
+                    query = query.Where(o =>
+                        o.Interviews != null &&
+                        o.Interviews.Any(x => x.MeetingDate >= interviewerFilter.FromDate.Value)
+                        );
+                }
+
             }
-            if (interviewerFilter.IsBusyTime!.Value)
+            if (interviewerFilter.ToDate.HasValue)
             {
-                query = query.Where(o =>
-                    o.Interviews != null &&
-                    o.Interviews.Any(x => x.Itrsinterview != null
-                        && x.Itrsinterview.DateInterview <= interviewerFilter.ToDate.Value
-                        && x.Itrsinterview.DateInterview >= interviewerFilter.FromDate.Value)
-                    );
-            } 
-           
-        }
-        else {
-            if (interviewerFilter.IsFreeTime!.Value != interviewerFilter.IsBusyTime!.Value)
+
+                query = query.Include(o => o.Interviews);
+
+                if (interviewerFilter.IsFreeTime!.Value)
+                {
+                    query = query.Where(o =>
+                        o.Interviews == null ||
+                        !o.Interviews.Any(x =>
+                            x.MeetingDate <= interviewerFilter.ToDate.Value)
+                        );
+                }
+                if (interviewerFilter.IsBusyTime!.Value)
+                {
+                    query = query.Where(o =>
+                        o.Interviews != null &&
+                        o.Interviews.Any(x =>
+                            x.MeetingDate <= interviewerFilter.ToDate.Value)
+                        );
+                }
+            }
+            
+            if (interviewerFilter.FromTime != null)
+            {
+
+                query = query.Include(o => o.Interviews);
+                if (interviewerFilter.IsFreeTime!.Value)
+                {
+                    TimeSpan fromTimeSpan = TimeSpan.Parse(interviewerFilter.FromTime);
+                    query = query.Include(o => o.Interviews);
+                    query = query.Where(o =>
+                                o.Interviews.Count() == 0 ||
+                                o.Interviews.Any(x => x.EndTime < fromTimeSpan)
+                                );
+                }
+                if (interviewerFilter.IsBusyTime!.Value)
+                {
+                    TimeSpan fromTimeSpan = TimeSpan.Parse(interviewerFilter.FromTime);
+                    query = query.Include(o => o.Interviews);
+                    query = query.Where(o =>
+                                o.Interviews.Count() != 0 &&
+                                !o.Interviews.Any(x => x.EndTime < fromTimeSpan)
+                                );
+                }
+            }
+            if (interviewerFilter.ToTime != null)
+            {
+                query = query.Include(o => o.Interviews);
+                if (interviewerFilter.IsFreeTime!.Value)
+                {
+                    TimeSpan toTimeSpan = TimeSpan.Parse(interviewerFilter.ToTime);
+                    query = query.Include(o => o.Interviews);
+                    query = query.Where(o =>
+                                o.Interviews.Count() == 0 ||
+                                o.Interviews.Any(x =>
+                                    x.StartTime > toTimeSpan)
+                                );
+                }
+                if (interviewerFilter.IsBusyTime!.Value)
+                {
+                    TimeSpan toTimeSpan = TimeSpan.Parse(interviewerFilter.ToTime);
+                    query = query.Include(o => o.Interviews);
+                    query = query.Where(o =>
+                                o.Interviews.Count() != 0 &&
+                                !o.Interviews.Any(x =>
+                                    x.StartTime > toTimeSpan)
+                                );
+                }
+            }
+
+            
+            if (!interviewerFilter.FromDate.HasValue && !interviewerFilter.ToDate.HasValue 
+                && interviewerFilter.FromTime == null && interviewerFilter.ToTime == null)
             {
                 if (interviewerFilter.IsFreeTime.Value)
                     query = query.Include(e => e.Interviews).Where(o => o.Interviews.Count() == 0);
@@ -83,7 +141,6 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
                     query = query.Include(e => e.Interviews).Where(o => o.Interviews.Count() != 0);
             }
         }
-
         var result = await query
                 .ToListAsync();
         return result;

@@ -125,11 +125,6 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
     public async Task<IEnumerable<Interview>> GetInterviewOfInterviewer(Guid id)
     {
         var listDatas = await Entities.Where(i => i.InterviewerId.Equals(id))
-            .Where(i => i.InterviewId.Equals(id))
-            //.Include(i => i.Itrsinterview)
-            //    .ThenInclude(t => t!.Room)
-            //.Include(i => i.Itrsinterview)
-            //    .ThenInclude(t => t!.Shift)
             .Include(i => i.Recruiter.User)
             .Include(i => i.Interviewer.User)
             .Include(i => i.Application)
@@ -139,6 +134,8 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                     .ThenInclude(c => c.Candidate.User)
             .Include(i => i.Rounds)
                 .ThenInclude(r => r.Question)
+            .Include(e => e.Result)
+            .OrderByDescending(e => e.MeetingDate)
             .AsNoTracking()
             .ToListAsync();
 

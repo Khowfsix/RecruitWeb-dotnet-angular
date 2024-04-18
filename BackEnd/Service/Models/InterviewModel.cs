@@ -21,14 +21,15 @@ namespace Service.Models
         public bool? IsDeleted { get; set; } = false;
 
         public Guid? ResultId { get; set; }
+        public string? Address { get; set; }
+        public string? DetailLocation { get; set; }
+        public DateTime? MeetingDate { get; set; }
+        public TimeSpan? StartTime { get; set; }
+        public TimeSpan? EndTime { get; set; }
 
         public ApplicationModel Application { get; set; } = null!;
 
         public InterviewerModel Interviewer { get; set; } = null!;
-
-        public Guid? ItrsinterviewId { get; set; }
-
-        public ItrsinterviewModel? Itrsinterview { get; set; }
 
         public RecruiterModel Recruiter { get; set; } = null!;
 

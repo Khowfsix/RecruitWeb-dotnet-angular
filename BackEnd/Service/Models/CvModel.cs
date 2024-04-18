@@ -21,7 +21,7 @@ namespace Service.Models
 
         public virtual ICollection<ApplicationModel> Applications { get; set; } = null!;
 
-        public virtual Candidate Candidate { get; set; } = null!;
+        public virtual CandidateModel Candidate { get; set; } = null!;
 
         public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } = null!;
     }

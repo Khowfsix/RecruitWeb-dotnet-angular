@@ -29,7 +29,7 @@ public class InterviewService : IInterviewService
         var data = await this.GetInterviewsByInterviewer(interviewerId);
         if (data == null || data.Count() == 0)
             return null;
-        data.OrderByDescending(o => o.Itrsinterview.DateInterview);
+        data.OrderByDescending(o => o.MeetingDate);
         var result = _mapper.Map<InterviewModel>(data.First());
         return result;
     }
@@ -52,8 +52,6 @@ public class InterviewService : IInterviewService
     public async Task<bool> DeleteInterview(Guid interviewModelId)
     {
         var thisInterview = await GetInterviewById_noInclude(interviewModelId);
-        var deleteITRS = await _itrsinterviewRepository.DeleteItrsinterview((Guid)thisInterview!.ItrsinterviewId!);
-
         var response = await _interviewRepository.DeleteInterview(interviewModelId);
         return response;
     }
@@ -104,11 +102,10 @@ public class InterviewService : IInterviewService
 
     public async Task<IEnumerable<InterviewModel>> GetInterviewsByInterviewer(Guid requestId)
     {
-        var data = await _interviewRepository.GetAllInterview();
+        var data = await _interviewRepository.GetInterviewOfInterviewer(requestId);
         if (!data.IsNullOrEmpty())
         {
-            var filterdDatas = data.Where(i => i.InterviewerId.Equals(requestId));
-            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filterdDatas);
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(data);
             return result!;
         }
         return null!;

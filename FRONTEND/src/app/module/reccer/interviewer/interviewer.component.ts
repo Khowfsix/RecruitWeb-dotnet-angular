@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { InterviewerService } from '../../../data/interviewer/interviewer.service';
 import { RecruiterService } from '../../../data/recruiter/recruiter.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -18,8 +18,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Subject, debounceTime, startWith } from 'rxjs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import moment, { Moment } from 'moment';
+import { MomentDateAdapter, } from '@angular/material-moment-adapter';
+import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InterviewHistoryComponent } from './interview-history/interview-history.component';
+import { InterviewService } from '../../../data/interview/interview.service';
 export const MY_FORMATS = {
 	parse: {
 		dateInput: 'DD/MM/YYYY',
@@ -58,8 +61,12 @@ export const MY_FORMATS = {
 })
 export class InterviewerComponent implements OnInit {
 	constructor(
+		private dialog: MatDialog,
+		private viewContainerRef: ViewContainerRef,
 		private formBuilder: FormBuilder,
+		private customDateService: CustomDateTimeService,
 		private interviewerService: InterviewerService,
+		private interviewService: InterviewService,
 		private authService: AuthService,
 		private recruiterService: RecruiterService,
 	) { }
@@ -89,20 +96,26 @@ export class InterviewerComponent implements OnInit {
 		}
 	}
 
-	private formatFilterModel(data: any) {
-		// eslint-disable-next-line prefer-const
-		let filterModel = data;
-		if (filterModel.fromDate !== null && filterModel.toDate !== null) {
-			if (moment.isMoment(filterModel.fromDate as Moment) && (moment.isMoment(filterModel.toDate as Moment))) {
-				filterModel.fromDate = new Date(filterModel.fromDate.add(7, 'hours')).toISOString();
-				filterModel.toDate = new Date(filterModel.toDate.add(7, 'hours')).toISOString();
-			}
+	public openInterviewsHistoryDialog(
+		interviewerId: string | undefined,
+		enterAnimationDuration: string,
+		exitAnimationDuration: string,
+	): void {
+		if (interviewerId) {
+			this.interviewService.getAllByInterviewerId(interviewerId).subscribe((data) => {
+				this.dialog.open(InterviewHistoryComponent, {
+					viewContainerRef: this.viewContainerRef,
+					data: {
+						interviewsData: data,
+					},
+					width: '700px',
+					height: '600px',
+					enterAnimationDuration,
+					exitAnimationDuration,
+				});
+			});
 		}
-		else {
-			filterModel.fromDate = null
-			filterModel.toDate = null
-		}
-		return filterModel;
+
 	}
 
 	ngOnInit(): void {
@@ -126,9 +139,12 @@ export class InterviewerComponent implements OnInit {
 			})
 
 		this.filterSubject.pipe(debounceTime(300)).subscribe((formValue) => {
-			console.log('filterForm value: ', formValue);
-			console.log('this.recruiter?.recruiterId: ', this.recruiter?.recruiterId);
-			this.fetchInterviewers(this.recruiter?.recruiterId, this.formatFilterModel(formValue));
+			// console.log('filterForm value: ', (formValue));
+			// console.log('filterForm value: ', this.formatFilterModel(formValue));
+			// console.log('this.recruiter?.recruiterId: ', this.recruiter?.recruiterId);
+			formValue.fromDate = this.customDateService.sameValueToUTC(formValue.fromDate, true);
+			formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
+			this.fetchInterviewers(this.recruiter?.recruiterId, formValue);
 		});
 
 	}

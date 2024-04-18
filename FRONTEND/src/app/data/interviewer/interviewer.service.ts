@@ -29,6 +29,12 @@ export class InterviewerService {
 		if (interviewerFilterModel.toDate) {
 			params += `&toDate=${interviewerFilterModel.toDate}`;
 		}
+		if (interviewerFilterModel.fromTime) {
+			params += `&fromTime=${interviewerFilterModel.fromTime}`;
+		}
+		if (interviewerFilterModel.toTime) {
+			params += `&toTime=${interviewerFilterModel.toTime}`;
+		}
 		return params;
 	}
 
