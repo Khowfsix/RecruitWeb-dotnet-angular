@@ -11,8 +11,8 @@ namespace Data.Interfaces
         Task<Application?> GetApplicationById(Guid ApplicationId);
 
         Task<IEnumerable<Application>> GetApplicationsWithStatus(
-            string status,
-            string priority
+            int status,
+            int priority
         );
 
         Task<Application> SaveApplication(Application request);

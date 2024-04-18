@@ -25,10 +25,10 @@ public class PositionModel
     public LanguageModel? Language { get; set; }
 
     public Guid RecruiterId { get; set; }
-    public RecruiterModel Recruiter { get; set; } = null!;
+    public RecruiterModel Recruiter { get; set; } 
 
     public Guid CategoryPositionId { get; set; }
-    public CategoryPositionModel CategoryPosition { get; set; } = null!;
+    public CategoryPositionModel CategoryPosition { get; set; } 
 
     public bool IsDeleted { get; set; } = false;
 

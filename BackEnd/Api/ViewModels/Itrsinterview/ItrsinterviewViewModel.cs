@@ -12,7 +12,7 @@ public class ItrsinterviewViewModel
 
     //public Guid RoomId { get; set; }
 
-    public virtual RoomViewModel Room { get; set; } = null!;
+    public virtual RoomViewModel Room { get; set; } 
 
-    public virtual ShiftViewModel Shift { get; set; } = null!;
+    public virtual ShiftViewModel Shift { get; set; } 
 }

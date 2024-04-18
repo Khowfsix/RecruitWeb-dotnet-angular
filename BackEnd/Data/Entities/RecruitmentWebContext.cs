@@ -58,7 +58,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     public virtual DbSet<Requirement> Requirements { get; set; }
 
-    public virtual DbSet<Result> Results { get; set; }
+    //public virtual DbSet<Result> Results { get; set; }
 
     //public virtual DbSet<Room> Rooms { get; set; }
 
@@ -335,10 +335,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ReccerCreateInterview");
 
-            entity.HasOne(d => d.Result).WithMany(p => p.Interviews)
-                .HasForeignKey(d => d.ResultId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ResultInterview");
+            //entity.HasOne(d => d.Result).WithMany(p => p.Interviews)
+            //    .HasForeignKey(d => d.ResultId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_ResultInterview");
         });
 
         modelBuilder.Entity<Interviewer>(entity =>
@@ -541,17 +541,17 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasConstraintName("FK_requeSkil");
         });
 
-        modelBuilder.Entity<Result>(entity =>
-        {
-            entity.HasKey(e => e.ResultId).HasName("PK__Result__976902081579C0D7");
+        //modelBuilder.Entity<Result>(entity =>
+        //{
+        //    entity.HasKey(e => e.ResultId).HasName("PK__Result__976902081579C0D7");
 
-            entity.ToTable("Result");
+        //    entity.ToTable("Result");
 
-            entity.Property(e => e.ResultId).ValueGeneratedNever();
+        //    entity.Property(e => e.ResultId).ValueGeneratedNever();
 
-            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
-            entity.Property(e => e.ResultString).HasMaxLength(255);
-        });
+        //    entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
+        //    entity.Property(e => e.ResultString).HasMaxLength(255);
+        //});
 
         //modelBuilder.Entity<Room>(entity =>
         //{

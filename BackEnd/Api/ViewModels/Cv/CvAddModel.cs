@@ -6,7 +6,7 @@ namespace Api.ViewModels.Cv
     {
         public Guid CandidateId { get; set; }
         public string? Experience { get; set; }
-        public string? CvPdf { get; set; } = null!;
+        public string? CvPdf { get; set; } 
         public string CvName { get; set; }
         public string Introduction { get; set; }
         public string Education { get; set; }

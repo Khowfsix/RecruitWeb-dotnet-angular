@@ -44,12 +44,12 @@ public class InterviewController : BaseAPIController
     {
         _interviewService = interviewService;
         _itrsinterviewService = itrsinterviewService;
-        //_roundService = null!;
+        //_roundService 
         _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllInterview(Guid? id, string? status)
+    public async Task<IActionResult> GetAllInterview(Guid? id, int? status)
     {
         // Get by id
         if (id != null)
@@ -70,7 +70,6 @@ public class InterviewController : BaseAPIController
         //    return Ok();
         //}
         //return Ok(interviewByStatus);
-        status ??= "";
 
         var reportList = await _interviewService.GetAllInterview(status);
         if (reportList == null)
@@ -227,8 +226,8 @@ public class InterviewController : BaseAPIController
     [Authorize(Roles = "Recruiter")]
     public async Task<IActionResult> UpdateStatusInterview(
         Guid interviewId,
-        string? Candidate_Status,
-        string? Company_Status
+        int? Candidate_Status,
+        int? Company_Status
     )
     {
         if (Candidate_Status == null && Company_Status == null)

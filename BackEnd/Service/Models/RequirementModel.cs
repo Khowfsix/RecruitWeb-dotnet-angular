@@ -6,11 +6,11 @@
 
         public Guid PositionId { get; set; }
 
-        public PositionModel Position { get; set; } = null!;
+        public PositionModel Position { get; set; } 
 
         public Guid SkillId { get; set; }
 
-        public SkillModel Skill { get; set; } = null!;
+        public SkillModel Skill { get; set; } 
 
         public string Experience { get; set; }
 

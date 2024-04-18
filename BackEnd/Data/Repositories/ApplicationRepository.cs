@@ -107,12 +107,12 @@ namespace Data.Repositories
         }
 
         public async Task<IEnumerable<Application>> GetApplicationsWithStatus(
-            string status,
-            string priority
+            int status,
+            int priority
         )
         {
             var listData = await Entities
-                .Where(a => a.Company_Status!.Contains(status) && a.Priority!.Contains(priority))
+                .Where(a => a.Company_Status! == status && a.Priority! == priority)
                 .ToListAsync();
 
             return listData;

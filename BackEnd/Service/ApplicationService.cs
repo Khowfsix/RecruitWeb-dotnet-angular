@@ -79,7 +79,7 @@ namespace Service
             return null!;
         }
 
-        public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsOfPosition(Guid? positionId, string? status = "", string? priority = "")
+        public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsOfPosition(Guid? positionId, int? status, int? priority)
         {
             var modelDatas = await _applicationRepository.GetAllApplications();
 
@@ -88,8 +88,8 @@ namespace Service
                 var filteredData = modelDatas.Where(item =>
                     (
                         item.Position.PositionId.Equals(positionId) &&
-                        (item.Company_Status!.Contains(status!) || item.Candidate_Status!.Contains(status!)) &&
-                        item.Priority!.Contains(priority!)
+                        (item.Company_Status! == status! || item.Candidate_Status! == status!) &&
+                        item.Priority! == priority!
                     ));
 
                 foreach (var item in modelDatas)
@@ -128,7 +128,7 @@ namespace Service
             if (canInBlacklist.Count > 0)
             {
                 //candidate_status is "pending" default
-                data.Company_Status = "Rejected";
+                data.Company_Status = -1;
             }
 
             var response = await _applicationRepository.SaveApplication(data);
@@ -149,7 +149,7 @@ namespace Service
             return null!;
         }
 
-        public async Task<IEnumerable<ApplicationModel>> GetApplicationsWithStatus(string status, string priority)
+        public async Task<IEnumerable<ApplicationModel>> GetApplicationsWithStatus(int status, int priority)
         {
             var entityDatas = await _applicationRepository.GetApplicationsWithStatus(status, priority);
             if (!entityDatas.IsNullOrEmpty())
@@ -157,7 +157,7 @@ namespace Service
             return null!;
         }
 
-        public async Task<bool> UpdateStatusApplication(Guid applicationId, string? Candidate_Status = "", string? Company_Status = "")
+        public async Task<bool> UpdateStatusApplication(Guid applicationId, int? Candidate_Status, int? Company_Status)
         {
             var oldData = await _applicationRepository.GetApplicationById(applicationId);
 
@@ -167,14 +167,14 @@ namespace Service
                 return await Task.FromResult(false);
             }
 
-            if (!string.IsNullOrEmpty(Candidate_Status))
+            if (Candidate_Status.HasValue)
             {
-                oldData!.Candidate_Status = Candidate_Status.ToString();
+                oldData!.Candidate_Status = Candidate_Status;
             }
 
-            if (!string.IsNullOrEmpty(Company_Status))
+            if (Company_Status.HasValue)
             {
-                oldData!.Company_Status = Company_Status.ToString();
+                oldData!.Company_Status = Company_Status;
             }
 
             #region old status

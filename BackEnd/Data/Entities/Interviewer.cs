@@ -13,9 +13,9 @@ public partial class Interviewer
 
     public bool IsDeleted { get; set; }
 
-    public virtual Company Company { get; set; } = null!;
+    public virtual Company Company { get; set; } 
 
     public virtual ICollection<Interview> Interviews { get; set; } = new List<Interview>();
 
-    public virtual WebUser User { get; set; } = null!;
+    public virtual WebUser User { get; set; } 
 }

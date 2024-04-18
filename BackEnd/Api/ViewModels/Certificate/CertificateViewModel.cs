@@ -3,7 +3,7 @@
     public class CertificateViewModel
     {
         public Guid CertificateId { get; set; }
-        public string CertificateName { get; set; } = null!;
+        public string CertificateName { get; set; } 
 
         public string? Description { get; set; }
 

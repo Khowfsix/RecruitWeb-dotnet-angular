@@ -10,7 +10,7 @@ public partial class Round
 
     public double? Score { get; set; }
 
-    public virtual Interview Interview { get; set; } = null!;
+    public virtual Interview Interview { get; set; } 
 
-    public virtual Question Question { get; set; } = null!;
+    public virtual Question Question { get; set; } 
 }

@@ -14,20 +14,20 @@ namespace Service.Models
 
         public string CvName { get; set; }
 
-        public string Introduction { get; set; } = null!;
+        public string Introduction { get; set; } 
 
-        public string Education { get; set; } = null!;
+        public string Education { get; set; } 
 
         public bool IsDeleted { get; set; } = false;
 
         public bool IsDefault { get; set; } = false;
 
-        public virtual ICollection<ApplicationModel> Applications { get; set; } = null!;
+        public virtual ICollection<ApplicationModel> Applications { get; set; } 
 
-        public virtual Candidate Candidate { get; set; } = null!;
+        public virtual Candidate Candidate { get; set; } 
 
-        public virtual ICollection<CertificateModel> Certificates { get; set; } = null!;
+        public virtual ICollection<CertificateModel> Certificates { get; set; } 
 
-        public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } = null!;
+        public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } 
     }
 }

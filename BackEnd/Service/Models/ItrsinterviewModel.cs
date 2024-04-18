@@ -10,7 +10,7 @@ public class ItrsinterviewModel
 
     public Guid RoomId { get; set; }
 
-    public virtual RoomModel Room { get; set; } = null!;
+    public virtual RoomModel Room { get; set; } 
 
-    public virtual ShiftModel Shift { get; set; } = null!;
+    public virtual ShiftModel Shift { get; set; } 
 }

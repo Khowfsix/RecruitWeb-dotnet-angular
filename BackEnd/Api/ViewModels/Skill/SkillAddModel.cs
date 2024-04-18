@@ -2,7 +2,7 @@
 {
     public class SkillAddModel
     {
-        public string SkillName { get; set; } = null!;
+        public string SkillName { get; set; } 
 
         public string? Description { get; set; }
     }

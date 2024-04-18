@@ -11,10 +11,10 @@ public partial class Company
     public Guid CompanyId { get; set; }
 
     [Column("CompanyName")]
-    public string CompanyName { get; set; } = null!;
+    public string CompanyName { get; set; } 
 
     [DataType(DataType.ImageUrl)]
-    public string? Logo { get; set; } = null!;
+    public string? Logo { get; set; } 
 
     public string? Address { get; set; }
 

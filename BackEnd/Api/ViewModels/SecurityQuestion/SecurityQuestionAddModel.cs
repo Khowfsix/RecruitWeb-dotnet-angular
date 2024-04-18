@@ -2,6 +2,6 @@
 {
     public class SecurityQuestionAddModel
     {
-        public string QuestionString { get; set; } = null!;
+        public string QuestionString { get; set; } 
     }
 }

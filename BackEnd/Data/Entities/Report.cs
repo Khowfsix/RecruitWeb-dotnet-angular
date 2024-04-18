@@ -10,5 +10,5 @@ public partial class Report
 
     public bool IsDeleted { get; set; }
 
-    public virtual Recruiter Recruiter { get; set; } = null!;
+    public virtual Recruiter Recruiter { get; set; } 
 }

@@ -8,7 +8,7 @@ namespace Api.ViewModels.Cv
     {
         public Guid Cvid { get; set; }
         public Guid CandidateId { get; set; }
-        public virtual CandidateViewModel Candidate { get; set; } = null!;
+        public virtual CandidateViewModel Candidate { get; set; } 
         public string? Experience { get; set; }
         public string? CvPdf { get; set; }
 

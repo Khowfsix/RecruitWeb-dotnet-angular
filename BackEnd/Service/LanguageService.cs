@@ -8,7 +8,7 @@ namespace Service
 {
     public class LanguageService : ILanguageService
     {
-        private readonly ILanguageRepository _languageRepository = null!;
+        private readonly ILanguageRepository _languageRepository;
         private readonly IMapper _mapper;
 
         public LanguageService(ILanguageRepository languageRepository, IMapper mapper)
