@@ -27,22 +27,22 @@ namespace Data.Migrations
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Candidate_Status")
+                    b.Property<int?>("Candidate_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Company_Status")
+                    b.Property<int?>("Company_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid>("Cvid")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Cvid");
-
-                    b.Property<DateTime>("DateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -51,8 +51,8 @@ namespace Data.Migrations
                     b.Property<Guid>("PositionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Priority")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Priority")
+                        .HasColumnType("int");
 
                     b.HasKey("ApplicationId")
                         .HasName("PK__Applicat__C93A4C99D502D0BD");
@@ -86,7 +86,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 249, DateTimeKind.Local).AddTicks(3825));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(7528));
 
                     b.HasKey("AwardId")
                         .HasName("PK_award");
@@ -267,7 +267,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 242, DateTimeKind.Local).AddTicks(325));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 182, DateTimeKind.Local).AddTicks(1780));
 
                     b.HasKey("CertificateId")
                         .HasName("PK__Certific__BBF8A7C122402FA9");
@@ -402,7 +402,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("From")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 248, DateTimeKind.Local).AddTicks(186));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(600));
 
                     b.Property<string>("Major")
                         .IsRequired()
@@ -469,16 +469,25 @@ namespace Data.Migrations
                     b.Property<Guid>("InterviewId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Candidate_Status")
+                    b.Property<int?>("Candidate_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Company_Status")
+                    b.Property<int?>("Company_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("int");
+
+                    b.Property<string>("DetailLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("time");
 
                     b.Property<Guid>("InterviewerId")
                         .HasColumnType("uniqueidentifier");
@@ -487,22 +496,20 @@ namespace Data.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("isDeleted");
 
-                    b.Property<Guid?>("ItrsinterviewId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ITRSInterviewId");
+                    b.Property<DateTime?>("MeetingDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Priority")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Priority")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("RecruiterId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ResultId")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<TimeSpan?>("StartTime")
+                        .HasColumnType("time");
 
                     b.HasKey("InterviewId")
                         .HasName("PK__Intervie__C97C58525A846D87");
@@ -511,11 +518,7 @@ namespace Data.Migrations
 
                     b.HasIndex("InterviewerId");
 
-                    b.HasIndex("ItrsinterviewId");
-
                     b.HasIndex("RecruiterId");
-
-                    b.HasIndex("ResultId");
 
                     b.ToTable("Interview", (string)null);
                 });
@@ -545,34 +548,6 @@ namespace Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Interviewer", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Entities.Itrsinterview", b =>
-                {
-                    b.Property<Guid>("ItrsinterviewId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ITRSInterviewId");
-
-                    b.Property<DateTime>("DateInterview")
-                        .HasColumnType("date");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ShiftId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ItrsinterviewId")
-                        .HasName("PK__ITRSInte__689D871CEED2E961");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("ShiftId");
-
-                    b.HasIndex(new[] { "DateInterview", "ShiftId", "RoomId" }, "UNIQUE_InterviewTime")
-                        .IsUnique();
-
-                    b.ToTable("ITRSInterview", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Language", b =>
@@ -607,7 +582,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 249, DateTimeKind.Local).AddTicks(1227));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(5708));
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
@@ -895,47 +870,6 @@ namespace Data.Migrations
                     b.ToTable("ResetPasswords");
                 });
 
-            modelBuilder.Entity("Data.Entities.Result", b =>
-                {
-                    b.Property<Guid>("ResultId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("isDeleted");
-
-                    b.Property<string>("ResultString")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("ResultId")
-                        .HasName("PK__Result__976902081579C0D7");
-
-                    b.ToTable("Result", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Entities.Room", b =>
-                {
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoomName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("RoomId")
-                        .HasName("PK__Room__3286393943AEBB6D");
-
-                    b.HasIndex(new[] { "RoomName" }, "UQ__Room__6B500B55E5A0FA95")
-                        .IsUnique();
-
-                    b.ToTable("Room", (string)null);
-                });
-
             modelBuilder.Entity("Data.Entities.Round", b =>
                 {
                     b.Property<Guid>("RoundId")
@@ -965,6 +899,10 @@ namespace Data.Migrations
                     b.Property<Guid>("SecurityAnswerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AnswerString")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SecurityQuestionId")
                         .HasColumnType("uniqueidentifier");
@@ -998,23 +936,6 @@ namespace Data.Migrations
                         .HasName("PK__SecurityQuestion__C0A83881EF08EB13");
 
                     b.ToTable("SecurityQuestion", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Entities.Shift", b =>
-                {
-                    b.Property<Guid>("ShiftId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ShiftTimeEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShiftTimeStart")
-                        .HasColumnType("int");
-
-                    b.HasKey("ShiftId")
-                        .HasName("PK__Shift__C0A83881EF08EB13");
-
-                    b.ToTable("Shift", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Skill", b =>
@@ -1151,7 +1072,7 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "41d399a3-20ab-4d13-b556-c3d00a8cfa1d",
+                            Id = "19b2ea9b-5aec-453e-b72d-75250ad7b4b7",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "d00d37a8-0c8d-4b37-a8b7-823901b3b98d",
                             Email = "lyhongphat261202@gmail.com",
@@ -1168,7 +1089,7 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
+                            Id = "c59d7b36-86c7-4361-abf8-893845d231cf",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "37a3f448-08e1-4d5b-8d9d-97edd7ed2441",
                             Email = "jasmineandhongphat@gmail.com",
@@ -1204,7 +1125,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 9, 23, 29, 25, 248, DateTimeKind.Local).AddTicks(3794));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(2157));
 
                     b.Property<string>("JobTitle")
                         .IsRequired()
@@ -1253,28 +1174,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9a27fafe-fd30-415f-99bb-ffcad6e91050",
+                            Id = "d2b9a373-e2c1-4ae4-b794-a34311f2db2a",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "e6c0841c-151b-4a83-8815-42b9384ad1b6",
+                            Id = "ad0eaac5-479e-4647-bd92-19c7239e8a72",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "65c0becb-694d-40a1-9f30-68a69e6a07a4",
+                            Id = "fcce651a-02ac-4039-ae80-37b30b1f4114",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "c702f67a-f866-4856-b6c2-71b5ad0e3dbd",
+                            Id = "b55437e9-a7fa-4383-8080-dfbb590af8e1",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1370,33 +1291,33 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "41d399a3-20ab-4d13-b556-c3d00a8cfa1d",
-                            RoleId = "9a27fafe-fd30-415f-99bb-ffcad6e91050"
+                            UserId = "19b2ea9b-5aec-453e-b72d-75250ad7b4b7",
+                            RoleId = "d2b9a373-e2c1-4ae4-b794-a34311f2db2a"
                         },
                         new
                         {
-                            UserId = "41d399a3-20ab-4d13-b556-c3d00a8cfa1d",
-                            RoleId = "65c0becb-694d-40a1-9f30-68a69e6a07a4"
+                            UserId = "19b2ea9b-5aec-453e-b72d-75250ad7b4b7",
+                            RoleId = "fcce651a-02ac-4039-ae80-37b30b1f4114"
                         },
                         new
                         {
-                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
-                            RoleId = "c702f67a-f866-4856-b6c2-71b5ad0e3dbd"
+                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
+                            RoleId = "b55437e9-a7fa-4383-8080-dfbb590af8e1"
                         },
                         new
                         {
-                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
-                            RoleId = "9a27fafe-fd30-415f-99bb-ffcad6e91050"
+                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
+                            RoleId = "d2b9a373-e2c1-4ae4-b794-a34311f2db2a"
                         },
                         new
                         {
-                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
-                            RoleId = "e6c0841c-151b-4a83-8815-42b9384ad1b6"
+                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
+                            RoleId = "ad0eaac5-479e-4647-bd92-19c7239e8a72"
                         },
                         new
                         {
-                            UserId = "0aeb42a3-c886-406d-a0aa-f5bb42f65841",
-                            RoleId = "65c0becb-694d-40a1-9f30-68a69e6a07a4"
+                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
+                            RoleId = "fcce651a-02ac-4039-ae80-37b30b1f4114"
                         });
                 });
 
@@ -1592,32 +1513,17 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_IsConductes");
 
-                    b.HasOne("Data.Entities.Itrsinterview", "Itrsinterview")
-                        .WithMany("Interviews")
-                        .HasForeignKey("ItrsinterviewId")
-                        .HasConstraintName("FK_ITRS");
-
                     b.HasOne("Data.Entities.Recruiter", "Recruiter")
                         .WithMany("Interviews")
                         .HasForeignKey("RecruiterId")
                         .IsRequired()
                         .HasConstraintName("FK_ReccerCreateInterview");
 
-                    b.HasOne("Data.Entities.Result", "Result")
-                        .WithMany("Interviews")
-                        .HasForeignKey("ResultId")
-                        .IsRequired()
-                        .HasConstraintName("FK_ResultInterview");
-
                     b.Navigation("Application");
 
                     b.Navigation("Interviewer");
 
-                    b.Navigation("Itrsinterview");
-
                     b.Navigation("Recruiter");
-
-                    b.Navigation("Result");
                 });
 
             modelBuilder.Entity("Data.Entities.Interviewer", b =>
@@ -1637,25 +1543,6 @@ namespace Data.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Data.Entities.Itrsinterview", b =>
-                {
-                    b.HasOne("Data.Entities.Room", "Room")
-                        .WithMany("Itrsinterviews")
-                        .HasForeignKey("RoomId")
-                        .IsRequired()
-                        .HasConstraintName("Fk_ITRS_Room");
-
-                    b.HasOne("Data.Entities.Shift", "Shift")
-                        .WithMany("Itrsinterviews")
-                        .HasForeignKey("ShiftId")
-                        .IsRequired()
-                        .HasConstraintName("Fk_ITRS_Shift");
-
-                    b.Navigation("Room");
-
-                    b.Navigation("Shift");
                 });
 
             modelBuilder.Entity("Data.Entities.PersonalProject", b =>
@@ -2006,11 +1893,6 @@ namespace Data.Migrations
                     b.Navigation("Interviews");
                 });
 
-            modelBuilder.Entity("Data.Entities.Itrsinterview", b =>
-                {
-                    b.Navigation("Interviews");
-                });
-
             modelBuilder.Entity("Data.Entities.Language", b =>
                 {
                     b.Navigation("Positions");
@@ -2047,24 +1929,9 @@ namespace Data.Migrations
                     b.Navigation("Reports");
                 });
 
-            modelBuilder.Entity("Data.Entities.Result", b =>
-                {
-                    b.Navigation("Interviews");
-                });
-
-            modelBuilder.Entity("Data.Entities.Room", b =>
-                {
-                    b.Navigation("Itrsinterviews");
-                });
-
             modelBuilder.Entity("Data.Entities.SecurityQuestion", b =>
                 {
                     b.Navigation("SecurityAnswers");
-                });
-
-            modelBuilder.Entity("Data.Entities.Shift", b =>
-                {
-                    b.Navigation("Itrsinterviews");
                 });
 
             modelBuilder.Entity("Data.Entities.Skill", b =>

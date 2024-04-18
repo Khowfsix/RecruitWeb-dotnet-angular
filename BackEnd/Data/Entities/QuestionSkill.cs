@@ -8,7 +8,7 @@ public partial class QuestionSkill
 
     public Guid SkillId { get; set; }
 
-    public virtual Question Question { get; set; } = null!;
+    public virtual Question Question { get; set; } 
 
-    public virtual Skill Skill { get; set; } = null!;
+    public virtual Skill Skill { get; set; } 
 }

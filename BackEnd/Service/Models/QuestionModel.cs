@@ -4,9 +4,9 @@ public class QuestionModel
 {
     public Guid QuestionId { get; set; }
 
-    public string QuestionString { get; set; } = null!;
+    public string QuestionString { get; set; } 
 
     public Guid CategoryQuestionId { get; set; }
 
-    public CategoryQuestionModel CategoryQuestion { get; set; } = null!;
+    public CategoryQuestionModel CategoryQuestion { get; set; } 
 }

@@ -3,7 +3,7 @@
     public class RoomModel
     {
         public Guid RoomId { get; set; }
-        public string RoomName { get; set; } = null!;
-        public bool? IsDeleted { get; set; } = null!;
+        public string RoomName { get; set; } 
+        public bool? IsDeleted { get; set; } 
     }
 }

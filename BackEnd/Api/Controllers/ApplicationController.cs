@@ -52,8 +52,8 @@ namespace Api.Controllers
             else
             {
                 var modelDatas = await _applicationService.GetApplicationsWithStatus(
-                    status!,
-                    priority!
+                    (int)status,
+                    (int)priority
                 );
                 var response = _mapper.Map<List<ApplicationViewModel>>(modelDatas);
                 return Ok(response);
@@ -101,8 +101,8 @@ namespace Api.Controllers
         [Authorize(Roles = "Recruiter")]
         public async Task<IActionResult> UpdateStatusApplication(
             Guid ApplicationId,
-            string? Candidate_Status,
-            string? Company_Status
+            int? Candidate_Status,
+            int? Company_Status
         )
         {
             if (Candidate_Status == null && Company_Status == null)

@@ -14,5 +14,5 @@ public partial class BlackList
 
     public bool IsDeleted { get; set; }
 
-    public virtual Candidate Candidate { get; set; } = null!;
+    public virtual Candidate Candidate { get; set; } 
 }

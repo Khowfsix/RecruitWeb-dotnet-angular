@@ -5,7 +5,7 @@ namespace Api.ViewModels.Question;
 public class QuestionViewModel
 {
     public Guid QuestionId { get; set; }
-    public string QuestionString { get; set; } = null!;
+    public string QuestionString { get; set; } 
     public Guid CategoryQuestionId { get; set; }
-    public CategoryQuestionViewModel CategoryQuestion { get; set; } = null!;
+    public CategoryQuestionViewModel CategoryQuestion { get; set; } 
 }

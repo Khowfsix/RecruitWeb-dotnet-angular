@@ -24,13 +24,13 @@ namespace Api.ViewModels.Interview
 
         public bool IsDeleted { get; set; } = false;
 
-        public virtual ApplicationViewModel Application { get; set; } = null!;
+        public virtual ApplicationViewModel Application { get; set; } 
 
-        public virtual InterviewerViewModel Interviewer { get; set; } = null!;
+        public virtual InterviewerViewModel Interviewer { get; set; } 
 
         public virtual ItrsinterviewViewModel? Itrsinterview { get; set; }
 
-        public virtual RecruiterViewModel Recruiter { get; set; } = null!;
+        public virtual RecruiterViewModel Recruiter { get; set; } 
 
         public ICollection<RoundViewModel> Rounds { get; set; } = new List<RoundViewModel>();
     }

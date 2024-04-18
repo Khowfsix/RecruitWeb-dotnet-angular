@@ -15,12 +15,12 @@ namespace Service
             _fileRepository = fileRepository;
         }
 
-        public async Task<IEnumerable<ImageUploadResult>> AddListFileAsync(List<IFormFile> files)
+        public async Task<IEnumerable<RawUploadResult>> AddListFileAsync(List<IFormFile> files)
         {
             return await _fileRepository.AddListFileAsync(files);
         }
 
-        public async Task<ImageUploadResult> AddFileAsync(IFormFile file)
+        public async Task<RawUploadResult> AddFileAsync(IFormFile file)
         {
             return await _fileRepository.AddFileAsync(file);
         }
@@ -36,7 +36,7 @@ namespace Service
             return await _fileRepository.DeleteFileAsync(publicId);
         }
 
-        public async Task<ImageUploadResult> UpdateFileAsync(IFormFile newFile, string oldFileUrl)
+        public async Task<RawUploadResult> UpdateFileAsync(IFormFile newFile, string oldFileUrl)
         {
             var deleteOldFile = await _fileRepository.DeleteFileAsync(oldFileUrl);
             if (deleteOldFile.StatusCode == HttpStatusCode.OK)

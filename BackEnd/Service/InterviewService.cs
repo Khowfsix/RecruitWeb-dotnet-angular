@@ -78,14 +78,14 @@ public class InterviewService : IInterviewService
         return null!;
     }
 
-    public async Task<IEnumerable<InterviewModel>> GetAllInterview(string status)
+    public async Task<IEnumerable<InterviewModel>> GetAllInterview(int? status)
     {
         var data = await _interviewRepository.GetAllInterview();
         if (!data.IsNullOrEmpty())
         {
             var filteredDatas = data.Where(i => (
-                i.Company_Status!.Contains(status) ||
-                i.Candidate_Status!.Contains(status)
+                i.Company_Status! == status ||
+                i.Candidate_Status! == status
             ));
             List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
             return result;
@@ -104,16 +104,16 @@ public class InterviewService : IInterviewService
         return null!;
     }
 
-    public async Task<bool> UpdateStatusInterview(Guid interviewId, string? Candidate_Status, string? Company_Status)
+    public async Task<bool> UpdateStatusInterview(Guid interviewId, int? Candidate_Status, int? Company_Status)
     {
         var oldData = await _interviewRepository.GetInterviewById_NoInclude(interviewId);
 
-        if (!string.IsNullOrEmpty(Candidate_Status))
+        if (Candidate_Status.HasValue)
         {
             oldData!.Candidate_Status = Candidate_Status!;
         }
 
-        if (!string.IsNullOrEmpty(Company_Status))
+        if (Company_Status.HasValue)
         {
             oldData!.Company_Status = Company_Status!;
         }

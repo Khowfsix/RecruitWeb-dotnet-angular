@@ -11,7 +11,7 @@ namespace Data.Entities
 
         [Required]
         [Column(TypeName = "nvarchar(max)")]
-        public string QuestionString { get; set; } = null!;
+        public string QuestionString { get; set; } 
 
         public virtual IList<SecurityAnswer>? SecurityAnswers { get; set; }
     }

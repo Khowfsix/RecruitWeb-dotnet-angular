@@ -19,9 +19,9 @@ namespace Service.Models
 
         public bool IsDefault { get; set; } = false;
 
-        public virtual ICollection<ApplicationModel> Applications { get; set; } = null!;
+        public virtual ICollection<ApplicationModel> Applications { get; set; } 
 
-        public virtual Candidate Candidate { get; set; } = null!;
+        public virtual Candidate Candidate { get; set; } 
 
         public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } = null!;
     }

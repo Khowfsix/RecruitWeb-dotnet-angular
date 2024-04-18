@@ -33,13 +33,13 @@ public partial class Position
 
     public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
 
-    public virtual Company Company { get; set; } = null!;
+    public virtual Company Company { get; set; } 
 
-    public virtual Language Language { get; set; } = null!;
+    public virtual Language Language { get; set; } 
 
-    public virtual Recruiter Recruiter { get; set; } = null!;
+    public virtual Recruiter Recruiter { get; set; } 
 
-    public virtual CategoryPosition CategoryPosition { get; set; } = null!;
+    public virtual CategoryPosition CategoryPosition { get; set; } 
 
     public virtual ICollection<Requirement> Requirements { get; set; } = new List<Requirement>();
 

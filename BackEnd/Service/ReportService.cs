@@ -63,8 +63,8 @@ namespace Service
                     InterviewId = item.InterviewId,
                     CandidateId = item.Application.Cv.CandidateId,
                     InterviewerId = item.InterviewerId,
-                    ApplyDate = item.Application.DateTime,
-                    Status = item.Company_Status!,
+                    ApplyDate = item.Application.CreatedTime,
+                    Status = (int)item.Company_Status!,
                     Score = item.Rounds.Average(x => x.Score) ?? 0,
                 };
 
@@ -85,7 +85,7 @@ namespace Service
                 var row = new ApplicationReportModel()
                 {
                     ApplicationId = item.ApplicationId,
-                    FullName = item.Cv.Candidate.User.FullName,
+                    FullName = item.Cv.Candidate.User!.FullName,
                     DateOfBirth = item.Cv.Candidate.User.DateOfBirth!.Value,
                     Address = item.Cv.Candidate.User.Address!,
                     //Experience = item.Cv.Experience,
@@ -97,10 +97,10 @@ namespace Service
                     Salary = item.Position.Salary,
                     CompanyName = item.Position.Company.CompanyName,
                     LanguageName = item.Position.Language.LanguageName,
-                    DateTime = item.DateTime,
-                    Candidate_Status = item.Candidate_Status ?? "Pending",
-                    Company_Status = item.Company_Status ?? "Pending",
-                    Priority = item.Priority,
+                    DateTime = item.CreatedTime,
+                    Candidate_Status = item.Candidate_Status != 0 ? "Pending" : "",
+                    Company_Status = item.Company_Status != 0 ? "Pending" : "",
+                    Priority = (int)item.Priority!,
                     IsDeleted = item.IsDeleted,
                 };
 

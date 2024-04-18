@@ -1,5 +1,6 @@
 ﻿using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
+using Data.Constant;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -313,19 +314,18 @@ namespace Api.Controllers
         [Route("PassInterview/{interviewId:guid}")]
         public async Task<IActionResult> BrowsePassInterview(Guid interviewId)
         {
-#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (interviewId != null)
             {
                 // Update Interview status
                 var interviewResponse = await _interviewService.UpdateStatusInterview(interviewId,
                     null,
-                    "Passed");
+                    (int)Interview_CompanyStatus.Passed);
 
                 var thisInterview = await _interviewService.GetInterviewById_noInclude(interviewId);
 
                 // Update Application status
                 var applicationResponse = await _applicationService.UpdateStatusApplication(thisInterview!.ApplicationId,
-                    "Passed",
+                    (int)Application_CompanyStatus.Accecpted,
                     null);
 
                 var getCVandpos = await _applicationService.GetApplicationById(thisInterview!.ApplicationId);
@@ -371,7 +371,7 @@ namespace Api.Controllers
                 // Update Interview status
                 var interviewResponse = await _interviewService.UpdateStatusInterview(interviewId,
                     null,
-                    "Failed");
+                    (int)Interview_CompanyStatus.Failed);
 
                 //var thisInterview = await _interviewService.GetInterviewById_noInclude(interviewId);
 

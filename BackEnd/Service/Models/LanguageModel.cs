@@ -4,7 +4,7 @@ namespace Service.Models
     {
         public Guid LanguageId { get; set; }
 
-        public string LanguageName { get; set; } = null!;
+        public string LanguageName { get; set; } 
 
         public bool IsDeleted { get; set; } = false;
     }

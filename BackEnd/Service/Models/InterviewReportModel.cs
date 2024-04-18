@@ -9,7 +9,7 @@
         public string InterviewerName { get; set; }
         public DateTime ApplyDate { get; set; }
         public DateTime InterviewDate { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
         public double? Score { get; set; } = 0;
     }
 }

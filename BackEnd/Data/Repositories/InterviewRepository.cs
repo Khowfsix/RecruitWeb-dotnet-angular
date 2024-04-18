@@ -16,13 +16,11 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
 
     public async Task<IEnumerable<Interview>> GetAllInterview()
     {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         var listDatas = await Entities
-            .Include(i => i.Itrsinterview)
-                .ThenInclude(t => t.Room)
-            .Include(i => i.Itrsinterview)
-                .ThenInclude(t => t.Shift)
+            //.Include(i => i.Itrsinterview)
+            //    .ThenInclude(t => t.Room)
+            //.Include(i => i.Itrsinterview)
+            //    .ThenInclude(t => t.Shift)
             .Include(i => i.Recruiter.User)
             .Include(i => i.Interviewer.User)
             .Include(i => i.Application)
@@ -33,8 +31,6 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
             .Include(i => i.Rounds)
                 .ThenInclude(r => r.Question)
             .ToListAsync();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         return listDatas;
     }
@@ -43,10 +39,10 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
     {
         var item = await Entities
             .Where(i => i.InterviewId.Equals(id))
-            .Include(i => i.Itrsinterview)
-                .ThenInclude(t => t!.Room)
-            .Include(i => i.Itrsinterview)
-                .ThenInclude(t => t!.Shift)
+            //.Include(i => i.Itrsinterview)
+            //    .ThenInclude(t => t!.Room)
+            //.Include(i => i.Itrsinterview)
+            //    .ThenInclude(t => t!.Shift)
             .Include(i => i.Recruiter.User)
             .Include(i => i.Interviewer.User)
             .Include(i => i.Application)
@@ -130,10 +126,10 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
     {
         var listDatas = await Entities.Where(i => i.InterviewerId.Equals(id))
             .Where(i => i.InterviewId.Equals(id))
-            .Include(i => i.Itrsinterview)
-                .ThenInclude(t => t!.Room)
-            .Include(i => i.Itrsinterview)
-                .ThenInclude(t => t!.Shift)
+            //.Include(i => i.Itrsinterview)
+            //    .ThenInclude(t => t!.Room)
+            //.Include(i => i.Itrsinterview)
+            //    .ThenInclude(t => t!.Shift)
             .Include(i => i.Recruiter.User)
             .Include(i => i.Interviewer.User)
             .Include(i => i.Application)
@@ -157,9 +153,9 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                 .ThenInclude(x => x.Candidate)
             .Include(x => x.Recruiter)
             .Include(x => x.Interviewer)
-            .Include(x => x.Result)
+            //.Include(x => x.Result)
             .Include(x => x.Rounds)
-            .Where(x => fromDate <= x.Application.DateTime && x.Application.DateTime <= toDate)
+            .Where(x => fromDate <= x.Application.CreatedTime && x.Application.CreatedTime <= toDate)
             .ToListAsync();
 
         return interview;

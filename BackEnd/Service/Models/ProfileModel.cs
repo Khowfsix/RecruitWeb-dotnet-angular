@@ -7,7 +7,7 @@ public class ProfileModel
     public bool IsDeleted { get; set; } = false;
     public string? FullName { get; set; }
     public DateTime DateOfBirth { get; set; }
-    public string Address { get; set; } = null!;
+    public string Address { get; set; } 
     public string? ImageURL { get; set; } = null;
     public string? Status { get; set; }
     public bool? Priority { get; set; }

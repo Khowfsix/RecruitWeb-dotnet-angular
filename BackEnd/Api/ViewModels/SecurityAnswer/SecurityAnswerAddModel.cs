@@ -2,7 +2,7 @@
 {
     public class SecurityAnswerAddModel
     {
-        public string AnswerString { get; set; } = null!;
+        public string AnswerString { get; set; } 
 
         public Guid SecurityQuestionId { get; set; }
 

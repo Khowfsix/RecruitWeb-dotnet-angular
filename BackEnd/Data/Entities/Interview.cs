@@ -10,29 +10,34 @@ public partial class Interview
 
     public Guid ApplicationId { get; set; }
 
-    public Guid? ItrsinterviewId { get; set; }
+    public int? Company_Status { get; set; }
 
-    public string? Company_Status { get; set; }
+    public int? Candidate_Status { get; set; }
 
-    public string? Candidate_Status { get; set; }
 
-    public string? Priority { get; set; }
+    public string? Address { get; set; }
+    public string? DetailLocation { get; set; }
 
-    public Guid? ResultId { get; set; }
+    public DateTime? MeetingDate { get; set; }
+    public TimeSpan? StartTime { get; set; }
+    public TimeSpan? EndTime { get; set; }
+
+
+    public int? Priority { get; set; }
+
+    //public Guid? ResultId { get; set; }
 
     public string? Notes { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public virtual Application Application { get; set; } = null!;
+    public virtual Application Application { get; set; }
 
-    public virtual Interviewer Interviewer { get; set; } = null!;
+    public virtual Interviewer Interviewer { get; set; }
 
-    public virtual Itrsinterview? Itrsinterview { get; set; }
+    public virtual Recruiter Recruiter { get; set; }
 
-    public virtual Recruiter Recruiter { get; set; } = null!;
-
-    public virtual Result Result { get; set; } = null!;
+    //public virtual Result Result { get; set; } 
 
     public virtual ICollection<Round> Rounds { get; set; } = new List<Round>();
 }

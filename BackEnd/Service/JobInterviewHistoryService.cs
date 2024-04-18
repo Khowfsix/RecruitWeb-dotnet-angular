@@ -11,30 +11,31 @@ namespace Service
         //private readonly ICandidateRepository _candidateRepository;
 
         private readonly IApplicationRepository _applicationRepository;
-        private readonly IRoomRepository _roomRepository;
+        //private readonly IRoomRepository _roomRepository;
         private readonly IPositionRepository _positionRepository;
         private readonly ICvRepository _cvRepository;
         private readonly IInterviewerRepository _interviewerRepository;
-        private readonly IItrsinterviewRepository _itrsinterviewRepository;
-        private readonly IInterviewRepository _interviewRepository;
+        //private readonly IItrsinterviewRepository _itrsinterviewRepository;
+        //private readonly IInterviewRepository _interviewRepository;
         private readonly IMapper _mapper;
 
-        public JobInterviewHistoryService(IApplicationRepository applicationRepository, IRoomRepository roomRepository,
+        public JobInterviewHistoryService(IApplicationRepository applicationRepository,
+                                          //IRoomRepository roomRepository,
                                           IPositionRepository positionRepository, ICvRepository cvRepository,
                                           IInterviewerRepository interviewerRepository,
-                                          IItrsinterviewRepository itrsinterviewRepository,
+                                          //IItrsinterviewRepository itrsinterviewRepository,
                                           //ICandidateRepository candidateRepository,
-                                          IInterviewRepository interviewRepository,
+                                          //IInterviewRepository interviewRepository,
                                           IMapper mapper)
         {
             _applicationRepository = applicationRepository;
-            _roomRepository = roomRepository;
+            //_roomRepository = roomRepository;
             _positionRepository = positionRepository;
             _cvRepository = cvRepository;
             _interviewerRepository = interviewerRepository;
-            _itrsinterviewRepository = itrsinterviewRepository;
+            //_itrsinterviewRepository = itrsinterviewRepository;
             //_candidateRepository = candidateRepository;
-            _interviewRepository = interviewRepository;
+            //_interviewRepository = interviewRepository;
             _mapper = mapper;
         }
 
@@ -75,14 +76,14 @@ namespace Service
             return _mapper.Map<PositionModel>(entityData);
         }
 
-        public async Task<RoomModel> GetRoomInformation(Guid applicationId)
-        {
-            var interviewSetForApplication = await _interviewRepository.GetInterviewById(applicationId);
+        //public async Task<RoomModel> GetRoomInformation(Guid applicationId)
+        //{
+        //    var interviewSetForApplication = await _interviewRepository.GetInterviewById(applicationId);
 
-            var itrsForInterview = await _itrsinterviewRepository.GetItrsinterviewById(interviewSetForApplication!.ItrsinterviewId!.Value);
+        //    var itrsForInterview = await _itrsinterviewRepository.GetItrsinterviewById(interviewSetForApplication!.ItrsinterviewId!.Value);
 
-            var room = await _roomRepository.GetRoomById(itrsForInterview!.RoomId);
-            return _mapper.Map<RoomModel>(room);
-        }
+        //    var room = await _roomRepository.GetRoomById(itrsForInterview!.RoomId);
+        //    return _mapper.Map<RoomModel>(room);
+        //}
     }
 }

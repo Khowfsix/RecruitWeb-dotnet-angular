@@ -8,13 +8,13 @@ public partial class Requirement
 
     public Guid SkillId { get; set; }
 
-    public string Experience { get; set; } = null!;
+    public string Experience { get; set; } 
 
     public string? Notes { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public virtual Position Position { get; set; } = null!;
+    public virtual Position Position { get; set; } 
 
-    public virtual Skill Skill { get; set; } = null!;
+    public virtual Skill Skill { get; set; } 
 }

@@ -4,11 +4,11 @@ public partial class Question
 {
     public Guid QuestionId { get; set; }
 
-    public string QuestionString { get; set; } = null!;
+    public string QuestionString { get; set; } 
 
     public Guid CategoryQuestionId { get; set; }
 
-    public virtual CategoryQuestion CategoryQuestion { get; set; } = null!;
+    public virtual CategoryQuestion CategoryQuestion { get; set; } 
 
     public virtual ICollection<QuestionSkill> QuestionSkills { get; set; } = new List<QuestionSkill>();
 

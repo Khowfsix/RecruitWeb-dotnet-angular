@@ -3,6 +3,6 @@
     public class SecurityQuestionUpdateModel
     {
         public Guid SecurityQuestionId { get; set; }
-        public string QuestionString { get; set; } = null!;
+        public string QuestionString { get; set; } 
     }
 }

@@ -8,19 +8,19 @@ public partial class Application
 
     public Guid PositionId { get; set; }
 
-    public DateTime DateTime { get; set; }
+    public DateTime CreatedTime { get; set; }
 
-    public string? Company_Status { get; set; }
+    public int? Company_Status { get; set; }
 
-    public string? Candidate_Status { get; set; }
+    public int? Candidate_Status { get; set; }
 
-    public string? Priority { get; set; }
+    public int? Priority { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public virtual Cv Cv { get; set; } = null!;
+    public virtual Cv Cv { get; set; }
 
     public virtual ICollection<Interview> Interviews { get; set; } = new List<Interview>();
 
-    public virtual Position Position { get; set; } = null!;
+    public virtual Position Position { get; set; }
 }
