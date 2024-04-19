@@ -36,7 +36,7 @@ namespace Api.ViewModels.Position
 
         public Guid CategoryPositionId { get; set; }
 
-        public CategoryPositionViewModel CategoryPosition { get; set; } = null!;
+        public CategoryPositionViewModel CategoryPosition { get; set; } 
 
         public bool IsDeleted { get; set; } = false;
 

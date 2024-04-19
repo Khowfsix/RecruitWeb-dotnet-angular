@@ -150,7 +150,7 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                 .ThenInclude(x => x.Candidate)
             .Include(x => x.Recruiter)
             .Include(x => x.Interviewer)
-            .Include(x => x.Result)
+            //.Include(x => x.Result)
             .Include(x => x.Rounds)
             .Where(x => fromDate <= x.Application.CreatedTime && x.Application.CreatedTime <= toDate)
             .ToListAsync();

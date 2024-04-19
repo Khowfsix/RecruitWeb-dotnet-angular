@@ -2,7 +2,7 @@
 {
     public class CertificateAddModel
     {
-        public string CertificateName { get; set; } = null!;
+        public string CertificateName { get; set; } 
 
         public string? Description { get; set; }
 

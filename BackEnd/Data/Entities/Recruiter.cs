@@ -6,14 +6,14 @@ public partial class Recruiter
 {
     public Guid RecruiterId { get; set; }
 
-    public string UserId { get; set; } = null!;
+    public string UserId { get; set; } 
 
     [Column("CompanyId")]
     public Guid CompanyId { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public virtual Company Company { get; set; } = null!;
+    public virtual Company Company { get; set; } 
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 
@@ -23,5 +23,5 @@ public partial class Recruiter
 
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
 
-    public virtual WebUser User { get; set; } = null!;
+    public virtual WebUser User { get; set; } 
 }

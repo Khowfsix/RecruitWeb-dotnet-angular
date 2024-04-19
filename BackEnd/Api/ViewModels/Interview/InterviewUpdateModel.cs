@@ -7,7 +7,7 @@ namespace Api.ViewModels.Interview
         public Guid InterviewerId { get; set; }
         public Guid ApplicationId { get; set; }
 
-        public Guid? ItrsinterviewId { get; set; } = null!;
+        public Guid? ItrsinterviewId { get; set; } 
 
         public string? Notes { get; set; }
         public string? Priority { get; set; }

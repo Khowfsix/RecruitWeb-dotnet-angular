@@ -8,8 +8,8 @@
 
         public Guid QuestionId { get; set; }
 
-        public virtual QuestionModel Question { get; set; } = null!;
+        public virtual QuestionModel Question { get; set; } 
 
-        public double? Score { get; set; } = null!;
+        public double? Score { get; set; } 
     }
 }

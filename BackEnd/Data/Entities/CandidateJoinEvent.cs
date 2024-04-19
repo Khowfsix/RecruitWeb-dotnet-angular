@@ -10,7 +10,7 @@ public partial class CandidateJoinEvent
 
     public DateTime DateJoin { get; set; }
 
-    public virtual Candidate Candidate { get; set; } = null!;
+    public virtual Candidate Candidate { get; set; } 
 
-    public virtual Event Event { get; set; } = null!;
+    public virtual Event Event { get; set; } 
 }

@@ -4,7 +4,7 @@ namespace Service.Interfaces;
 
 public interface IInterviewService
 {
-    Task<IEnumerable<InterviewModel>> GetAllInterview(string status);
+    Task<IEnumerable<InterviewModel>> GetAllInterview(int? status);
 
     Task<IEnumerable<InterviewModel>> GetInterviewsByInterviewer(Guid requestId);
 
@@ -21,7 +21,7 @@ public interface IInterviewService
     //Task<bool> CreateInterviewWithApplication(InterviewAddModel interviewRequest, Guid applicationId);
     Task<bool> UpdateInterview(InterviewModel interviewModel, Guid interviewModelId);
 
-    Task<bool> UpdateStatusInterview(Guid interviewId, string? Candidate_Status, string? Company_Status);
+    Task<bool> UpdateStatusInterview(Guid interviewId, int? Candidate_Status, int? Company_Status);
 
     Task<bool> DeleteInterview(Guid interviewModelId);
 

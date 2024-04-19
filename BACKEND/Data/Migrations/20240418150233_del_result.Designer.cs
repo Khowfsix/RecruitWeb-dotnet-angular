@@ -4,6 +4,7 @@ using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RecruitmentWebContext))]
-    partial class RecruitmentWebContextModelSnapshot : ModelSnapshot
+    [Migration("20240418150233_del_result")]
+    partial class del_result
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,13 +30,13 @@ namespace Data.Migrations
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Candidate_Status")
+                    b.Property<string>("Candidate_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("Company_Status")
+                    b.Property<string>("Company_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("CreatedTime")
                         .ValueGeneratedOnAdd()
@@ -51,8 +54,8 @@ namespace Data.Migrations
                     b.Property<Guid>("PositionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Priority")
-                        .HasColumnType("int");
+                    b.Property<string>("Priority")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ApplicationId")
                         .HasName("PK__Applicat__C93A4C99D502D0BD");
@@ -86,7 +89,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(7528));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 2, 33, 545, DateTimeKind.Local).AddTicks(2172));
 
                     b.HasKey("AwardId")
                         .HasName("PK_award");
@@ -219,9 +222,6 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasDefaultValue("");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("CategoryPositionId")
                         .HasName("PK_categoryPostion");
 
@@ -267,7 +267,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 182, DateTimeKind.Local).AddTicks(1780));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 2, 33, 539, DateTimeKind.Local).AddTicks(7773));
 
                     b.HasKey("CertificateId")
                         .HasName("PK__Certific__BBF8A7C122402FA9");
@@ -402,7 +402,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("From")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(600));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 2, 33, 544, DateTimeKind.Local).AddTicks(5681));
 
                     b.Property<string>("Major")
                         .IsRequired()
@@ -475,13 +475,13 @@ namespace Data.Migrations
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Candidate_Status")
+                    b.Property<string>("Candidate_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("Company_Status")
+                    b.Property<string>("Company_Status")
                         .HasMaxLength(255)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("DetailLocation")
                         .HasColumnType("nvarchar(max)");
@@ -502,8 +502,8 @@ namespace Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Priority")
-                        .HasColumnType("int");
+                    b.Property<string>("Priority")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RecruiterId")
                         .HasColumnType("uniqueidentifier");
@@ -582,7 +582,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(5708));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 2, 33, 545, DateTimeKind.Local).AddTicks(739));
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
@@ -1072,7 +1072,7 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "19b2ea9b-5aec-453e-b72d-75250ad7b4b7",
+                            Id = "41bd8250-796a-4375-b21a-222f0101872f",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "d00d37a8-0c8d-4b37-a8b7-823901b3b98d",
                             Email = "lyhongphat261202@gmail.com",
@@ -1089,7 +1089,7 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = "c59d7b36-86c7-4361-abf8-893845d231cf",
+                            Id = "00c96ac3-e16f-4859-bfa2-49eb24dc838c",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "37a3f448-08e1-4d5b-8d9d-97edd7ed2441",
                             Email = "jasmineandhongphat@gmail.com",
@@ -1125,7 +1125,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 47, 52, 187, DateTimeKind.Local).AddTicks(2157));
+                        .HasDefaultValue(new DateTime(2024, 4, 18, 22, 2, 33, 544, DateTimeKind.Local).AddTicks(7146));
 
                     b.Property<string>("JobTitle")
                         .IsRequired()
@@ -1174,28 +1174,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d2b9a373-e2c1-4ae4-b794-a34311f2db2a",
+                            Id = "5e773e4e-e6ba-4a5a-a850-a1b87c2d393a",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "ad0eaac5-479e-4647-bd92-19c7239e8a72",
+                            Id = "7f18016c-1676-44fb-b89c-f5fffc9d77e8",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "fcce651a-02ac-4039-ae80-37b30b1f4114",
+                            Id = "1a4194aa-a266-4c98-a071-497b181f27f2",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "b55437e9-a7fa-4383-8080-dfbb590af8e1",
+                            Id = "72ab207f-15d8-4093-8a49-6f741a4b174e",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1291,33 +1291,33 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "19b2ea9b-5aec-453e-b72d-75250ad7b4b7",
-                            RoleId = "d2b9a373-e2c1-4ae4-b794-a34311f2db2a"
+                            UserId = "41bd8250-796a-4375-b21a-222f0101872f",
+                            RoleId = "5e773e4e-e6ba-4a5a-a850-a1b87c2d393a"
                         },
                         new
                         {
-                            UserId = "19b2ea9b-5aec-453e-b72d-75250ad7b4b7",
-                            RoleId = "fcce651a-02ac-4039-ae80-37b30b1f4114"
+                            UserId = "41bd8250-796a-4375-b21a-222f0101872f",
+                            RoleId = "1a4194aa-a266-4c98-a071-497b181f27f2"
                         },
                         new
                         {
-                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
-                            RoleId = "b55437e9-a7fa-4383-8080-dfbb590af8e1"
+                            UserId = "00c96ac3-e16f-4859-bfa2-49eb24dc838c",
+                            RoleId = "72ab207f-15d8-4093-8a49-6f741a4b174e"
                         },
                         new
                         {
-                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
-                            RoleId = "d2b9a373-e2c1-4ae4-b794-a34311f2db2a"
+                            UserId = "00c96ac3-e16f-4859-bfa2-49eb24dc838c",
+                            RoleId = "5e773e4e-e6ba-4a5a-a850-a1b87c2d393a"
                         },
                         new
                         {
-                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
-                            RoleId = "ad0eaac5-479e-4647-bd92-19c7239e8a72"
+                            UserId = "00c96ac3-e16f-4859-bfa2-49eb24dc838c",
+                            RoleId = "7f18016c-1676-44fb-b89c-f5fffc9d77e8"
                         },
                         new
                         {
-                            UserId = "c59d7b36-86c7-4361-abf8-893845d231cf",
-                            RoleId = "fcce651a-02ac-4039-ae80-37b30b1f4114"
+                            UserId = "00c96ac3-e16f-4859-bfa2-49eb24dc838c",
+                            RoleId = "1a4194aa-a266-4c98-a071-497b181f27f2"
                         });
                 });
 

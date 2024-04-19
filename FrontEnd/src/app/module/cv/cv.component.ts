@@ -13,7 +13,8 @@ import { JobPreferenceComponent } from './job-preference/job-preference.componen
 		CandidateProfileComponent,
 		CvManageComponent,
 		UploadCvComponent,
-		JobPreferenceComponent
+		JobPreferenceComponent,
+
 	],
 	templateUrl: './cv.component.html',
 	styleUrl: './cv.component.css'

@@ -24,9 +24,7 @@ export class PersonalDetailComponent implements OnInit, OnDestroy {
 	constructor(public dialog: MatDialog) { }
 
 	openDialog(): void {
-		const dialogRef = this.dialog.open(PDEditDialogComponent, {
-			width: '350px',
-		});
+		const dialogRef = this.dialog.open(PDEditDialogComponent, {});
 		dialogRef.afterClosed().subscribe(
 			result => {
 				console.log(result);

@@ -26,8 +26,7 @@ namespace Api.Controllers
         }
             
         [HttpGet]
-        public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, string? status, 
-            string? priority, Guid? positionId, string? sortString = "CreatedTime_DESC")
+        public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, int? status, int? priority, Guid? positionId, string? sortString = "CreatedTime_DESC")
         {
             if (positionId.HasValue)
             {
@@ -46,7 +45,7 @@ namespace Api.Controllers
                 return Ok(response);
             }
 
-            if (string.IsNullOrEmpty(status) && string.IsNullOrEmpty(priority))
+            if (!status.HasValue && !priority.HasValue)
             {
                 var modelDatas = await _applicationService.GetAllApplications();
                 var response = _mapper.Map<List<ApplicationViewModel>>(modelDatas);
@@ -55,8 +54,8 @@ namespace Api.Controllers
             else
             {
                 var modelDatas = await _applicationService.GetApplicationsWithStatus(
-                    status!,
-                    priority!
+                    (int)status,
+                    (int)priority
                 );
                 var response = _mapper.Map<List<ApplicationViewModel>>(modelDatas);
                 return Ok(response);
@@ -104,8 +103,8 @@ namespace Api.Controllers
         [Authorize(Roles = "Recruiter")]
         public async Task<IActionResult> UpdateStatusApplication(
             Guid ApplicationId,
-            string? Candidate_Status,
-            string? Company_Status
+            int? Candidate_Status,
+            int? Company_Status
         )
         {
             if (Candidate_Status == null && Company_Status == null)

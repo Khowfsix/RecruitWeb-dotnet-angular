@@ -14,7 +14,7 @@ namespace Api.ViewModels.Language
 
         [Required(ErrorMessage = "Must have Name")]
         [MaxLength(50)]
-        public string LanguageName { get; set; } = null!;
+        public string LanguageName { get; set; } 
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; } = false;

@@ -10,7 +10,7 @@ public partial class CvHasSkill
 
     public int? ExperienceYear { get; set; }
 
-    public virtual Cv Cv { get; set; } = null!;
+    public virtual Cv Cv { get; set; } 
 
-    public virtual Skill Skill { get; set; } = null!;
+    public virtual Skill Skill { get; set; } 
 }

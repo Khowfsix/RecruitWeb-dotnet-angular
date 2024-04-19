@@ -26,7 +26,7 @@ import { ApplicationHistoryService } from '../../../data/applicationHistory/appl
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationHistoryComponent } from './application-history/application-history.component';
 import { CandidateJoinEventService } from '../../../data/candidateJoinEvent/candidate-join-event.service';
-
+import { Application_CandidateStatus, Application_CompanyStatus } from '../../../shared/constant/enum.model';
 @Component({
 	selector: 'app-application',
 	standalone: true,
@@ -64,6 +64,8 @@ export class ApplicationComponent implements OnInit {
 		private applicationHistoryServivce: ApplicationHistoryService,
 	) { }
 
+	public application_CandidateStatus: typeof Application_CandidateStatus = Application_CandidateStatus;
+	public application_CompanyStatus: typeof Application_CompanyStatus = Application_CompanyStatus;
 	public paramPositionId!: string;
 	public fetchedApplications?: Application[];
 	public fetchedBlackLists?: BlackList[];
@@ -72,7 +74,9 @@ export class ApplicationComponent implements OnInit {
 	public sortString?: string;
 
 	public filterForm: FormGroup = this.formBuilder.group({
-		sortString: ['DateTime_DESC', []],
+		sortString: ['CreatedTime_DESC', []],
+		candidateStatus: ['', []],
+		companyStatus: ['', []],
 		search: ['', []],
 		notInBlackList: [false, []]
 	});
@@ -123,17 +127,21 @@ export class ApplicationComponent implements OnInit {
 	private getAllApplicationsByPositionId(positionId: string, formValue?: any) {
 		// console.log('formValue', formValue)
 		this.applicationService.getAllByPositionId(positionId, formValue ? formValue.search : '',
-			formValue ? formValue.sortString : '', formValue ? formValue.notInBlackList : '').subscribe((data) => {
-				this.fetchedApplications = data;
-				this.fetchedApplications.forEach(application => {
-					if (application.cv?.candidateId) {
-						this.candidateService.getById(application.cv?.candidateId).subscribe(candidate => {
-							if (application.cv)
-								application.cv.candidate = candidate;
-						});
-					}
-				});
+			formValue ? formValue.sortString : '',
+			formValue ? formValue.notInBlackList : '',
+			formValue ? formValue.candidateStatus : '',
+			formValue ? formValue.companyStatus : '',
+		).subscribe((data) => {
+			this.fetchedApplications = data;
+			this.fetchedApplications.forEach(application => {
+				if (application.cv?.candidateId) {
+					this.candidateService.getById(application.cv?.candidateId).subscribe(candidate => {
+						if (application.cv)
+							application.cv.candidate = candidate;
+					});
+				}
 			});
+		});
 
 		// console.log('fetchedCandidates', this.fetchedCandidates)
 		// console.log('fetchedApplications', this.fetchedApplications)

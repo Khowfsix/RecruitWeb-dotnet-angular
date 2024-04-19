@@ -186,7 +186,7 @@ namespace Service.Services
             {
                 return await Task.FromResult(false);
             }
-            applicationModel.Company_Status = "Passed";
+            applicationModel.Company_Status = ((int)Data.Constant.Application_CompanyStatus.Accecpted);
             await _applicationService.UpdateApplication
                 (_mapper.Map<ApplicationModel>
                 (applicationModel), interviewModel.ApplicationId);

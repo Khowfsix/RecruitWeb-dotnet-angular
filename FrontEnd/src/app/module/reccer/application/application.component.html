@@ -14,8 +14,25 @@
 				<mat-form-field style="width: 100%;">
 					<mat-label>Sort</mat-label>
 					<mat-select formControlName="sortString">
-						<mat-option value="DateTime_DESC">Newest</mat-option>
-						<mat-option value="DateTime_ASC">Oldest</mat-option>
+						<mat-option value="CreatedTime_DESC">Newest</mat-option>
+						<mat-option value="CreatedTime_ASC">Oldest</mat-option>
+						<mat-option value="Priority_DESC">Descending Prioriry</mat-option>
+						<mat-option value="Priority_ASC">Ascending Prioriry</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field style="width: 100%;">
+					<mat-label>Candidate Status</mat-label>
+					<mat-select formControlName="candidateStatus">
+						<mat-option value="{{this.application_CandidateStatus.Pending}}">Pending</mat-option>
+						<mat-option value="{{this.application_CandidateStatus.Passed}}">Passed</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field style="width: 100%;">
+					<mat-label>Company Status</mat-label>
+					<mat-select formControlName="companyStatus">
+						<mat-option value="{{this.application_CompanyStatus.Pending}}">Pending</mat-option>
+						<mat-option value="{{this.application_CompanyStatus.Accecpted}}">Accecpted</mat-option>
+						<mat-option value="{{this.application_CompanyStatus.Rejected}}">Rejected</mat-option>
 					</mat-select>
 				</mat-form-field>
 				<section

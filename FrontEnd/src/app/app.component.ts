@@ -42,9 +42,9 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.mediaSub = this.mediaObserver.asObservable().subscribe(
 			(changes: MediaChange[]) => {
 				changes.forEach(change => {
-					console.log(change.mqAlias);
+					// console.log(change.mqAlias);
 					this.deviceXs = change.mqAlias === 'xs';
-					console.log(this.deviceXs);
+					// console.log(this.deviceXs);
 				})
 			}
 		);

@@ -12,7 +12,7 @@ public partial class Itrsinterview
 
     public virtual ICollection<Interview> Interviews { get; set; } = new List<Interview>();
 
-    public virtual Room Room { get; set; } = null!;
+    public virtual Room Room { get; set; } 
 
-    public virtual Shift Shift { get; set; } = null!;
+    public virtual Shift Shift { get; set; } 
 }

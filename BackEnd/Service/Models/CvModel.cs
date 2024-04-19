@@ -19,7 +19,7 @@ namespace Service.Models
 
         public bool IsDefault { get; set; } = false;
 
-        public virtual ICollection<ApplicationModel> Applications { get; set; } = null!;
+        public virtual ICollection<ApplicationModel> Applications { get; set; } 
 
         public virtual CandidateModel Candidate { get; set; } = null!;
 

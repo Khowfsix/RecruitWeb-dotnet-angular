@@ -14,9 +14,9 @@ namespace Service.Models
 
         public string? Candidate_Status { get; set; } = "Not start";
 
-        public string? Notes { get; set; } = null!;
+        public string? Notes { get; set; } 
 
-        public string? Priority { get; set; } = null!;
+        public string? Priority { get; set; } 
 
         public bool? IsDeleted { get; set; } = false;
 
@@ -27,13 +27,13 @@ namespace Service.Models
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }
 
-        public ApplicationModel Application { get; set; } = null!;
+        public ApplicationModel Application { get; set; } 
 
-        public InterviewerModel Interviewer { get; set; } = null!;
+        public InterviewerModel Interviewer { get; set; } 
 
         public RecruiterModel Recruiter { get; set; } = null!;
 
-        public ResultModel Result { get; set; } = null!;
+        public ResultModel Result { get; set; } 
 
         public ICollection<RoundModel> Rounds { get; set; } = new List<RoundModel>();
     }

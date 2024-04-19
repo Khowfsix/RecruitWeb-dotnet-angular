@@ -5,7 +5,7 @@ namespace Api.ViewModels.Event
     public class EventViewModel
     {
         public Guid EventId { get; set; }
-        public string EventName { get; set; } = null!;
+        public string EventName { get; set; } 
 
         public Guid RecruiterId { get; set; }
 
@@ -13,7 +13,7 @@ namespace Api.ViewModels.Event
 
         public string? Description { get; set; }
 
-        public string Place { get; set; } = null!;
+        public string Place { get; set; } 
 
         public string? ImageURL { get; set; }
 

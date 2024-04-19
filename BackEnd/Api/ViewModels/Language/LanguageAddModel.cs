@@ -8,6 +8,6 @@ namespace Api.ViewModels.Language
 
         [Required(ErrorMessage = "Must have Name")]
         [MaxLength(50)]
-        public string LanguageName { get; set; } = null!;
+        public string LanguageName { get; set; } 
     }
 }

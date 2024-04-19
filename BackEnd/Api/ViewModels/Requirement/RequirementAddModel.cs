@@ -6,7 +6,7 @@
 
         public Guid SkillId { get; set; }
 
-        public string Experience { get; set; } = null!;
+        public string Experience { get; set; } 
 
         public string? Notes { get; set; }
     }

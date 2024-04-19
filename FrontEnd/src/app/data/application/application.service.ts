@@ -15,7 +15,8 @@ export class ApplicationService {
 		return this.api.GET('/api/Application');
 	}
 
-	getAllByPositionId(positionId?: string, search?: string, sortString?: string, notInBlackList?: boolean): Observable<Application[]> {
+	getAllByPositionId(positionId?: string, search?: string, sortString?: string,
+		notInBlackList?: boolean, candidateStatus?: number, companyStatus?: number): Observable<Application[]> {
 		let url = '/api/Application?positionId=' + positionId;
 		if (search)
 			url = url + '&search=' + search;
@@ -23,6 +24,10 @@ export class ApplicationService {
 			url = url + '&sortString=' + sortString;
 		if (notInBlackList)
 			url = url + '&notInBlackList=' + notInBlackList;
+		if (candidateStatus)
+			url = url + '&candidateStatus=' + candidateStatus;
+		if (companyStatus)
+			url = url + '&companyStatus=' + companyStatus;
 		return this.api.GET(url);
 	}
 }

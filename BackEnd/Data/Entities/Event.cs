@@ -6,7 +6,7 @@ public partial class Event
 {
     public Guid EventId { get; set; }
 
-    public string EventName { get; set; } = null!;
+    public string EventName { get; set; } 
 
     public Guid RecruiterId { get; set; }
 
@@ -15,7 +15,7 @@ public partial class Event
     public string? ImageURL { get; set; }
 
     [Required]
-    public string Place { get; set; } = null!;
+    public string Place { get; set; } 
 
     public DateTime? DatetimeEvent { get; set; }
 
@@ -25,5 +25,5 @@ public partial class Event
 
     public virtual ICollection<CandidateJoinEvent> CandidateJoinEvents { get; set; } = new List<CandidateJoinEvent>();
 
-    public virtual Recruiter Recruiter { get; set; } = null!;
+    public virtual Recruiter Recruiter { get; set; } 
 }

@@ -2,6 +2,6 @@
 {
     public class RoomAddModel
     {
-        public string RoomName { get; set; } = null!;
+        public string RoomName { get; set; } 
     }
 }

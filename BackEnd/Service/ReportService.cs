@@ -64,7 +64,7 @@ namespace Service
                     CandidateId = item.Application.Cv.CandidateId,
                     InterviewerId = item.InterviewerId,
                     ApplyDate = item.Application.CreatedTime,
-                    Status = item.Company_Status!,
+                    Status = (int)item.Company_Status!,
                     Score = item.Rounds.Average(x => x.Score) ?? 0,
                 };
 
@@ -97,10 +97,10 @@ namespace Service
                     Salary = item.Position.Salary,
                     CompanyName = item.Position.Company.CompanyName,
                     LanguageName = item.Position.Language.LanguageName,
-                    DateTime = item.CreatedTime,
-                    Candidate_Status = item.Candidate_Status ?? "Pending",
-                    Company_Status = item.Company_Status ?? "Pending",
-                    Priority = item.Priority,
+                    CreatedTime = item.CreatedTime,
+                    Candidate_Status = item.Candidate_Status != 0 ? "Pending" : "",
+                    Company_Status = item.Company_Status != 0 ? "Pending" : "",
+                    Priority = (int)item.Priority!,
                     IsDeleted = item.IsDeleted,
                 };
 

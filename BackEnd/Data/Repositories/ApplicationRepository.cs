@@ -55,6 +55,14 @@ namespace Data.Repositories
                 || o.Cv.CvHasSkills.First(o => o.Skill.SkillName.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
 
             }
+            if (applicationFilter.candidateStatus.HasValue)
+            {
+                query = query.Where(e => e.Candidate_Status == applicationFilter.candidateStatus.Value);
+            }
+            if (applicationFilter.companyStatus.HasValue)
+            {
+                query = query.Where(e => e.Company_Status == applicationFilter.companyStatus.Value);
+            }
             if (sortString != null)
             {
                 var sort = new Sort<Application>(sortString);
@@ -134,12 +142,12 @@ namespace Data.Repositories
         }
 
         public async Task<IEnumerable<Application>> GetApplicationsWithStatus(
-            string status,
-            string priority
+            int status,
+            int priority
         )
         {
             var listData = await Entities
-                .Where(a => a.Company_Status!.Contains(status) && a.Priority!.Contains(priority))
+                .Where(a => a.Company_Status! == status && a.Priority! == priority)
                 .ToListAsync();
 
             return listData;

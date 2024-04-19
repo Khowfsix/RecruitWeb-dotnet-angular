@@ -21,7 +21,7 @@
 //        public async Task Application_Controller_Get_All_Test()
 //        {
 //            // Arrange
-//            string query = null!;
+//            string query 
 //            var expecteds = new List<ApplicationViewModel>
 //            {
 //                new ApplicationViewModel

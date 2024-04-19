@@ -7,7 +7,7 @@ namespace Api.ViewModels.Company
         [Key]
         public Guid CompanyId { get; set; }
 
-        public string CompanyName { get; set; } = null!;
+        public string CompanyName { get; set; } 
 
         public string? Address { get; set; }
 
