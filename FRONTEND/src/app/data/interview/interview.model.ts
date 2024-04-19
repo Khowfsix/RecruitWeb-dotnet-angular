@@ -1,7 +1,6 @@
 import { Application } from "../application/application.model"
 import { Interviewer } from "../interviewer/interviewer.model"
 import { Recruiter } from "../recruiter/recruiter.model"
-import { Result } from "../result/result.model";
 import { Round } from "../round/round.module";
 
 export class Interview {
@@ -18,8 +17,6 @@ export class Interview {
 	notes?: string;
 	priority?: string;
 	isDeleted?: boolean;
-	resultId?: string;
-	result?: Result;
 	address?: string;
 	detailLocation?: string;
 	meetingDate?: Date;

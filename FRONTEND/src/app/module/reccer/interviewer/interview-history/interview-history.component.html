@@ -59,22 +59,6 @@
 						{{item.application?.cv?.candidate?.user?.fullName}}</div>
 				</div>
 			</div>
-			@switch (item.result?.resultString) {
-			@case ("Passed") {
-			<div class="mx-auto p-2 rounded-3" style="width: fit-content; background-color: lightgreen;">
-				{{item.result?.resultString | uppercase}}
-			</div>
-			}
-			@case ("Failed") {
-			<div class="mx-auto p-2 rounded-3" style="width: fit-content; background-color: lightcoral;">
-				{{item.result?.resultString | uppercase}}
-			</div>
-			}
-			@default {
-			Default case.
-			}
-			}
-
 		</div>
 		}
 	</div>

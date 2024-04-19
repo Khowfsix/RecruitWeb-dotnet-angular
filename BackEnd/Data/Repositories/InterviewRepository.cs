@@ -134,7 +134,6 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                     .ThenInclude(c => c.Candidate.User)
             .Include(i => i.Rounds)
                 .ThenInclude(r => r.Question)
-            .Include(e => e.Result)
             .OrderByDescending(e => e.MeetingDate)
             .AsNoTracking()
             .ToListAsync();
