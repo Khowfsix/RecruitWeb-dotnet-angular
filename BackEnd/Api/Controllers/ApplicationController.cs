@@ -26,7 +26,7 @@ namespace Api.Controllers
         }
             
         [HttpGet]
-        public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, string? status, string? priority, Guid? positionId, string? sortString = "DateTime_DESC")
+        public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, int? status, int? priority, Guid? positionId, string? sortString = "CreatedTime_DESC")
         {
             if (positionId.HasValue)
             {
@@ -43,7 +43,7 @@ namespace Api.Controllers
                 return Ok(response);
             }
 
-            if (string.IsNullOrEmpty(status) && string.IsNullOrEmpty(priority))
+            if (!status.HasValue && !priority.HasValue)
             {
                 var modelDatas = await _applicationService.GetAllApplications();
                 var response = _mapper.Map<List<ApplicationViewModel>>(modelDatas);

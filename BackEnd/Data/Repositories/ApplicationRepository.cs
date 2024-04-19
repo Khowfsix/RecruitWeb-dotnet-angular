@@ -55,6 +55,14 @@ namespace Data.Repositories
                 || o.Cv.CvHasSkills.First(o => o.Skill.SkillName.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
 
             }
+            if (applicationFilter.candidateStatus.HasValue)
+            {
+                query = query.Where(e => e.Candidate_Status == applicationFilter.candidateStatus.Value);
+            }
+            if (applicationFilter.companyStatus.HasValue)
+            {
+                query = query.Where(e => e.Company_Status == applicationFilter.companyStatus.Value);
+            }
             if (sortString != null)
             {
                 var sort = new Sort<Application>(sortString);
@@ -113,7 +121,7 @@ namespace Data.Repositories
             var data = await Entities
                 .Where(entity => entity.Cv.CandidateId == candidateId)
                 .Include(entity => entity.Position).ThenInclude(o => o.Company)
-                .OrderByDescending(entity => entity.DateTime)
+                .OrderByDescending(entity => entity.CreatedTime)
                 .ToListAsync();
             return data;
         }

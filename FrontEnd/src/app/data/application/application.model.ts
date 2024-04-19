@@ -5,7 +5,7 @@ export class Application {
 	applicationId?: string;
 	cv?: CV;
 	position?: Position;
-	dateTime?: Date;
+	createdTime?: Date;
 	company_Status?: number;
 	candidate_Status?: number;
 	priority?: string;

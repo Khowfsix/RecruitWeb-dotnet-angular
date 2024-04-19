@@ -203,7 +203,7 @@ namespace Service.Services
             {
                 PositionId = applicationModel.PositionId,
                 CandidateId = cv.CandidateId,
-                DateSuccess = applicationModel.DateTime,
+                DateSuccess = applicationModel.CreatedTime,
             };
 
             var data = await _successfulCandidateService.SaveSuccessfulCadidate(susCandidate);
