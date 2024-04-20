@@ -1,9 +1,9 @@
 <div class="container">
 	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
-		<div class="fs-3 p-4" style="margin: auto;">APPLICATION LIST</div>
+		<div class="fs-3 p-4" style="margin: auto; margin-top: 50px; margin-bottom: 20px;">APPLICATION LIST</div>
 	</div>
 
-	<div class="d-flex flex-row" style="height: fit-content;">
+	<div class="d-flex flex-row" style="height: fit-content; margin-bottom: 20px;">
 		<div class="p-2 rounded-3" style="width: 25%; background-color: rgb(37, 114, 176); height: fit-content;">
 			<div class="mt-2 ms-4" style="width: 100%; color: white; font-size: 18px; font-weight: 600;">FILTER</div>
 			<form class="p-4" style="width: 100%;" [formGroup]="this.filterForm">
@@ -44,7 +44,7 @@
 
 			</form>
 		</div>
-		<div class="p-2" style="width: 75%;">
+		<div class="p-2" style="width: 75%; height: 570px; overflow-y: scroll;">
 			@for (item of fetchedApplications ; track item) {
 			<div class="d-flex flex-row align-items-center p-2" style="width: 100%; height: fit-content;">
 				<div class="d-flex flex-row"

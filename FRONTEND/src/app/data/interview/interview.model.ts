@@ -1,3 +1,4 @@
+import { Interview_CandidateStatus, Interview_CompanyStatus } from "../../shared/constant/enum.model";
 import { Application } from "../application/application.model"
 import { Interviewer } from "../interviewer/interviewer.model"
 import { Recruiter } from "../recruiter/recruiter.model"
@@ -12,8 +13,8 @@ export class Interview {
 	recruiter?: Recruiter;
 	applicationId?: string;
 	application?: Application;
-	company_Status?: string;
-	candidate_Status?: string;
+	company_Status?: Interview_CompanyStatus;
+	candidate_Status?: Interview_CandidateStatus;
 	notes?: string;
 	priority?: string;
 	isDeleted?: boolean;
@@ -24,3 +25,13 @@ export class Interview {
 	rounds?: Round[];
 }
 
+export class InterviewFilterModel {
+	search?: string;
+	sortString?: string;
+	candidateStatus?: Interview_CandidateStatus;
+	companyStatus?: Interview_CompanyStatus;
+	fromTime?: string;
+	toTime?: string;
+	fromDate?: Date;
+	toDate?: Date;
+}

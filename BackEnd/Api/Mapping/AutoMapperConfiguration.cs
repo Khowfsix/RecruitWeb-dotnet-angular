@@ -309,6 +309,7 @@ namespace Data.Mapping
 
             #region Interview
 
+            CreateMap<InterviewFilter, InterviewFilterModel>().ReverseMap();
             CreateMap<Interview, InterviewModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewUpdateModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewAddModel>().ReverseMap();

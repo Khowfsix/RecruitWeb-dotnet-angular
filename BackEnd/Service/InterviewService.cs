@@ -1,4 +1,5 @@
 using AutoMapper;
+using Data.CustomModel.Interviewer;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -73,13 +74,12 @@ public class InterviewService : IInterviewService
         return null!;
     }
 
-    public async Task<IEnumerable<InterviewModel>> GetInterviewsByCompany(Guid requestId)
+    public async Task<IEnumerable<InterviewModel>> GetInterviewsByCompanyId(Guid requestId, InterviewFilter interviewFilter, string sortString)
     {
-        var data = await _interviewRepository.GetAllInterview();
+        var data = await _interviewRepository.GetInterviewsByCompanyId(requestId, interviewFilter, sortString);
         if (!data.IsNullOrEmpty())
         {
-            var filteredDatas = data.Where(i => i.Application.Position.Company.CompanyId.Equals(requestId));
-            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(data);
             return result;
         }
         return null!;

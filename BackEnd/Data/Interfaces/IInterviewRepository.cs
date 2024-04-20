@@ -1,3 +1,4 @@
+using Data.CustomModel.Interviewer;
 using Data.Entities;
 
 namespace Data.Interfaces;
@@ -5,6 +6,8 @@ namespace Data.Interfaces;
 public interface IInterviewRepository : IRepository<Interview>
 {
     Task<IEnumerable<Interview>> GetAllInterview();
+
+    Task<IEnumerable<Interview>> GetInterviewsByCompanyId(Guid companyId, InterviewFilter interviewFilter, string sortString);
 
     Task<Interview?> GetInterviewById(Guid id);
 

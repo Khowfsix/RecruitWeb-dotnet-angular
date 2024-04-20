@@ -174,7 +174,7 @@ namespace Service.Services
             }
             var interviewModel = _mapper.Map<InterviewModel>(interviewViewModel);
 
-            interviewModel.Company_Status = "Passed";
+            interviewModel.Company_Status = 20201;
             await _interviewService.UpdateInterview
                 (_mapper.Map<InterviewModel>
                 (interviewModel), interviewId);
@@ -225,7 +225,7 @@ namespace Service.Services
             }
             var interviewModel = _mapper.Map<InterviewModel>(interviewViewModel);
 
-            interviewModel.Company_Status = "Failed";
+            interviewModel.Company_Status = 20202;
             var data = await _interviewService.UpdateInterview
                 (_mapper.Map<InterviewModel>
                 (interviewModel), interviewId);

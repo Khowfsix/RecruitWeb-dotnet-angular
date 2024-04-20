@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../api.service';
-import { Interview } from './interview.model';
+import { Interview, InterviewFilterModel } from './interview.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,32 +11,43 @@ export class InterviewService {
 
 	constructor(private api: API) { }
 
-	// private buildQueryParams(interviewerFilterModel: InterviewFilterModel): string {
-	// 	let params = '';
+	getInterviewsByCompanyId(companyId: string, interviewFilterModel?: any, sortString?: string): Observable<Interview[]> {
+		let url = '/api/Interview/GetInterviewsByCompany/' + companyId + '?';
+		if (sortString) {
+			url += 'sortString=' + sortString;
+		}
+		if (interviewFilterModel) {
+			url += this.buildQueryParams(interviewFilterModel);
+		}
+		return this.api.GET(url);
+	}
 
-	// 	if (interviewerFilterModel.search) {
-	// 		params += `&search=${encodeURIComponent(interviewerFilterModel.search)}`;
-	// 	}
-	// 	if (interviewerFilterModel.isFreeTime) {
-	// 		params += `&isFreeTime=${encodeURIComponent(interviewerFilterModel.isFreeTime)}`;
-	// 	}
-	// 	if (interviewerFilterModel.isBusyTime) {
-	// 		params += `&isBusyTime=${encodeURIComponent(interviewerFilterModel.isBusyTime)}`;
-	// 	}
-	// 	if (interviewerFilterModel.fromDate) {
-	// 		params += `&fromDate=${interviewerFilterModel.fromDate}`;
-	// 	}
-	// 	if (interviewerFilterModel.toDate) {
-	// 		params += `&toDate=${interviewerFilterModel.toDate}`;
-	// 	}
-	// 	if (interviewerFilterModel.fromTime) {
-	// 		params += `&fromTime=${interviewerFilterModel.fromTime}`;
-	// 	}
-	// 	if (interviewerFilterModel.toTime) {
-	// 		params += `&toTime=${interviewerFilterModel.toTime}`;
-	// 	}
-	// 	return params;
-	// }
+	private buildQueryParams(interviewFilterModel: InterviewFilterModel): string {
+		let params = '';
+
+		if (interviewFilterModel.search) {
+			params += `&search=${interviewFilterModel.search}`;
+		}
+		if (interviewFilterModel.candidateStatus) {
+			params += `&candidateStatus=${interviewFilterModel.candidateStatus}`;
+		}
+		if (interviewFilterModel.companyStatus) {
+			params += `&companyStatus=${interviewFilterModel.companyStatus}`;
+		}
+		if (interviewFilterModel.fromDate) {
+			params += `&fromDate=${interviewFilterModel.fromDate}`;
+		}
+		if (interviewFilterModel.toDate) {
+			params += `&toDate=${interviewFilterModel.toDate}`;
+		}
+		if (interviewFilterModel.fromTime) {
+			params += `&fromTime=${interviewFilterModel.fromTime}`;
+		}
+		if (interviewFilterModel.toTime) {
+			params += `&toTime=${interviewFilterModel.toTime}`;
+		}
+		return params;
+	}
 
 	getAllByInterviewerId(interviewerId: string): Observable<Interview[]> {
 		const url = '/api/Interview/GetInterviewsByInterviewer/' + interviewerId;

@@ -135,13 +135,13 @@ export class InterviewerComponent implements OnInit {
 			.pipe(startWith(null))
 			.subscribe(() => {
 				const formValue = this.filterForm.value;
-				this.filterSubject.next(formValue);
+				if (((formValue.fromTime !== null) === (formValue.toTime !== null)
+					&& ((formValue.fromDate !== null) === (formValue.toDate !== null)))
+				)
+					this.filterSubject.next(formValue);
 			})
 
 		this.filterSubject.pipe(debounceTime(300)).subscribe((formValue) => {
-			// console.log('filterForm value: ', (formValue));
-			// console.log('filterForm value: ', this.formatFilterModel(formValue));
-			// console.log('this.recruiter?.recruiterId: ', this.recruiter?.recruiterId);
 			formValue.fromDate = this.customDateService.sameValueToUTC(formValue.fromDate, true);
 			formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
 			this.fetchInterviewers(this.recruiter?.recruiterId, formValue);

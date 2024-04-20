@@ -1,3 +1,4 @@
+using Data.CustomModel.Interviewer;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -12,6 +13,94 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
     public InterviewRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
     {
         _uow = uow;
+    }
+
+    public async Task<IEnumerable<Interview>> GetInterviewsByCompanyId(Guid companyId, InterviewFilter interviewFilter, string sortString)
+    {
+        var query = Entities
+            .Where(e => e.Application.Position.CompanyId.Equals(companyId))
+            .Include(i => i.Recruiter)
+                .ThenInclude(e => e.User)
+            .Include(i => i.Interviewer)
+                .ThenInclude(e => e.User)
+            .Include(i => i.Application)
+                .ThenInclude(a => a.Position)
+            .Include(i => i.Application)
+                .ThenInclude(a => a.Cv)
+                    .ThenInclude(c => c.Candidate)
+                        .ThenInclude(e => e.User)
+            .Include(i => i.Rounds)
+                .ThenInclude(r => r.Question)
+                .AsNoTracking();
+
+        if (!string.IsNullOrEmpty(sortString))
+        {
+            switch (sortString)
+            {
+                case "MeetingDate_DESC":
+                    query = query.OrderByDescending(e => e.MeetingDate);
+                    break;
+                case "MeetingDate_ASC":
+                    query = query.OrderBy(e => e.MeetingDate);
+                    break;
+                case "CandidateName_DESC":
+                    query = query.OrderByDescending(e => e.Application.Cv.Candidate.User!.UserName);
+                    break;
+                case "CandidateName_ASC":
+                    query = query.OrderBy(e => e.Application.Cv.Candidate.User!.UserName);
+                    break;
+                case "RecruiterName_DESC":
+                    query = query.OrderByDescending(e => e.Recruiter.User.UserName);
+                    break;
+                case "RecruiterName_ASC":
+                    query = query.OrderBy(e => e.Recruiter.User.UserName);
+                    break;
+                case "InterviewerName_DESC":
+                    query = query.OrderByDescending(e => e.Interviewer.User.UserName);
+                    break;
+                case "InterviewerName_ASC":
+                    query = query.OrderBy(e => e.Interviewer.User.UserName);
+                    break;
+            }
+        }
+      
+
+        if (!string.IsNullOrEmpty(interviewFilter.Search))
+        {
+            query = query
+                .Where(e =>
+                e.Recruiter.User.UserName.ToLower().Contains(interviewFilter.Search.ToLower())
+                || e.Interviewer.User.UserName.ToLower().Contains(interviewFilter.Search.ToLower()) 
+                || e.Application.Cv.Candidate.User!.UserName.ToLower().Contains(interviewFilter.Search.ToLower())
+                );
+        }
+
+        if (interviewFilter.CandidateStatus.HasValue)
+        {
+            query = query.Where(e => e.Candidate_Status.Equals(interviewFilter.CandidateStatus.Value));
+        }
+
+        if (interviewFilter.CompanyStatus.HasValue)
+        {
+            query = query.Where(e => e.Company_Status.Equals(interviewFilter.CompanyStatus.Value));
+        }
+
+        if (interviewFilter.FromTime != null && interviewFilter.ToTime != null)
+        {
+            TimeSpan fromTimeSpan = TimeSpan.Parse(interviewFilter.FromTime);
+            TimeSpan toTimeSpan = TimeSpan.Parse(interviewFilter.ToTime);
+            query = query.Where(e => fromTimeSpan <= e.StartTime && toTimeSpan <= e.EndTime);
+        }
+
+        if (interviewFilter.FromDate.HasValue && interviewFilter.ToDate.HasValue)
+        {
+            query = query.Where(e => interviewFilter.FromDate.Value <= e.MeetingDate && e.MeetingDate <= interviewFilter.ToDate.Value);
+        }
+
+        var result = await query
+            .ToListAsync();
+
+        return result;
     }
 
     public async Task<IEnumerable<Interview>> GetAllInterview()
@@ -149,7 +238,6 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                 .ThenInclude(x => x.Candidate)
             .Include(x => x.Recruiter)
             .Include(x => x.Interviewer)
-            //.Include(x => x.Result)
             .Include(x => x.Rounds)
             .Where(x => fromDate <= x.Application.CreatedTime && x.Application.CreatedTime <= toDate)
             .ToListAsync();

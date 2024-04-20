@@ -8,8 +8,6 @@ namespace Api.ViewModels.Interview
 
         public Guid ApplicationId { get; set; }
 
-        public Guid? ItrsinterviewId { get; set; }
-
         public string? Notes { get; set; }
 
         public Guid? ResultId { get; set; }

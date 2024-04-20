@@ -10,13 +10,13 @@ namespace Service.Models
 
         public Guid ApplicationId { get; set; }
 
-        public string? Company_Status { get; set; } = "Pending";
+        public int? Company_Status { get; set; } 
 
-        public string? Candidate_Status { get; set; } = "Not start";
+        public int? Candidate_Status { get; set; } 
 
         public string? Notes { get; set; } 
 
-        public string? Priority { get; set; } 
+        public int? Priority { get; set; } 
 
         public bool? IsDeleted { get; set; } = false;
 

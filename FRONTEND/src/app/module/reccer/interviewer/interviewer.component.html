@@ -53,7 +53,7 @@
 					</mat-date-range-input>
 					@if( fromDatePicker.value || toDatePicker.value){
 					<button (click)="fromDatePicker.value=''; toDatePicker.value='' ;
-					this.filterForm.get('fromDate')?.setValue(''); this.filterForm.get('toDate')?.setValue('')" mat-icon-button>
+					this.filterForm.get('fromDate')?.setValue(null); this.filterForm.get('toDate')?.setValue(null)" mat-icon-button>
 						<mat-icon style="color: red;">delete</mat-icon>
 					</button>
 					}
@@ -104,9 +104,9 @@
 							}
 							@default {
 							@if (item.daysToLastInterview){
-							@if (item.daysToLastInterview < 0){ Newest interview was {{item.daysToLastInterview}} days
-								ago } @else { Newest interview is {{item.daysToLastInterview}} days from now } } } }
-								</div>
+							@if (item.daysToLastInterview < 0){ Newest interview was {{item.daysToLastInterview*-1}}
+								days ago } @else { Newest interview is {{item.daysToLastInterview}} days from now } } }
+								} </div>
 						</div>
 						<div class="py-2 ms-4 d-flex flex-row justify-content-center" style=" width: 25%;">
 
