@@ -23,20 +23,21 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllLanguages(Guid? languageId, string? languageName)
         {
+            var isAdmin = HttpContext.User.IsInRole("Admin");
             if (languageId != null)
             {
                 var languageById = await _languageService.GetLanguage((Guid)languageId);
-                if (languageById == null)
-                {
+                if (!isAdmin && languageById.IsDeleted)
                     return Ok();
-                }
+                if (languageById == null)
+                    return Ok();
 
                 var viewModelDatas = _mapper.Map<LanguageViewModel>(languageById);
                 return Ok(viewModelDatas);
             }
             else if (languageName != null)
             {
-                var languagesByName = await _languageService.GetLanguage(languageName);
+                var languagesByName = await _languageService.GetLanguage(isAdmin, languageName);
                 if (languagesByName == null)
                 {
                     return Ok();
@@ -46,7 +47,7 @@ namespace Api.Controllers
                 return Ok(viewModelDatas);
             }
 
-            var getallModelDatas = await _languageService.GetAllLanguages();
+            var getallModelDatas = await _languageService.GetAllLanguages(isAdmin);
             return Ok(_mapper.Map<List<LanguageViewModel>>(getallModelDatas));
         }
 

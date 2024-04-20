@@ -10,8 +10,10 @@ namespace Service.Models
 
         public virtual WebUser User { get; set; }
 
-        public string? Experience { get; set; }
+        public string? AboutMe { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+
+        public ICollection<CandidateHasSkillModel> CandidateHasSkills { get; set; }
     }
 }

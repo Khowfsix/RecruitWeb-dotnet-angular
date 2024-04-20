@@ -47,14 +47,12 @@ export class LoginComponent implements OnInit {
 
 	onSubmit() {
 		this.loginData = this.loginForm.value;
-		console.log(`Login data: ${JSON.stringify(this.loginData)}`);
 		this.authService
 			.login(this.loginData)
 			.pipe(first())
 			.subscribe({
 				next: (data) => {
 					const jwtData: JWT = data as JWT;
-					console.log(jwtData);
 					const expTime = new Date().getDate() + 30;
 					this.CookieService.set('jwt', jwtData.accessToken, expTime, '/'); // save accesstoken
 					this.CookieService.set('refreshToken', jwtData.refreshToken, expTime, '/') // save refreshtoken
@@ -62,7 +60,6 @@ export class LoginComponent implements OnInit {
 
 					this.authService.getCurrentUser().subscribe({
 						next: (data) => {
-							console.log(data);
 							if (data !== null) {
 								// this.CookieService.set(
 								// 	'currentUser',
@@ -73,7 +70,6 @@ export class LoginComponent implements OnInit {
 								this.toasts.success("Logged in successfully", "Success", { timeOut: 3000, closeButton: true, progressBar: true });
 							} else {
 								this.toasts.warning("Cann't get user information", "Warning!!!", { timeOut: 3000, closeButton: true, progressBar: true });
-								console.log(`Cann't get user information`);
 							}
 						}
 					});
@@ -82,7 +78,6 @@ export class LoginComponent implements OnInit {
 					if (error.status === '401') {
 						this.toasts.error(error.message, "Logged in failed", { timeOut: 3000, closeButton: true, progressBar: true });
 					}
-					console.log(error);
 				},
 				complete: () => { },
 			});

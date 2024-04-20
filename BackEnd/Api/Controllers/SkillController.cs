@@ -33,17 +33,14 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSkill(string? query)
         {
-            var skilllist = await _skillService.GetAllSkills(query);
-            if (skilllist == null)
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            var models = await _skillService.GetAllSkills(isAdmin, query);
+            if (models == null)
             {
                 return Ok("Not found");
             }
-            var result = new List<SkillViewModel>();
-            foreach (var skill in skilllist)
-            {
-                result.Add(_mapper.Map<SkillViewModel>(skill));
-            }
-            return Ok(result);
+            var resp = _mapper.Map<List<SkillViewModel>>(models);
+            return Ok(resp);
         }
 
         [HttpPost]

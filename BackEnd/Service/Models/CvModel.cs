@@ -8,15 +8,12 @@ namespace Service.Models
 
         public Guid CandidateId { get; set; }
 
-        public string? Experience { get; set; }
-
         public string? CvPdf { get; set; }
 
         public string CvName { get; set; }
 
-        public string Introduction { get; set; } 
+        public string AboutMe { get; set; } = null!;
 
-        public string Education { get; set; } 
 
         public bool IsDeleted { get; set; } = false;
 
@@ -24,10 +21,8 @@ namespace Service.Models
 
         public virtual ICollection<ApplicationModel> Applications { get; set; } 
 
-        public virtual Candidate Candidate { get; set; } 
+        public virtual CandidateModel Candidate { get; set; } = null!;
 
-        public virtual ICollection<CertificateModel> Certificates { get; set; } 
-
-        public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } 
+        public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } = null!;
     }
 }

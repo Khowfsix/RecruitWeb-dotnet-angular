@@ -20,8 +20,14 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCandidateJoinEvents()
+        public async Task<IActionResult> GetAllCandidateJoinEvents(Guid? candidateId, string? sortString = "DateJoin_DESC")
         {
+            if (candidateId.HasValue)
+            {
+                var models = await _candidateJoinEventService.GetAllCandidateJoinEventsByCandidateId(candidateId.Value, sortString!);
+                var resp = _mapper.Map<List<CandidateJoinEventViewModel>>(models);
+                return Ok(resp);
+            }
             var modelDatas = await _candidateJoinEventService.GetAllCandidateJoinEvents();
             var response = _mapper.Map<List<CandidateJoinEventViewModel>>(modelDatas);
             return Ok(response);

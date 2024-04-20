@@ -1,0 +1,117 @@
+<div (mouseenter)="this.panelOpenState = true" class="shadow">
+	<mat-accordion>
+		<mat-expansion-panel [expanded]="this.panelOpenState" (closed)="this.panelOpenState = false"
+			style="background-color:rgb(230, 241, 250); border: 1px solid rgb(180, 180, 180);">
+			<mat-expansion-panel-header>
+				<mat-panel-title style=" font-size: 17px;">
+					Filter
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			<div class="d-flex flex-column" style="font-size: 17px; font-weight: 400;">
+				<mat-form-field>
+					<mat-label>Search</mat-label>
+					<input matInput type="text" placeholder="Type name, description"
+						[formControl]="getMyControl('search')">
+				</mat-form-field>
+
+				<div class="mb-3 custom-formfield">
+					<mat-label>Salary:</mat-label>
+					<div class="d-flex flex-row mt-2">
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="fromSalaryValue" />
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="toSalaryValue" />
+						</mat-form-field>
+					</div>
+
+					<mat-slider discrete="true" [displayWith]="formatLabel" style="width: 95%;" min="0"
+						max="{{this.maxSalary}}" step="{{this.salaryStep}}">
+						<input [(ngModel)]="fromSalaryValue" [formControl]="getMyControl('fromSalary')"
+							matSliderStartThumb #fromSalarySlider />
+						<input [(ngModel)]="toSalaryValue" [formControl]="getMyControl('toSalary')" matSliderEndThumb
+							#toSalarySlider />
+					</mat-slider>
+				</div>
+
+				<div class="mb-3 custom-formfield">
+					<mat-label>Hiring Quantity:</mat-label>
+					<div class="d-flex flex-row mt-2">
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="fromMaxHiringQtyValue" />
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput type="number" [(ngModel)]="toMaxHiringQtyValue" />
+						</mat-form-field>
+					</div>
+
+					<mat-slider discrete="true" [displayWith]="formatLabel" style="width: 95%;" min="0"
+						max="{{this.maxMaxHiringQty}}" step="{{this.maxHiringQtyStep}}">
+						<input [(ngModel)]="fromMaxHiringQtyValue" [formControl]="getMyControl('fromMaxHiringQty')"
+							matSliderStartThumb #fromMaxHiringQtySlider />
+						<input [(ngModel)]="toMaxHiringQtyValue" [formControl]="getMyControl('toMaxHiringQty')"
+							matSliderEndThumb #toMaxHiringQtySlider />
+					</mat-slider>
+				</div>
+
+				<div class="my-2">
+					<mat-form-field style="width: 100%;">
+						<mat-label>Time</mat-label>
+						<mat-date-range-input [rangePicker]="picker">
+							<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+								[formControl]="getMyControl('fromDate')" placeholder="From date" #fromDatePicker>
+							<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+								[formControl]="getMyControl('toDate')" placeholder="To date" #toDatePicker>
+						</mat-date-range-input>
+						@if( fromDatePicker.value || toDatePicker.value){
+						<div matRipple [matRippleCentered]="true" style="height: fit-content; width: fit-content;"
+							class="custom-button rounded-5 p-2" (click)="fromDatePicker.value=''; toDatePicker.value='' ;
+this.formGroup.get('fromDate')?.setValue(''); this.formGroup.get('toDate')?.setValue('')">
+							<div style="height: 24px; width: 24px;">
+								<mat-icon style="color: red;">delete</mat-icon>
+							</div>
+						</div>
+						}
+						@if(this.formGroup.get('fromDate')?.invalid || this.formGroup.get('toDate')?.invalid){
+						<span style="color: red;">
+							<span>Required: </span>
+							@if(this.formGroup.get('fromDate')?.hasError('required')){
+							<span>From Date; </span>
+							}
+							@if(this.formGroup.get('toDate')?.hasError('required')){
+							<span>To Date; </span>
+							}
+						</span>
+
+						}
+						<mat-hint style="font-size: 13px; font-weight: 500;">DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+						<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-date-range-picker #picker></mat-date-range-picker>
+					</mat-form-field>
+				</div>
+
+				<div class="">
+					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Category Position'"
+						[formGroup]="this.formGroup" [formField]="'stringOfCategoryPositionIds'"
+						[displayFieldName]="'categoryPositionName'" [valueFieldName]="'categoryPositionId'"
+						[observableData]="this.categoryPositionService.getAllCategoryPositions()"></app-chips-autocomplete>
+				</div>
+
+				<div class="">
+					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Language'"
+						[formGroup]="this.formGroup" [formField]="'stringOfLanguageIds'"
+						[displayFieldName]="'languageName'" [valueFieldName]="'languageId'"
+						[observableData]="this.languageService.getAllLanguagues()"></app-chips-autocomplete>
+				</div>
+
+				<div class="">
+					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Company'"
+						[formGroup]="this.formGroup" [formField]="'stringOfCompanyIds'"
+						[displayFieldName]="'companyName'" [valueFieldName]="'companyId'"
+						[observableData]="this.companyService.getAll()"></app-chips-autocomplete>
+				</div>
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
+
+</div>

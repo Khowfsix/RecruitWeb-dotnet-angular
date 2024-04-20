@@ -43,6 +43,7 @@ namespace Service
             service.AddTransient<IEmailService, EmailService>();
             service.AddTransient<ICategoryPositionService, CategoryPositionService>();
             service.AddTransient<ITokenService, TokenService>();
+            service.AddTransient<ICandidateHasSkillService, CandidateHasSkillService>();
             return service;
         }
     }

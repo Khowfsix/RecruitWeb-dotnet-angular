@@ -1,5 +1,6 @@
 using Api.ViewModels.Interview;
 using AutoMapper;
+using Data.CustomModel.Interviewer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -83,19 +84,19 @@ public class InterviewController : BaseAPIController
     [HttpGet("[action]/{requestId}")]
     public async Task<IActionResult> GetInterviewsByInterviewer(Guid requestId)
     {
-        try
-        {
+        //try
+        //{
             var dataList = await _interviewService.GetInterviewsByInterviewer(requestId);
             if (dataList == null)
             {
                 return Ok();
             }
-            return Ok(dataList);
-        }
-        catch (Exception)
-        {
-            return BadRequest();
-        }
+            return Ok(_mapper.Map<List<InterviewViewModel>>(dataList.ToList()));
+        //}
+        //catch (Exception)
+        //{
+        //    return BadRequest();
+        //}
     }
 
     [HttpGet("[action]/{requestId}")]
@@ -116,22 +117,21 @@ public class InterviewController : BaseAPIController
         }
     }
 
-    [HttpGet("[action]/{requestId}")]
-    public async Task<IActionResult> GetInterviewsByCompany(Guid requestId)
+    [HttpGet("[action]/{companyId}")]
+    public async Task<IActionResult> GetInterviewsByCompany(Guid companyId, [FromQuery] InterviewFilterModel interviewFilterModel,string? sortString = "MeetingDate_DESC")
     {
-#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
-        if (requestId == null)
+        if (companyId == null)
         {
             return BadRequest();
         }
-#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
+        var filter = _mapper.Map<InterviewFilter>(interviewFilterModel);
+        var models = await _interviewService.GetInterviewsByCompanyId(companyId, filter, sortString);
 
-        var dataList = await _interviewService.GetInterviewsByCompany(requestId);
-        if (dataList == null)
+        if (models == null)
         {
             return Ok();
         }
-        return Ok(dataList);
+        return Ok(_mapper.Map<List<InterviewViewModel>>(models));
     }
 
     [HttpPost("{applicationId:guid}")]
@@ -156,7 +156,6 @@ public class InterviewController : BaseAPIController
         }
 
         request.Interview.ApplicationId = applicationId;
-        request.Interview.ItrsinterviewId = responseITRS!.ItrsinterviewId;
         var interviewModelData = _mapper.Map<InterviewModel>(request.Interview);
         var responseInterview = await _interviewService.SaveInterview(interviewModelData);
 

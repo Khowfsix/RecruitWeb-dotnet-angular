@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { API } from '../api.service';
 import { Observable } from 'rxjs';
-import { Requirements } from './requirements.model';
 
 @Injectable({
 	providedIn: 'root'

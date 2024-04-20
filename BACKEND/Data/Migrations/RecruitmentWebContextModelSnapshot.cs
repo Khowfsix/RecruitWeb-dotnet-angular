@@ -219,6 +219,9 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasDefaultValue("");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("CategoryPositionId")
                         .HasName("PK_categoryPostion");
 

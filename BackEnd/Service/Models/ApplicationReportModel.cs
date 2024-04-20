@@ -15,7 +15,7 @@
         public double? Salary { get; set; }
         public string CompanyName { get; set; }
         public string LanguageName { get; set; }
-        public DateTime DateTime { get; set; } = DateTime.Now;
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
         public string Candidate_Status { get; set; } = "Pending";
         public string Company_Status { get; set; } = "Pending";
         public int? Priority { get; set; }

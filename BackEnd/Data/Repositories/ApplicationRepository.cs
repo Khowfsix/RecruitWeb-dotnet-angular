@@ -1,5 +1,8 @@
+using Data.CustomModel.Application;
+using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
@@ -42,6 +45,42 @@ namespace Data.Repositories
             return listData;
         }
 
+        public async Task<IEnumerable<Application>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString)
+        {
+            var query = Entities.Select(o => o);
+            if (!String.IsNullOrEmpty(applicationFilter!.Search))
+            {
+                query = query.Where(o => 
+                (o.Cv.Candidate.User.FullName.ToLower().Contains(applicationFilter.Search.ToLower())
+                || o.Cv.CvHasSkills.First(o => o.Skill.SkillName.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
+
+            }
+            if (applicationFilter.FromDate.HasValue && applicationFilter.ToDate.HasValue)
+            {
+                query = query.Where(e => applicationFilter.FromDate.Value <= e.CreatedTime && e.CreatedTime <= applicationFilter.ToDate.Value);
+            }
+            if (applicationFilter.candidateStatus.HasValue)
+            {
+                query = query.Where(e => e.Candidate_Status == applicationFilter.candidateStatus.Value);
+            }
+            if (applicationFilter.companyStatus.HasValue)
+            {
+                query = query.Where(e => e.Company_Status == applicationFilter.companyStatus.Value);
+            }
+            if (sortString != null)
+            {
+                var sort = new Sort<Application>(sortString);
+                query = sort.getSort(query);
+            }
+            var listData = await query.Where(e => e.PositionId == positionId)
+                .Include(a => a.Position)
+                .Include(a => a.Cv)
+                .ToListAsync();
+
+            return listData;
+        }
+
+
         public async Task<Application> SaveApplication(Application request)
         {
             try
@@ -81,11 +120,11 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<Application>> GetApplicationHistory(Guid Cvid)
+        public async Task<IEnumerable<Application>> GetApplicationHistory(Guid candidateId)
         {
             var data = await Entities
-                .Where(entity => entity.Cvid == Cvid)
-                .Include(entity => entity.Position)
+                .Where(entity => entity.Cv.CandidateId == candidateId)
+                .Include(entity => entity.Position).ThenInclude(o => o.Company)
                 .OrderByDescending(entity => entity.CreatedTime)
                 .ToListAsync();
             return data;

@@ -4,6 +4,8 @@ namespace Data.Interfaces
 {
     public interface ICandidateJoinEventRepository
     {
+        Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId, string sortString);
+
         Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEvents();
 
         Task<CandidateJoinEvent> SaveCandidateJoinEvent(CandidateJoinEvent request);

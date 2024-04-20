@@ -46,24 +46,9 @@ export class AutocompleteComponent {
 				map(value => this._filter(value || '')),
 			);
 		});
-		// this.observableIsDisabled?.subscribe((x) => this.isDisabled = x)
-
 	}
 
-	// public log(){
-	//   if (this.options)
-	//     if (this.options[0])
-	//       console.log("Options: ", this.options[0][this.fieldName??''])
-	// }
 	public isDisabled = false;
-
-	// public setDisabled() {
-	// 	// this.isDisabled = true;
-	// 	// console.log('fieldValue:', fieldValue)
-	// 	// this.formGroup?.get(this.fieldName ?? '')?.setValue(fieldValue);
-	// 	// console.log('disable', this.isDisabled)
-	// 	// console.log('form Value: ', this.formGroup?.get(this.fieldName??'')?.value)
-	// }
 
 	public clear() {
 		this.isDisabled = false;

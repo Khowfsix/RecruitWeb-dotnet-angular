@@ -2,6 +2,7 @@
 using Api.ViewModels.Application;
 using Api.ViewModels.BlackList;
 using Api.ViewModels.Candidate;
+using Api.ViewModels.CandidateHasSkill;
 using Api.ViewModels.CandidateJoinEvent;
 using Api.ViewModels.CategoryPosition;
 using Api.ViewModels.CategoryQuestion;
@@ -29,6 +30,9 @@ using Api.ViewModels.Shift;
 using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
+using Data.CustomModel.Application;
+using Data.CustomModel.Interviewer;
+using Data.CustomModel.Position;
 using Data.Entities;
 using Service.Models;
 
@@ -38,6 +42,13 @@ namespace Data.Mapping
     {
         public AutoMapperConfiguration()
         {
+            #region CandidateHasSkill
+
+            CreateMap<CandidateHasSkill, CandidateHasSkillModel>().ReverseMap();
+            CreateMap<CandidateHasSkillViewModel, CandidateHasSkillModel>().ReverseMap();
+
+            #endregion CandidateHasSkill
+
             #region CategoryPosition
 
             CreateMap<CategoryPosition, CategoryPositionModel>().ReverseMap();
@@ -186,6 +197,7 @@ namespace Data.Mapping
 
             #region Application
 
+            CreateMap<ApplicationFilter, ApplicationFilterModel>().ReverseMap();
             CreateMap<Application, ApplicationModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationAddModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationUpdateModel>().ReverseMap();
@@ -208,7 +220,7 @@ namespace Data.Mapping
             CreateMap<Candidate, CandidateModel>().ReverseMap();
             CreateMap<CandidateModel, CandidateAddModel>().ReverseMap();
             CreateMap<CandidateModel, CandidateUpdateModel>().ReverseMap();
-            CreateMap<CandidateModel, CandidateViewModel>().ReverseMap();
+            CreateMap<CandidateModel, Api.ViewModels.Candidate.CandidateViewModel>().ReverseMap();
 
             #endregion Candidate
 
@@ -297,6 +309,7 @@ namespace Data.Mapping
 
             #region Interview
 
+            CreateMap<InterviewFilter, InterviewFilterModel>().ReverseMap();
             CreateMap<Interview, InterviewModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewUpdateModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewAddModel>().ReverseMap();
@@ -306,6 +319,7 @@ namespace Data.Mapping
 
             #region Interviewer
 
+            CreateMap<InterviewerFilter, InterviewerFilterModel>().ReverseMap();
             CreateMap<Interviewer, InterviewerModel>().ReverseMap();
             CreateMap<InterviewerModel, InterviewerAddModel>().ReverseMap();
             CreateMap<InterviewerModel, InterviewerUpdateModel>().ReverseMap();

@@ -4,6 +4,8 @@ namespace Service.Interfaces
 {
     public interface ICvHasSkillService
     {
+        Task<IEnumerable<CvHasSkillModel>> GetAllByCvId(Guid? cvId);
+
         Task<IEnumerable<CvHasSkillModel>> GetAllCvHasSkillService(string? request);
 
         Task<CvHasSkillModel> SaveCvHasSkillService(CvHasSkillModel request);

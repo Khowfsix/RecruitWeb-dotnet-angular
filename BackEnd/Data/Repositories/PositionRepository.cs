@@ -1,6 +1,6 @@
+using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
-using Data.Paging;
 using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +16,29 @@ namespace Data.Repositories
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<PositionAllMinMaxRange> GetAllMinMaxRange()
+        {
+            /*------------------------------*/
+            // Returns all min max range of number field in db.
+            /*------------------------------*/
+            var result = new PositionAllMinMaxRange();
+
+            var highestSalary = await Entities.OrderByDescending(p => p.Salary).FirstOrDefaultAsync();
+            result.MaxSalary = highestSalary is not null ? (int)(highestSalary.Salary!.Value) : 0;
+
+            var lowestSalary = await Entities.OrderBy(p => p.Salary).FirstOrDefaultAsync();
+            result.MinSalary = lowestSalary is not null ? (int)(lowestSalary.Salary!.Value) : 0;
+
+            var highestHiringQty = await Entities.OrderByDescending(p => p.MaxHiringQty).FirstOrDefaultAsync();
+            result.MaxMaxHiringQty = highestHiringQty is not null ? (int)(highestHiringQty.MaxHiringQty) : 0;
+
+            var lowestHiringQty = await Entities.OrderBy(p => p.MaxHiringQty).FirstOrDefaultAsync();
+            result.MinMaxHiringQty = lowestHiringQty is not null ? (int)(lowestHiringQty.MaxHiringQty) : 0;
+
+            return result is not null ? result : null;
+        }
+
+
         public async Task<Position> AddPosition(Position position)
         {
             position.PositionId = Guid.NewGuid();
@@ -26,14 +49,15 @@ namespace Data.Repositories
             return await Task.FromResult(position);
         }
 
-        public async Task<PageResponse<Position>> GetAllPositions(bool isAdmin, PositionFilter positionFilter,
-            string sortString, PageRequest pageRequest)
+        public async Task<List<Position>> GetAllPositions(PositionFilter positionFilter,
+            string sortString)
         {
             /*------------------------------*/
             // Finds all of position entities asynchronously in db.
             // Returns a list of it with the related entities.
             /*------------------------------*/
-            var query = isAdmin ? Entities : Entities.Where(o => !o.IsDeleted);
+
+            var query = Entities.Select(o => o);
 
             if (sortString != null)
             {
@@ -44,8 +68,8 @@ namespace Data.Repositories
             if (!string.IsNullOrEmpty(positionFilter.Search))
             {
                 query = query
-                    .Where(o => o.PositionName.ToLower().Contains(positionFilter.Search.ToLower()))
-                    .Where(o => o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
+                    .Where(o => o.PositionName.ToLower().Contains(positionFilter.Search.ToLower())
+                    || o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
             }
 
             if (positionFilter.FromSalary.HasValue && positionFilter.ToSalary.HasValue)
@@ -87,7 +111,9 @@ namespace Data.Repositories
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter);
 
-            return await PageResponse<Position>.CreateAsync(query, pageRequest.PageIndex, pageRequest.PageSize);
+            var result = await query.ToListAsync();
+
+            return result;
         }
 
         public async Task<List<Position>> GetAllPositionsByUserId(String userId)

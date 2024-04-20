@@ -17,10 +17,16 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CategoryPositionModel>> GetAllCategoryPositions()
+        public async Task<IEnumerable<CategoryPositionModel>> GetAllCategoryPositions(bool isAdmin)
         {
             var data = await _categoryPositionRepository.GetAllCategoryPositions();
-            return data.Select(item => _mapper.Map<CategoryPositionModel>(item)).ToList();
+            var modelDatas = _mapper.Map<List<CategoryPositionModel>>(data);
+
+            if (!isAdmin)
+            {
+                return modelDatas.Where(o => o.IsDeleted == false);
+            }
+            return modelDatas;
         }
 
         public async Task<CategoryPositionModel> CreateCategoryPosition(CategoryPositionModel request)

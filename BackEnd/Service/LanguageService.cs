@@ -29,10 +29,12 @@ namespace Service
             return await _languageRepository.RemoveLanguage(id);
         }
 
-        public async Task<List<LanguageModel>> GetAllLanguages()
+        public async Task<List<LanguageModel>> GetAllLanguages(bool isAdmin)
         {
             var entityDatas = await _languageRepository.GetAllLanguages();
             var listModelDatas = _mapper.Map<List<LanguageModel>>(entityDatas);
+            if (!isAdmin)
+                return listModelDatas.Where(o => o.IsDeleted == false).ToList();
             return listModelDatas;
         }
 
@@ -43,10 +45,12 @@ namespace Service
             return modelDatas;
         }
 
-        public async Task<List<LanguageModel>> GetLanguage(string name)
+        public async Task<List<LanguageModel>> GetLanguage(bool isAdmin, string name)
         {
             var entityDatas = await _languageRepository.GetLanguage(name);
             var modelDatas = _mapper.Map<List<LanguageModel>>(entityDatas);
+            if (!isAdmin)
+                return modelDatas.Where(o => !o.IsDeleted).ToList();
             return modelDatas;
         }
 

@@ -1,10 +1,11 @@
+using Api.Paging;
 using Api.ViewModels.Position;
 using AutoMapper;
 using Castle.Core.Internal;
-using Data.Entities;
-using Data.Paging;
+using Data.CustomModel.Position;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PagedList;
 using Service.Interfaces;
 using Service.Models;
 
@@ -32,6 +33,14 @@ namespace Api.Controllers
             return response is not null ? Ok(response) : BadRequest(positionAddModel);
         }
 
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllMinMaxRange()
+        {
+            var response = await _positionService.GetAllMinMaxRange();
+            return response is not null ? Ok(response) : NoContent();
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllPositions
@@ -42,23 +51,22 @@ namespace Api.Controllers
             int? pageSize = 20
             )
         {
-            var isAdmin = HttpContext.User.IsInRole("Admin") ? true : false;
 
             var filter = _mapper.Map<PositionFilter>(positionFilterModel);
             filter.CompanyIds = positionFilterModel.getListOfCompanyIds();
             filter.CategoryPositionIds = positionFilterModel.getListOfCategoryPositionIds();
             filter.LanguageIds = positionFilterModel.getListOfLanguageIds();
 
-            var pageRequest = new PageRequest(pageIndex.Value, pageSize.Value);
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            var listModelDatas = await _positionService.GetAllPositions(isAdmin, filter, sortString!);
 
-            PageResponse<PositionModel> listModelDatas = await _positionService.GetAllPositions(isAdmin, filter, sortString, pageRequest);
+            var listPositionViewModel = _mapper.Map<List<PositionViewModel>>(listModelDatas);
 
-            var listPositionViewModel = _mapper.Map<List<PositionViewModel>>(listModelDatas.Items);
-            var pageResponse = new PageResponse<PositionViewModel>(listPositionViewModel, listModelDatas.TotalMatchedInDb, listModelDatas.PageIndex, listModelDatas.PageSize);
+            var pageResponse = new PageResponse<PositionViewModel>(
+                listPositionViewModel.ToPagedList(pageIndex!.Value, pageSize!.Value)
+                );
+
             return Ok(pageResponse);
-
-            //return Ok(_mapper.Map<PageResponse<PositionViewModel>>(listModelDatas));
-            //return Ok(response);
         }
 
         [HttpGet("[action]")]
@@ -67,8 +75,11 @@ namespace Api.Controllers
         {
             var modelData = await _positionService.GetPositionById(positionId);
             var response = _mapper.Map<PositionViewModel>(modelData);
+            var isAdmin = HttpContext.User.IsInRole("Admin");
 
-            return response is not null ? Ok(response) : NotFound(positionId);
+            return response is not null 
+                ? (response.IsDeleted && !isAdmin ? NotFound(positionId) : Ok(response)) 
+                : NotFound(positionId);
         }
 
         [HttpGet("[action]")]

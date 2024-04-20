@@ -41,6 +41,7 @@ namespace Data
             service.AddTransient(typeof(ISecurityQuestionRepository), typeof(SecurityQuestionRepository));
             service.AddTransient(typeof(ICategoryPositionRepository), typeof(CategoryPositionRepository));
             service.AddTransient(typeof(IRefreshTokenRepository), typeof(RefreshTokenRepository));
+            service.AddTransient(typeof(ICandidateHasSkillrepository), typeof(CandidateHasSkillRepository));
             return service;
         }
     }

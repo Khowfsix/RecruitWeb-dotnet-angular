@@ -1,0 +1,187 @@
+<div class="container">
+	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
+		<div class="fs-3 p-4" style="margin: auto; margin-top: 50px; margin-bottom: 20px;">APPLICATION LIST</div>
+	</div>
+
+	<div class="d-flex flex-row" style="height: fit-content; margin-bottom: 20px;">
+		<div class="p-2 rounded-3" style="width: 25%; background-color: rgb(37, 114, 176); height: fit-content;">
+			<div class="mt-2 ms-4" style="width: 100%; color: white; font-size: 18px; font-weight: 600;">FILTER</div>
+			<form class="p-4" style="width: 100%;" [formGroup]="this.filterForm">
+				<mat-form-field style="width: 100%;">
+					<mat-label>Search</mat-label>
+					<input matInput type="text" formControlName="search" placeholder="Candidate name, skill name">
+				</mat-form-field>
+				<mat-form-field style="width: 100%;">
+					<mat-label>Sort</mat-label>
+					<mat-select formControlName="sortString">
+						<mat-option value="CreatedTime_DESC">Newest</mat-option>
+						<mat-option value="CreatedTime_ASC">Oldest</mat-option>
+						<mat-option value="Priority_DESC">Descending Prioriry</mat-option>
+						<mat-option value="Priority_ASC">Ascending Prioriry</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<!-- <mat-form-field style="width: 100%;">
+					<mat-label>Candidate Status</mat-label>
+					<mat-select formControlName="candidateStatus">
+						<mat-option value=""></mat-option>
+						<mat-option value="{{this.application_CandidateStatus.Pending}}">Pending</mat-option>
+						<mat-option value="{{this.application_CandidateStatus.Passed}}">Passed</mat-option>
+					</mat-select>
+				</mat-form-field> -->
+				<mat-form-field style="width: 100%;">
+					<mat-label>Status</mat-label>
+					<mat-select formControlName="companyStatus">
+						<mat-option value=""></mat-option>
+						<mat-option value="{{this.application_CompanyStatus.Pending}}">Pending</mat-option>
+						<mat-option value="{{this.application_CompanyStatus.Accecpted}}">Accecpted</mat-option>
+						<mat-option value="{{this.application_CompanyStatus.Rejected}}">Rejected</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<section
+					style="width: 100%; background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+					<p class="p-3"><mat-slide-toggle formControlName="notInBlackList"> Not in
+							blacklist</mat-slide-toggle>
+					</p>
+				</section>
+				<mat-form-field style="width: 100%;" class="mt-2">
+					<mat-label>Date</mat-label>
+					<mat-date-range-input [rangePicker]="picker">
+						<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+							formControlName="fromDate" placeholder="From date" #fromDatePicker>
+						<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+							formControlName="toDate" placeholder="To date" #toDatePicker>
+					</mat-date-range-input>
+					@if( fromDatePicker.value || toDatePicker.value){
+					<button (click)="fromDatePicker.value=''; toDatePicker.value='' ;
+					this.filterForm.get('fromDate')?.setValue(null); this.filterForm.get('toDate')?.setValue(null)" mat-icon-button>
+						<mat-icon style="color: red;">delete</mat-icon>
+					</button>
+					}
+					<mat-hint style="font-size: 13px; font-weight: 500; color: white;">DD/MM/YYYY –
+						DD/MM/YYYY</mat-hint>
+					<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-date-range-picker #picker></mat-date-range-picker>
+				</mat-form-field>
+			</form>
+		</div>
+		<div class="p-2" style="width: 75%; height: 570px; overflow-y: scroll;">
+			@for (item of fetchedApplications ; track item) {
+			<div class="d-flex flex-row align-items-center p-2" style="width: 100%; height: fit-content;">
+				<div class="d-flex flex-row"
+					style="width: 60%; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; width: 60%; height: 150px; background-color: rgb(241, 199, 136);">
+					<div style="width: 80%;">
+						<div class="p-1 ps-4 shadow"
+							style="color: #ffffff; font-weight: 500; font-size: 17px; border-top-left-radius: 0.25rem; border-bottom-right-radius: 0.9rem; width: 100%; background-color: rgb(0, 32, 149);">
+							{{item.createdTime | date:'fullDate'}}
+						</div>
+						<div class="p-2 mt-2 d-flex flex-row" style="width: 100%;">
+							@for (candidateHasSkill of item.cv?.candidate?.candidateHasSkills; track candidateHasSkill)
+							{
+							<div matTooltip="{{candidateHasSkill.level}}">
+								<div class="p-2 m-2 rounded-3"
+									style="background-color: rgb(107, 107, 107); color: #ffffff; font-weight: 500; border:  rgb(49, 49, 49) solid 1px;">
+									{{candidateHasSkill?.skill?.skillName}}</div>
+							</div>
+							}
+						</div>
+						<div class="p-2">
+							<span>Status:
+								@switch (item.company_Status) {
+								@case (this.application_CompanyStatus.Pending) {
+								<span class="p-2 rounded-3 bg-warning text-dark">
+									Pending
+								</span>
+								}
+								@case (this.application_CompanyStatus.Accecpted) {
+								<span class="p-2 rounded-3 bg-success text-white">
+									Accecpted
+								</span>
+								}
+								@case (this.application_CompanyStatus.Rejected) {
+								<span class="p-2 rounded-3 bg-danger text-white">
+									Rejected
+								</span>
+								}
+								}
+							</span>
+						</div>
+
+					</div>
+				</div>
+				<div class="rounded-2 d-flex flex-column justify-content-between"
+					style="border: rgb(106, 106, 106) solid 2px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); width: 400px; background-color: rgb(241, 199, 136); color:black; font-size: 16px; font-weight: 500; height: 170px;">
+					<div class="d-flex flex-row">
+						<div class=" ps-3 pe-3 pt-4" style="width: 85%; font-size: 20px;">
+							<div class="d-flex flex-row" style="width: 100%;">
+								<div style="width: 100%;">{{item.cv?.candidate?.user?.fullName| uppercase }}</div>
+								@if (this.isInBlackList(item.cv?.candidateId)) {
+								<div style="font-size: 30px; color: black; width: 14%;"
+									matTooltip="This candidate is in blacklist">
+									<i class="bi bi-exclamation-circle-fill"></i>
+								</div>
+								}
+							</div>
+						</div>
+						<div class="">
+							<div matRipple [matRippleCentered]="true" style="height: fit-content; width: fit-content;"
+								class="custom-button rounded-5 p-2 mt-3">
+								<div style="height: 24px; width: 24px;" [matMenuTriggerFor]="menu">
+									<mat-icon>more_vert</mat-icon>
+								</div>
+								<mat-menu style="font-size: 15px;" #menu="matMenu">
+									<button
+										(click)="openViewApplicationHistoryDialog(item.cv?.candidateId, '100ms', '0ms')"
+										mat-menu-item><i class="bi bi-clock-history"></i>
+										View
+										History</button>
+									@if (item.company_Status !== this.application_CompanyStatus.Pending) {
+									<button disabled="true" style="color: green;" class="text-green" mat-menu-item><i
+											class="bi bi-check-circle-fill"></i> Accecpt</button>
+									<button disabled="true" style="color: red;" class="text-red" mat-menu-item><i
+											class="bi bi-ban-fill"></i> Reject</button>
+									}
+									@else {
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.Accecpted , item.applicationId)"
+										style="color: green;" class="text-green" mat-menu-item><i
+											class="bi bi-check-circle-fill"></i> Accecpt</button>
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.Rejected, item.applicationId)"
+										style="color: red;" class="text-red" mat-menu-item><i
+											class="bi bi-ban-fill"></i> Reject</button>
+									}
+								</mat-menu>
+
+							</div>
+						</div>
+					</div>
+					<div class=" ps-3 pe-3 pb-4" style="font-size: 17px; line-height: 25px; width: 350px;">
+						<span>
+							Date of birth:
+							<span style="font-weight:400;">{{item.cv?.candidate?.user?.dateOfBirth
+								|
+								date:'dd/MM/yyyy' }}</span>
+						</span>
+						<div style="font-weight: 400; overflow: hidden;
+						text-overflow: ellipsis;">{{item.cv?.candidate?.aboutMe}}</div>
+						<div>CV: <a href="{{item.cv?.cvPdf}}">{{item.cv?.cvName}}</a></div>
+					</div>
+				</div>
+				<div class="d-flex ms-3 flex-column">
+					@if (item.cv?.candidate?.user?.imageURL) {
+					<img style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border: black solid 2px; border-radius: 50%; width: 160px; height: 160px;"
+						src="{{item.cv?.candidate?.user?.imageURL}}" alt="{{item.cv?.candidate?.user?.fullName}}" />
+					}
+					@else {
+					<img style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-radius: 50%; width: 160px; height: 160px; border: black solid 1px;"
+						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
+						alt="{{item.cv?.candidate?.user?.fullName}}" />
+					}
+				</div>
+
+			</div>
+			}
+		</div>
+
+	</div>
+</div>

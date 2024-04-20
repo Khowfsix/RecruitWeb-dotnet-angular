@@ -1,4 +1,5 @@
 using AutoMapper;
+using Data.CustomModel.Interviewer;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,15 @@ public class InterviewService : IInterviewService
         _roundRepository = roundRepository;
         _mapper = mapper;
     }
+    public async Task<InterviewModel> GetLastInterviewByInterviewerId(Guid interviewerId)
+    {
+        var data = await this.GetInterviewsByInterviewer(interviewerId);
+        if (data == null || data.Count() == 0)
+            return null;
+        data.OrderByDescending(o => o.MeetingDate);
+        var result = _mapper.Map<InterviewModel>(data.First());
+        return result;
+    }
 
     public async Task<InterviewModel?> GetInterviewById(Guid id)
     {
@@ -43,8 +53,6 @@ public class InterviewService : IInterviewService
     public async Task<bool> DeleteInterview(Guid interviewModelId)
     {
         var thisInterview = await GetInterviewById_noInclude(interviewModelId);
-        var deleteITRS = await _itrsinterviewRepository.DeleteItrsinterview((Guid)thisInterview!.ItrsinterviewId!);
-
         var response = await _interviewRepository.DeleteInterview(interviewModelId);
         return response;
     }
@@ -66,13 +74,12 @@ public class InterviewService : IInterviewService
         return null!;
     }
 
-    public async Task<IEnumerable<InterviewModel>> GetInterviewsByCompany(Guid requestId)
+    public async Task<IEnumerable<InterviewModel>> GetInterviewsByCompanyId(Guid requestId, InterviewFilter interviewFilter, string sortString)
     {
-        var data = await _interviewRepository.GetAllInterview();
+        var data = await _interviewRepository.GetInterviewsByCompanyId(requestId, interviewFilter, sortString);
         if (!data.IsNullOrEmpty())
         {
-            var filteredDatas = data.Where(i => i.Application.Position.Company.CompanyId.Equals(requestId));
-            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(data);
             return result;
         }
         return null!;
@@ -95,11 +102,11 @@ public class InterviewService : IInterviewService
 
     public async Task<IEnumerable<InterviewModel>> GetInterviewsByInterviewer(Guid requestId)
     {
-        var data = await _interviewRepository.GetAllInterview();
+        var data = await _interviewRepository.GetInterviewOfInterviewer(requestId);
         if (!data.IsNullOrEmpty())
         {
-            var filterdDatas = data.Where(i => i.InterviewerId.Equals(requestId));
-            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filterdDatas);
+            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(data);
+            return result!;
         }
         return null!;
     }

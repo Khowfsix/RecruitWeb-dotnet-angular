@@ -53,7 +53,7 @@ namespace Api.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> ExportSkill()
         {
-            var data = await _skillService.GetAllSkills(null);
+            var data = await _skillService.GetAllSkills(true, null);
 
             string[] columns = { "SkillId", "SkillName", "Description", "IsDeleted" };
             byte[] filecontent = ExportExcelHelper.ExportExcel(data.ToList(), $"{nameof(Skill)} Report", true, columns);

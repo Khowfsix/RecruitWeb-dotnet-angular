@@ -25,7 +25,8 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllCompany(string? name)
         {
-            var modelDatas = await _companyService.GetAllCompany(name);
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            var modelDatas = await _companyService.GetAllCompany(isAdmin, name);
             var companyList = _mapper.Map<List<CompanyViewModel>>(modelDatas);
             if (companyList == null)
             {

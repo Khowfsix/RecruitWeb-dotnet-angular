@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CategoryPosition } from './category-position.model';
 import { API } from '../api.service';
@@ -16,7 +16,6 @@ export class CategoryPositionService {
 	}
 
 	create(data: any): Observable<any> {
-		// console.log('data:......', data)
 		return this.api.POST('/api/CategoryPosition/CreateCategoryPosition', data);
 	}
 }

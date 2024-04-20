@@ -1,7 +1,8 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
-
+using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Data.Repositories
 {
@@ -15,9 +16,28 @@ namespace Data.Repositories
             _uow = uow;
         }
 
+        public async Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId, string sortString)
+        {
+            var query = Entities.Select(o => o);
+
+            if (sortString != null)
+            {
+                var sort = new Sort<CandidateJoinEvent>(sortString);
+                query = sort.getSort(query);
+            }
+            var result = await query.Where(o => o.CandidateId == candidateId)
+                .Include(o => o.Event).ThenInclude(o => o.Recruiter).ThenInclude(o => o.User)
+                .Include(o => o.Candidate)
+                .OrderByDescending(o => o.DateJoin)
+                .ToListAsync();
+            return result;
+        }
         public async Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEvents()
         {
-            var listData = await Entities.ToListAsync();
+            var listData = await Entities
+                .Include(o => o.Event)
+                .Include(o => o.Candidate)
+                .ToListAsync();
             return listData;
         }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { API } from './../../data/api.service';
 import { BehaviorSubject, Observable, first, lastValueFrom } from 'rxjs';
@@ -27,6 +28,11 @@ export class AuthService {
 		if (this.cookieService.get('jwt') != '') {
 			return true;
 		} return false;
+	}
+
+	getLocalCurrentUser(): WebUser {
+		const currentUser = localStorage.getItem('currentUser');
+		return currentUser ? JSON.parse(currentUser) : null
 	}
 
 	get isLoggedIn() {

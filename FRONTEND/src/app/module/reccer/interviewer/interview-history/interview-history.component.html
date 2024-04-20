@@ -1,0 +1,65 @@
+<div class="p-3" style="width: 100%;">
+	<div class="fs-3 mt-2 mb-3 mx-auto" style="width: fit-content; font-style: 600;">ALL INTERVIEWS</div>
+	<div class="px-3" style="overflow-y: scroll; height: 500px; border: rgb(224, 224, 224) solid 1px;">
+		@if (!this.interviewsData) {
+		<div class="p-4 mt-4 m-3 fs-5">No data</div>
+		}
+		@for (item of this.interviewsData; track $index) {
+		<div class="card p-4 m-3 shadow">
+			<div>
+				<div class="heading fs-5 d-flex flex-row">
+					<div>
+						{{item.meetingDate | date:"fullDate"}}
+					</div>
+					<div class="ms-auto">
+						{{item.startTime?.slice(0,
+						5)}} -
+						{{item.endTime?.slice(0, 5)}}
+					</div>
+				</div>
+				<div class="mt-1 d-flex flex-row" style="line-height: 20px; font-weight: 400;">
+					<div>
+						<i class="bi bi-building-fill"></i>
+						{{item.address}}
+					</div>
+					<div class="ms-auto">
+						{{item.detailLocation}}
+					</div>
+				</div>
+			</div>
+			<div class="d-flex flex-row" style="width: 100%;">
+				<div class="fs-5 mt-4" style="width: 100%;">
+					<div class="heading fs-5 d-flex flex-row">
+						<div style="cursor: pointer;"
+							[routerLink]="['/positions/detail', item.application?.position?.positionId]">
+							{{item.application?.position?.positionName}}
+						</div>
+						<div class="ms-auto" style="font-size: 17px;">
+							{{item.application?.position?.startDate | date: "dd/MM/yyyy"}} -
+							{{item.application?.position?.endDate | date: "dd/MM/yyyy"}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex flex-row mt-1">
+				<div class="d-flex flex-column align-items-center" style="width: 150px; height: fit-content;">
+					<div>RECRUITER</div>
+					<div class="icon"><img style="border-radius: 50%;" width="80px" height="80px"
+							src="{{item.recruiter?.user?.imageURL}}" alt="{{item.recruiter?.user?.fullName}} avatar" />
+					</div>
+					<div style="text-align: center; width: fit-content;">{{item.recruiter?.user?.fullName}}</div>
+				</div>
+				<div class="ms-auto d-flex flex-column align-items-center" style="width: 150px; height: fit-content;">
+					<div>CANDIDATE</div>
+					<div class="icon"><img style="border-radius: 50%;" width="80px" height="80px"
+							src="{{item.application?.cv?.candidate?.user?.imageURL}}"
+							alt="{{item.application?.cv?.candidate?.user?.fullName}} avatar" />
+					</div>
+					<div style="text-align: center; overflow-wrap: break-word;">
+						{{item.application?.cv?.candidate?.user?.fullName}}</div>
+				</div>
+			</div>
+		</div>
+		}
+	</div>
+</div>

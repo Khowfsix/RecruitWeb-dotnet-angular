@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data.CustomModel.Application;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +31,24 @@ namespace Service
         public async Task<bool> DeleteApplication(Guid applicationId)
         {
             return await _applicationRepository.DeleteApplication(applicationId);
+        }
+
+        public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString)
+        {
+            var data = await _applicationRepository.GetAllApplicationsByPositionId(positionId, applicationFilter, sortString);
+            if (!data.IsNullOrEmpty())
+            {
+                if (applicationFilter.NotInBlackList.Value)
+                {
+                    var blackLists = await _blacklistRepository.GetAllBlackLists();
+                    var candidateIdsInBlackList = blackLists.Select(o => o.CandidateId);
+                    List<ApplicationModel> models = _mapper.Map<List<ApplicationModel>>(data);
+                    return models.Where(o => !candidateIdsInBlackList.Contains(o.Cv.CandidateId));
+                }
+                List<ApplicationModel> listData = _mapper.Map<List<ApplicationModel>>(data);
+                return listData;
+            }
+            return null!;
         }
 
         public async Task<IEnumerable<ApplicationModel>> GetAllApplications()
@@ -169,12 +188,18 @@ namespace Service
 
             if (Candidate_Status.HasValue)
             {
-                oldData!.Candidate_Status = Candidate_Status;
+                if (oldData.Candidate_Status!.Value == 10100 && Candidate_Status.Value == 10101)
+                    oldData!.Candidate_Status = Candidate_Status;
+                else
+                    return await Task.FromResult(false);
             }
 
             if (Company_Status.HasValue)
             {
-                oldData!.Company_Status = Company_Status;
+                if (oldData.Company_Status!.Value == 10200 && (Company_Status.Value == 10201 || Company_Status.Value == 10202))
+                    oldData!.Company_Status = Company_Status;
+                else
+                    return await Task.FromResult(false);
             }
 
             #region old status

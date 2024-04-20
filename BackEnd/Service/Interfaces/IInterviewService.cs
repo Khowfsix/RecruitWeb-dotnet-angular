@@ -1,4 +1,5 @@
-﻿using Service.Models;
+﻿using Data.CustomModel.Interviewer;
+using Service.Models;
 
 namespace Service.Interfaces;
 
@@ -10,7 +11,9 @@ public interface IInterviewService
 
     Task<IEnumerable<InterviewModel>> GetInterviewsByPositon(Guid requestId);
 
-    Task<IEnumerable<InterviewModel>> GetInterviewsByCompany(Guid requestId);
+    Task<IEnumerable<InterviewModel>> GetInterviewsByCompanyId(Guid requestId, InterviewFilter? interviewFilter, string? sortString);
+
+    Task<InterviewModel> GetLastInterviewByInterviewerId(Guid interviewerId);
 
     Task<InterviewModel?> GetInterviewById(Guid id);
 

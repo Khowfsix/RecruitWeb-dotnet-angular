@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Position, PositionFilterModel } from './position.model';
 import { API } from '../api.service';
@@ -39,8 +38,6 @@ export class PositionService {
 	}
 
 	private buildQueryParams(positionFilterModel: PositionFilterModel): string {
-		// console.log('service: positionFilterModel: ', positionFilterModel);
-		// console.log('service: positionFilterModel.fromSalary: ', positionFilterModel.fromSalary);
 		let params = '';
 
 		if (positionFilterModel.search) {
@@ -58,11 +55,12 @@ export class PositionService {
 		if (positionFilterModel.toMaxHiringQty !== undefined) {
 			params += `&toMaxHiringQty=${encodeURIComponent(positionFilterModel.toMaxHiringQty)}`;
 		}
+
 		if (positionFilterModel.fromDate) {
-			params += `&fromDate=${encodeURIComponent(positionFilterModel.fromDate.toISOString())}`;
+			params += `&fromDate=${positionFilterModel.fromDate}`;
 		}
 		if (positionFilterModel.toDate) {
-			params += `&toDate=${encodeURIComponent(positionFilterModel.toDate.toISOString())}`;
+			params += `&toDate=${positionFilterModel.toDate}`;
 		}
 		if (positionFilterModel.stringOfCategoryPositionIds) {
 			params += `&stringOfCategoryPositionIds=${encodeURIComponent(positionFilterModel.stringOfCategoryPositionIds)}`;
@@ -81,6 +79,10 @@ export class PositionService {
 		return this.api.GET('/api/Position/CurrentUser');
 	}
 
+	public getAllMinMaxRange(): Observable<any> {
+		return this.api.GET('/api/Position/GetAllMinMaxRange');
+	}
+
 	public getById(id: string): Observable<Position> {
 		return this.api.GET(`/api/Position/GetPositionById?positionId=${id}`);
 	}
@@ -96,12 +98,4 @@ export class PositionService {
 	public delete(id: string): Observable<any> {
 		return this.api.DELETE('/api/Position/' + id);
 	}
-
-	// deleteAll(): Observable<any> {
-	//   return this.http.delete(baseUrl);
-	// }
-
-	// findByTitle(title: any): Observable<Position[]> {
-	//   return this.http.get<Position[]>(`${baseUrl}?title=${title}`);
-	// }
 }

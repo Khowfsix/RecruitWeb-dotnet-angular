@@ -97,7 +97,7 @@ namespace Service
                     Salary = item.Position.Salary,
                     CompanyName = item.Position.Company.CompanyName,
                     LanguageName = item.Position.Language.LanguageName,
-                    DateTime = item.CreatedTime,
+                    CreatedTime = item.CreatedTime,
                     Candidate_Status = item.Candidate_Status != 0 ? "Pending" : "",
                     Company_Status = item.Company_Status != 0 ? "Pending" : "",
                     Priority = (int)item.Priority!,

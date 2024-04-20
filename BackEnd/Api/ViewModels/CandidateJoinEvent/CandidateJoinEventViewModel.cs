@@ -5,14 +5,12 @@ namespace Api.ViewModels.CandidateJoinEvent
 {
     public class CandidateJoinEventViewModel
     {
-        public EventViewModel Event { get; set; }
-
         public Guid CandidateJoinEventId { get; set; }
         public Guid CandidateId { get; set; }
-        public Guid EventId { get; set; }
-
-        public int JoinEventCount { get; set; }
-
         public CandidateViewModel Candidate { get; set; }
+        public Guid EventId { get; set; }
+        public EventViewModel Event { get; set; }
+        public DateTime DateJoin {  get; set; }
+        public int JoinEventCount { get; set; }
     }
 }

@@ -5,14 +5,10 @@ namespace Data.Entities;
 public partial class Candidate
 {
     public Guid CandidateId { get; set; }
-
     [Required]
     public string? UserId { get; set; }
     public virtual WebUser? User { get; set; }
-
     public bool IsDeleted { get; set; }
-
-
     public string? AboutMe { get; set; }
     public virtual ICollection<Education> Educations { get; set; } = new List<Education>();
     public virtual ICollection<WorkExperience> WorkExperiences { get; set; } = new List<WorkExperience>();

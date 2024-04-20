@@ -1,7 +1,8 @@
 using AutoMapper;
+using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
-using Data.Paging;
+using Microsoft.AspNetCore.Http;
 using Service.Interfaces;
 using Service.Models;
 
@@ -25,15 +26,14 @@ namespace Service
             return _mapper.Map<PositionModel>(response);
         }
 
-        public async Task<PageResponse<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString, PageRequest pageRequest)
+        public async Task<List<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString)
         {
-            PageResponse<Position> entityDatas = await _positionRepository.GetAllPositions(isAdmin, positionFilter, sortString, pageRequest);
+            var entityDatas = await _positionRepository.GetAllPositions(positionFilter, sortString);
+            var listPositionModel = _mapper.Map<List<PositionModel>>(entityDatas);
 
-            var listPositionModel = _mapper.Map<List<PositionModel>>(entityDatas.Items);
-            var pageResponse = new PageResponse<PositionModel>(listPositionModel, entityDatas.TotalMatchedInDb, entityDatas.PageIndex, entityDatas.PageSize);
-            return pageResponse;
-
-            //return _mapper.Map<PageResponse<PositionModel>>(entityDatas);
+            if (!isAdmin)
+                return listPositionModel.Where(o => o.IsDeleted == false).ToList();
+            return listPositionModel;
         }
 
         public Task<List<PositionModel>> GetAllPositionsByCurrentUser(string userId)
@@ -45,6 +45,12 @@ namespace Service
         {
             var data = await _positionRepository.GetPositionById(id);
             return _mapper.Map<PositionModel>(data);
+        }
+
+        public async Task<PositionAllMinMaxRange> GetAllMinMaxRange()
+        {
+            var data = await _positionRepository.GetAllMinMaxRange();
+            return data;
         }
 
         public async Task<List<PositionModel>> GetPositionByName(string name)

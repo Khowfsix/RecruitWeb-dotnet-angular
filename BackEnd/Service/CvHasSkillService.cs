@@ -23,6 +23,17 @@ namespace Service
             return await _cvHasSkillrepository.DeleteCvHasSkillService(requestId);
         }
 
+        public async Task<IEnumerable<CvHasSkillModel>> GetAllByCvId(Guid? cvId)
+        {
+            var data = await _cvHasSkillrepository.GetAllByCvId(cvId);
+            if (!data.IsNullOrEmpty())
+            {
+                List<CvHasSkillModel> cvHasSkillModels = _mapper.Map<List<CvHasSkillModel>>(data);
+                return cvHasSkillModels;
+            }
+            return null!;
+        }
+
         public async Task<IEnumerable<CvHasSkillModel>> GetAllCvHasSkillService(string? request)
         {
             var data = await _cvHasSkillrepository.GetAllCvHasSkillService(request);

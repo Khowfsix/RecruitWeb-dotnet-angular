@@ -7,7 +7,7 @@
         public Guid PositionId { get; set; }
         public virtual CvModel Cv { get; set; }
         public virtual PositionModel Position { get; set; }
-        public DateTime DateTime { get; set; } = DateTime.Now;
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
         public int Candidate_Status { get; set; }
         public int Company_Status { get; set; }
         public int? Priority { get; set; }
