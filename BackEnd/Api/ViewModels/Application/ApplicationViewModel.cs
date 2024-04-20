@@ -13,9 +13,9 @@ namespace Api.ViewModels.Application
 
         public DateTime CreatedTime { get; set; }
 
-        public string Company_Status { get; set; }
+        public int? Company_Status { get; set; }
 
-        public string Candidate_Status { get; set; }
+        public int? Candidate_Status { get; set; }
 
         public string Priority { get; set; }
     }

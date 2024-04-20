@@ -30,11 +30,11 @@ namespace Api.Controllers
         {
             if (positionId.HasValue)
             {
-                var userName = HttpContext.User.Identity.Name;
+                var userName = HttpContext.User.Identity!.Name;
                 var foundPosition = await _positionService.GetPositionById(positionId.Value);
                 var foundRecruiter = await _recruiterService.GetRecruiterById(foundPosition.RecruiterId);
                 if (!HttpContext.User.IsInRole("Admin")){
-                    if (userName != foundRecruiter.User.UserName)
+                    if (userName != foundRecruiter!.User.UserName)
                     {
                         return Ok("Not found");
                     }

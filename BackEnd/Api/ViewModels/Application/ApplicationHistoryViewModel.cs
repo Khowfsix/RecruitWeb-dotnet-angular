@@ -13,7 +13,6 @@ public class ApplicationHistoryViewModel
     public DateTime CreatedTime { get; set; }
 
     [JsonPropertyName("Status")]
-    public string? Candidate_status { get; set; }
-
-    public string? Priority { get; set; }
+    public int? Candidate_status { get; set; }
+    public int? Priority { get; set; }
 }

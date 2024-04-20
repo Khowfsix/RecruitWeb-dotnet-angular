@@ -188,12 +188,18 @@ namespace Service
 
             if (Candidate_Status.HasValue)
             {
-                oldData!.Candidate_Status = Candidate_Status;
+                if (oldData.Candidate_Status!.Value == 10100 && Candidate_Status.Value == 10101)
+                    oldData!.Candidate_Status = Candidate_Status;
+                else
+                    return await Task.FromResult(false);
             }
 
             if (Company_Status.HasValue)
             {
-                oldData!.Company_Status = Company_Status;
+                if (oldData.Company_Status!.Value == 10200 && (Company_Status.Value == 10201 || Company_Status.Value == 10202))
+                    oldData!.Company_Status = Company_Status;
+                else
+                    return await Task.FromResult(false);
             }
 
             #region old status

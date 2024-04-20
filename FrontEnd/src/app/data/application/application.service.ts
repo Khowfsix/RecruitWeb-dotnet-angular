@@ -15,8 +15,19 @@ export class ApplicationService {
 		return this.api.GET('/api/Application');
 	}
 
+	updateStatusApplication(applicationId: string, companyStatus?: number, candidateStatus?: number): Observable<any> {
+		let url = '/api/Application/UpdateStatusApplication/' + applicationId + '?';
+		if (companyStatus) {
+			url += 'Company_Status=' + companyStatus;
+		}
+		if (candidateStatus) {
+			url += 'Candidate_Status=' + candidateStatus;
+		}
+		return this.api.PUT(url);
+	}
+
 	getAllByPositionId(positionId?: string, search?: string, sortString?: string,
-		notInBlackList?: boolean, candidateStatus?: number, companyStatus?: number): Observable<Application[]> {
+		notInBlackList?: boolean, candidateStatus?: number, companyStatus?: number, fromDate?: Date, toDate?: Date): Observable<Application[]> {
 		let url = '/api/Application?positionId=' + positionId;
 		if (search)
 			url = url + '&search=' + search;
@@ -28,6 +39,10 @@ export class ApplicationService {
 			url = url + '&candidateStatus=' + candidateStatus;
 		if (companyStatus)
 			url = url + '&companyStatus=' + companyStatus;
+		if (fromDate)
+			url = url + '&fromDate=' + fromDate;
+		if (toDate)
+			url = url + '&toDate=' + toDate;
 		return this.api.GET(url);
 	}
 }

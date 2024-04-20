@@ -20,7 +20,7 @@ export class API {
 		return this.http.post(baseUrl + path, data, options);
 	}
 
-	public PUT(path: string, data: any): Observable<any> {
+	public PUT(path: string, data?: any): Observable<any> {
 		return this.http.put(baseUrl + path, data);
 	}
 

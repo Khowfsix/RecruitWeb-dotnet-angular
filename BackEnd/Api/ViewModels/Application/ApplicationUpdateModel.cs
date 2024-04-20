@@ -7,10 +7,9 @@
         public Guid Cvid { get; set; }
         public Guid PositionId { get; set; }
         public DateTime CreatedTime { get; set; }
+        public int? Company_Status { get; set; }
 
-        public string Company_Status { get; set; }
-
-        public string Priority { get; set; }
+        public int? Priority { get; set; }
 
         public bool IsDeleted { get; set; } = false;
     }

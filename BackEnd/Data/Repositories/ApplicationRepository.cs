@@ -55,6 +55,10 @@ namespace Data.Repositories
                 || o.Cv.CvHasSkills.First(o => o.Skill.SkillName.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
 
             }
+            if (applicationFilter.FromDate.HasValue && applicationFilter.ToDate.HasValue)
+            {
+                query = query.Where(e => applicationFilter.FromDate.Value <= e.CreatedTime && e.CreatedTime <= applicationFilter.ToDate.Value);
+            }
             if (applicationFilter.candidateStatus.HasValue)
             {
                 query = query.Where(e => e.Candidate_Status == applicationFilter.candidateStatus.Value);

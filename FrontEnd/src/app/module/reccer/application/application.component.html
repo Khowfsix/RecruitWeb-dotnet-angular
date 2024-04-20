@@ -1,12 +1,3 @@
-<p>
-	Default appearance:
-	<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-		<mat-button-toggle value="bold">Bold</mat-button-toggle>
-		<mat-button-toggle value="italic">Italic</mat-button-toggle>
-		<mat-button-toggle value="underline">Underline</mat-button-toggle>
-	</mat-button-toggle-group>
-</p>
-
 <div class="container">
 	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
 		<div class="fs-3 p-4" style="margin: auto; margin-top: 50px; margin-bottom: 20px;">APPLICATION LIST</div>
@@ -52,7 +43,25 @@
 							blacklist</mat-slide-toggle>
 					</p>
 				</section>
-
+				<mat-form-field style="width: 100%;" class="mt-2">
+					<mat-label>Date</mat-label>
+					<mat-date-range-input [rangePicker]="picker">
+						<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+							formControlName="fromDate" placeholder="From date" #fromDatePicker>
+						<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+							formControlName="toDate" placeholder="To date" #toDatePicker>
+					</mat-date-range-input>
+					@if( fromDatePicker.value || toDatePicker.value){
+					<button (click)="fromDatePicker.value=''; toDatePicker.value='' ;
+					this.filterForm.get('fromDate')?.setValue(null); this.filterForm.get('toDate')?.setValue(null)" mat-icon-button>
+						<mat-icon style="color: red;">delete</mat-icon>
+					</button>
+					}
+					<mat-hint style="font-size: 13px; font-weight: 500; color: white;">DD/MM/YYYY –
+						DD/MM/YYYY</mat-hint>
+					<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-date-range-picker #picker></mat-date-range-picker>
+				</mat-form-field>
 			</form>
 		</div>
 		<div class="p-2" style="width: 75%; height: 570px; overflow-y: scroll;">
@@ -74,7 +83,27 @@
 									{{candidateHasSkill?.skill?.skillName}}</div>
 							</div>
 							}
-
+						</div>
+						<div class="p-2">
+							<span>Status:
+								@switch (item.company_Status) {
+								@case (this.application_CompanyStatus.Pending) {
+								<span class="p-2 rounded-3 bg-warning text-dark">
+									Pending
+								</span>
+								}
+								@case (this.application_CompanyStatus.Accecpted) {
+								<span class="p-2 rounded-3 bg-success text-white">
+									Accecpted
+								</span>
+								}
+								@case (this.application_CompanyStatus.Rejected) {
+								<span class="p-2 rounded-3 bg-danger text-white">
+									Rejected
+								</span>
+								}
+								}
+							</span>
 						</div>
 
 					</div>
@@ -105,12 +134,28 @@
 										mat-menu-item><i class="bi bi-clock-history"></i>
 										View
 										History</button>
+									@if (item.company_Status !== this.application_CompanyStatus.Pending) {
+									<button disabled="true" style="color: green;" class="text-green" mat-menu-item><i
+											class="bi bi-check-circle-fill"></i> Accecpt</button>
+									<button disabled="true" style="color: red;" class="text-red" mat-menu-item><i
+											class="bi bi-ban-fill"></i> Reject</button>
+									}
+									@else {
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.Accecpted , item.applicationId)"
+										style="color: green;" class="text-green" mat-menu-item><i
+											class="bi bi-check-circle-fill"></i> Accecpt</button>
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.Rejected, item.applicationId)"
+										style="color: red;" class="text-red" mat-menu-item><i
+											class="bi bi-ban-fill"></i> Reject</button>
+									}
 								</mat-menu>
 
 							</div>
 						</div>
 					</div>
-					<div class="ps-3 pe-3 pb-4" style="font-size: 17px; line-height: 25px; width: 350px;">
+					<div class=" ps-3 pe-3 pb-4" style="font-size: 17px; line-height: 25px; width: 350px;">
 						<span>
 							Date of birth:
 							<span style="font-weight:400;">{{item.cv?.candidate?.user?.dateOfBirth
