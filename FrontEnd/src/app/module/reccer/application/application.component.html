@@ -1,3 +1,12 @@
+<p>
+	Default appearance:
+	<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+		<mat-button-toggle value="bold">Bold</mat-button-toggle>
+		<mat-button-toggle value="italic">Italic</mat-button-toggle>
+		<mat-button-toggle value="underline">Underline</mat-button-toggle>
+	</mat-button-toggle-group>
+</p>
+
 <div class="container">
 	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
 		<div class="fs-3 p-4" style="margin: auto; margin-top: 50px; margin-bottom: 20px;">APPLICATION LIST</div>
@@ -20,16 +29,18 @@
 						<mat-option value="Priority_ASC">Ascending Prioriry</mat-option>
 					</mat-select>
 				</mat-form-field>
-				<mat-form-field style="width: 100%;">
+				<!-- <mat-form-field style="width: 100%;">
 					<mat-label>Candidate Status</mat-label>
 					<mat-select formControlName="candidateStatus">
+						<mat-option value=""></mat-option>
 						<mat-option value="{{this.application_CandidateStatus.Pending}}">Pending</mat-option>
 						<mat-option value="{{this.application_CandidateStatus.Passed}}">Passed</mat-option>
 					</mat-select>
-				</mat-form-field>
+				</mat-form-field> -->
 				<mat-form-field style="width: 100%;">
-					<mat-label>Company Status</mat-label>
+					<mat-label>Status</mat-label>
 					<mat-select formControlName="companyStatus">
+						<mat-option value=""></mat-option>
 						<mat-option value="{{this.application_CompanyStatus.Pending}}">Pending</mat-option>
 						<mat-option value="{{this.application_CompanyStatus.Accecpted}}">Accecpted</mat-option>
 						<mat-option value="{{this.application_CompanyStatus.Rejected}}">Rejected</mat-option>
@@ -63,7 +74,9 @@
 									{{candidateHasSkill?.skill?.skillName}}</div>
 							</div>
 							}
+
 						</div>
+
 					</div>
 				</div>
 				<div class="rounded-2 d-flex flex-column justify-content-between"

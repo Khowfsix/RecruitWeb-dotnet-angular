@@ -27,10 +27,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApplicationHistoryComponent } from './application-history/application-history.component';
 import { CandidateJoinEventService } from '../../../data/candidateJoinEvent/candidate-join-event.service';
 import { Application_CandidateStatus, Application_CompanyStatus } from '../../../shared/constant/enum.model';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 @Component({
 	selector: 'app-application',
 	standalone: true,
 	imports: [
+		MatButtonToggleModule,
 		AsyncPipe,
 		MatMenuModule,
 		MatRippleModule,
@@ -75,7 +78,7 @@ export class ApplicationComponent implements OnInit {
 
 	public filterForm: FormGroup = this.formBuilder.group({
 		sortString: ['CreatedTime_DESC', []],
-		candidateStatus: ['', []],
+		// candidateStatus: ['', []],
 		companyStatus: ['', []],
 		search: ['', []],
 		notInBlackList: [false, []]
