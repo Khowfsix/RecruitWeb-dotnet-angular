@@ -41,7 +41,8 @@ namespace Api.Controllers
                 }
                 var filterModel = _mapper.Map<ApplicationFilter>(applicationFilterModel);
                 var models = await _applicationService.GetAllApplicationsByPositionId(positionId.Value, filterModel, sortString);
-                var response = _mapper.Map<List<ApplicationViewModel>>(models);
+                var isAdmin = HttpContext.User.IsInRole("Admin");
+                var response = isAdmin ? _mapper.Map<List<ApplicationViewModel>>(models) : _mapper.Map<List<ApplicationViewModel>>(models.Where(x => !x.IsDeleted));
                 return Ok(response);
             }
 

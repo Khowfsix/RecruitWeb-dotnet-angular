@@ -22,7 +22,10 @@ public class ApplicationHistoryController : BaseAPIController
     public async Task<IActionResult> GetApplicationHistory(Guid candidateId)
     {
         var modelDatas = await _applicationService.GetApplicationHistory(candidateId);
-        var response = _mapper.Map<List<ApplicationHistoryViewModel>>(modelDatas);
+
+        var isAdmin = HttpContext.User.IsInRole("Admin");
+        var response = isAdmin ? _mapper.Map<List<ApplicationHistoryViewModel>>(modelDatas) 
+            : _mapper.Map<List<ApplicationHistoryViewModel>>(modelDatas.Where(e => !e.IsDeleted));
         return Ok(response);
     }
 }
