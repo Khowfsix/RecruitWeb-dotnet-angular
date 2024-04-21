@@ -93,15 +93,19 @@ namespace Api.Controllers
         {
             //var response = await _candidateService.GetProfile(candidateId);
             var modelData = await _candidateService.FindById(candidateId);
-            var response = _mapper.Map<ViewModels.Candidate.CandidateViewModel>(modelData);
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            if (!isAdmin)
+            {
+                if (modelData.IsDeleted)
+                    return StatusCode(StatusCodes.Status400BadRequest);
+            }
+            var response = _mapper.Map<CandidateViewModel>(modelData);
+           
             if (response == null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            else
-            {
-                return Ok(response);
-            }
+            return Ok(response);
         }
     }
 }
