@@ -1,0 +1,25 @@
+<button class="expandButton d-flex" mat-flat-button color="{{this.color ? this.color : ''}}"
+	(mouseenter)="expandPanel()" (mouseleave)="collapsePanel()">
+	<div style="overflow: hidden; white-space: nowrap;">
+		@switch(this.icon){
+		@case ('add') {
+		<i class="bi bi-plus-circle fs-4"></i>
+		}
+		@case ('mail') {
+		<i class="bi bi-envelope-at fs-4"></i>
+		}
+		@case ('multi-mail') {
+		<i class="bi bi-envelope-at fs-4"></i>
+		<i class="bi bi-people fs-4"></i>
+		}
+		}
+		@if(this.isExpanded){
+		<span>
+			{{this.expandedLabel}}</span>
+		}
+		@else {
+		<span>
+			{{this.notExpandLabel}}</span>
+		}
+	</div>
+</button>

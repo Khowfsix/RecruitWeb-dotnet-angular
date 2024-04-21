@@ -13,15 +13,20 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Interview_CandidateStatus, Interview_CompanyStatus } from '../../../shared/constant/enum.model';
+import { Interview_CompanyStatus } from '../../../shared/constant/enum.model';
 import { InterviewService } from '../../../data/interview/interview.service';
 import { RecruiterService } from '../../../data/recruiter/recruiter.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Recruiter } from '../../../data/recruiter/recruiter.model';
 import { Interview } from '../../../data/interview/interview.model';
 import { RouterModule } from '@angular/router';
-import { Subject, debounceTime, startWith } from 'rxjs';
+import { Subject, debounceTime, forkJoin, startWith } from 'rxjs';
 import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
+import { ExpandbuttonComponent } from "../../../shared/component/expandbutton/expandbutton.component";
+import { AddFormComponent } from './add-form/add-form.component';
+import { SendMultiEmailComponent } from './send-multi-email/send-multi-email.component';
+import { ApplicationService } from '../../../data/application/application.service';
+import { InterviewerService } from '../../../data/interviewer/interviewer.service';
 export const MY_FORMATS = {
 	parse: {
 		dateInput: 'DD/MM/YYYY',
@@ -40,6 +45,8 @@ export const MY_FORMATS = {
 		{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
 		{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
 	],
+	templateUrl: './interview.component.html',
+	styleUrl: './interview.component.css',
 	imports: [
 		RouterModule,
 		MatDatepickerModule,
@@ -55,9 +62,8 @@ export const MY_FORMATS = {
 		MatButtonModule,
 		MatIconModule,
 		CommonModule,
-	],
-	templateUrl: './interview.component.html',
-	styleUrl: './interview.component.css'
+		ExpandbuttonComponent
+	]
 })
 export class InterviewComponent implements OnInit {
 
@@ -67,20 +73,57 @@ export class InterviewComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private interviewService: InterviewService,
 		private recruiterService: RecruiterService,
+		private applicationService: ApplicationService,
+		private interviewerService: InterviewerService,
 		private customDateService: CustomDateTimeService,
 		private authService: AuthService,
 	) { }
 
 	private filterSubject = new Subject<any>();
 	public recruiter?: Recruiter;
-	public interview_CandidateStatus: typeof Interview_CandidateStatus = Interview_CandidateStatus;
 	public interview_CompanyStatus: typeof Interview_CompanyStatus = Interview_CompanyStatus;
 	public fetchedInterviews?: Interview[];
+
+	public openAddFormDialog(enterAnimationDuration: string,
+		exitAnimationDuration: string) {
+		const applicationsData$ = this.applicationService.getAll();
+		const interviewersData$ = this.interviewerService.getAll();
+
+		forkJoin([applicationsData$, interviewersData$]).subscribe(([applicationsData, interviewersData]) => {
+			this.dialog.open(AddFormComponent, {
+				viewContainerRef: this.viewContainerRef,
+				data: {
+					applicationsData: applicationsData,
+					interviewersData: interviewersData,
+				},
+				width: '800px',
+				height: '500px',
+				enterAnimationDuration,
+				exitAnimationDuration,
+			});
+		});
+
+	}
+
+	public openSendMultiEmailDialog(enterAnimationDuration: string,
+		exitAnimationDuration: string) {
+		this.dialog.open(SendMultiEmailComponent, {
+			viewContainerRef: this.viewContainerRef,
+			// data: {
+			// 	applicationHistoryData: applicationHistoryData,
+			// 	candidateJoinEventData: candidateJoinEventData,
+			// },
+			width: '600px',
+			height: '600px',
+			enterAnimationDuration,
+			exitAnimationDuration,
+		});
+	}
 
 	public filterForm: FormGroup = this.formBuilder.group({
 		search: ['', []],
 		sortString: ['MeetingDate_DESC', []],
-		candidateStatus: ['', []],
+		// candidateStatus: ['', []],
 		companyStatus: ['', []],
 		fromTime: ['', []],
 		toTime: ['', []],

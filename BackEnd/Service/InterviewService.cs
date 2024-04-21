@@ -44,6 +44,8 @@ public class InterviewService : IInterviewService
 
     public async Task<InterviewModel> SaveInterview(InterviewModel interviewModel)
     {
+        interviewModel.Candidate_Status = 020100;
+        interviewModel.Company_Status = 020200;
         var interviewData = _mapper.Map<Interview>(interviewModel);
 
         var response = await _interviewRepository.SaveInterview(interviewData);

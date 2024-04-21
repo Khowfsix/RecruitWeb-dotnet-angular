@@ -136,27 +136,14 @@ public class InterviewController : BaseAPIController
 
     [HttpPost("{applicationId:guid}")]
     [Authorize(Roles = "Recruiter")]
-    public async Task<IActionResult> SaveInterview(InterviewWithTimeAddModel request, Guid applicationId)
+    public async Task<IActionResult> SaveInterview(InterviewAddModel interviewAddModel, Guid applicationId)
     {
-        if (request == null)
+        if (interviewAddModel == null)
         {
             return BadRequest();
         }
 
-        if (request.Interview == null)
-        {
-            return BadRequest();
-        }
-
-        var itrsModelData = _mapper.Map<ItrsinterviewModel>(request.ITRS);
-        var responseITRS = await _itrsinterviewService.SaveItrsinterview(itrsModelData, request.Interview.InterviewerId);
-        if (responseITRS! == null)
-        {
-            return StatusCode(StatusCodes.Status409Conflict);
-        }
-
-        request.Interview.ApplicationId = applicationId;
-        var interviewModelData = _mapper.Map<InterviewModel>(request.Interview);
+        var interviewModelData = _mapper.Map<InterviewModel>(interviewAddModel);
         var responseInterview = await _interviewService.SaveInterview(interviewModelData);
 
         if (responseInterview != null)

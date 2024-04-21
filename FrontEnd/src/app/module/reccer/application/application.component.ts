@@ -26,7 +26,7 @@ import { ApplicationHistoryService } from '../../../data/applicationHistory/appl
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { ApplicationHistoryComponent } from './application-history/application-history.component';
 import { CandidateJoinEventService } from '../../../data/candidateJoinEvent/candidate-join-event.service';
-import { Application_CandidateStatus, Application_CompanyStatus } from '../../../shared/constant/enum.model';
+import { Application_CompanyStatus } from '../../../shared/constant/enum.model';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ToastrService } from 'ngx-toastr';
 import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
@@ -86,8 +86,6 @@ export class ApplicationComponent implements OnInit {
 		private customDateService: CustomDateTimeService,
 		private applicationHistoryServivce: ApplicationHistoryService,
 	) { }
-
-	public application_CandidateStatus: typeof Application_CandidateStatus = Application_CandidateStatus;
 	public application_CompanyStatus: typeof Application_CompanyStatus = Application_CompanyStatus;
 	public paramPositionId!: string;
 	public fetchedApplications?: Application[];
