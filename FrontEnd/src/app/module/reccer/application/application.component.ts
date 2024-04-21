@@ -233,7 +233,7 @@ export class ApplicationComponent implements OnInit {
 	selector: 'delete-dialog',
 	template: `
 		<div class="p-2">
-			<h2 mat-dialog-title>Delete</h2>
+			<h2 mat-dialog-title>Confirmation</h2>
 			<mat-dialog-content style="font-weight: 600;">
 				Are you sure?
 			</mat-dialog-content>

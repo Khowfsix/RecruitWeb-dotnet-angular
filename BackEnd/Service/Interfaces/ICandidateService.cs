@@ -14,7 +14,7 @@ namespace Service.Interfaces
 
         Task<ProfileModel?> GetProfile(Guid candidateId);
 
-        Task<CandidateModel> FindById(Guid id);
+        Task<CandidateModel> FindById(Guid id, bool isAdmin);
 
         Task<CandidateModel> GetCandidateByUserId(string id);
     }

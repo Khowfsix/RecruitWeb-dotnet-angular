@@ -4,7 +4,7 @@ namespace Service.Interfaces
 {
     public interface IBlacklistService
     {
-        Task<IEnumerable<BlacklistModel>> GetAllBlackLists();
+        Task<IEnumerable<BlacklistModel>> GetAllBlackLists(bool isAdmin);
 
         Task<BlacklistModel> SaveBlackList(BlacklistModel request);
 

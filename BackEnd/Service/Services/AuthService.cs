@@ -134,7 +134,7 @@ namespace Service.Services
 
         public async Task<IEnumerable<ProfileModel>> GetUsersInBlacklist()
         {
-            var blacklist = await _blacklistService.GetAllBlackLists();
+            var blacklist = await _blacklistService.GetAllBlackLists(true);
             var listCandidate = new List<Guid>();
             var listUser = new List<ProfileModel>();
             if (blacklist != null)
@@ -462,7 +462,7 @@ namespace Service.Services
 
         public async Task<ProfileModel> GetUserInBlacklistById(string userId)
         {
-            var users = await _blacklistService.GetAllBlackLists();
+            var users = await _blacklistService.GetAllBlackLists(true);
             var user = await GetAccountByUserId(userId);
             var userInBL = new ProfileModel();
             foreach (var item in users)

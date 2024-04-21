@@ -51,9 +51,11 @@ namespace Service
             return _mapper.Map<ProfileModel>(data);
         }
 
-        public async Task<CandidateModel> FindById(Guid id)
+        public async Task<CandidateModel> FindById(Guid id, bool isAdmin)
         {
             var model = await _candidateRepository.FindById(id);
+            if (!isAdmin && model.IsDeleted)
+                return null;
             var viewmodel = _mapper.Map<CandidateModel>(model);
             return viewmodel;
         }

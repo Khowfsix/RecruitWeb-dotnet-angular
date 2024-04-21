@@ -92,13 +92,8 @@ namespace Api.Controllers
         public async Task<IActionResult> GetProfiles(Guid candidateId)
         {
             //var response = await _candidateService.GetProfile(candidateId);
-            var modelData = await _candidateService.FindById(candidateId);
             var isAdmin = HttpContext.User.IsInRole("Admin");
-            if (!isAdmin)
-            {
-                if (modelData.IsDeleted)
-                    return StatusCode(StatusCodes.Status400BadRequest);
-            }
+            var modelData = await _candidateService.FindById(candidateId, isAdmin);
             var response = _mapper.Map<CandidateViewModel>(modelData);
            
             if (response == null)

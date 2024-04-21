@@ -33,7 +33,8 @@ namespace Api.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> ExportBlacklist()
         {
-            var data = await _blacklistService.GetAllBlackLists();
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            var data = await _blacklistService.GetAllBlackLists(isAdmin);
 
             string[] columns = { "BlacklistId", "CandidateId", "Reason", "DateTime", "Status", "IsDeleted" };
             byte[] filecontent = ExportExcelHelper.ExportExcel(data.ToList(), $"{nameof(BlackList)} Report", true, columns);

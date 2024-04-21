@@ -5,14 +5,14 @@ namespace Service.Interfaces
 {
     public interface IApplicationService
     {
-        Task<IEnumerable<ApplicationModel>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString);
+        Task<IEnumerable<ApplicationModel>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString, bool isAdmin);
 
         Task<IEnumerable<ApplicationModel>> GetAllApplications();
 
         Task<IEnumerable<ApplicationModel>> GetAllApplicationsOfPosition(Guid? positionId, int? status, int? priority);
 
         //todo: return ApplicationHistoryViewModel
-        Task<IEnumerable<ApplicationModel>> GetApplicationHistory(Guid candidateId);
+        Task<IEnumerable<ApplicationModel>> GetApplicationHistory(Guid candidateId, bool isAdmin);
 
         Task<ApplicationModel?> GetApplicationById(Guid ApplicationId);
 

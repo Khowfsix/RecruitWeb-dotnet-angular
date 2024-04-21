@@ -41,7 +41,8 @@ namespace Api.Controllers
                 var candidateId = row.CandidateId;
                 var interviewerId = row.InterviewerId;
 
-                var candidate = await _candidateService.FindById(candidateId);
+                var isAdmin = HttpContext.User.IsInRole("Admin");
+                var candidate = await _candidateService.FindById(candidateId, isAdmin);
 
                 var interviewer = await _interviewerService.GetInterviewerById(interviewerId);
 

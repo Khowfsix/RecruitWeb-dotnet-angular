@@ -22,10 +22,10 @@ namespace Service
             return await _blacklistRepository.DeleteBlackList(requestId);
         }
 
-        public async Task<IEnumerable<BlacklistModel>> GetAllBlackLists()
+        public async Task<IEnumerable<BlacklistModel>> GetAllBlackLists(bool isAdmin)
         {
             var data = await _blacklistRepository.GetAllBlackLists();
-            return data.Select(item => _mapper.Map<BlacklistModel>(item)).ToList();
+            return isAdmin ? _mapper.Map<List<BlacklistModel>>(data) : _mapper.Map<List<BlacklistModel>>(data.Where(o => !o.IsDeleted));
         }
 
         public async Task<BlacklistModel> SaveBlackList(BlacklistModel request)
