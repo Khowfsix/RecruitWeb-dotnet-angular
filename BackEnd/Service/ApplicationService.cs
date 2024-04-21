@@ -33,20 +33,20 @@ namespace Service
             return await _applicationRepository.DeleteApplication(applicationId);
         }
 
-        public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString)
+        public async Task<IEnumerable<ApplicationModel>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString, bool isAdmin)
         {
             var data = await _applicationRepository.GetAllApplicationsByPositionId(positionId, applicationFilter, sortString);
             if (!data.IsNullOrEmpty())
             {
-                if (applicationFilter.NotInBlackList.Value)
+                if (applicationFilter.NotInBlackList!.Value)
                 {
                     var blackLists = await _blacklistRepository.GetAllBlackLists();
                     var candidateIdsInBlackList = blackLists.Select(o => o.CandidateId);
                     List<ApplicationModel> models = _mapper.Map<List<ApplicationModel>>(data);
-                    return models.Where(o => !candidateIdsInBlackList.Contains(o.Cv.CandidateId));
+                    return isAdmin ? models.Where(o => !candidateIdsInBlackList.Contains(o.Cv.CandidateId)) : models.Where(o => !candidateIdsInBlackList.Contains(o.Cv.CandidateId) && !o.IsDeleted);
                 }
                 List<ApplicationModel> listData = _mapper.Map<List<ApplicationModel>>(data);
-                return listData;
+                return isAdmin ? listData : listData.Where(o => !o.IsDeleted);
             }
             return null!;
         }
@@ -160,11 +160,11 @@ namespace Service
             return await _applicationRepository.UpdateApplication(data, applicationId);
         }
 
-        public async Task<IEnumerable<ApplicationModel>> GetApplicationHistory(Guid candidateId)
+        public async Task<IEnumerable<ApplicationModel>> GetApplicationHistory(Guid candidateId, bool isAdmin)
         {
             var entityDatas = await _applicationRepository.GetApplicationHistory(candidateId);
             if (!entityDatas.IsNullOrEmpty())
-                return _mapper.Map<List<ApplicationModel>>(entityDatas);
+                return isAdmin ? _mapper.Map<List<ApplicationModel>>(entityDatas) : _mapper.Map<List<ApplicationModel>>(entityDatas.Where(o => !o.IsDeleted));
             return null!;
         }
 

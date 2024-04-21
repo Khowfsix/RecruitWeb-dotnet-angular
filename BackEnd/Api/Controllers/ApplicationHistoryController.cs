@@ -21,11 +21,10 @@ public class ApplicationHistoryController : BaseAPIController
     [HttpGet("{candidateId:guid}")]
     public async Task<IActionResult> GetApplicationHistory(Guid candidateId)
     {
-        var modelDatas = await _applicationService.GetApplicationHistory(candidateId);
-
         var isAdmin = HttpContext.User.IsInRole("Admin");
-        var response = isAdmin ? _mapper.Map<List<ApplicationHistoryViewModel>>(modelDatas) 
-            : _mapper.Map<List<ApplicationHistoryViewModel>>(modelDatas.Where(e => !e.IsDeleted));
+        var modelDatas = await _applicationService.GetApplicationHistory(candidateId, isAdmin);
+
+        var response = _mapper.Map<List<ApplicationHistoryViewModel>>(modelDatas);
         return Ok(response);
     }
 }

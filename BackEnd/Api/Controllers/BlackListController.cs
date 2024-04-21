@@ -22,10 +22,10 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllBlackList()
         {
-            var listModelDatas = await _blacklistService.GetAllBlackLists();
             var isAdmin = HttpContext.User.IsInRole("Admin");
-        
-            var response = isAdmin ? _mapper.Map<List<BlacklistViewModel>>(listModelDatas) : _mapper.Map<List<BlacklistViewModel>>(listModelDatas.Where(x => !x.IsDeleted));
+            var listModelDatas = await _blacklistService.GetAllBlackLists(isAdmin);
+
+            var response = _mapper.Map<List<BlacklistViewModel>>(listModelDatas);
             return Ok(response);
         }
 
