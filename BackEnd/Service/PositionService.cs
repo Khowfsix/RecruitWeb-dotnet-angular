@@ -26,14 +26,20 @@ namespace Service
             return _mapper.Map<PositionModel>(response);
         }
 
+        public async Task<List<PositionModel>> GetAllByRecruiterId(Guid recruiterId, bool isAdmin)
+        {
+            var entityDatas = await _positionRepository.GetAllByRecruiterId(recruiterId);
+            var listPositionModel = _mapper.Map<List<PositionModel>>(entityDatas);
+
+            return isAdmin ? listPositionModel : listPositionModel.Where(o => !o.IsDeleted).ToList();
+        }
+
         public async Task<List<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString)
         {
             var entityDatas = await _positionRepository.GetAllPositions(positionFilter, sortString);
             var listPositionModel = _mapper.Map<List<PositionModel>>(entityDatas);
 
-            if (!isAdmin)
-                return listPositionModel.Where(o => o.IsDeleted == false).ToList();
-            return listPositionModel;
+            return isAdmin ? listPositionModel : listPositionModel.Where(o => !o.IsDeleted).ToList();
         }
 
         public Task<List<PositionModel>> GetAllPositionsByCurrentUser(string userId)

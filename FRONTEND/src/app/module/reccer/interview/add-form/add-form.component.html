@@ -1,9 +1,7 @@
-<div class="p-4 d-flex justify-content-center">
-	<div class="fs-4">CREATE NEW INTERVIEW</div>
-	<div class="p-2">
-		<form>
-
-		</form>
-
+<div class="p-4 d-flex flex-column" style="background: linear-gradient(to right, #364cc7, #cf6868);;">
+	<div class="fs-4 mx-auto text-white">CREATE NEW INTERVIEW</div>
+	<div class="p-2 mt-3">
+		<app-autocomplete [valueField]="'positionId'" [labelField]="'positionName'" [label]="'Position'"
+			[observableOptions]="this.positionData$" [formGroup]="this.addForm"></app-autocomplete>
 	</div>
 </div>

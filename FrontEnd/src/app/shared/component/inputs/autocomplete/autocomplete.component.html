@@ -1,10 +1,10 @@
 @if (this.formGroup){
-<form class="d-flex flex-column" [formGroup]="this.formGroup">
+<form class="d-flex flex-column" [formGroup]="this.autocompleFormGroup">
 	<mat-form-field>
 		<mat-label>{{this.label}}</mat-label>
 		<div class="d-flex">
 			<input [attr.disabled]="this.isDisabled ? true : null" type="text" placeholder="{{this.placeholder}}"
-				aria-label="Number" matInput formControlName="{{this.fieldName}}" [matAutocomplete]="auto">
+				aria-label="Number" matInput formControlName="search" [matAutocomplete]="auto">
 			@if(this.isDisabled){
 			<i class="bi bi-x-circle custom-cancel" (click)="clear()"></i>
 			}
@@ -12,16 +12,16 @@
 
 		<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
 			@for (option of filteredOptions | async; track option) {
-			<mat-option (onSelectionChange)="this.isDisabled = true;"
-				[value]="option[this.fieldName??'']">{{option[this.fieldName??'']}}</mat-option>
+			<mat-option (onSelectionChange)="this.onSelectionChange($event)"
+				[value]="option[this.valueField]">{{option[this.labelField]}}</mat-option>
 			}
 		</mat-autocomplete>
 
-		@if(formGroup.get(this.fieldName??'')?.invalid){
-		@if(formGroup.get(this.fieldName??'')?.hasError('required')){
+		@if(formGroup.get(this.valueField)?.invalid){
+		@if(formGroup.get(this.valueField)?.hasError('required')){
 		<div style="color: red;">Required.</div>
 		}
-		@if(formGroup.get(this.fieldName??'')?.hasError('invalid')){
+		@if(formGroup.get(this.valueField)?.hasError('invalid')){
 		<div style="color: red;">Invalid value.</div>
 		}
 		}

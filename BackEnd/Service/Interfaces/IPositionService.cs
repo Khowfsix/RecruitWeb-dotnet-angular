@@ -6,7 +6,9 @@ namespace Service.Interfaces
     public interface IPositionService
     {
         Task<List<PositionModel>> GetAllPositions(bool isAdmin, PositionFilter positionFilter, string sortString);
-        
+
+        Task<List<PositionModel>> GetAllByRecruiterId(Guid recruiterId, bool isAdmin);
+
         Task<List<PositionModel>> GetAllPositionsByCurrentUser(String userId);
 
         Task<PositionAllMinMaxRange> GetAllMinMaxRange();

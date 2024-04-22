@@ -27,6 +27,7 @@ import { AddFormComponent } from './add-form/add-form.component';
 import { SendMultiEmailComponent } from './send-multi-email/send-multi-email.component';
 import { ApplicationService } from '../../../data/application/application.service';
 import { InterviewerService } from '../../../data/interviewer/interviewer.service';
+import { PositionService } from '../../../data/position/position.service';
 export const MY_FORMATS = {
 	parse: {
 		dateInput: 'DD/MM/YYYY',
@@ -76,6 +77,7 @@ export class InterviewComponent implements OnInit {
 		private applicationService: ApplicationService,
 		private interviewerService: InterviewerService,
 		private customDateService: CustomDateTimeService,
+		private positionService: PositionService,
 		private authService: AuthService,
 	) { }
 
@@ -86,22 +88,37 @@ export class InterviewComponent implements OnInit {
 
 	public openAddFormDialog(enterAnimationDuration: string,
 		exitAnimationDuration: string) {
-		const applicationsData$ = this.applicationService.getAll();
-		const interviewersData$ = this.interviewerService.getAll();
+		// const positionsData$ = this.positionService.getAllPositions(undefined, undefined, undefined, undefined, this.recruiter?.recruiterId)
+		// const applicationsData$ = this.applicationService.getAll();
+		// const interviewersData$ = this.interviewerService.getAll();
 
-		forkJoin([applicationsData$, interviewersData$]).subscribe(([applicationsData, interviewersData]) => {
-			this.dialog.open(AddFormComponent, {
-				viewContainerRef: this.viewContainerRef,
-				data: {
-					applicationsData: applicationsData,
-					interviewersData: interviewersData,
-				},
-				width: '800px',
-				height: '500px',
-				enterAnimationDuration,
-				exitAnimationDuration,
-			});
+		// positionsData$.subscribe((data) => {
+		this.dialog.open(AddFormComponent, {
+			viewContainerRef: this.viewContainerRef,
+			data: {
+				recruiterId: this.recruiter?.recruiterId,
+				// interviewersData: interviewersData,
+			},
+			width: '800px',
+			height: '500px',
+			enterAnimationDuration,
+			exitAnimationDuration,
 		});
+		// })
+
+		// forkJoin([applicationsData$, interviewersData$]).subscribe(([applicationsData, interviewersData]) => {
+		// 	this.dialog.open(AddFormComponent, {
+		// 		viewContainerRef: this.viewContainerRef,
+		// 		data: {
+		// 			applicationsData: applicationsData,
+		// 			interviewersData: interviewersData,
+		// 		},
+		// 		width: '800px',
+		// 		height: '500px',
+		// 		enterAnimationDuration,
+		// 		exitAnimationDuration,
+		// 	});
+		// });
 
 	}
 

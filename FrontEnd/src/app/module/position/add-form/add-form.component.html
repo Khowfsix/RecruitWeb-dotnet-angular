@@ -88,12 +88,13 @@
 				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>
 
-			<app-autocomplete [fieldName]="'languageName'" [label]="'Language'" [placeholder]="'Ex. English, French'"
-				[observableOptions]="this.observableLanguages" [formGroup]="this.addForm"></app-autocomplete>
-
-			<app-autocomplete [fieldName]="'categoryPositionName'" [label]="'Category'"
-				[placeholder]="'Ex. Digital, Technical'" [observableOptions]="this.observableCategoryPositions"
+			<app-autocomplete [valueField]="'languageId'" [labelField]="'languageName'" [label]="'Language'"
+				[placeholder]="'Ex. English, French'" [observableOptions]="this.observableLanguages"
 				[formGroup]="this.addForm"></app-autocomplete>
+
+			<app-autocomplete [valueField]="'categoryPositionId'" [labelField]="'categoryPositionName'"
+				[label]="'Category'" [placeholder]="'Ex. Digital, Technical'"
+				[observableOptions]="this.observableCategoryPositions" [formGroup]="this.addForm"></app-autocomplete>
 
 			<mat-form-field>
 				<mat-label>Background image</mat-label>
