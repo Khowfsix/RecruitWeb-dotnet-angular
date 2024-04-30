@@ -9,6 +9,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../../core/services/auth.service';
 import { LogoutDialogComponent } from '../../module/auth/logout-dialog/logout-dialog.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { nameTypeInToken } from '../../core/constants/token.constants';
 
 @Component({
 	selector: 'app-header',
@@ -25,6 +27,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 })
 export class HeaderComponent {
 	_user: string | null = this._cookieService.get('jwt');
+	_isAdmin: boolean = false;
 
 	@Input() deviceXs: boolean | null = null;
 
@@ -68,10 +71,24 @@ export class HeaderComponent {
 		this._authService.isLoggedIn.subscribe((loggedIn) => {
 			if (loggedIn) {
 				this.updateHeaderForLoggedInUser();
+				if (this.getRoleOfUser(this._user).includes('Admin')) {
+					this.updateHeaderForAdmin();
+				}
+				this.updateHeaderForAdmin();
 			} else {
 				this.updateHeaderForLoggedOutUser();
 			}
 		});
+	}
+
+	getRoleOfUser(jwt: string | null) {
+		if (jwt) {
+			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(jwt as string)));
+			const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];
+			console.log(currentUserRole);
+			return currentUserRole;
+		}
+		return [];
 	}
 
 	updateHeaderForLoggedInUser() {
@@ -84,9 +101,20 @@ export class HeaderComponent {
 		// logic to update header for logged-out user
 		this._user = null;
 		// ... other updates
+		this._isAdmin = false;
+	}
+
+	updateHeaderForAdmin() {
+		// logic to update header for admin
+		this._isAdmin = true;
+		// ... other updates
 	}
 
 	handleRouteToCVManage() {
 		this._router.navigate(['/cv/'])
+	}
+
+	handleRouteToAdminConsole() {
+		this._router.navigate(['/admin'])
 	}
 }

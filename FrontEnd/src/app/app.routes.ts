@@ -10,6 +10,7 @@ import { ApplicationComponent } from './module/reccer/application/application.co
 import { CvComponent } from './module/cv/cv.component';
 import { InterviewerComponent } from './module/reccer/interviewer/interviewer.component';
 import { InterviewComponent } from './module/reccer/interview/interview.component';
+import { CandidateProfileComponent } from './module/cv/candidate-profile/candidate-profile.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -67,6 +68,7 @@ export const routes: Routes = [
 
 	// url for candidate
 	createRouteWithRoles('cv', CvComponent, [role.CANDIDATE]),
+	createRouteWithRoles('cv/candidateProfile', CandidateProfileComponent, [role.CANDIDATE]),
 
 	// url for admin
 	{

@@ -4,6 +4,7 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
 import { CvManageComponent } from './cv-manage/cv-manage.component';
 import { UploadCvComponent } from './cv-manage/upload-cv/upload-cv.component';
 import { JobPreferenceComponent } from './job-preference/job-preference.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
 	selector: 'app-cv',
@@ -15,6 +16,7 @@ import { JobPreferenceComponent } from './job-preference/job-preference.componen
 		UploadCvComponent,
 		JobPreferenceComponent,
 
+		RouterModule
 	],
 	templateUrl: './cv.component.html',
 	styleUrl: './cv.component.css'

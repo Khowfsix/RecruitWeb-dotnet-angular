@@ -75,6 +75,14 @@
 			<i class="fa-solid fa-file"></i>
 			<span class="mx-5 align-right">CV manage</span>
 		</button>
+
+		@if(_isAdmin===true){
+		<button mat-menu-item (click)="handleRouteToAdminConsole()">
+			<i class="fa-solid fa-toolbox"></i>
+			<span class="mx-5 align-right">Admin console</span>
+		</button>
+		}
+
 		<button mat-menu-item>
 			<i class="fa-solid fa-gear"></i>
 			<span class="mx-5 align-right">Settings</span>
