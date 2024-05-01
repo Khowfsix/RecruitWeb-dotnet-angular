@@ -35,6 +35,8 @@ export class AutocompleteComponent {
 	@Input({ required: true })
 	public observableOptions!: Observable<any[]>;
 	@Input({ required: true })
+	public formField!: string;
+	@Input({ required: true })
 	public formGroup!: FormGroup;
 
 	public filteredOptions?: Observable<any[]>;
@@ -51,7 +53,7 @@ export class AutocompleteComponent {
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['formGroup'] && changes['formGroup'].currentValue) {
 			this.formGroup.valueChanges.subscribe(() => {
-				if (this.formGroup.disabled) {
+				if (this.formGroup.get(this.formField)?.disabled) {
 					this.autocompleFormGroup.disable();
 					this.isDisabled = true;
 				} else {
@@ -64,11 +66,18 @@ export class AutocompleteComponent {
 	ngOnInit(): void {
 		this.observableOptions?.subscribe((data) => {
 			this.options = data;
+
+			// console.log('this.options!.map(e => this.getLabelFieldValue(e)))', this.options!.map(e => this.getLabelFieldValue(e)))
+
 			let isEdit = false;
-			if (this.formGroup.get(this.valueField)?.value) {
-				const foundOptions = data?.find(e => e[this.valueField] === this.formGroup.get(this.valueField)?.value)
-				this.autocompleFormGroup.setValue({ search: foundOptions[this.labelField] })
+			if (this.formGroup.get(this.formField)?.value) {
+				const foundOption = data?.find(e => this.getValueFieldValue(e) === this.formGroup.get(this.formField)?.value)
+				this.autocompleFormGroup.setValue({ search: this.getLabelFieldValue(foundOption) })
 				isEdit = true;
+				if (this.formGroup.get(this.formField)?.disabled) {
+					this.isDisabled = true;
+					this.autocompleFormGroup.disable()
+				}
 			}
 			this.filteredOptions = this.autocompleFormGroup?.get('search')?.valueChanges.pipe(
 				startWith(''),
@@ -80,42 +89,49 @@ export class AutocompleteComponent {
 					return this._filter(value || '');
 				}),
 			);
-			// console.log(`this.formGroup.get(${this.valueField})?.value`, this.formGroup.get(this.valueField)?.value)
-			// console.log('data', data)
 		});
 
+	}
+
+	public getValueFieldValue(item: any): string {
+		const fields = this.valueField.split('.');
+		let fieldValue = item;
+		for (const field of fields) {
+			fieldValue = fieldValue[field];
+		}
+		return fieldValue;
+	}
+
+	public getLabelFieldValue(item: any): string {
+		const fields = this.labelField.split('.');
+		let fieldValue = item;
+		for (const field of fields) {
+			fieldValue = fieldValue[field];
+		}
+		return fieldValue;
 	}
 
 	public isDisabled = false;
 
 	public onSelectionChange(event: any) {
 		const selectedValue = event.source.value;
-		const foundOption = this.options?.find(o => o[this.valueField] === selectedValue)
+		const foundOption = this.options?.find(o => this.getValueFieldValue(o) === selectedValue)
 		// console.log('selectedValue', selectedValue)
 		// console.log('foundOption[this.valueField])', foundOption[this.valueField])
 		this.isDisabled = true;
-		this.autocompleFormGroup.get('search')?.setValue(foundOption[this.labelField])
-		if (this.valueField)
-			this.formGroup.get(this.valueField)?.setValue(selectedValue);
-
-		// const selectedValue = event.source.value;
-		// const foundOption = this.options?.find(o => o[this.labelField] === selectedValue)
-		// console.log('selectedValue', selectedValue)
-		// console.log('foundOption[this.valueField])', foundOption[this.valueField])
-		// this.isDisabled = true;
-		// if (this.valueField)
-		// 	this.formGroup.get(this.valueField)?.setValue(foundOption[this.valueField]);
+		this.autocompleFormGroup.get('search')?.setValue(this.getLabelFieldValue(foundOption))
+		this.formGroup.get(this.formField)?.setValue(selectedValue);
 	}
 
 	public clear() {
 		this.isDisabled = false;
-		this.formGroup?.get(this.valueField ?? '')?.setValue('');
+		this.formGroup.get(this.formField)?.setValue('');
 		this.autocompleFormGroup?.get('search')?.setValue('');
 	}
 
 	public _filter(value: string): any[] {
 		const filterValue = value.toLowerCase();
 		// console.log('filter value: ', filterValue)
-		return this.options?.filter(option => (option[this.labelField ?? ""].toLowerCase().includes(filterValue))) || [];
+		return this.options?.filter(option => (this.getLabelFieldValue(option).toLowerCase().includes(filterValue))) || [];
 	}
 }

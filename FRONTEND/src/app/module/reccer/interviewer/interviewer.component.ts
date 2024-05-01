@@ -19,10 +19,11 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Subject, debounceTime, startWith } from 'rxjs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MomentDateAdapter, } from '@angular/material-moment-adapter';
-import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
+import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InterviewHistoryComponent } from './interview-history/interview-history.component';
 import { InterviewService } from '../../../data/interview/interview.service';
+import { AddFormComponent } from '../interview/add-form/add-form.component';
 export const MY_FORMATS = {
 	parse: {
 		dateInput: 'DD/MM/YYYY',
@@ -96,6 +97,34 @@ export class InterviewerComponent implements OnInit {
 		}
 	}
 
+	public openAddInterviewDialog(
+		interviewerId: string | undefined,
+		enterAnimationDuration: string,
+		exitAnimationDuration: string,
+	): void {
+		if (interviewerId) {
+			const dialogRef = this.dialog.open(AddFormComponent, {
+				viewContainerRef: this.viewContainerRef,
+				data: {
+					recruiter: this.recruiter,
+					interviewerId: interviewerId,
+				},
+				width: '1000px',
+				height: '500px',
+				enterAnimationDuration,
+				exitAnimationDuration,
+			});
+			dialogRef.afterClosed().subscribe(() => {
+				const formValue = this.filterForm.value;
+				formValue.fromDate = this.customDateService.sameValueToUTC(formValue.fromDate, true);
+				formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
+				this.fetchInterviewers(this.recruiter?.companyId, formValue);
+			})
+		}
+
+	}
+
+
 	public openInterviewsHistoryDialog(
 		interviewerId: string | undefined,
 		enterAnimationDuration: string,
@@ -144,7 +173,7 @@ export class InterviewerComponent implements OnInit {
 		this.filterSubject.pipe(debounceTime(300)).subscribe((formValue) => {
 			formValue.fromDate = this.customDateService.sameValueToUTC(formValue.fromDate, true);
 			formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
-			this.fetchInterviewers(this.recruiter?.recruiterId, formValue);
+			this.fetchInterviewers(this.recruiter?.companyId, formValue);
 		});
 
 	}

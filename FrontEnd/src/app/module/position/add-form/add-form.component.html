@@ -64,7 +64,7 @@
 			</div>
 
 			<mat-form-field>
-				<mat-label>Time</mat-label>
+				<mat-label>Date</mat-label>
 				<mat-date-range-input [rangePicker]="picker">
 					<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
 						formControlName="startDate" placeholder="Start date">
@@ -88,12 +88,12 @@
 				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>
 
-			<app-autocomplete [valueField]="'languageId'" [labelField]="'languageName'" [label]="'Language'"
-				[placeholder]="'Ex. English, French'" [observableOptions]="this.observableLanguages"
-				[formGroup]="this.addForm"></app-autocomplete>
+			<app-autocomplete [formField]="'languageId'" [valueField]="'languageId'" [labelField]="'languageName'"
+				[label]="'Language'" [placeholder]="'Ex. English, French'"
+				[observableOptions]="this.observableLanguages" [formGroup]="this.addForm"></app-autocomplete>
 
-			<app-autocomplete [valueField]="'categoryPositionId'" [labelField]="'categoryPositionName'"
-				[label]="'Category'" [placeholder]="'Ex. Digital, Technical'"
+			<app-autocomplete [formField]="'categoryPositionId'" [valueField]="'categoryPositionId'"
+				[labelField]="'categoryPositionName'" [label]="'Category'" [placeholder]="'Ex. Digital, Technical'"
 				[observableOptions]="this.observableCategoryPositions" [formGroup]="this.addForm"></app-autocomplete>
 
 			<mat-form-field>

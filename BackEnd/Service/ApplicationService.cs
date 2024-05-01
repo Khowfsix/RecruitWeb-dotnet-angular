@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.CustomModel.Application;
 using Data.Entities;
+using Data.Enums;
 using Data.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
@@ -147,7 +148,8 @@ namespace Service
             if (canInBlacklist.Count > 0)
             {
                 //candidate_status is "pending" default
-                data.Company_Status = -1;
+                data.Candidate_Status = (int?)EApplicationCandidateStatus.PENDING;
+                data.Company_Status = (int?)EApplicationCompanyStatus.PENDING;
             }
 
             var response = await _applicationRepository.SaveApplication(data);
@@ -188,7 +190,7 @@ namespace Service
 
             if (Candidate_Status.HasValue)
             {
-                if (oldData.Candidate_Status!.Value == 10100 && Candidate_Status.Value == 10101)
+                if (oldData.Candidate_Status == (int?)EApplicationCandidateStatus.PENDING && Candidate_Status.Value == (int?)EApplicationCandidateStatus.PASSED)
                     oldData!.Candidate_Status = Candidate_Status;
                 else
                     return await Task.FromResult(false);
@@ -196,7 +198,7 @@ namespace Service
 
             if (Company_Status.HasValue)
             {
-                if (oldData.Company_Status!.Value == 10200 && (Company_Status.Value == 10201 || Company_Status.Value == 10202))
+                if (oldData.Company_Status!.Value < Company_Status.Value)
                     oldData!.Company_Status = Company_Status;
                 else
                     return await Task.FromResult(false);

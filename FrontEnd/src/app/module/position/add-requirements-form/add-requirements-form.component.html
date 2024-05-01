@@ -22,11 +22,11 @@
 						</div>
 					</div>
 
-					@if(formGroup.get(this.fieldName??'')?.invalid){
-					@if(formGroup.get(this.fieldName??'')?.hasError('required')){
+					@if(formGroup.get(this.fieldName)?.invalid){
+					@if(formGroup.get(this.fieldName)?.hasError('required')){
 					<div style="color: red;">Required.</div>
 					}
-					@if(formGroup.get(this.fieldName??'')?.hasError('invalid')){
+					@if(formGroup.get(this.fieldName)?.hasError('invalid')){
 					<div style="color: red;">Invalid value.</div>
 					}
 					}
@@ -35,8 +35,8 @@
 
 		</div>
 		<div class="d-flex flex-column">
-			<app-autocomplete [valueField]="'skillId'" [labelField]="'skillName'" [label]="'Skill'"
-				[placeholder]="'Ex. Blabla'" [observableOptions]="this.observableSkills"
+			<app-autocomplete [formField]="'skillId'" [valueField]="'skillId'" [labelField]="'skillName'"
+				[label]="'Skill'" [placeholder]="'Ex. Blabla'" [observableOptions]="this.observableSkills"
 				[formGroup]="this.addForm"></app-autocomplete>
 
 			<!-- <button (click)="log()"></button> -->

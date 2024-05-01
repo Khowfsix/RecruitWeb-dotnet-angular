@@ -15,6 +15,8 @@ import { ElementRef, Renderer2 } from '@angular/core';
 export class ExpandbuttonComponent implements OnInit {
 	@Input()
 	public notExpandLabel?: string;
+	@Input()
+	public disabled?: boolean;
 	@Input({ required: true })
 	public expandedLabel?: string;
 
@@ -24,7 +26,7 @@ export class ExpandbuttonComponent implements OnInit {
 	public expandedWidth?: string;
 
 	@Input()
-	public icon?: 'add' | 'save' | 'delete' | 'multi-mail' | 'mail';
+	public icon?: 'add' | 'save' | 'delete' | 'multi-mail' | 'mail' | 'check';
 	@Input()
 	public color?: 'primary' | 'accent' | 'warn';
 

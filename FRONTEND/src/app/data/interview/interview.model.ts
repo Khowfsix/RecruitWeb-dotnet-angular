@@ -1,4 +1,4 @@
-import { Interview_CandidateStatus, Interview_CompanyStatus } from "../../shared/constant/enum.model";
+import { Interview_CandidateStatus, Interview_CompanyStatus } from "../../shared/enums/EInterview.model";
 import { Application } from "../application/application.model"
 import { Interviewer } from "../interviewer/interviewer.model"
 import { Recruiter } from "../recruiter/recruiter.model"

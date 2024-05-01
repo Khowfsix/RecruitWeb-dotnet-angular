@@ -2,7 +2,9 @@
 	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
 		<div class="fs-3 p-4" style="margin: auto; margin-top: 50px; margin-bottom: 20px;">APPLICATION LIST</div>
 	</div>
-
+	<div class="mt-2 mb-2 d-flex me-4 flex-row-reverse fs-3">
+		Result count: {{this.fetchedApplications?.length}}
+	</div>
 	<div class="d-flex flex-row" style="height: fit-content; margin-bottom: 20px;">
 		<div class="p-2 rounded-3" style="width: 25%; background-color: rgb(37, 114, 176); height: fit-content;">
 			<div class="mt-2 ms-4" style="width: 100%; color: white; font-size: 18px; font-weight: 600;">FILTER</div>
@@ -32,9 +34,23 @@
 					<mat-label>Status</mat-label>
 					<mat-select formControlName="companyStatus">
 						<mat-option value=""></mat-option>
-						<mat-option value="{{this.application_CompanyStatus.Pending}}">Pending</mat-option>
-						<mat-option value="{{this.application_CompanyStatus.Accecpted}}">Accecpted</mat-option>
-						<mat-option value="{{this.application_CompanyStatus.Rejected}}">Rejected</mat-option>
+						<mat-option style="color: darkgoldenrod"
+							value="{{this.application_CompanyStatus.PENDING}}">PENDING</mat-option>
+						<mat-option style="color: darkgoldenrod"
+							value="{{this.application_CompanyStatus.NEED_SCHEDULE}}">NEED SCHEDULE</mat-option>
+						<mat-option style="color: darkgreen"
+							value="{{this.application_CompanyStatus.SCHEDULED}}">SCHEDULED</mat-option>
+						<mat-option style="color: darkgreen"
+							value="{{this.application_CompanyStatus.CAND_ACCEPTED}}">CANDIDATE
+							ACCEPTED</mat-option>
+						<mat-option style="color: darkred"
+							value="{{this.application_CompanyStatus.CAND_REJECTED}}">CANDIDATE
+							REJECTED</mat-option>
+						<mat-option style="color: darkgreen"
+							value="{{this.application_CompanyStatus.CONFIRM_N_MAILED}}">CONFIRM AND
+							MAILED</mat-option>
+						<mat-option style="color: darkred"
+							value="{{this.application_CompanyStatus.REJECTED}}">REJECTED</mat-option>
 					</mat-select>
 				</mat-form-field>
 				<section
@@ -66,9 +82,9 @@
 		</div>
 		<div class="p-2" style="width: 75%; height: 570px; overflow-y: scroll;">
 			@for (item of fetchedApplications ; track item) {
-			<div class="d-flex flex-row align-items-center p-2" style="width: 100%; height: fit-content;">
+			<div class="d-flex flex-row align-items-center p-2 my-4" style="width: 100%; height: fit-content;">
 				<div class="d-flex flex-row"
-					style="width: 60%; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; width: 60%; height: 150px; background-color: rgb(241, 199, 136);">
+					style="width: 60%; box-shadow: 0px 4px 8px rgba(236, 210, 210, 0.5); border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; width: 60%; height: 150px; background-color: rgb(241, 199, 136);">
 					<div style="width: 80%;">
 						<div class="p-1 ps-4 shadow"
 							style="color: #ffffff; font-weight: 500; font-size: 17px; border-top-left-radius: 0.25rem; border-bottom-right-radius: 0.9rem; width: 100%; background-color: rgb(0, 32, 149);">
@@ -84,26 +100,47 @@
 							</div>
 							}
 						</div>
-						<div class="p-2">
-							<span>Status:
+						<div class="p-2 d-flex flex-row w-100">
+							<div>Status:
 								@switch (item.company_Status) {
-								@case (this.application_CompanyStatus.Pending) {
-								<span class="p-2 rounded-3 bg-warning text-dark">
-									Pending
+								@case (this.application_CompanyStatus.PENDING) {
+								<span class="p-2 rounded-3 bg-warning text-dark fw-bold">
+									PENDING
 								</span>
 								}
-								@case (this.application_CompanyStatus.Accecpted) {
-								<span class="p-2 rounded-3 bg-success text-white">
-									Accecpted
+								@case (this.application_CompanyStatus.NEED_SCHEDULE) {
+								<span class="p-2 rounded-3 fw-bold"
+									style="background-color: white; color: darkgoldenrod;">
+									NEED SCHEDULE
 								</span>
 								}
-								@case (this.application_CompanyStatus.Rejected) {
-								<span class="p-2 rounded-3 bg-danger text-white">
-									Rejected
+								@case (this.application_CompanyStatus.SCHEDULED){
+								<span class="p-2 rounded-3 fw-bold" style="background-color: white; color: green;">
+									SCHEDULED
+								</span>
+								}
+								@case (this.application_CompanyStatus.CAND_ACCEPTED){
+								<span class="p-2 rounded-3 fw-bold" style="background-color: white; color: green;">
+									CANDIDATE ACCEPTED
+								</span>
+								}
+								@case (this.application_CompanyStatus.CAND_REJECTED){
+								<span class="p-2 rounded-3 fw-bold bg-danger text-white">
+									CANDIDATE REJECTED
+								</span>
+								}
+								@case (this.application_CompanyStatus.CONFIRM_N_MAILED){
+								<span class="p-2 rounded-3 bg-success text-white fw-bold">
+									CONFIRM AND MAILED
+								</span>
+								}
+								@case (this.application_CompanyStatus.REJECTED) {
+								<span class="p-2 rounded-3 bg-danger text-white fw-bold">
+									REJECTED
 								</span>
 								}
 								}
-							</span>
+							</div>
 						</div>
 
 					</div>
@@ -129,26 +166,51 @@
 									<mat-icon>more_vert</mat-icon>
 								</div>
 								<mat-menu style="font-size: 15px;" #menu="matMenu">
-									<button
-										(click)="openViewApplicationHistoryDialog(item.cv?.candidateId, '100ms', '0ms')"
+									<button class="bg-secondary text-white"
+										(click)=" openViewApplicationHistoryDialog(item.cv?.candidateId, '100ms' , '0ms' )"
 										mat-menu-item><i class="bi bi-clock-history"></i>
 										View
 										History</button>
-									@if (item.company_Status !== this.application_CompanyStatus.Pending) {
-									<button disabled="true" style="color: green;" class="text-green" mat-menu-item><i
-											class="bi bi-check-circle-fill"></i> Accecpt</button>
-									<button disabled="true" style="color: red;" class="text-red" mat-menu-item><i
-											class="bi bi-ban-fill"></i> Reject</button>
-									}
-									@else {
+									<button class="bg-info text-white"
+										(click)="openGmailSearch(item.cv?.candidate?.user?.email)" mat-menu-item><i
+											class="bi bi-envelope-at-fill"></i> View All Mail</button>
+									@if (item.company_Status === this.application_CompanyStatus.PENDING) {
 									<button
-										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.Accecpted , item.applicationId)"
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.NEED_SCHEDULE, item.applicationId)"
 										style="color: green;" class="text-green" mat-menu-item><i
-											class="bi bi-check-circle-fill"></i> Accecpt</button>
+											class="bi bi-check-circle-fill"></i> NEED SCHEDULE</button>
 									<button
-										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.Rejected, item.applicationId)"
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.REJECTED, item.applicationId)"
 										style="color: red;" class="text-red" mat-menu-item><i
-											class="bi bi-ban-fill"></i> Reject</button>
+											class="bi bi-ban-fill"></i> REJECTED</button>
+									}
+									@if (item.company_Status === this.application_CompanyStatus.NEED_SCHEDULE){
+									<button (click)="this.openEmail(item.cv?.candidate?.user?.email)"
+										class="text-white bg-success" mat-menu-item><i
+											class="bi bi-envelope-at-fill"></i> Set Up Schedule</button>
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.SCHEDULED , item.applicationId)"
+										style="color: green;" mat-menu-item><i class="bi bi-check-circle-fill"></i>
+										SCHEDULED</button>
+									}
+									@if (item.company_Status === this.application_CompanyStatus.SCHEDULED){
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.CAND_ACCEPTED , item.applicationId)"
+										style="color: green;" mat-menu-item><i class="bi bi-person-fill-check"></i>
+										CANDIDATE ACCEPTED</button>
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.CAND_REJECTED , item.applicationId)"
+										style="color: red;" mat-menu-item><i class="bi bi-person-fill-dash"></i>
+										CANDIDATE REJECTED</button>
+									}
+									@if (item.company_Status === this.application_CompanyStatus.CAND_ACCEPTED){
+									<button (click)="this.openEmail(item.cv?.candidate?.user?.email)"
+										class="text-white bg-success" mat-menu-item><i
+											class="bi bi-envelope-at-fill"></i> Write Confirm Email</button>
+									<button
+										(click)="openConfirmDialog('100ms', '0ms', this.application_CompanyStatus.CONFIRM_N_MAILED , item.applicationId)"
+										style="color: green;" mat-menu-item><i class="bi bi-check-circle-fill"></i>
+										CONFIRMED</button>
 									}
 								</mat-menu>
 

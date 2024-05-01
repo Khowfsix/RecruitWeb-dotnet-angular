@@ -13,7 +13,7 @@
 		<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
 			@for (option of filteredOptions | async; track option) {
 			<mat-option (onSelectionChange)="this.onSelectionChange($event)"
-				[value]="option[this.valueField]">{{option[this.labelField]}}</mat-option>
+				[value]="option[this.valueField]">{{this.getLabelFieldValue(option)}}</mat-option>
 			}
 		</mat-autocomplete>
 

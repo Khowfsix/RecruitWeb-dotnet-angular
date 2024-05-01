@@ -308,7 +308,22 @@ namespace Data.Mapping
             #endregion Itrsinterview
 
             #region Interview
+            CreateMap<Interview, Interview > ()
+               .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
+               {
+                   if (srcMember is Guid guidValue)
+                   {
+                       if (guidValue == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                           return false;
+                   }
 
+                   if (srcMember == null)
+                   {
+                       return false;
+                   }
+
+                   return true;
+               }));
             CreateMap<InterviewFilter, InterviewFilterModel>().ReverseMap();
             CreateMap<Interview, InterviewModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewUpdateModel>().ReverseMap();

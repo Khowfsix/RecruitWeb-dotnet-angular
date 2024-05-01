@@ -1,1 +1,13 @@
-<p>send-multi-email works!</p>
+<div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center" style=" background:
+	linear-gradient(to right, #364cc7, #cf6868); padding: 40px 40px 40px 40px;" [formGroup]="this.statusForm">
+	<div class="fs-4 mb-5 text-white">MAIL TO MULTIPLE CANDIDATE</div>
+	<mat-form-field style="width: 100%;">
+		<mat-label>Interview Result</mat-label>
+		<mat-select formControlName="status">
+			<mat-option [value]=""></mat-option>
+			<mat-option [value]="this.interview_CompanyStatus.PASSED">PASSED</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<button class="w-75" mat-raised-button (click)="this.openEmail()" color="accent"
+		[disabled]="!this.statusForm.valid">Submit</button>
+</div>

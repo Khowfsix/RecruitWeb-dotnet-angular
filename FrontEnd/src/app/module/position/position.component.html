@@ -28,6 +28,10 @@
 							<option class="p-2" value="MaxHiringQty_ASC">Hiring Quantity (Low to high)</option>
 						</select>
 					</div>
+
+					<div class="mt-2 d-flex ms-4 flex-row-reverse fs-3">
+						Result count: {{this.fetchedPositions?.length}}
+					</div>
 				</div>
 
 				@for (position of fetchedPositions; track position) {

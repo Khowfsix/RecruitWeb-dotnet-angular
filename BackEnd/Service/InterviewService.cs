@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.CustomModel.Interviewer;
 using Data.Entities;
+using Data.Enums;
 using Data.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
@@ -44,8 +45,8 @@ public class InterviewService : IInterviewService
 
     public async Task<InterviewModel> SaveInterview(InterviewModel interviewModel)
     {
-        interviewModel.Candidate_Status = 020100;
-        interviewModel.Company_Status = 020200;
+        interviewModel.Candidate_Status = (int?)EInterviewCandidateStatus.NOT_START;
+        interviewModel.Company_Status = (int?)EInterviewCompanyStatus.PENDING;
         var interviewData = _mapper.Map<Interview>(interviewModel);
 
         var response = await _interviewRepository.SaveInterview(interviewData);
@@ -61,6 +62,11 @@ public class InterviewService : IInterviewService
 
     public async Task<bool> UpdateInterview(InterviewModel interviewModel, Guid interviewModelId)
     {
+        var foundInterview = await this.GetInterviewById(interviewModelId);
+        if (foundInterview != null) 
+            return await Task.FromResult(false);
+        if (foundInterview!.Company_Status != (int?)EInterviewCompanyStatus.PENDING)
+            return await Task.FromResult(false);
         var data = _mapper.Map<Interview>(interviewModel);
         return await _interviewRepository.UpdateInterview(data, interviewModelId);
     }
@@ -119,38 +125,17 @@ public class InterviewService : IInterviewService
 
         if (Candidate_Status.HasValue)
         {
+            if (oldData!.Candidate_Status!.Value >= Candidate_Status.Value)
+                return await Task.FromResult(false);
             oldData!.Candidate_Status = Candidate_Status!;
         }
 
         if (Company_Status.HasValue)
         {
+            if (oldData!.Company_Status!.Value >= Company_Status.Value)
+                return await Task.FromResult(false);
             oldData!.Company_Status = Company_Status!;
         }
-
-        #region old status
-
-        //if (data.Company_Status == "Pending")
-        //{
-        //    if (newStatus.Equals("Rejected"))
-        //    {
-        //        // Do nothing
-        //    }
-        //    else if (newStatus.Equals("Accepted"))
-        //    {
-        //        data.Candidate_Status = "Passing";
-        //    }
-        //}
-        //else if (newStatus.Equals("Accepted"))
-        //{
-        //    // Do nothing
-        //}
-        //else
-        //{
-        //    // newStatus == "Rejected"
-        //    //Do nothing
-        //}
-
-        #endregion old status
 
         return await _interviewRepository.UpdateInterview(oldData!, interviewId);
     }

@@ -35,25 +35,15 @@ import { FileService } from '../../../data/file/file-service.service';
 import { AddRequirementsFormComponent } from '../add-requirements-form/add-requirements-form.component';
 import { RequirementsService } from '../../../data/requirements/requirements.service';
 import { Requirements } from '../../../data/requirements/requirements.model';
-import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
+import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
+import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'DD/MM/YYYY',
-	},
-	display: {
-		dateInput: 'DD/MM/YYYY',
-		monthYearLabel: 'YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'YYYY',
-	},
-};
 @Component({
 	selector: 'app-add-form',
 	standalone: true,
 	providers: [
 		{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-		{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+		{ provide: MAT_DATE_FORMATS, useValue: MY_DAY_FORMATS },
 	],
 	imports: [
 		MatProgressSpinnerModule,

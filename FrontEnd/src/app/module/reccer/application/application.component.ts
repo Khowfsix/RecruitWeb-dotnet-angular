@@ -26,10 +26,10 @@ import { ApplicationHistoryService } from '../../../data/applicationHistory/appl
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { ApplicationHistoryComponent } from './application-history/application-history.component';
 import { CandidateJoinEventService } from '../../../data/candidateJoinEvent/candidate-join-event.service';
-import { Application_CompanyStatus } from '../../../shared/constant/enum.model';
+import { Application_CandidateStatus, Application_CompanyStatus } from '../../../shared/enums/EApplication.model.';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ToastrService } from 'ngx-toastr';
-import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
+import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 export const MY_FORMATS = {
@@ -50,6 +50,8 @@ export const MY_FORMATS = {
 		{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
 		{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
 	],
+	templateUrl: './application.component.html',
+	styleUrl: './application.component.css',
 	imports: [
 		MatDatepickerModule,
 		MatButtonToggleModule,
@@ -69,9 +71,7 @@ export const MY_FORMATS = {
 		MatFormField,
 		DatePipe,
 		CommonModule,
-	],
-	templateUrl: './application.component.html',
-	styleUrl: './application.component.css'
+	]
 })
 export class ApplicationComponent implements OnInit {
 	constructor(
@@ -133,6 +133,13 @@ export class ApplicationComponent implements OnInit {
 				});
 			});
 		}
+	}
+
+	openGmailSearch(email?: string) {
+		if (email) {
+			window.open(`https://mail.google.com/mail/u/0/#search/${email}`, '_blank');
+		}
+
 	}
 
 	public isInBlackList(candidateId: string | undefined) {
@@ -200,6 +207,13 @@ export class ApplicationComponent implements OnInit {
 
 		// console.log('fetchedCandidates', this.fetchedCandidates)
 		// console.log('fetchedApplications', this.fetchedApplications)
+	}
+
+	public openEmail(email?: string) {
+		if (email) {
+			window.open("https://mail.google.com/mail/?view=cm&fs=1&to=" + email, "_blank");
+		}
+
 	}
 
 	private filterSubject = new Subject<any>();
@@ -270,18 +284,24 @@ export class DeleteDialog {
 		private applicationService: ApplicationService,
 		private toastr: ToastrService,
 	) { }
+	public application_CompanyStatus: typeof Application_CompanyStatus = Application_CompanyStatus;
+	public application_CandidateStatus: typeof Application_CandidateStatus = Application_CandidateStatus;
 
 
 	public submit() {
 		if (this.data.applicationId && this.data.application_CompanyStatus)
-			this.applicationService.updateStatusApplication(this.data.applicationId, this.data.application_CompanyStatus).subscribe((data) => {
-				if (data === true) {
-					this.toastr.success("Status Updated!");
-				}
-				else {
-					this.toastr.error("Update status failed!");
-				}
-				this.dialogRef.close();
-			});
+			this.applicationService.updateStatusApplication(
+				this.data.applicationId,
+				this.data.application_CompanyStatus,
+				this.data.company_Status === this.application_CompanyStatus.NEED_SCHEDULE ? this.application_CandidateStatus.PASSED : undefined)
+				.subscribe((data) => {
+					if (data === true) {
+						this.toastr.success("Status Updated!");
+					}
+					else {
+						this.toastr.error("Update status failed!");
+					}
+					this.dialogRef.close();
+				});
 	}
 }
