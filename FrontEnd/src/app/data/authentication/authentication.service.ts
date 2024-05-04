@@ -8,7 +8,9 @@ import { WebUser } from './web-user.model';
 })
 export class AuthenticationService {
 
-	constructor(private api: API) { }
+	constructor(
+		private api: API
+	) { }
 
 	userLogin(): Observable<WebUser> {
 		return this.api.GET('/api/Authentication/UserLogin');

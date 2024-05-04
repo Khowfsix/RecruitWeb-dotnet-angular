@@ -35,6 +35,30 @@ export class AuthService {
 		return currentUser ? JSON.parse(currentUser) : null
 	}
 
+	getCandidateId_OfUser(): string | undefined {
+		const user = this.getLocalCurrentUser();
+		if (user?.candidates != undefined) {
+			return user.candidates[0].candidateId;
+		}
+		return undefined;
+	}
+
+	getInterviewerId_OfUser(): string | undefined {
+		const user = this.getLocalCurrentUser();
+		if (user?.interviewers != undefined) {
+			return user.interviewers[0].interviewerId;
+		}
+		return undefined;
+	}
+
+	getRecruiterId_OfUser(): string | undefined {
+		const user = this.getLocalCurrentUser();
+		if (user?.recruiters != undefined) {
+			return user.recruiters[0].recruiterId;
+		}
+		return undefined;
+	}
+
 	get isLoggedIn() {
 		return this.loginStatus.asObservable();
 	}

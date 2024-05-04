@@ -1,2 +1,28 @@
 <p class="h1 text-center py-1">Manage CVs</p>
 <app-upload-cv></app-upload-cv>
+<mat-divider></mat-divider>
+<p class="h1 text-center py-3">Your CVs</p>
+
+<div class="card-container d-block">
+	@for (cv of listCvsOfCandidate; track $index) {
+	<div class="card p-3">
+		<mat-card class="example-card">
+			<mat-card-header>
+				<div mat-card-avatar class="example-header-image"></div>
+				<mat-card-title>{{ cv.cvName }}</mat-card-title>
+				<mat-card-subtitle>{{ cv.cvPdf }}</mat-card-subtitle>
+			</mat-card-header>
+			<!-- <img mat-card-image src="{{ item.image }}" alt="Photo of {{ item.title }}" /> -->
+			<mat-card-content>
+				<p>
+					{{ cv.aboutMe }}
+				</p>
+			</mat-card-content>
+			<mat-card-actions>
+				<button mat-button>LIKE</button>
+				<button mat-button>SHARE</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+	}
+</div>
