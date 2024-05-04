@@ -35,25 +35,15 @@ import { FileService } from '../../../data/file/file-service.service';
 import { AddRequirementsFormComponent } from '../add-requirements-form/add-requirements-form.component';
 import { RequirementsService } from '../../../data/requirements/requirements.service';
 import { Requirements } from '../../../data/requirements/requirements.model';
-import { CustomDateTimeService } from '../../../shared/utils/custom-datetime.service';
+import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
+import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'DD/MM/YYYY',
-	},
-	display: {
-		dateInput: 'DD/MM/YYYY',
-		monthYearLabel: 'YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'YYYY',
-	},
-};
 @Component({
 	selector: 'app-add-form',
 	standalone: true,
 	providers: [
 		{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-		{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+		{ provide: MAT_DATE_FORMATS, useValue: MY_DAY_FORMATS },
 	],
 	imports: [
 		MatProgressSpinnerModule,
@@ -132,30 +122,29 @@ export class AddFormComponent {
 
 	private setupValidators() {
 		this.addForm
-			.get('categoryPositionName')
-			?.setValue(this.isEditForm ? this.fetchCategoryPositions
-				.find(x => x.categoryPositionId === this.fetchObject.categoryPositionId)?.categoryPositionName : null);
+			.get('categoryPositionId')
+			?.setValue(this.isEditForm ? this.fetchObject.categoryPositionId : null);
 		this.addForm
-			.get('languageName')
+			.get('languageId')
 			?.setValidators([
 				Validators.required,
 				this.isInAllowedValues(
-					this.fetchLanguages.map((x) => x.languageName),
+					this.fetchLanguages.map((x) => x.languageId),
 				),
 			]);
 		this.addForm
-			.get('categoryPositionName')
+			.get('categoryPositionId')
 			?.setValidators([
 				Validators.required,
 				this.isInAllowedValues(
 					this.fetchCategoryPositions.map(
-						(x) => x.categoryPositionName,
+						(x) => x.categoryPositionId,
 					),
 				),
 			]);
 
-		this.addForm.get('languageName')?.updateValueAndValidity();
-		this.addForm.get('categoryPositionName')?.updateValueAndValidity();
+		this.addForm.get('languageId')?.updateValueAndValidity();
+		this.addForm.get('categoryPositionId')?.updateValueAndValidity();
 	}
 
 	public addForm: FormGroup = this.formBuilder.group({
@@ -190,8 +179,8 @@ export class AddFormComponent {
 		],
 		startDate: [this.isEditForm ? this.fetchObject.startDate : null, [Validators.required]],
 		endDate: [this.isEditForm ? this.fetchObject.endDate : null, [Validators.required]],
-		languageName: [this.isEditForm ? this.fetchObject.language?.languageName : '', [Validators.required]],
-		categoryPositionName: [this.isEditForm ? this.fetchCategoryPositions.find(x => x.categoryPositionId === this.fetchObject.categoryPositionId)?.categoryPositionName : null, [Validators.required]],
+		languageId: [this.isEditForm ? this.fetchObject.language?.languageId : '', [Validators.required]],
+		categoryPositionId: [this.isEditForm ? this.fetchObject.categoryPositionId : null, [Validators.required]],
 		requirements: [
 			this.isEditForm ? this.fetchObject.requirements?.filter(e => e.isDeleted === false) : [],
 			[
@@ -215,6 +204,7 @@ export class AddFormComponent {
 	}
 
 	ngOnInit(): void {
+		console.log('fetchObject', this.fetchObject);
 		if (this.isEditForm) {
 			this.addForm.disable();
 			this.fetchObject.requirements = this.fetchObject.requirements?.filter(e => e.isDeleted === false);
@@ -262,8 +252,8 @@ export class AddFormComponent {
 			this.FileService.uploadFile(formData).subscribe({
 				next: (response: any) => {
 					formValue.imageURL = response.url;
-					delete formValue.languageName;
-					delete formValue.categoryPositionName;
+					// delete formValue.languageName;
+					// delete formValue.categoryPositionName;
 					delete formValue.imageName;
 					delete formValue.imageFile;
 
@@ -273,15 +263,15 @@ export class AddFormComponent {
 						endDate: this.customDateService.sameValueToUTC(formValue.endDate, true),
 						recruiterId: this.currentRecruiter?.recruiterId,
 						companyId: this.currentRecruiter?.companyId,
-						languageId: this.fetchLanguages?.find(
-							(x) =>
-								x.languageName === this.addForm?.get('languageName')?.value,
-						)?.languageId,
-						categoryPositionId: this.fetchCategoryPositions?.find(
-							(x) =>
-								x.categoryPositionName ===
-								this.addForm?.get('categoryPositionName')?.value,
-						)?.categoryPositionId,
+						// languageId: this.fetchLanguages?.find(
+						// 	(x) =>
+						// 		x.languageName === this.addForm?.get('languageName')?.value,
+						// )?.languageId,
+						// categoryPositionId: this.fetchCategoryPositions?.find(
+						// 	(x) =>
+						// 		x.categoryPositionName ===
+						// 		this.addForm?.get('categoryPositionName')?.value,
+						// )?.categoryPositionId,
 					};
 					this.positionService.create(formValue).subscribe({
 						next: (resp: any) => {
@@ -339,8 +329,8 @@ export class AddFormComponent {
 	}
 
 	private callApiUpdatePosition(formValue: any) {
-		delete formValue.languageName;
-		delete formValue.categoryPositionName;
+		// delete formValue.languageName;
+		// delete formValue.categoryPositionName;
 		delete formValue.companyId;
 		delete formValue.recruiterId;
 		delete formValue.imageName;
@@ -350,15 +340,15 @@ export class AddFormComponent {
 			...formValue,
 			startDate: this.customDateService.sameValueToUTC(formValue.startDate, true),
 			endDate: this.customDateService.sameValueToUTC(formValue.endDate, true),
-			languageId: this.fetchLanguages?.find(
-				(x) =>
-					x.languageName === this.addForm?.get('languageName')?.value,
-			)?.languageId,
-			categoryPositionId: this.fetchCategoryPositions?.find(
-				(x) =>
-					x.categoryPositionName ===
-					this.addForm?.get('categoryPositionName')?.value,
-			)?.categoryPositionId,
+			// languageId: this.fetchLanguages?.find(
+			// 	(x) =>
+			// 		x.languageName === this.addForm?.get('languageName')?.value,
+			// )?.languageId,
+			// categoryPositionId: this.fetchCategoryPositions?.find(
+			// 	(x) =>
+			// 		x.categoryPositionName ===
+			// 		this.addForm?.get('categoryPositionName')?.value,
+			// )?.categoryPositionId,
 		};
 
 		this.positionService.update(this.fetchObject.positionId ?? '', formValue).subscribe({

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Data.CustomModel.Interviewer;
 using Data.Entities;
 using Data.Interfaces;
@@ -9,9 +10,11 @@ namespace Data.Repositories;
 public class InterviewRepository : Repository<Interview>, IInterviewRepository
 {
     private readonly IUnitOfWork _uow;
+    private readonly IMapper _mapper;
 
-    public InterviewRepository(RecruitmentWebContext context, IUnitOfWork uow) : base(context)
+    public InterviewRepository(RecruitmentWebContext context, IUnitOfWork uow, IMapper mapper) : base(context)
     {
+        _mapper = mapper;
         _uow = uow;
     }
 
@@ -176,11 +179,18 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
     {
         try
         {
-            request.InterviewId = requestId;
-
-            Entities.Update(request);
-            _uow.SaveChanges();
-            return await Task.FromResult(true);
+            var foundInterview = await Entities.FirstOrDefaultAsync(e => e.InterviewId == requestId);
+            if (foundInterview != null)
+            {
+                _mapper.Map(request, foundInterview);
+                Entities.Update(foundInterview);
+                _uow.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return await Task.FromResult(false);
+            }
         }
         catch (Exception e)
         {

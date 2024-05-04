@@ -3,6 +3,7 @@
     public class PositionFilterModel
     {
         public string? Search { get; set; }
+        public Guid? UserId { get; set; }
 
         public int? FromSalary { get; set; }
 

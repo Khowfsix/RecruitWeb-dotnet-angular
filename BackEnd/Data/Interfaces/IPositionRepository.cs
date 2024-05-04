@@ -7,6 +7,7 @@ namespace Data.Interfaces
     {
         Task<List<Position>> GetAllPositions(PositionFilter positionFilter,
             string sortString);
+        Task<List<Position>> GetAllByRecruiterId(Guid recruiterId);
 
         Task<List<Position>> GetAllPositionsByUserId(String userId);
 

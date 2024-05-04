@@ -1,0 +1,20 @@
+/* Định nghĩa animation */
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-50px);
+		/* Di chuyển lên trên */
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+		/* Trở về vị trí ban đầu */
+	}
+}
+
+/* Áp dụng animation cho phần tử */
+.slide-down {
+	animation: slideDown 0.5s ease forwards;
+	/* Thực hiện animation trong 0.5s */
+}

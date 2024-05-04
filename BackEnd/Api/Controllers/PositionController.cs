@@ -46,18 +46,24 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllPositions
             (
             [FromQuery] PositionFilterModel positionFilterModel,
+            Guid? recruiterId,
             string? sortString = "PositionName_ASC",
             int? pageIndex = 1,
             int? pageSize = 20
             )
         {
+            var isAdmin = HttpContext.User.IsInRole("Admin");
+            if (recruiterId.HasValue)
+            {
+                var models = await _positionService.GetAllByRecruiterId(recruiterId.Value, isAdmin);
 
+                return models != null ? Ok(_mapper.Map<List<PositionViewModel>>(models)) : NoContent();
+            }
             var filter = _mapper.Map<PositionFilter>(positionFilterModel);
             filter.CompanyIds = positionFilterModel.getListOfCompanyIds();
             filter.CategoryPositionIds = positionFilterModel.getListOfCategoryPositionIds();
             filter.LanguageIds = positionFilterModel.getListOfLanguageIds();
 
-            var isAdmin = HttpContext.User.IsInRole("Admin");
             var listModelDatas = await _positionService.GetAllPositions(isAdmin, filter, sortString!);
 
             var listPositionViewModel = _mapper.Map<List<PositionViewModel>>(listModelDatas);

@@ -12,7 +12,6 @@ namespace Api.Controllers;
 public class InterviewController : BaseAPIController
 {
     private readonly IInterviewService _interviewService;
-    private readonly IItrsinterviewService _itrsinterviewService;
 
     //private readonly IRoundService _roundService;
 
@@ -40,11 +39,9 @@ public class InterviewController : BaseAPIController
 
     public InterviewController(
         IInterviewService interviewService,
-        IItrsinterviewService itrsinterviewService,
         IMapper mapper)
     {
         _interviewService = interviewService;
-        _itrsinterviewService = itrsinterviewService;
         //_roundService 
         _mapper = mapper;
     }
@@ -134,29 +131,16 @@ public class InterviewController : BaseAPIController
         return Ok(_mapper.Map<List<InterviewViewModel>>(models));
     }
 
-    [HttpPost("{applicationId:guid}")]
+    [HttpPost]
     [Authorize(Roles = "Recruiter")]
-    public async Task<IActionResult> SaveInterview(InterviewWithTimeAddModel request, Guid applicationId)
+    public async Task<IActionResult> SaveInterview(InterviewAddModel interviewAddModel)
     {
-        if (request == null)
+        if (interviewAddModel == null)
         {
             return BadRequest();
         }
 
-        if (request.Interview == null)
-        {
-            return BadRequest();
-        }
-
-        var itrsModelData = _mapper.Map<ItrsinterviewModel>(request.ITRS);
-        var responseITRS = await _itrsinterviewService.SaveItrsinterview(itrsModelData, request.Interview.InterviewerId);
-        if (responseITRS! == null)
-        {
-            return StatusCode(StatusCodes.Status409Conflict);
-        }
-
-        request.Interview.ApplicationId = applicationId;
-        var interviewModelData = _mapper.Map<InterviewModel>(request.Interview);
+        var interviewModelData = _mapper.Map<InterviewModel>(interviewAddModel);
         var responseInterview = await _interviewService.SaveInterview(interviewModelData);
 
         if (responseInterview != null)
@@ -191,10 +175,6 @@ public class InterviewController : BaseAPIController
             return BadRequest();
         }
 
-        if (request.InterviewId != interviewId)
-        {
-            return BadRequest();
-        }
 
         //var responseITRS = await _itrsinterviewService.SaveItrsinterview(request.Itrsinterview!, request.InterviewerId);
         //if (responseITRS == null)

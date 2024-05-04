@@ -35,13 +35,15 @@ import { FilterComponent } from './filter/filter.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
-import { CustomDateTimeService } from '../../shared/utils/custom-datetime.service';
+import { CustomDateTimeService } from '../../shared/service/custom-datetime.service';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @Component({
 	selector: 'app-position',
 	standalone: true,
 	imports: [
+		MatSlideToggleModule,
 		CommonModule,
 		MatMenuModule,
 		MatButtonModule,
@@ -74,13 +76,23 @@ export class PositionComponent implements OnInit {
 	public totalMatchedInDb?: number;
 
 	private filterSubject = new Subject<any>();
-	private readonly debounceTimeMs = 300;
+
+	public handleOnlyMine(event: MatSlideToggleChange) {
+		if (event.checked) {
+			this.filterForm.get('userId')?.setValue(this.currentUser.id);
+		}
+		else {
+
+			this.filterForm.get('userId')?.setValue('');
+		}
+	}
 
 	public filterForm: FormGroup = this.formBuilder.group({
 		search: [
 			'',
 			[]
 		],
+		userId: ['', []],
 		fromSalary: [
 			null,
 			[Validators.pattern('^[0-9]*$')]

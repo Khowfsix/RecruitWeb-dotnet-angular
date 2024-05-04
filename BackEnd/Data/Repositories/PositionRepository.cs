@@ -72,6 +72,11 @@ namespace Data.Repositories
                     || o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
             }
 
+            if (positionFilter.UserId.HasValue)
+            {
+                query = query.Include(e => e.Recruiter).Where(e => e.Recruiter.UserId.Equals(positionFilter.UserId.Value.ToString()));
+            }
+
             if (positionFilter.FromSalary.HasValue && positionFilter.ToSalary.HasValue)
             {
                 query = query.Where(o => o.Salary >= positionFilter.FromSalary.Value);
@@ -114,6 +119,19 @@ namespace Data.Repositories
             var result = await query.ToListAsync();
 
             return result;
+        }
+        public async Task<List<Position>> GetAllByRecruiterId(Guid recruiterId)
+        {
+            var positionListWithName = await Entities
+                .Where(o => o.RecruiterId.Equals(recruiterId))
+                .Include(o => o.Requirements)
+                .Include(o => o.Company)
+                .Include(o => o.Language)
+                .Include(o => o.Recruiter)
+                .Include(o => o.CategoryPosition)
+                .ToListAsync();
+
+            return positionListWithName;
         }
 
         public async Task<List<Position>> GetAllPositionsByUserId(String userId)

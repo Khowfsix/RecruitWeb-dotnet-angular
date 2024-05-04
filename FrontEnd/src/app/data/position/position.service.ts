@@ -14,9 +14,14 @@ export class PositionService {
 		positionFilterModel?: PositionFilterModel,
 		sortString?: string,
 		pageIndex?: number,
-		pageSize?: number
+		pageSize?: number,
+		recruiterId?: string
 	): Observable<any> {
 		let url = '/api/Position?';
+
+		if (recruiterId) {
+			url += '&recruiterId=' + recruiterId;
+		}
 
 		if (positionFilterModel) {
 			url += this.buildQueryParams(positionFilterModel);
@@ -39,7 +44,9 @@ export class PositionService {
 
 	private buildQueryParams(positionFilterModel: PositionFilterModel): string {
 		let params = '';
-
+		if (positionFilterModel.userId) {
+			params += `&userId=${positionFilterModel.userId}`;
+		}
 		if (positionFilterModel.search) {
 			params += `&search=${encodeURIComponent(positionFilterModel.search)}`;
 		}

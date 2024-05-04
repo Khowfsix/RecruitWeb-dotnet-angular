@@ -19,7 +19,7 @@
 
         public virtual ICollection<ApplicationModel> Applications { get; set; }
 
-        public virtual CandidateModel Candidate { get; set; } = null!;
+        public CandidateModel Candidate { get; set; } = null!;
 
         //public virtual ICollection<CvHasSkillModel> CvHasSkills { get; set; } = null!;
     }

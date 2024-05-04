@@ -22,11 +22,11 @@
 						</div>
 					</div>
 
-					@if(formGroup.get(this.fieldName??'')?.invalid){
-					@if(formGroup.get(this.fieldName??'')?.hasError('required')){
+					@if(formGroup.get(this.fieldName)?.invalid){
+					@if(formGroup.get(this.fieldName)?.hasError('required')){
 					<div style="color: red;">Required.</div>
 					}
-					@if(formGroup.get(this.fieldName??'')?.hasError('invalid')){
+					@if(formGroup.get(this.fieldName)?.hasError('invalid')){
 					<div style="color: red;">Invalid value.</div>
 					}
 					}
@@ -35,8 +35,9 @@
 
 		</div>
 		<div class="d-flex flex-column">
-			<app-autocomplete [fieldName]="'skillName'" [label]="'Skill'" [placeholder]="'Ex. Blabla'"
-				[observableOptions]="this.observableSkills" [formGroup]="this.addForm"></app-autocomplete>
+			<app-autocomplete [formField]="'skillId'" [valueField]="'skillId'" [labelField]="'skillName'"
+				[label]="'Skill'" [placeholder]="'Ex. Blabla'" [observableOptions]="this.observableSkills"
+				[formGroup]="this.addForm"></app-autocomplete>
 
 			<!-- <button (click)="log()"></button> -->
 			<mat-form-field class="">
@@ -53,12 +54,6 @@
 			<mat-form-field class="">
 				<mat-label>Notes</mat-label>
 				<input matInput placeholder="Notes" formControlName="notes">
-				<!-- <input matInput placeholder="" formControlName="description"> -->
-				@if(addForm.get('notes')?.invalid){
-				@if(addForm.get('notes')?.hasError('required')){
-				<div style="color: red;">Required.</div>
-				}
-				}
 			</mat-form-field>
 			<div class="d-flex justify-content-center">
 				@if (this.formGroup.enabled){

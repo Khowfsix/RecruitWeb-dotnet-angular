@@ -47,12 +47,16 @@ namespace Data.Repositories
 
         public async Task<IEnumerable<Application>> GetAllApplicationsByPositionId(Guid positionId, ApplicationFilter? applicationFilter, string? sortString)
         {
-            var query = Entities.Select(o => o);
+            var query = Entities.Where(e => e.PositionId == positionId);
+            query = query
+                .Include(a => a.Cv.Candidate.User)
+                .Include(e => e.Cv.CvHasSkills).ThenInclude(e => e.Skill);
+
             if (!String.IsNullOrEmpty(applicationFilter!.Search))
             {
                 query = query.Where(o => 
-                (o.Cv.Candidate.User.FullName.ToLower().Contains(applicationFilter.Search.ToLower())
-                || o.Cv.CvHasSkills.First(o => o.Skill.SkillName.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
+                (o.Cv.Candidate.User!.FullName!.ToLower().Contains(applicationFilter.Search.ToLower())
+                || o.Cv.CvHasSkills.First(o => o.Skill.SkillName!.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
 
             }
             if (applicationFilter.FromDate.HasValue && applicationFilter.ToDate.HasValue)
@@ -72,9 +76,7 @@ namespace Data.Repositories
                 var sort = new Sort<Application>(sortString);
                 query = sort.getSort(query);
             }
-            var listData = await query.Where(e => e.PositionId == positionId)
-                .Include(a => a.Position)
-                .Include(a => a.Cv)
+            var listData = await query.AsNoTracking()
                 .ToListAsync();
 
             return listData;

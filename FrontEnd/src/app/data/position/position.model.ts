@@ -25,6 +25,7 @@ export class Position {
 
 export class PositionFilterModel {
 	search?: string;
+	userId?: boolean;
 	fromSalary?: number;
 	toSalary?: number;
 	fromMaxHiringQty?: number;
