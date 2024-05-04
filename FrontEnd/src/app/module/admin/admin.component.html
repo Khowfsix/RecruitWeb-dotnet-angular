@@ -1,4 +1,59 @@
-<p>admin works!</p>
 <div class="layout">
+	<div class="d-flex flex-column col-3 flex-shrink-0 p-3 text-white rounded" style="background-color: #5462b4">
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+			<span class="fs-4">Admin Dashboard</span>
+		</a>
+		<hr />
+		<ul class="nav nav-pills flex-column mb-auto">
+			<li class="nav-item">
+				<a
+					href="#dashboardSubmenu"
+					class="nav-link text-white"
+					data-bs-toggle="collapse"
+					role="button"
+					aria-expanded="false"
+					aria-controls="dashboardSubmenu">
+					Dashboard
+				</a>
+				<div class="collapse" id="dashboardSubmenu">
+					<ul class="list-group">
+						<a href="/overview" class="list-group-item list-group-item-action text-white bg-dark"
+							>Overview</a
+						>
+						<a href="/reports" class="list-group-item list-group-item-action text-white bg-dark">Reports</a>
+						<a href="/analytics" class="list-group-item list-group-item-action text-white bg-dark"
+							>Analytics</a
+						>
+					</ul>
+				</div>
+			</li>
+			<li class="nav-item">
+				<a href="/orders" class="nav-link text-white"> Orders </a>
+			</li>
+			<li class="nav-item">
+				<a
+					href="#productsSubmenu"
+					class="nav-link text-white"
+					data-bs-toggle="collapse"
+					role="button"
+					aria-expanded="false"
+					aria-controls="productsSubmenu">
+					Products
+				</a>
+				<div class="collapse" id="productsSubmenu">
+					<ul class="list-group">
+						<a href="/new-product" class="list-group-item list-group-item-action text-white bg-dark"
+							>New Product</a
+						>
+						<a href="/manage-products" class="list-group-item list-group-item-action text-white bg-dark"
+							>Manage Products</a
+						>
+					</ul>
+				</div>
+			</li>
+			<!-- Thêm các tab khác tại đây -->
+		</ul>
+		<hr />
+	</div>
 	<router-outlet></router-outlet>
 </div>

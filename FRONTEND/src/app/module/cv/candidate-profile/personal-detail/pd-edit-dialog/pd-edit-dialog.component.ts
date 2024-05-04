@@ -3,6 +3,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
@@ -25,6 +26,7 @@ import { PersonalDetailComponent } from '../personal-detail.component';
 		MatNativeDateModule,
 		MatSelectModule,
 		MatButtonModule,
+		MatStepperModule
 	],
 	templateUrl: './pd-edit-dialog.component.html',
 	styleUrl: './pd-edit-dialog.component.css'

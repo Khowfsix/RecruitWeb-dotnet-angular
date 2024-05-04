@@ -120,6 +120,7 @@ namespace Data.Mapping
             CreateMap<RecruiterModel, RecruiterAddModel>().ReverseMap();
             CreateMap<RecruiterModel, RecruiterUpdateModel>().ReverseMap();
             CreateMap<RecruiterModel, RecruiterViewModel>().ReverseMap();
+            CreateMap<Recruiter, RecruiterViewModel>().ReverseMap();
 
             #endregion Recruiter
 
@@ -221,6 +222,7 @@ namespace Data.Mapping
             CreateMap<CandidateModel, CandidateAddModel>().ReverseMap();
             CreateMap<CandidateModel, CandidateUpdateModel>().ReverseMap();
             CreateMap<CandidateModel, Api.ViewModels.Candidate.CandidateViewModel>().ReverseMap();
+            CreateMap<Candidate, CandidateViewModel>().ReverseMap();
 
             #endregion Candidate
 
@@ -324,6 +326,7 @@ namespace Data.Mapping
             CreateMap<InterviewerModel, InterviewerAddModel>().ReverseMap();
             CreateMap<InterviewerModel, InterviewerUpdateModel>().ReverseMap();
             CreateMap<InterviewerModel, InterviewerViewModel>().ReverseMap();
+            CreateMap<Interviewer, InterviewerViewModel>().ReverseMap();
 
             #endregion Interviewer
 

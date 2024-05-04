@@ -500,7 +500,13 @@ namespace Api.Controllers
         public async Task<IActionResult> GetIdCurrent()
         {
             var userName = HttpContext.User.Identity!.Name;
-            var user = await _userManager.FindByNameAsync(userName);
+            //var user = await _userManager.FindByNameAsync(userName);
+
+            var user = await _userManager.Users.Where(u => u.UserName == userName)
+                .Include(_ => _.Candidates)
+                .Include(_ => _.Interviewers)
+                .Include(_ => _.Recruiters)
+                .FirstOrDefaultAsync();
 
             if (user != null)
             {
@@ -532,7 +538,14 @@ namespace Api.Controllers
         public async Task<IActionResult> GetUserLogin()
         {
             var userName = HttpContext.User.Identity!.Name;
-            var user = await _userManager.FindByNameAsync(userName);
+            //var user = await _userManager.FindByNameAsync(userName);
+
+            var user = await _userManager.Users.Where(u => u.UserName == userName)
+                .Include(_ => _.Candidates)
+                .Include(_ => _.Interviewers)
+                .Include(_ => _.Recruiters)
+                .FirstOrDefaultAsync();
+
             if (user != null)
             {
                 var viewModelResponse = _mapper.Map<WebUserViewModel>(user);

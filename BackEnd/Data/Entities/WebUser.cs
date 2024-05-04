@@ -8,7 +8,7 @@ public partial class WebUser : IdentityUser
 
     public DateTime? DateOfBirth { get; set; }
 
-    public string? Address { get; set; } 
+    public string? Address { get; set; }
 
     public string? ImageURL { get; set; } = null;
 
