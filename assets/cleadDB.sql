@@ -1,23 +1,20 @@
-DECLARE @Sql NVARCHAR(500)
-DECLARE @Cursor CURSOR
+DECLARE @sql NVARCHAR(MAX) = N'';
 
-SET @Cursor = CURSOR FAST_FORWARD FOR
-SELECT DISTINCT sql = 'ALTER TABLE [' + tc2.TABLE_SCHEMA + '].[' +  tc2.TABLE_NAME + '] DROP [' + rc1.CONSTRAINT_NAME + '];'
-FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc1
-    LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc2 ON tc2.CONSTRAINT_NAME =rc1.CONSTRAINT_NAME
+-- Construct the dynamic SQL to drop all foreign key constraints
+SELECT @sql += 'ALTER TABLE ' + QUOTENAME(TABLE_SCHEMA) + '.' + QUOTENAME(TABLE_NAME) 
+               + ' DROP CONSTRAINT ' + QUOTENAME(CONSTRAINT_NAME) + ';'
+FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+WHERE CONSTRAINT_TYPE = 'FOREIGN KEY';
 
-OPEN @Cursor
-FETCH NEXT FROM @Cursor INTO @Sql
+-- Execute the dynamic SQL to drop all foreign key constraints
+EXEC sp_executesql @sql;
 
-WHILE (@@FETCH_STATUS = 0)
-BEGIN
-    Exec sp_executesql @Sql
-    FETCH NEXT FROM @Cursor INTO @Sql
-END
+SET @sql = N'';
 
-CLOSE @Cursor
-DEALLOCATE @Cursor
-GO
+-- Construct the dynamic SQL to drop all tables
+SELECT @sql += 'DROP TABLE ' + QUOTENAME(TABLE_SCHEMA) + '.' + QUOTENAME(TABLE_NAME) + ';'
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE';
 
-EXEC sp_MSforeachtable 'DROP TABLE ?'
-GO
+-- Execute the dynamic SQL to drop all tables
+EXEC sp_executesql @sql;

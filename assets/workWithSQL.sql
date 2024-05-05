@@ -1,23 +1,23 @@
 USE RecruitmentWeb
 
-BEGIN TRANSACTION
-DECLARE @user NVARCHAR(450);
-DECLARE @role NVARCHAR(450);
+-- BEGIN TRANSACTION
+-- DECLARE @user NVARCHAR(450);
+-- DECLARE @role NVARCHAR(450);
 
-SELECT @user=id
-from dbo.AspNetUsers AS u
-where UserName='lyhongphat';
+-- SELECT @user=id
+-- from dbo.AspNetUsers AS u
+-- where UserName='lyhongphat';
 
-SELECT @role=id
-from dbo.AspNetRoles
-where Name='Recruiter';
+-- SELECT @role=id
+-- from dbo.AspNetRoles
+-- where Name='Recruiter';
 
-insert into dbo.AspNetUserRoles
-    (UserId, RoleId)
-VALUES
-    (@user, @role);
+-- insert into dbo.AspNetUserRoles
+--     (UserId, RoleId)
+-- VALUES
+--     (@user, @role);
 
-commit TRANSACTION;
+-- commit TRANSACTION;
 
 -- SELECT *
 -- from dbo.Recruiter
@@ -31,30 +31,32 @@ select u.Id, u.UserName, ur.RoleId, r.Name as roleName
 from dbo.AspNetUsers as u JOIN dbo.AspNetUserRoles as ur on (u.Id = ur.UserId) JOIN dbo.AspNetRoles as r on (ur.RoleId = r.Id)
 
 select *
+from dbo.Candidate
+
+select *
 from dbo.[Position]
 select *
 from dbo.Candidate
 update dbo.[Position] set isDeleted = 0
 
-select *
-from dbo.CategoryPosition;
 
-INSERT [dbo].[CategoryPosition]
-    ([CategoryPositionId], [CategoryPositionName], [CategoryPositionDescription])
-VALUES
-    (N'9c740272-34ff-4ce2-9133-f87f71dda321', N'Management', N'Management')
-GO
-INSERT [dbo].[CategoryPosition]
-    ([CategoryPositionId], [CategoryPositionName], [CategoryPositionDescription])
-VALUES
-    (N'9c740272-34ff-4ce2-9133-f87f71dda325', N'Construction', N'Construction')
-GO
+
+-- INSERT [dbo].[CategoryPosition]
+--     ([CategoryPositionId], [CategoryPositionName], [CategoryPositionDescription])
+-- VALUES
+--     (N'9c740272-34ff-4ce2-9133-f87f71dda321', N'Management', N'Management')
+-- GO
+-- INSERT [dbo].[CategoryPosition]
+--     ([CategoryPositionId], [CategoryPositionName], [CategoryPositionDescription])
+-- VALUES
+--     (N'9c740272-34ff-4ce2-9133-f87f71dda325', N'Construction', N'Construction')
+-- GO
 
 select *
 from Recruiter;
+
 select *
 from Company;
 
-insert into Recruiter
-VALUES
-    (NEWID() , '17d997d5-cd99-485f-8785-a7a8897a44ba', '6194c385-2a47-42b0-aaa0-ad05fad09510', 0)
+SELECT *
+from refreshtoken
