@@ -59,4 +59,9 @@ select *
 from Company;
 
 SELECT *
-from refreshtoken
+FROM RecruitmentWeb.dbo.refreshtoken
+
+select *
+from dbo.AspNetUsers
+
+update AspNetUsers set EmailConfirmed=1 WHERE UserName='khowfsix'
