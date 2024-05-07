@@ -130,7 +130,7 @@ namespace Api.Controllers
                 await _dbContext.SaveChangesAsync();
 
                 //send email confirm
-                await ConfirmEmail(token, signUp.Email!);
+                //await ConfirmEmail(token, signUp.Email!);
                 SendEmailConfirmation(user.Email!, token);
 
                 //create candidate in database
@@ -216,6 +216,11 @@ namespace Api.Controllers
             if (user != null && await _userManager.CheckPasswordAsync(user: user, password: loginModel.Password))
             {
                 var authClaims = await GetClaims(user);
+
+                if (user.EmailConfirmed != true)
+                {
+                    return StatusCode(StatusCodes.Status200OK, new Response { Status = "Email need confirmed", Message = $"You need to confirm your Email {user.Email}" });
+                }
 
                 if (user.TwoFactorEnabled)
                 {
