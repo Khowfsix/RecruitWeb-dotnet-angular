@@ -37,6 +37,7 @@ import { RequirementsService } from '../../../data/requirements/requirements.ser
 import { Requirements } from '../../../data/requirements/requirements.model';
 import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
 	selector: 'app-add-form',
@@ -76,6 +77,7 @@ export class AddFormComponent {
 		private positionService: PositionService,
 		private customDateService: CustomDateTimeService,
 		private RequirementService: RequirementsService,
+		private authService: AuthService,
 	) { }
 
 	@Input()
@@ -94,15 +96,9 @@ export class AddFormComponent {
 		this.categoryPositionService.getAllCategoryPositions();
 	public fetchCategoryPositions: CategoryPosition[] = [];
 
-	public fetchRecruiterInfor(userId: string | undefined) {
-		if (userId) {
-			this.recruiterService.getRecruiterByUserId(userId).subscribe({
-				next: (data) => {
-					this.currentRecruiter = data;
-				},
-				error: (e) => console.error(e),
-			});
-		}
+	public getRecruiterInfor() {
+		this.currentRecruiter = this.authService.getLocalCurrentUser().recruiters?.pop();
+		// console.log('AAAAA', this.currentRecruiter)
 	}
 
 	private fetchAllLanguages() {
@@ -204,12 +200,12 @@ export class AddFormComponent {
 	}
 
 	ngOnInit(): void {
-		console.log('fetchObject', this.fetchObject);
+		// console.log('fetchObject', this.fetchObject);
 		if (this.isEditForm) {
 			this.addForm.disable();
 			this.fetchObject.requirements = this.fetchObject.requirements?.filter(e => e.isDeleted === false);
 		}
-		this.fetchRecruiterInfor(this.data.currentUserId);
+		this.getRecruiterInfor();
 		this.fetchAllLanguages();
 		this.fetchAllCategoryPositions();
 

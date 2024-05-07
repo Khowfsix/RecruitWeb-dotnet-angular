@@ -141,6 +141,8 @@ export class PositionComponent implements OnInit {
 		if (token !== '') {
 			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(token)));
 			this.curentUserRoles = authenPayload[nameTypeInToken.roles]
+			// console.log('authenPayload ', authenPayload)
+			// console.log('this.curentUserRoles ', this.curentUserRoles)
 		}
 		else {
 			this.curentUserRoles = null
