@@ -15,9 +15,10 @@ public partial class Event
     public string? ImageURL { get; set; }
 
     [Required]
-    public string Place { get; set; } 
+    public string Place { get; set; }
 
-    public DateTime? DatetimeEvent { get; set; }
+    public DateTime? StartDateTime { get; set; }
+    public DateTime? EndDateTime { get; set; }
 
     public int MaxParticipants { get; set; }
 

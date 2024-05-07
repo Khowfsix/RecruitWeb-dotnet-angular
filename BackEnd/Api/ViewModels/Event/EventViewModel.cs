@@ -17,7 +17,9 @@ namespace Api.ViewModels.Event
 
         public string? ImageURL { get; set; }
 
-        public DateTime? DatetimeEvent { get; set; }
+        public DateTime? StartDateTime { get; set; }
+
+        public DateTime? EndDateTime { get; set; }
 
         public int MaxParticipants { get; set; }
 
