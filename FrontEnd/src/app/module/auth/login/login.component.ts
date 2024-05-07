@@ -13,6 +13,7 @@ import { first } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { JWT } from '../../../data/authen/jwt.model';
 import { ToastrService } from 'ngx-toastr';
+import { BackendResponse } from '../../../data/response.interface';
 
 @Component({
 	selector: 'app-login',
@@ -51,32 +52,38 @@ export class LoginComponent implements OnInit {
 			.login(this.loginData)
 			.pipe(first())
 			.subscribe({
-				next: (data) => {
-					const jwtData: JWT = data as JWT;
-					const expTime = new Date().getDate() + 30;
-					this.CookieService.set('jwt', jwtData.accessToken, expTime, '/'); // save accesstoken
-					this.CookieService.set('refreshToken', jwtData.refreshToken, expTime, '/') // save refreshtoken
-					localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
+				next: (data: any) => {
+					if ('status' in data && data['status'] === 'Email need confirmed') {
+						this.toasts.error(data.message, "Logged in failed", { timeOut: 3000, closeButton: true, progressBar: true });
+						this.router.navigate(['/auth/confirm-email']);
+						return;
+					}
+					else if ('accessToken' in data) {
+						const jwtData: JWT = data as JWT;
+						const expTime = new Date().getDate() + 30;
+						this.CookieService.set('jwt', jwtData.accessToken, expTime, '/'); // save accesstoken
+						this.CookieService.set('refreshToken', jwtData.refreshToken, expTime, '/') // save refreshtoken
+						localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
 
-					this.authService.getCurrentUser().subscribe({
-						next: (data) => {
-							if (data !== null) {
-								// this.CookieService.set(
-								// 	'currentUser',
-								// 	JSON.stringify(data),
-								// );
-								localStorage.setItem('currentUser', JSON.stringify(data));
-								this.navigate_before();
-								this.toasts.success("Logged in successfully", "Success", { timeOut: 3000, closeButton: true, progressBar: true });
-							} else {
-								this.toasts.warning("Cann't get user information", "Warning!!!", { timeOut: 3000, closeButton: true, progressBar: true });
+						this.authService.getCurrentUser().subscribe({
+							next: (data) => {
+								if (data !== null) {
+									localStorage.setItem('currentUser', JSON.stringify(data));
+									this.navigate_before();
+									this.toasts.success("Logged in successfully", "Success", { timeOut: 3000, closeButton: true, progressBar: true });
+								} else {
+									this.authService.logout();
+									this.toasts.warning("Cann't get user information", "Warning!!!", { timeOut: 3000, closeButton: true, progressBar: true });
+								}
 							}
-						}
-					});
+						});
+					}
+
 				},
 				error: (error) => {
 					if (error.status === '401') {
 						this.toasts.error(error.message, "Logged in failed", { timeOut: 3000, closeButton: true, progressBar: true });
+						// this.authService.logout();
 					}
 				},
 				complete: () => { },

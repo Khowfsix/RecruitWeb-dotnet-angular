@@ -2,5 +2,6 @@
 	"gitlens.currentLine.format": "${author, }${agoOrDate}${' via 'pullRequest}${ • message|50?}",
 	"gitlens.currentLine.uncommittedChangesFormat": "✏️ ${ago}",
 	"gitlens.currentLine.enabled": true,
-	"gitlens.hovers.currentLine.over": "line"
+	"gitlens.hovers.currentLine.over": "line",
+	"editor.formatOnSave": true
 }

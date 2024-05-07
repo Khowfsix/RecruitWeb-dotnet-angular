@@ -17,4 +17,4 @@ import { ReactiveFormsModule } from '@angular/forms';
 		// các thành phần mà module này muốn xuất khẩu để module khác có thể sử dụng
 	],
 })
-export class AuthModule {}
+export class AuthModule { }

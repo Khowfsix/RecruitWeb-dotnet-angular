@@ -70,11 +70,11 @@ export class AuthService {
 	}
 
 	isValidUsername(username: string): Observable<boolean> {
-		return this.api.GET(`api/Authentication/IsValidUserName?username=${username}`);
+		return this.api.GET(`/api/Authentication/IsValidUserName?username=${username}`);
 	}
 
 	isValidEmail(email: string): Observable<boolean> {
-		return this.api.GET(`api/Authentication/IsValidEmail?email=${email}`);
+		return this.api.GET(`/api/Authentication/IsValidEmail?email=${email}`);
 	}
 
 	login(loginModel: Login): Observable<unknown> {
@@ -83,7 +83,8 @@ export class AuthService {
 	}
 
 	logout() {
-		this.api.POST('/api/Authentication/Logout');
+		const res = this.api.POST('/api/Authentication/Logout');
+		console.log(res);
 		console.error('clear cookie and local storage');
 		this.cookieService.delete('jwt');
 		this.cookieService.delete('refreshToken');
