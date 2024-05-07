@@ -13,6 +13,7 @@ import { InterviewComponent } from './module/reccer/interview/interview.componen
 import { CandidateProfileComponent } from './module/cv/candidate-profile/candidate-profile.component';
 import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
 import { JobPreferenceComponent } from './module/cv/job-preference/job-preference.component';
+import { EventComponent } from './module/reccer/event/event.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -44,6 +45,11 @@ export const routes: Routes = [
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 
 	{ path: 'positions', component: PositionComponent },
+
+	createRouteWithRoles('events', EventComponent, [
+		role.RECRUITER,
+		role.ADMIN,
+	]),
 
 	createRouteWithRoles('applications/:positionId', ApplicationComponent, [
 		role.RECRUITER,
