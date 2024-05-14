@@ -47,8 +47,11 @@ export class PositionService {
 		if (positionFilterModel.userId) {
 			params += `&userId=${positionFilterModel.userId}`;
 		}
+		if (positionFilterModel.negotiatedSalary) {
+			params += `&negotiatedSalary=${positionFilterModel.negotiatedSalary}`;
+		}
 		if (positionFilterModel.search) {
-			params += `&search=${encodeURIComponent(positionFilterModel.search)}`;
+			params += `&search=${encodeURIComponent(positionFilterModel.search.trim())}`;
 		}
 		if (positionFilterModel.fromSalary !== undefined) {
 			params += `&fromSalary=${encodeURIComponent(positionFilterModel.fromSalary)}`;

@@ -18,7 +18,8 @@ namespace Api.ViewModels.Position
 
         public string? Description { get; set; }
 
-        public decimal? Salary { get; set; }
+        public decimal? MinSalary { get; set; }
+        public decimal? MaxSalary { get; set; }
 
         public int MaxHiringQty { get; set; }
 

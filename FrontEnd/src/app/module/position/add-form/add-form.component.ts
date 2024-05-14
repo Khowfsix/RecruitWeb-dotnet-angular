@@ -37,6 +37,10 @@ import { RequirementsService } from '../../../data/requirements/requirements.ser
 import { Requirements } from '../../../data/requirements/requirements.model';
 import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
+import { AuthService } from '../../../core/services/auth.service';
+import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../../core/constants/position.env';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { GreaterOrEqualToDay } from '../../../shared/validators/date.validator';
 
 @Component({
 	selector: 'app-add-form',
@@ -46,6 +50,7 @@ import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 		{ provide: MAT_DATE_FORMATS, useValue: MY_DAY_FORMATS },
 	],
 	imports: [
+		MatSelectModule,
 		MatProgressSpinnerModule,
 		MatProgressBarModule,
 		MatButtonModule,
@@ -76,6 +81,7 @@ export class AddFormComponent {
 		private positionService: PositionService,
 		private customDateService: CustomDateTimeService,
 		private RequirementService: RequirementsService,
+		private authService: AuthService,
 	) { }
 
 	@Input()
@@ -94,15 +100,29 @@ export class AddFormComponent {
 		this.categoryPositionService.getAllCategoryPositions();
 	public fetchCategoryPositions: CategoryPosition[] = [];
 
-	public fetchRecruiterInfor(userId: string | undefined) {
-		if (userId) {
-			this.recruiterService.getRecruiterByUserId(userId).subscribe({
-				next: (data) => {
-					this.currentRecruiter = data;
-				},
-				error: (e) => console.error(e),
-			});
+	public enterMinMaxSalaryRange = false;
+
+	public selectSalaryOption: null | string = null;
+	public disabledEdit = false;
+	// public disabledSalaryOption = false
+
+	onSalaryChange(event: MatSelectChange) {
+		if (event.value !== undefined) {
+			if (event.value === 'MinMaxRange') {
+				this.enterMinMaxSalaryRange = true;
+				this.addForm.setValidators(this.RequireSalary('minSalary', 'maxSalary'));
+			}
+			else if (event.value === 'Negotiation') {
+				this.enterMinMaxSalaryRange = false;
+				this.addForm.setValidators(null);
+				this.addForm.get('minSalary')?.setValue(null);
+				this.addForm.get('maxSalary')?.setValue(null);
+			}
 		}
+	}
+
+	public getLocalRecruiterInfor() {
+		this.currentRecruiter = this.authService.getLocalCurrentUser().recruiters?.pop();
 	}
 
 	private fetchAllLanguages() {
@@ -110,7 +130,7 @@ export class AddFormComponent {
 			next: (data) => {
 				this.fetchLanguages = data;
 			},
-			error: (e) => console.error(e),
+			// error: (e) => console.error(e),
 		});
 	}
 
@@ -156,9 +176,15 @@ export class AddFormComponent {
 			this.isEditForm ? this.fetchObject.description : '',
 			[Validators.required]
 		],
-		salary: [
-			this.isEditForm ? this.fetchObject.salary : null,
-			[Validators.required, Validators.min(1), Validators.max(999999)]
+		minSalary: [
+			this.isEditForm ? this.fetchObject.minSalary : null,
+			[Validators.min(1), Validators.max(MAX_SALARY),
+			Validators.pattern('^[0-9]*$')]
+		],
+		maxSalary: [
+			this.isEditForm ? this.fetchObject.maxSalary : null,
+			[Validators.min(1), Validators.max(MAX_SALARY),
+			Validators.pattern('^[0-9]*$')]
 		],
 		imageName: [
 			this.isEditForm ? this.fetchObject.imageURL : null,
@@ -174,11 +200,11 @@ export class AddFormComponent {
 				Validators.required,
 				Validators.min(1),
 				Validators.pattern('^[0-9]*$'),
-				Validators.max(999),
+				Validators.max(MAX_MAX_HIRING_QTY),
 			],
 		],
-		startDate: [this.isEditForm ? this.fetchObject.startDate : null, [Validators.required]],
-		endDate: [this.isEditForm ? this.fetchObject.endDate : null, [Validators.required]],
+		startDate: [this.isEditForm ? this.fetchObject.startDate : null, [Validators.required, GreaterOrEqualToDay()]],
+		endDate: [this.isEditForm ? this.fetchObject.endDate : null, [Validators.required, GreaterOrEqualToDay()]],
 		languageId: [this.isEditForm ? this.fetchObject.language?.languageId : '', [Validators.required]],
 		categoryPositionId: [this.isEditForm ? this.fetchObject.categoryPositionId : null, [Validators.required]],
 		requirements: [
@@ -187,7 +213,30 @@ export class AddFormComponent {
 				Validators.required,
 			],
 		],
-	});
+	}, { validator: this.RequireSalary('minSalary', 'maxSalary') });
+
+	RequireSalary(minSalary: string, maxSalary: string) {
+		if (this.enterMinMaxSalaryRange === true) {
+			return (control: AbstractControl): { [key: string]: any } | null => {
+				const minSalaryValue = control.get(minSalary)?.value;
+				const maxSalaryValue = control.get(maxSalary)?.value;
+
+				if ((minSalaryValue === null && maxSalaryValue === null)
+					|| (minSalaryValue === undefined && maxSalaryValue === undefined)) {
+					return { 'minMaxSalaryRequire': true };
+				}
+
+				if (minSalaryValue > 0 && maxSalaryValue > 0) {
+					if (minSalaryValue > maxSalaryValue)
+						return { 'minGreaterThanMax': true }
+				}
+
+				return null;
+			};
+		}
+		else
+			return null;
+	}
 
 	private isInAllowedValues(allowedValues: any[]): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
@@ -204,12 +253,31 @@ export class AddFormComponent {
 	}
 
 	ngOnInit(): void {
-		console.log('fetchObject', this.fetchObject);
+		// console.log('fetchObject', this.fetchObject);
 		if (this.isEditForm) {
-			this.addForm.disable();
+			if (this.addForm.get('minSalary')?.value || this.addForm.get('maxSalary')?.value) {
+				this.enterMinMaxSalaryRange = true;
+				this.addForm.setValidators(this.RequireSalary('minSalary', 'maxSalary'))
+				this.selectSalaryOption = 'MinMaxRange';
+			}
+			else {
+				this.enterMinMaxSalaryRange = false;
+				this.addForm.setValidators(null)
+				this.selectSalaryOption = 'Negotiation';
+			}
 			this.fetchObject.requirements = this.fetchObject.requirements?.filter(e => e.isDeleted === false);
+			this.addForm.disable();
+
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+			const startDate = new Date(this.addForm.get('startDate')?.value);
+			const endDate = new Date(this.addForm.get('endDate')?.value);
+			console.log('startDate', startDate)
+			console.log('endDate', endDate)
+			if (today >= startDate && today <= endDate)
+				this.disabledEdit = true;
 		}
-		this.fetchRecruiterInfor(this.data.currentUserId);
+		this.getLocalRecruiterInfor();
 		this.fetchAllLanguages();
 		this.fetchAllCategoryPositions();
 

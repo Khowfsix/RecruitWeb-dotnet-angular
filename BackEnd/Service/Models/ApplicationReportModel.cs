@@ -12,7 +12,8 @@
         public string Education { get; set; }
         public string? PositionName { get; set; }
         public string? Description { get; set; }
-        public double? Salary { get; set; }
+        public decimal? MinSalary { get; set; }
+        public decimal? MaxSalary { get; set; }
         public string CompanyName { get; set; }
         public string LanguageName { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;

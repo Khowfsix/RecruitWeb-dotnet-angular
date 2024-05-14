@@ -85,7 +85,7 @@ export class HeaderComponent {
 		if (jwt) {
 			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(jwt as string)));
 			const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];
-			console.log(currentUserRole);
+			// console.log(currentUserRole);
 			return currentUserRole;
 		}
 		return [];

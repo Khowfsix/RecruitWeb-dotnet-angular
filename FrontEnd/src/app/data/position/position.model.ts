@@ -9,7 +9,8 @@ export class Position {
 	positionName?: string;
 	description?: string;
 	imageURL?: string;
-	salary?: number;
+	minSalary?: number;
+	maxSalary?: number;
 	maxHiringQty?: number;
 	startDate?: Date;
 	endDate?: Date;
@@ -28,6 +29,7 @@ export class PositionFilterModel {
 	userId?: boolean;
 	fromSalary?: number;
 	toSalary?: number;
+	negotiatedSalary?: boolean;
 	fromMaxHiringQty?: number;
 	toMaxHiringQty?: number;
 	fromDate?: Date;
