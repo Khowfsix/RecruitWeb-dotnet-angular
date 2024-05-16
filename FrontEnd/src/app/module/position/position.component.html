@@ -22,8 +22,8 @@
 							[value]="this.sortString" aria-label="Default select example">
 							<option class="p-2" selected value="PositionName_ASC">Name (A-Z)</option>
 							<option class="p-2" value="PositionName_DESC">Name (Z-A)</option>
-							<option class="p-2" value="Salary_DESC">Salary (High to low)</option>
-							<option class="p-2" value="Salary_ASC">Salary (Low to high)</option>
+							<option class="p-2" value="MinSalary_DESC">Salary (High to low)</option>
+							<option class="p-2" value="MinSalary_ASC">Salary (Low to high)</option>
 							<option class="p-2" value="MaxHiringQty_DESC">Hiring Quantity (High to low)</option>
 							<option class="p-2" value="MaxHiringQty_ASC">Hiring Quantity (Low to high)</option>
 						</select>
@@ -47,7 +47,26 @@
 								position.positionName | uppercase }}</span>
 						</div>
 						<div class="custom-row"> {{ position.company?.companyName }}</div>
-						<div class="custom-row" style="color: rgb(251, 115, 74);">${{ position.salary }}</div>
+						<div class="custom-row" style="color: rgb(251, 115, 74);">
+							@if (position.minSalary && position.maxSalary) {
+							@if (position.minSalary === position.maxSalary) {
+
+							{{'$' + position.minSalary}}
+							}
+							@else {
+							{{'$' + position.minSalary + ' - ' + '$'+position.maxSalary}}
+							}
+							}
+							@else if (position.minSalary) {
+							{{'$' +position.minSalary + ' and higher'}}
+							}
+							@else if (position.maxSalary) {
+							{{'Up to $'+ position.maxSalary}}
+							}
+							@else {
+							$ Negotiable
+							}
+						</div>
 						<div class="custom-row"> Max hiring quantity: {{ position.maxHiringQty }}</div>
 						<div class="custom-row"><i class="bi bi-calendar3"></i> {{ position.startDate |
 							date:'dd/MM/yyyy' }}

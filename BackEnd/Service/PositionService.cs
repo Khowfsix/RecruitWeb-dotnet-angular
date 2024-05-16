@@ -22,6 +22,11 @@ namespace Service
         public async Task<PositionModel> AddPosition(PositionModel position)
         {
             var data = _mapper.Map<Position>(position);
+            if (position.MinSalary > position.MaxSalary)
+                return null;
+            if (position.StartDate > position.EndDate)
+                return null;
+
             var response = await _positionRepository.AddPosition(data);
             return _mapper.Map<PositionModel>(response);
         }
@@ -75,7 +80,21 @@ namespace Service
         {
             var foundPosition = await this.GetPositionById(positionId);
 
+            if (foundPosition.StartDate <= DateTime.Today && DateTime.Today <= foundPosition.EndDate) {
+                return await Task.FromResult(false);
+            }
+
+            if (positionModel.MinSalary > positionModel.MaxSalary) 
+                return await Task.FromResult(false);
+            if (positionModel.StartDate > positionModel.EndDate)
+            {
+                return await Task.FromResult(false);
+            }
+
             _mapper.Map(positionModel, foundPosition);
+
+            foundPosition.MinSalary = positionModel.MinSalary;
+            foundPosition.MaxSalary = positionModel.MaxSalary;
 
             var data = _mapper.Map<Position>(foundPosition);
             return await _positionRepository.UpdatePosition(data, positionId);

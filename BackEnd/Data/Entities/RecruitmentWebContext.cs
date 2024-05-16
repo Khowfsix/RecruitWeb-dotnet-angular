@@ -88,13 +88,14 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //=> optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection");
-    => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
-    //=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+    //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+    => optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
     //=> optionsBuilder.UseSqlServer("Server=tcp:jasminerecwebdbserver.database.windows.net,1433;Initial Catalog=RecruitmentWeb;Persist Security Info=False;User ID=jasmine;Password=bruh@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Position>().Property(p => p.Salary).HasPrecision(12, 2);
+        modelBuilder.Entity<Position>().Property(p => p.MinSalary).HasPrecision(12, 2);
+        modelBuilder.Entity<Position>().Property(p => p.MaxSalary).HasPrecision(12, 2);
         base.OnModelCreating(modelBuilder);
         new DbInitializer(modelBuilder).Seed();
 
@@ -408,7 +409,8 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.EndDate).HasColumnType("date");
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
             entity.Property(e => e.PositionName).HasMaxLength(255);
-            entity.Property(e => e.Salary).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.MinSalary).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.MaxSalary).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.StartDate).HasColumnType("date");
 
             entity.HasOne(d => d.Company).WithMany(p => p.Positions)

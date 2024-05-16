@@ -37,6 +37,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { CustomDateTimeService } from '../../shared/service/custom-datetime.service';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../core/constants/position.env';
 
 
 @Component({
@@ -94,19 +95,23 @@ export class PositionComponent implements OnInit {
 		],
 		userId: ['', []],
 		fromSalary: [
-			null,
+			0,
 			[Validators.pattern('^[0-9]*$')]
 		],
 		toSalary: [
-			null,
+			MAX_SALARY + 1,
 			[Validators.pattern('^[0-9]*$'),]
 		],
+		negotiatedSalary: [
+			true,
+			[Validators.required]
+		],
 		fromMaxHiringQty: [
-			null,
+			0,
 			[Validators.pattern('^[0-9]*$'),]
 		],
 		toMaxHiringQty: [
-			null,
+			MAX_MAX_HIRING_QTY + 1,
 			[Validators.pattern('^[0-9]*$'),]
 		],
 		fromDate: [
@@ -224,7 +229,7 @@ export class PositionComponent implements OnInit {
 				isEditForm: true,
 				fetchObject: fetchObject,
 			},
-			width: '600px',
+			width: '700px',
 			height: '600px',
 			enterAnimationDuration,
 			exitAnimationDuration,
@@ -244,7 +249,7 @@ export class PositionComponent implements OnInit {
 			data: {
 				currentUserId: this.currentUser.id,
 			},
-			width: '600px',
+			width: '700px',
 			height: '600px',
 			enterAnimationDuration,
 			exitAnimationDuration,

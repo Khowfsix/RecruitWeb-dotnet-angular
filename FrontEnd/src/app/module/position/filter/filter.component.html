@@ -18,19 +18,22 @@
 					<mat-label>Salary:</mat-label>
 					<div class="d-flex flex-row mt-2">
 						<mat-form-field>
-							<input matInput type="number" [(ngModel)]="fromSalaryValue" />
+							<input matInput type="number" [value]="formGroup.get('fromSalary')?.value"
+								(change)="this.setValue($event, 'fromSalary')" />
 						</mat-form-field>
 						<mat-form-field>
-							<input matInput type="number" [(ngModel)]="toSalaryValue" />
+							<input matInput type="number" [value]="this.formGroup.get('toSalary')?.value"
+								(change)="this.setValue($event, 'toSalary')" />
 						</mat-form-field>
 					</div>
 
+					<mat-slide-toggle [formControl]="getMyControl('negotiatedSalary')">Includes negotiated
+						salary</mat-slide-toggle>
+
 					<mat-slider discrete="true" [displayWith]="formatLabel" style="width: 95%;" min="0"
-						max="{{this.maxSalary}}" step="{{this.salaryStep}}">
-						<input [(ngModel)]="fromSalaryValue" [formControl]="getMyControl('fromSalary')"
-							matSliderStartThumb #fromSalarySlider />
-						<input [(ngModel)]="toSalaryValue" [formControl]="getMyControl('toSalary')" matSliderEndThumb
-							#toSalarySlider />
+						[max]="this.MAX_SALARY_CONSTANT + 1" step="10000">
+						<input [formControl]="getMyControl('fromSalary')" matSliderStartThumb #fromSalarySlider />
+						<input [formControl]="getMyControl('toSalary')" matSliderEndThumb #toSalarySlider />
 					</mat-slider>
 				</div>
 
@@ -38,19 +41,20 @@
 					<mat-label>Hiring Quantity:</mat-label>
 					<div class="d-flex flex-row mt-2">
 						<mat-form-field>
-							<input matInput type="number" [(ngModel)]="fromMaxHiringQtyValue" />
+							<input matInput type="number" [value]="this.formGroup.get('fromMaxHiringQty')?.value"
+								(change)="this.setValue($event, 'fromMaxHiringQty')" />
 						</mat-form-field>
 						<mat-form-field>
-							<input matInput type="number" [(ngModel)]="toMaxHiringQtyValue" />
+							<input matInput type="number" [value]="this.formGroup.get('toMaxHiringQty')?.value"
+								(change)="this.setValue($event, 'toMaxHiringQty')" />
 						</mat-form-field>
 					</div>
 
 					<mat-slider discrete="true" [displayWith]="formatLabel" style="width: 95%;" min="0"
-						max="{{this.maxMaxHiringQty}}" step="{{this.maxHiringQtyStep}}">
-						<input [(ngModel)]="fromMaxHiringQtyValue" [formControl]="getMyControl('fromMaxHiringQty')"
-							matSliderStartThumb #fromMaxHiringQtySlider />
-						<input [(ngModel)]="toMaxHiringQtyValue" [formControl]="getMyControl('toMaxHiringQty')"
-							matSliderEndThumb #toMaxHiringQtySlider />
+						[max]="this.MAX_MAXHIRINGQTY_CONSTANT + 1" step=" 10">
+						<input [formControl]="getMyControl('fromMaxHiringQty')" matSliderStartThumb
+							#fromMaxHiringQtySlider />
+						<input [formControl]="getMyControl('toMaxHiringQty')" matSliderEndThumb #toMaxHiringQtySlider />
 					</mat-slider>
 				</div>
 
