@@ -33,7 +33,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     public virtual DbSet<CvHasSkill> CvHasSkills { get; set; }
 
     public virtual DbSet<Company> Companies { get; set; }
-
+    public virtual DbSet<EventHasPosition> EventHasPositions { get; set; }
     public virtual DbSet<Event> Events { get; set; }
 
     public virtual DbSet<Interview> Interviews { get; set; }
@@ -300,6 +300,23 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasForeignKey(d => d.RecruiterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_EventManagedBy");
+        });
+
+        modelBuilder.Entity<EventHasPosition>(entity =>
+        {
+            entity.HasKey(e => e.EventHasPositionId).HasName("PK__EventHasPosition__7944C8101630D001");
+
+            entity.ToTable("EventHasPositions");
+
+            entity.HasOne(d => d.Event).WithMany(p => p.EventHasPositions)
+                .HasForeignKey(d => d.EventId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EventHasPositions");
+
+            entity.HasOne(d => d.Position).WithMany(p => p.EventHasPositions)
+                .HasForeignKey(d => d.PositionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PositionJoinEvents");
         });
 
         modelBuilder.Entity<Interview>(entity =>

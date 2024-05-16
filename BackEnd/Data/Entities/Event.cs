@@ -23,6 +23,8 @@ public partial class Event
     public int MaxParticipants { get; set; }
 
     public bool IsDeleted { get; set; }
+    
+    public virtual ICollection<EventHasPosition> EventHasPositions { get; set; } = new List<EventHasPosition>();
 
     public virtual ICollection<CandidateJoinEvent> CandidateJoinEvents { get; set; } = new List<CandidateJoinEvent>();
 

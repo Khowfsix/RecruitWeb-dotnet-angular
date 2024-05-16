@@ -1,1 +1,40 @@
-<p>event works!</p>
+<div class="container border border-primary" style="height: 500px;">
+	<div class="d-flex flex-row w-100 justify-content-center">
+		<div class="fs-3 p-4 m-auto">ALL EVENTS</div>
+	</div>
+	<div class="border border-secondary h-100 d-flex flex-row">
+		<div class=" w-75 border border-dark" style="height: 500px;">
+			<div class="row height d-flex justify-content-center align-items-center py-2">
+				<div class="search-bar">
+					<i class="fa fa-search ms-2" style="font-size: 17px;"></i>
+					<input type="text" [formControl]="this.searchFormControl"
+						class="form-control form-input border border-dark rounded-5" placeholder="Search event name...">
+				</div>
+			</div>
+			<div class="border border-info" style="height: 500px;">
+				<!-- for ... -->
+				<div class="border border-primary card m-2 bg-secondary text-white" style="width: 30%; height: 300px;">
+					<img src="https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg"
+						class="card-img-top h-50" alt="...">
+					<div class="card-body" style="max-height: 150px; overflow: auto;">
+						<h3>Event Name</h3>
+						<h3>Recruiter Name</h3>
+						<h6 class="card-subtitle mb-2 text-muted" style="font-size: 15px;">Card subtitleeeeeee</h6>
+						<p class="card-text">Description</p>
+						<p class="card-text">Place</p>
+						<p class="card-text">Start Date - End Date</p>
+						<p class="card-text">Max Participants</p>
+						<a href="#" class="card-link">Card link</a>
+						<a href="#" class="card-link">Another link</a>
+					</div>
+				</div>
+				<!-- end for -->
+			</div>
+		</div>
+		<div class="border border-info w-25" style="height: 100px;">
+			<div style="width: 100%;" class="d-flex flex-row justify-content-center">
+				<div class="fs-4 p-4 m-auto">FILTER</div>
+			</div>
+		</div>
+	</div>
+</div>

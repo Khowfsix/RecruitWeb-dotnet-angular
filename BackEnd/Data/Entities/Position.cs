@@ -40,8 +40,8 @@ public partial class Position
 
     public virtual Recruiter Recruiter { get; set; } 
 
-    public virtual CategoryPosition CategoryPosition { get; set; } 
-
+    public virtual CategoryPosition CategoryPosition { get; set; }
+    public virtual ICollection<EventHasPosition> EventHasPositions { get; set; } = new List<EventHasPosition>();
     public virtual ICollection<Requirement> Requirements { get; set; } = new List<Requirement>();
 
     public virtual ICollection<SuccessfulCadidate> SuccessfulCadidates { get; set; } = new List<SuccessfulCadidate>();
