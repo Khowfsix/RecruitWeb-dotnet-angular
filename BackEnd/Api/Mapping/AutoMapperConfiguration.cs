@@ -200,6 +200,7 @@ namespace Data.Mapping
 
             CreateMap<ApplicationFilter, ApplicationFilterModel>().ReverseMap();
             CreateMap<Application, ApplicationModel>().ReverseMap();
+            CreateMap<ApplicationModel, ApplicationViewModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationAddModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationUpdateModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationViewModel>().ReverseMap();
@@ -270,6 +271,7 @@ namespace Data.Mapping
             CreateMap<CvModel, CvUpdateModel>().ReverseMap();
             CreateMap<CvModel, CvViewModel>().ReverseMap();
             CreateMap<CvAddModel, CvViewModel>().ReverseMap();
+            CreateMap<Cv, CvViewModel>().ReverseMap();
 
             #endregion Cv
 
@@ -310,7 +312,7 @@ namespace Data.Mapping
             #endregion Itrsinterview
 
             #region Interview
-            CreateMap<Interview, Interview > ()
+            CreateMap<Interview, Interview>()
                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
                {
                    if (srcMember is Guid guidValue)

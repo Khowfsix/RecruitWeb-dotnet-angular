@@ -39,6 +39,9 @@ select *
 from dbo.Candidate
 update dbo.[Position] set isDeleted = 0
 
+select *
+from AspNetUsers
+
 
 
 -- INSERT [dbo].[CategoryPosition]
@@ -53,7 +56,8 @@ update dbo.[Position] set isDeleted = 0
 -- GO
 
 select *
-from Recruiter;
+from Candidate
+where UserId='c59d7b36-86c7-4361-abf8-893845d231cf';
 
 select *
 from Company;
@@ -65,3 +69,9 @@ select *
 from dbo.AspNetUsers
 
 update AspNetUsers set EmailConfirmed=1 WHERE UserName='khowfsix'
+
+select *
+from [Position];
+select *
+from CV
+
