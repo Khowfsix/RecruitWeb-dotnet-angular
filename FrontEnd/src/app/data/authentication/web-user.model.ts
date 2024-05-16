@@ -9,6 +9,7 @@ export class WebUser {
 	imageURL?: string;
 	userName?: string;
 	email?: string;
+	phoneNumber?: string;
 	candidates?: Candidate[];
 	interviewers?: Interviewer[];
 	recruiters?: Recruiter[];

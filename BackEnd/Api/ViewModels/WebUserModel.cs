@@ -18,6 +18,8 @@ namespace Api.ViewModels
 
         public string Email { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         public virtual ICollection<CandidateViewModel> Candidates { get; set; }
         public virtual ICollection<InterviewerViewModel> Interviewers { get; set; }
         public virtual ICollection<RecruiterViewModel> Recruiters { get; set; }

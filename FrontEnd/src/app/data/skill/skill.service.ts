@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { API } from '../api.service';
-import { Skill } from './skill.model';
+import { Skill, SkillAddModel } from './skill.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,4 +20,12 @@ export class SkillService {
 		return this.api.GET('/api/Skill/GetSkillById?skillId=' + id);
 	}
 
+	deleteSkill(id?: string): Observable<boolean> {
+		console.log(`start`);
+		return this.api.DELETE('/api/Skill/' + id);
+	}
+
+	createSkill(newSkill: SkillAddModel): Observable<Skill> {
+		return this.api.POST('/api/Skill/', newSkill);
+	}
 }

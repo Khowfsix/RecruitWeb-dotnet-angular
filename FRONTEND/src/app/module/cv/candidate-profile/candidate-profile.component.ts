@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { NgbProgressbarModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,7 @@ import { CandidateSkillsComponent } from './candidate-skills/candidate-skills.co
 import { PersonalProjectComponent } from './personal-project/personal-project.component';
 import { CandidateCertificateComponent } from './candidate-certificate/candidate-certificate.component';
 import { CandidateAwardsComponent } from './candidate-awards/candidate-awards.component';
+import { Candidate } from '../../../data/candidate/candidate.model';
 
 @Component({
 	selector: 'app-candidate-profile',
@@ -30,4 +31,10 @@ import { CandidateAwardsComponent } from './candidate-awards/candidate-awards.co
 	templateUrl: './candidate-profile.component.html',
 	styleUrl: './candidate-profile.component.css'
 })
-export class CandidateProfileComponent { }
+export class CandidateProfileComponent {
+	@Input() candidate: Candidate = new Candidate();
+
+	constructor() {
+		console.log(this.candidate.user?.userName);
+	}
+}

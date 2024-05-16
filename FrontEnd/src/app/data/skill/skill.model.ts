@@ -4,3 +4,8 @@ export class Skill {
 	description?: string;
 	isDeleted?: boolean;
 }
+
+export class SkillAddModel {
+	skillName: string = "";
+	description?: string;
+}

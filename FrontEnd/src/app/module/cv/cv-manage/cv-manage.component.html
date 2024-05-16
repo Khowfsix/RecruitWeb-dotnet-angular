@@ -1,28 +1,25 @@
 <p class="h1 text-center py-1">Manage CVs</p>
-<app-upload-cv></app-upload-cv>
+<app-upload-cv (cvUploaded)="handleRefresh()"></app-upload-cv>
 <mat-divider></mat-divider>
 <p class="h1 text-center py-3">Your CVs</p>
 
 <div class="card-container d-block">
 	@for (cv of listCvsOfCandidate; track $index) {
 	<div class="card p-3">
-		<mat-card class="example-card">
-			<mat-card-header>
-				<div mat-card-avatar class="example-header-image"></div>
-				<mat-card-title>{{ cv.cvName }}</mat-card-title>
-				<mat-card-subtitle>{{ cv.cvPdf }}</mat-card-subtitle>
-			</mat-card-header>
-			<!-- <img mat-card-image src="{{ item.image }}" alt="Photo of {{ item.title }}" /> -->
-			<mat-card-content>
-				<p>
-					{{ cv.aboutMe }}
-				</p>
-			</mat-card-content>
-			<mat-card-actions>
-				<button mat-button>LIKE</button>
-				<button mat-button>SHARE</button>
-			</mat-card-actions>
-		</mat-card>
+		<div class="card">
+			<div class="card-header">
+				<img src="..." class="card-img-top" alt="Avatar" />
+				<h5 class="card-title">{{ cv.cvName }}</h5>
+				<h6 class="card-subtitle">{{ cv.cvPdf }}</h6>
+			</div>
+			<div class="card-body">
+				<p class="card-text">{{ cv.aboutMe }}</p>
+			</div>
+			<div class="card-footer">
+				<button class="btn btn-primary">VIEW</button>
+				<button class="btn btn-secondary">DELETE CV</button>
+			</div>
+		</div>
 	</div>
 	}
 </div>

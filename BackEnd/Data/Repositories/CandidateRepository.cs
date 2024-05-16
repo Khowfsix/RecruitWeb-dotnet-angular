@@ -37,7 +37,16 @@ namespace Data.Repositories
 
         public async Task<IEnumerable<Candidate>> GetAllCandidates()
         {
-            var listData = await Entities.Include(x => x.User).Include(o => o.CandidateHasSkills).ToListAsync();
+            var listData = await Entities.Include(x => x.User)
+                //Include(o => o.CandidateHasSkills)
+                .Include(c => c.Educations)
+                .Include(c => c.WorkExperiences)
+                .Include(c => c.CandidateHasSkills).ThenInclude(chs => chs.Skill)
+                .Include(c => c.PersonalProjects)
+                .Include(c => c.Certificates)
+                .Include(c => c.Awards)
+                .Include(c => c.CandidateJoinEvents)
+                .ToListAsync();
             return listData;
         }
 
@@ -46,11 +55,18 @@ namespace Data.Repositories
             var entity = await Entities
                 .Where(x => x.CandidateId == id)
                 .Include(c => c.User)
-                .Include(o => o.CandidateHasSkills)
-                .ThenInclude(o => o.Skill)
+                //.Include(o => o.CandidateHasSkills)
+                //.ThenInclude(o => o.Skill)
+                .Include(c => c.Educations)
+                .Include(c => c.WorkExperiences)
+                .Include(c => c.CandidateHasSkills).ThenInclude(chs => chs.Skill)
+                .Include(c => c.PersonalProjects)
+                .Include(c => c.Certificates)
+                .Include(c => c.Awards)
+                .Include(c => c.CandidateJoinEvents)
                 .FirstOrDefaultAsync();
 
-            return entity;
+            return entity!;
         }
 
         public async Task<Candidate?> GetCandidateByUserId(string userId)
@@ -58,13 +74,20 @@ namespace Data.Repositories
             var data = await Entities
                 .Where(x => x.UserId == userId)
                 .Include(x => x.User)
+                .Include(c => c.Educations)
+                .Include(c => c.WorkExperiences)
+                .Include(c => c.CandidateHasSkills).ThenInclude(chs => chs.Skill)
+                .Include(c => c.PersonalProjects)
+                .Include(c => c.Certificates)
+                .Include(c => c.Awards)
+                .Include(c => c.CandidateJoinEvents)
                 .FirstOrDefaultAsync();
 
             return data;
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<Candidate?> GetProfile(Guid candidateId)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
