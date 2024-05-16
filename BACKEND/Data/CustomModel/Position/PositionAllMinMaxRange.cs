@@ -2,12 +2,11 @@
 {
     public class PositionAllMinMaxRange
     {
-        public int? MinSalary { get; set; }
-
-        public int? MaxSalary { get; set; }
-
-        public int? MinMaxHiringQty { get; set; }
-
-        public int? MaxMaxHiringQty { get; set; }
+        public int? LowestMinSalary { get; set; }
+        public int? HighestMinSalary { get; set; }
+        public int? LowestMaxSalary { get; set; }
+        public int? HighestMaxSalary { get; set; }
+        public int? LowestMaxHiringQty { get; set; }
+        public int? HighestMaxHiringQty { get; set; }
     }
 }

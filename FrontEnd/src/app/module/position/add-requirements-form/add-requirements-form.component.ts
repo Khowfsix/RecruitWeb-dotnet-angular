@@ -97,7 +97,7 @@ export class AddRequirementsFormComponent {
 	ngOnInit(): void {
 		if (this.isEditForm) {
 			this.displayRequirements = this.formGroup?.get(this.fieldName)?.value;
-			console.log(this.displayRequirements)
+			// console.log(this.displayRequirements)
 		}
 		this.fetchAllSkill();
 

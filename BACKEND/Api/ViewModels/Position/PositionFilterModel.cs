@@ -9,6 +9,7 @@
 
         public int? ToSalary { get; set; }
 
+        public bool NegotiatedSalary { get; set; }
         public int? FromMaxHiringQty { get; set; }
 
         public int? ToMaxHiringQty { get; set; }

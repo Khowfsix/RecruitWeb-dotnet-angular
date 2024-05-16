@@ -4,6 +4,7 @@ using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RecruitmentWebContext))]
-    partial class RecruitmentWebContextModelSnapshot : ModelSnapshot
+    [Migration("20240507152833_Position_Salary_To_Min_Max_Salary")]
+    partial class Position_Salary_To_Min_Max_Salary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -428,11 +431,11 @@ namespace Data.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("DatetimeEvent")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndDateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("EventName")
                         .IsRequired()
@@ -455,9 +458,6 @@ namespace Data.Migrations
 
                     b.Property<Guid>("RecruiterId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("StartDateTime")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("EventId")
                         .HasName("PK__Event__7944C8101630C102");

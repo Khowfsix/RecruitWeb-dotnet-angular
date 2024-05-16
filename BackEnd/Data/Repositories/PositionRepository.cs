@@ -10,8 +10,7 @@ namespace Data.Repositories
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public PositionRepository(RecruitmentWebContext context,
-            IUnitOfWork unitOfWork) : base(context)
+        public PositionRepository(RecruitmentWebContext context, IUnitOfWork unitOfWork) : base(context) 
         {
             _unitOfWork = unitOfWork;
         }
@@ -19,23 +18,29 @@ namespace Data.Repositories
         public async Task<PositionAllMinMaxRange> GetAllMinMaxRange()
         {
             /*------------------------------*/
-            // Returns all min max range of number field in db.
+            // Returns all min max range of number field in database.
             /*------------------------------*/
             var result = new PositionAllMinMaxRange();
 
-            var highestSalary = await Entities.OrderByDescending(p => p.Salary).FirstOrDefaultAsync();
-            result.MaxSalary = highestSalary is not null ? (int)(highestSalary.Salary!.Value) : 0;
+            var highestMaxSalary = await Entities.OrderByDescending(p => p.MaxSalary).FirstOrDefaultAsync();
+            result.HighestMaxSalary = highestMaxSalary is not null ? highestMaxSalary.MaxSalary is not null ? (int)(highestMaxSalary.MaxSalary.Value) : 0 : 0;
 
-            var lowestSalary = await Entities.OrderBy(p => p.Salary).FirstOrDefaultAsync();
-            result.MinSalary = lowestSalary is not null ? (int)(lowestSalary.Salary!.Value) : 0;
+            var lowestMaxSalary = await Entities.OrderBy(p => p.MaxSalary).FirstOrDefaultAsync();
+            result.LowestMaxSalary = lowestMaxSalary is not null ? lowestMaxSalary.MaxSalary is not null ? (int)(lowestMaxSalary.MaxSalary.Value) : 0 : 0;
 
-            var highestHiringQty = await Entities.OrderByDescending(p => p.MaxHiringQty).FirstOrDefaultAsync();
-            result.MaxMaxHiringQty = highestHiringQty is not null ? (int)(highestHiringQty.MaxHiringQty) : 0;
+            var highestMinSalary = await Entities.OrderByDescending(p => p.MinSalary).FirstOrDefaultAsync();
+            result.HighestMinSalary = highestMinSalary is not null ? highestMinSalary.MinSalary is not null ? (int)(highestMinSalary.MinSalary.Value) : 0 : 0;
 
-            var lowestHiringQty = await Entities.OrderBy(p => p.MaxHiringQty).FirstOrDefaultAsync();
-            result.MinMaxHiringQty = lowestHiringQty is not null ? (int)(lowestHiringQty.MaxHiringQty) : 0;
+            var lowestMinSalary = await Entities.OrderBy(p => p.MinSalary).FirstOrDefaultAsync();
+            result.LowestMinSalary = lowestMinSalary is not null ? lowestMinSalary.MinSalary is not null ? (int)(lowestMinSalary.MinSalary.Value) : 0 : 0;
 
-            return result is not null ? result : null;
+            var highestMaxHiringQty = await Entities.OrderByDescending(p => p.MaxHiringQty).FirstOrDefaultAsync();
+            result.HighestMaxHiringQty = highestMaxHiringQty is not null ? (int)(highestMaxHiringQty.MaxHiringQty) : 0;
+
+            var lowestMaxHiringQty = await Entities.OrderBy(p => p.MaxHiringQty).FirstOrDefaultAsync();
+            result.LowestMaxHiringQty = lowestMaxHiringQty is not null ? (int)(lowestMaxHiringQty.MaxHiringQty) : 0;
+
+            return result is not null ? result : null!;
         }
 
 
@@ -49,8 +54,7 @@ namespace Data.Repositories
             return await Task.FromResult(position);
         }
 
-        public async Task<List<Position>> GetAllPositions(PositionFilter positionFilter,
-            string sortString)
+        public async Task<List<Position>> GetAllPositions(PositionFilter positionFilter, string sortString)
         {
             /*------------------------------*/
             // Finds all of position entities asynchronously in db.
@@ -68,9 +72,10 @@ namespace Data.Repositories
             if (!string.IsNullOrEmpty(positionFilter.Search))
             {
                 query = query
-                    .Where(o => o.PositionName.ToLower().Contains(positionFilter.Search.ToLower())
-                    || o.Description.ToLower().Contains(positionFilter.Search.ToLower()));
+                    .Where(o => o.PositionName!.ToLower().Contains(positionFilter.Search.ToLower())
+                    || o.Description!.ToLower().Contains(positionFilter.Search.ToLower()));
             }
+
 
             if (positionFilter.UserId.HasValue)
             {
@@ -79,8 +84,26 @@ namespace Data.Repositories
 
             if (positionFilter.FromSalary.HasValue && positionFilter.ToSalary.HasValue)
             {
-                query = query.Where(o => o.Salary >= positionFilter.FromSalary.Value);
-                query = query.Where(o => o.Salary <= positionFilter.ToSalary.Value);
+               
+                    //query = query.Where(e => 
+                    //(e.MinSalary == null && e.MaxSalary!.Value >= positionFilter.FromSalary.Value) || 
+                    //(e.MaxSalary == null && positionFilter.ToSalary.Value >= e.MinSalary!.Value) || 
+                    //(e.MinSalary == null && e.MaxSalary == null) ||
+                    //(positionFilter.FromSalary.Value <= e.MinSalary!.Value && e.MaxSalary!.Value <= positionFilter.ToSalary.Value)
+                    //)
+
+                query = query.Where(e =>
+                    (e.MinSalary == null && e.MaxSalary == null)
+                    || (positionFilter.FromSalary <= e.MaxSalary && e.MaxSalary <= positionFilter.ToSalary)
+                    || (positionFilter.FromSalary <= e.MinSalary && e.MinSalary <= positionFilter.ToSalary)
+                    //|| (positionFilter.FromSalary <= e.MinSalary && e.MaxSalary <= positionFilter.ToSalary)
+                    //|| (positionFilter.FromSalary >= e.MinSalary && e.MaxSalary >= positionFilter.ToSalary)
+                );
+                if (!positionFilter.NegotiatedSalary)
+                {
+                    query = query.Where(e => e.MinSalary != null && e.MaxSalary != null 
+                    );
+                }
             }
 
             if (positionFilter.FromMaxHiringQty.HasValue && positionFilter.ToMaxHiringQty.HasValue)
@@ -91,8 +114,9 @@ namespace Data.Repositories
 
             if (positionFilter.FromDate.HasValue && positionFilter.ToDate.HasValue)
             {
-                query = query.Where(o => o.StartDate >= positionFilter.FromDate.Value);
-                query = query.Where(o => o.EndDate <= positionFilter.ToDate.Value);
+                //query = query.Where(o => o.StartDate >= positionFilter.FromDate.Value);
+                //query = query.Where(o => o.EndDate <= positionFilter.ToDate.Value);
+                query = query.Where(o => !((o.StartDate > positionFilter.ToDate) || (o.EndDate < positionFilter.FromDate)));
             }
 
             if (positionFilter.CategoryPositionIds != null && positionFilter.CategoryPositionIds.Count > 0)
@@ -233,7 +257,8 @@ namespace Data.Repositories
             foundEntity.ImageURL = position.ImageURL;
             foundEntity.PositionName = position.PositionName;
             foundEntity.Description = position.Description;
-            foundEntity.Salary = position.Salary;
+            foundEntity.MaxSalary = position.MaxSalary;
+            foundEntity.MinSalary = position.MinSalary;
             foundEntity.MaxHiringQty = position.MaxHiringQty;
             foundEntity.StartDate = position.StartDate;
             foundEntity.EndDate = position.EndDate;

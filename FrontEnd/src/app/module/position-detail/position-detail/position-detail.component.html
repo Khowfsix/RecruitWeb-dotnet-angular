@@ -20,7 +20,19 @@
 								</div>
 								<div class="custom-row" style="color: blue;"> {{ fetchPosition?.company?.companyName }}
 								</div>
-								<div class="custom-row" style="color: rgb(251, 115, 74);">${{ fetchPosition?.salary }}
+								<div class="custom-row" style="color: rgb(251, 115, 74);">
+									@if (fetchPosition?.minSalary && fetchPosition?.maxSalary) {
+									{{fetchPosition?.minSalary + '-' + fetchPosition?.maxSalary}}
+									}
+									@else if (fetchPosition?.minSalary) {
+									{{'Above '+ fetchPosition?.minSalary}}
+									}
+									@else if (fetchPosition?.maxSalary) {
+									{{'Up to '+ fetchPosition?.maxSalary}}
+									}
+									@else {
+									Negotiable
+									}
 								</div>
 								<div class="custom-row" style="color: black;"> Hiring quantity: {{
 									fetchPosition?.maxHiringQty }}</div>

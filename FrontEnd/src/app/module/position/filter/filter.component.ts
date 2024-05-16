@@ -18,6 +18,8 @@ import { CompanyService } from '../../../data/company/company.service';
 import { PositionService } from '../../../data/position/position.service';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MAX_SALARY, MAX_MAX_HIRING_QTY } from '../../../core/constants/position.env';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export const MY_FORMATS = {
 	parse: {
@@ -35,6 +37,7 @@ export const MY_FORMATS = {
 	selector: 'app-filter',
 	standalone: true,
 	imports: [
+		MatSlideToggleModule,
 		MatIconModule,
 		MatRippleModule,
 		ChipsAutocompleteComponent,
@@ -62,12 +65,8 @@ export class FilterComponent implements OnInit {
 	public formGroup: FormGroup<any> = new FormGroup<any>({});
 
 	public panelOpenState = false;
-
-	public maxSalary?: number;
-	public salaryStep?: number;
-
-	public maxMaxHiringQty?: number;
-	public maxHiringQtyStep?: number;
+	public MAX_SALARY_CONSTANT = MAX_SALARY;
+	public MAX_MAXHIRINGQTY_CONSTANT = MAX_MAX_HIRING_QTY;
 
 	constructor(
 		public categoryPositionService: CategoryPositionService,
@@ -76,35 +75,39 @@ export class FilterComponent implements OnInit {
 		public positionService: PositionService,
 	) { }
 
+	public setValue(event: any, formField: string) {
+		this.formGroup.get(formField)?.setValue(event.target.value)
+	}
+
 	getMyControl(formField: string): FormControl {
 		return this.formGroup.get(formField) as FormControl;
 	}
 
 	ngOnInit(): void {
-		this.positionService.getAllMinMaxRange().subscribe((data) => {
-			const maxSalary = data.maxSalary;
-			for (let index = 1; ; index++) {
-				if (10 ** index >= maxSalary) {
-					this.maxSalary = (Math.floor(maxSalary / 10 ** (index - 1)) + 1) * 10 ** (index - 1);
-					this.salaryStep = 10 ** (index - 1);
-					break;
-				}
-			}
+		// this.positionService.getAllMinMaxRange().subscribe((data) => {
+		// 	const maxSalary = data.maxSalary > data.minSalary ? data.maxSalary : data.minSalary;
+		// 	for (let index = 1; ; index++) {
+		// 		if (10 ** index >= maxSalary) {
+		// 			this.maxSalary = (Math.floor(maxSalary / 10 ** (index - 1)) + 1) * 10 ** (index - 1);
+		// 			this.salaryStep = 10 ** (index - 1);
+		// 			break;
+		// 		}
+		// 	}
 
-			const maxMaxHiringQty = data.maxMaxHiringQty;
-			for (let index = 1; ; index++) {
-				if (10 ** index >= maxMaxHiringQty) {
-					this.maxMaxHiringQty = (Math.floor(maxMaxHiringQty / 10 ** (index - 1)) + 1) * 10 ** (index - 1);
-					this.maxHiringQtyStep = 10 ** (index - 1);
-					break;
-				}
-			}
+		// 	const maxMaxHiringQty = data.maxMaxHiringQty;
+		// 	for (let index = 1; ; index++) {
+		// 		if (10 ** index >= maxMaxHiringQty) {
+		// 			this.maxMaxHiringQty = (Math.floor(maxMaxHiringQty / 10 ** (index - 1)) + 1) * 10 ** (index - 1);
+		// 			this.maxHiringQtyStep = 10 ** (index - 1);
+		// 			break;
+		// 		}
+		// 	}
 
-			this.formGroup.get('fromSalary')?.setValue(0);
-			this.formGroup.get('toSalary')?.setValue(this.maxSalary);
-			this.formGroup.get('fromMaxHiringQty')?.setValue(0);
-			this.formGroup.get('toMaxHiringQty')?.setValue(this.maxMaxHiringQty);
-		});
+		// 	this.formGroup.get('fromSalary')?.setValue(0);
+		// 	this.formGroup.get('toSalary')?.setValue(this.maxSalary);
+		// 	this.formGroup.get('fromMaxHiringQty')?.setValue(0);
+		// 	this.formGroup.get('toMaxHiringQty')?.setValue(this.maxMaxHiringQty);
+		// });
 	}
 
 
@@ -116,9 +119,9 @@ export class FilterComponent implements OnInit {
 		return `${value}`;
 	}
 
-	public fromSalaryValue?: number;
-	public toSalaryValue?: number;
-	public fromMaxHiringQtyValue?: number;
-	public toMaxHiringQtyValue?: number;
+	// public fromSalaryValue?: number;
+	// public toSalaryValue?: number;
+	// public fromMaxHiringQtyValue?: number;
+	// public toMaxHiringQtyValue?: number;
 }
 

@@ -8,7 +8,8 @@
 
         public string? ImageURL { get; set; }
 
-        public decimal? Salary { get; set; }
+        public decimal? MinSalary { get; set; }
+        public decimal? MaxSalary { get; set; }
 
         public int MaxHiringQty { get; set; }
 

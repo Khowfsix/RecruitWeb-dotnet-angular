@@ -26,42 +26,88 @@
 				}
 				}
 			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Salary</mat-label>
+				<mat-select [disabled]="this.isEditForm ? this.isEdit ? false : true : false"
+					[value]="this.selectSalaryOption" (selectionChange)="this.onSalaryChange($event)">
+					<mat-option value="Negotiation">
+						Negotiation
+					</mat-option>
+					<mat-option value="MinMaxRange">
+						Enter min - max range
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
 
+
+			@if (this.enterMinMaxSalaryRange) {
 			<div class="d-flex flex-row">
 				<mat-form-field class="" style="width: 120%;">
 					<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
-						Salary (USD)</mat-label>
-					<input type="number" matInput placeholder="" formControlName="salary">
-					@if(addForm.get('salary')?.invalid){
-					@if(addForm.get('salary')?.hasError('required')){
+						Min Salary (USD)</mat-label>
+					<input oninput="this.value=this.value.replace(/[^0-9]/g,'')" type="number" matInput placeholder=""
+						formControlName="minSalary">
+					<mat-hint style="font-size: 13px; font-weight: 500;">Blank meaning can be
+						negotiated</mat-hint>
+
+					@if(addForm.get('minSalary')?.invalid){
+					@if(addForm.get('minSalary')?.hasError('required')){
 					<div style="color: red;">Required.</div>
 					}
-					@if(addForm.get('salary')?.hasError('min')){
+					@if(addForm.get('minSalary')?.hasError('min')){
 					<div style="color: red;">Min is 1</div>
 					}
-					@if(addForm.get('salary')?.hasError('max')){
+					@if(addForm.get('minSalary')?.hasError('max')){
 					<div style="color: red;">Max is 6 digits</div>
 					}
 					}
 				</mat-form-field>
-				<mat-form-field class="ms-4" style="width: 120%;">
-					<mat-label><i class="bi bi-people-fill" style="font-size: 20px;"></i> Max Hiring
-						Quantity</mat-label>
-					<input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'')" matInput placeholder=""
-						formControlName="maxHiringQty">
-					@if(addForm.get('maxHiringQty')?.invalid){
-					@if(addForm.get('maxHiringQty')?.hasError('required')){
+				<mat-form-field class="ms-2" style="width: 120%;">
+					<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
+						Max Salary (USD)</mat-label>
+					<input oninput="this.value=this.value.replace(/[^0-9]/g,'')" type="number" matInput placeholder=""
+						formControlName="maxSalary">
+					<mat-hint style="font-size: 13px; font-weight: 500;">Blank meaning can be
+						negotiated</mat-hint>
+					@if(addForm.get('maxSalary')?.invalid){
+					@if(addForm.get('maxSalary')?.hasError('required')){
 					<div style="color: red;">Required.</div>
 					}
-					@if(addForm.get('maxHiringQty')?.hasError('min')){
+					@if(addForm.get('maxSalary')?.hasError('min')){
 					<div style="color: red;">Min is 1</div>
 					}
-					@if(addForm.get('maxHiringQty')?.hasError('max')){
-					<div style="color: red;">Max is 3 digits</div>
+					@if(addForm.get('maxSalary')?.hasError('max')){
+					<div style="color: red;">Max is 6 digits</div>
 					}
 					}
 				</mat-form-field>
 			</div>
+			@if(addForm.hasError('minMaxSalaryRequire')){
+			<div class=" mb-4" style="color: red; font-size: 16px;">Must have at least 1 value.</div>
+			}
+			@if(addForm.hasError('minGreaterThanMax')){
+			<div class=" mb-4" style="color: red; font-size: 16px;">Min must smaller than max.</div>
+			}
+			}
+
+
+			<mat-form-field>
+				<mat-label><i class="bi bi-people-fill" style="font-size: 20px;"></i> Max Hiring
+					Quantity</mat-label>
+				<input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'')" matInput placeholder=""
+					formControlName="maxHiringQty">
+				@if(addForm.get('maxHiringQty')?.invalid){
+				@if(addForm.get('maxHiringQty')?.hasError('required')){
+				<div style="color: red;">Required.</div>
+				}
+				@if(addForm.get('maxHiringQty')?.hasError('min')){
+				<div style="color: red;">Min is 1</div>
+				}
+				@if(addForm.get('maxHiringQty')?.hasError('max')){
+				<div style="color: red;">Max is 3 digits</div>
+				}
+				}
+			</mat-form-field>
 
 			<mat-form-field>
 				<mat-label>Date</mat-label>
@@ -71,7 +117,15 @@
 					<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')" formControlName="endDate"
 						placeholder="End date">
 				</mat-date-range-input>
-				@if(addForm.get('startDate')?.invalid || addForm.get('endDate')?.invalid){
+				@if(addForm.get('startDate')?.hasError('invalid')){
+				<div style="color: red;">Start day must be today or in future.</div>
+				}
+
+				@if(addForm.get('endDate')?.hasError('invalid')){
+				<div style="color: red;">End day must be today or in future.</div>
+				}
+
+				@if(addForm.get('startDate')?.hasError('required') || addForm.get('endDate')?.hasError('required')){
 				<span style="color: red;">
 					<span>Required: </span>
 					@if(addForm.get('startDate')?.hasError('required')){
@@ -137,8 +191,8 @@
 			</div>
 			}
 			@else {
-			<button color="primary" mat-raised-button (click)="this.isEdit = true; this.addForm.enable()"> <span
-					style="font-size: 16px;">Edit</span>
+			<button color="primary" [disabled]="this.disabledEdit" mat-raised-button
+				(click)="this.isEdit = true; this.addForm.enable()"> <span style="font-size: 16px;">Edit</span>
 			</button>
 			}
 			}
