@@ -89,6 +89,7 @@ namespace Data.Mapping
             //.ForMember(dest => dest.RecruiterId, opt => opt.Ignore())
             //.ForMember(dest => dest.Requirements, opt => opt.Ignore());
             CreateMap<Position, PositionModel>().ReverseMap();
+            CreateMap<Position, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionAddModel>().ReverseMap();
             CreateMap<PositionUpdateModel, PositionModel>().ReverseMap();
@@ -200,6 +201,7 @@ namespace Data.Mapping
 
             CreateMap<ApplicationFilter, ApplicationFilterModel>().ReverseMap();
             CreateMap<Application, ApplicationModel>().ReverseMap();
+            CreateMap<Application, ApplicationViewModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationViewModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationAddModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationUpdateModel>().ReverseMap();
@@ -287,6 +289,7 @@ namespace Data.Mapping
             #region Company
 
             CreateMap<Company, CompanyModel>().ReverseMap();
+            CreateMap<Company, CompanyViewModel>().ReverseMap();
             CreateMap<CompanyModel, CompanyViewModel>().ReverseMap();
             CreateMap<CompanyModel, CompanyUpdateModel>().ReverseMap();
             CreateMap<CompanyModel, CompanyAddModel>().ReverseMap();
