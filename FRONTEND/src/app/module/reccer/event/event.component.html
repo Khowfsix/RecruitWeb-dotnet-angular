@@ -14,8 +14,21 @@
 			<div class="border border-info" style="height: 500px;">
 				<!-- for ... -->
 				<div class="border border-primary card m-2 bg-secondary text-white" style="width: 30%; height: 300px;">
-					<img src="https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg"
-						class="card-img-top h-50" alt="...">
+					<!-- <div class="container card-img-top h-50 w-100">
+						<div class="image-container w-100">
+							<img src="https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg"
+								alt="Sample Image" class="card-img-top w-100">
+							<button class="btn btn-primary btn-position">Button</button>
+						</div>
+					</div> -->
+					<div class="h-50">
+						<img src="https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg"
+							class="card-img-top h-100" alt="...">
+						<!-- <button class="btn btn-primary btn-position">Button</button> -->
+						<button class="btn btn-primary btn-position" mat-icon-button>
+							<mat-icon>more_vert</mat-icon>
+						</button>
+					</div>
 					<div class="card-body" style="max-height: 150px; overflow: auto;">
 						<h3>Event Name</h3>
 						<h3>Recruiter Name</h3>
@@ -24,8 +37,8 @@
 						<p class="card-text">Place</p>
 						<p class="card-text">Start Date - End Date</p>
 						<p class="card-text">Max Participants</p>
-						<a href="#" class="card-link">Card link</a>
-						<a href="#" class="card-link">Another link</a>
+						<!-- <a href="#" class="card-link">Card link</a>
+						<a href="#" class="card-link">Another link</a> -->
 					</div>
 				</div>
 				<!-- end for -->

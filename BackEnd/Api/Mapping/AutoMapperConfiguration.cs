@@ -69,6 +69,7 @@ namespace Data.Mapping
 
             #region Position
 
+            CreateMap<Position, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
                 {
@@ -200,6 +201,7 @@ namespace Data.Mapping
 
             CreateMap<ApplicationFilter, ApplicationFilterModel>().ReverseMap();
             CreateMap<Application, ApplicationModel>().ReverseMap();
+            CreateMap<Application, ApplicationViewModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationViewModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationAddModel>().ReverseMap();
             CreateMap<ApplicationModel, ApplicationUpdateModel>().ReverseMap();
@@ -287,6 +289,7 @@ namespace Data.Mapping
             #region Company
 
             CreateMap<Company, CompanyModel>().ReverseMap();
+            CreateMap<Company, CompanyViewModel>().ReverseMap();
             CreateMap<CompanyModel, CompanyViewModel>().ReverseMap();
             CreateMap<CompanyModel, CompanyUpdateModel>().ReverseMap();
             CreateMap<CompanyModel, CompanyAddModel>().ReverseMap();
