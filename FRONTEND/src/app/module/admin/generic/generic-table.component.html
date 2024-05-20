@@ -9,12 +9,12 @@
 
 <div class="mat-elevation-z8">
 	<table mat-table [dataSource]="dataSource" matSort>
-		@for (col of listProps; track $index) {
-		<ng-container matColumnDef="{{ displayedColumns[$index] }}">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>{{ displayedColumns[$index] }}</th>
-			<td mat-cell *matCellDef="let row">{{ row[col] }}</td>
+		@for (col of displayedColumns; track $index) { @if(col != 'action') {
+		<ng-container matColumnDef="{{ col }}">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>{{ col }}</th>
+			<td mat-cell *matCellDef="let row">{{ row[listProps[$index]] }}</td>
 		</ng-container>
-		}
+		} }
 
 		<!-- Action Column -->
 		<ng-container matColumnDef="action">

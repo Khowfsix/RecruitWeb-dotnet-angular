@@ -1,0 +1,7 @@
+<form [formGroup]="form">
+	<ng-container *ngFor="let field of dataFields">
+		<label for="{{ field.key }}">{{ field.label }}</label>
+		<input type="{{ field.type }}" formControlName="{{ field.key }}" />
+	</ng-container>
+	<button type="button" (click)="onSubmit()">Submit</button>
+</form>

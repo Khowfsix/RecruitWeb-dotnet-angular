@@ -1,5 +1,4 @@
 using Data.CustomModel.Application;
-using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
 using Data.Sorting;
@@ -54,7 +53,7 @@ namespace Data.Repositories
 
             if (!String.IsNullOrEmpty(applicationFilter!.Search))
             {
-                query = query.Where(o => 
+                query = query.Where(o =>
                 (o.Cv.Candidate.User!.FullName!.ToLower().Contains(applicationFilter.Search.ToLower())
                 || o.Cv.CvHasSkills.First(o => o.Skill.SkillName!.ToLower().Contains(applicationFilter.Search.ToLower())) != null));
 

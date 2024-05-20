@@ -11,7 +11,6 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
-import { GenericCreateDialogComponent } from './generic-dialog.component';
 
 @Component({
 	selector: 'app-generic-table',
@@ -95,7 +94,7 @@ export class GenericTableComponent {
 
 	create(): void {
 		// const dialogRef = this.dialog.open(GenericCreateDialogComponent, {
-		// 	data: data
+
 		// });
 
 		// dialogRef.afterClosed().subscribe(result => {
@@ -111,7 +110,7 @@ export class GenericTableComponent {
 	}
 
 	delete(data: any): void {
-		const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+		const confirmDialogRef = this.dialog.open(AdminDeleteConfirmDialogComponent, {
 			data: { title: 'Confirm Delete', message: `Are you sure you want to delete this record?` }
 		});
 
@@ -129,7 +128,7 @@ export class GenericTableComponent {
 
 @Component({
 	standalone: true,
-	selector: 'app-confirm-dialog',
+	selector: 'app-admin-delete-dialog',
 	imports: [
 		CommonModule,
 		MatDialogModule,
@@ -146,9 +145,9 @@ export class GenericTableComponent {
 	</div>
 	`,
 })
-export class ConfirmDialogComponent {
+export class AdminDeleteConfirmDialogComponent {
 	constructor(
-		public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+		public dialogRef: MatDialogRef<AdminDeleteConfirmDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) { }
 
