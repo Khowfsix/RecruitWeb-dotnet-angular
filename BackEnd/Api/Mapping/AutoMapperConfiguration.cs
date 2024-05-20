@@ -90,6 +90,7 @@ namespace Data.Mapping
             //.ForMember(dest => dest.RecruiterId, opt => opt.Ignore())
             //.ForMember(dest => dest.Requirements, opt => opt.Ignore());
             CreateMap<Position, PositionModel>().ReverseMap();
+            CreateMap<Position, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionAddModel>().ReverseMap();
             CreateMap<PositionUpdateModel, PositionModel>().ReverseMap();
