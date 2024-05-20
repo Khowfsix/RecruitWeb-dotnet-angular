@@ -76,9 +76,9 @@ export const routes: Routes = [
 
 	// url for candidate
 	createRouteWithRoles('cv', CvComponent, [role.CANDIDATE]),
-	createRouteWithRoles('cv/candidateProfile', CandidateProfileComponent, [role.CANDIDATE]),
-	createRouteWithRoles('cv/cvManage', CvManageComponent, [role.CANDIDATE]),
-	createRouteWithRoles('cv/jobPreference', JobPreferenceComponent, [role.CANDIDATE]),
+	// createRouteWithRoles('cv/candidateProfile', CandidateProfileComponent, [role.CANDIDATE]),
+	// createRouteWithRoles('cv/cvManage', CvManageComponent, [role.CANDIDATE]),
+	// createRouteWithRoles('cv/jobPreference', JobPreferenceComponent, [role.CANDIDATE]),
 
 	// url for admin
 	{

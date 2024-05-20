@@ -17,7 +17,7 @@ export class CvService {
 		return this.api.POST('/api/Cv', newCv);
 	}
 
-	getListCvsOfCandidate(candidateId: string): Observable<any> {
+	getListCvsOfCandidate(candidateId: string): Observable<string | CV[]> {
 		return this.api.GET(`/api/Cv/GetCandidateCvs/${candidateId}`);
 	}
 

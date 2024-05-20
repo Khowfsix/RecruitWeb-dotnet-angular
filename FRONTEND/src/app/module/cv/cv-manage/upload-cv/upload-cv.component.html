@@ -5,10 +5,16 @@
 		(dragover)="onDragOver($event)"
 		(dragleave)="onDragLeave($event)">
 		<input type="file" #fileInput hidden (change)="onFileSelected($event)" />
-		<button mat-raised-button (click)="fileInput.click()">Choose File</button>
+		<button mat-raised-button (click)="fileInput.click()">
+			{{ selectedFile ? 'Selected file' : 'Choose file' }}
+		</button>
 		<p class="p-2">or drag and drop files here</p>
 	</div>
+
+	<p class="p-2"><b>File name:</b> {{ selectedFile.name }}</p>
+	<!-- <mat-form-field> </mat-form-field> -->
+
 	<div class="d-flex justify-content-center p-5 rounded">
-		<button mat-raised-button class="col-4" color="primary">UPLOAD</button>
+		<button mat-raised-button class="col-4" color="primary" (click)="onClickUpload()">UPLOAD</button>
 	</div>
 </div>

@@ -13,7 +13,6 @@ import { first } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { JWT } from '../../../data/authen/jwt.model';
 import { ToastrService } from 'ngx-toastr';
-import { BackendResponse } from '../../../data/response.interface';
 
 @Component({
 	selector: 'app-login',
@@ -78,7 +77,6 @@ export class LoginComponent implements OnInit {
 							}
 						});
 					}
-
 				},
 				error: (error) => {
 					if (error.status === '401') {

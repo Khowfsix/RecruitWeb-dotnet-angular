@@ -2,23 +2,23 @@
 <div class="card-body">
 	<div class="card shadow-sm">
 		<div class="card-body">
-			<div class="h4">Candidate name</div>
+			<div class="h4">{{ candidate.user?.fullName }}</div>
 			<h4>Role</h4>
 			<div class="container">
 				<div class="row">
 					<div class="col">
 						<i class="fa-regular fa-envelope p-2" aria-hidden="true"></i>
-						<span>email</span>
+						<span><b>email:</b> {{ candidate.user?.email }}</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-phone-slash p-2" aria-hidden="true"></i>
-						<span>phone</span>
+						<span><b>phone:</b> {{ candidate.user?.phoneNumber }}</span>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<i class="fa-regular fa-calendar p-2" aria-hidden="true"></i>
-						<span>birthday</span>
+						<span><b>Birthday</b>: {{ candidate.user?.dateOfBirth }}</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-venus p-2" aria-hidden="true"></i>
