@@ -10,3 +10,14 @@ export class Application {
 	candidate_Status?: number;
 	priority?: string;
 }
+
+export class ApplicationAddModel {
+	cvid?: string;
+	positionId?: string
+}
+
+
+export class ApplyDialogDataInput {
+	position?: Position;
+	candidateId?: string;
+}

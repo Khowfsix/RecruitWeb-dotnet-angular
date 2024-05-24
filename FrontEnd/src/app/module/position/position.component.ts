@@ -38,6 +38,7 @@ import { debounceTime, startWith } from 'rxjs/operators';
 import { CustomDateTimeService } from '../../shared/service/custom-datetime.service';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../core/constants/position.env';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -51,7 +52,9 @@ import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../core/constants/position.en
 		RouterModule,
 		MatPaginatorModule,
 		MatSelectModule,
-		FilterComponent
+		FilterComponent,
+
+		NgbPopoverModule
 	],
 	templateUrl: './position.component.html',
 	styleUrl: './position.component.css',

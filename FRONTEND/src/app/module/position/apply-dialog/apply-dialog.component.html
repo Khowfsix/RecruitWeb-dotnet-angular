@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>
+	Apply for
+	<p class="text-primary d-inline">
+		{{ data.position?.positionName | uppercase }}
+	</p>
+</h2>
+<mat-dialog-content class="mat-typography">
+	<div>Select CV to apply</div>
+	<mat-accordion>
+		<mat-expansion-panel (closed)="uploadOptionCV('orther')" (opened)="uploadOptionCV('default')">
+			<mat-expansion-panel-header>
+				<mat-panel-title> Most recently applied CV: LyHongPhat_Backend_Dev_Intern.pdf </mat-panel-title>
+				<mat-panel-description>
+					<a href=""> See </a>
+				</mat-panel-description>
+			</mat-expansion-panel-header>
+			<div>First and last name: {{ candidate?.user?.fullName }}</div>
+			<div>Email: {{ candidate?.user?.email }}</div>
+			<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
+		</mat-expansion-panel>
+	</mat-accordion>
+	<div>Select another CV in my CV library</div>
+
+	<mat-accordion>
+		<mat-expansion-panel (opened)="uploadOptionCV('upload')" (closed)="uploadOptionCV('default')">
+			<mat-expansion-panel-header>
+				Upload your CV from your computer, select or drag and drop Supports .doc, .docx, pdf formats under 5MB
+				in size
+			</mat-expansion-panel-header>
+			<app-upload-cv></app-upload-cv>
+		</mat-expansion-panel>
+	</mat-accordion>
+	<div>
+		<div>
+			Introducing letter:
+			<p>A concise, well-written cover letter will help you become more professional and impress the employer.</p>
+		</div>
+		<input type="text" placeholder="Enter your letter here" />
+	</div>
+
+	<div class="mt-3 border-dark rounded shadow p-2">
+		<div>
+			<p class="text-danger h3">Note:</p>
+		</div>
+		<div>
+			<p>
+				TopCV advises all of you to always be careful during the job search process and proactively research
+				company information and job positions before applying.
+			</p>
+			<p>
+				Candidates need to be responsible for their application behavior. If you encounter recruitment news or
+				receive suspicious contact from an employer, please immediately report to TopCV via email
+				hotro&#64;topcv.vn for timely support.
+			</p>
+			<p>
+				Learn more about fraud prevention
+				<a href="https://blog.topcv.vn/huong-dan-tim-viec-an-toan-trong-ky-nguyen-so/">here</a>.
+			</p>
+		</div>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-button color="warn" mat-dialog-close class="col-2">Cancel</button>
+	<button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial class="col-3">Apply</button>
+</mat-dialog-actions>
