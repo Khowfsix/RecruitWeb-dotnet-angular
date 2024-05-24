@@ -75,7 +75,38 @@ namespace Data.Repositories
                 var sort = new Sort<Application>(sortString);
                 query = sort.getSort(query);
             }
-            var listData = await query.AsNoTracking()
+            var listData = await query.Select(e =>
+            new Application
+            {
+                ApplicationId = e.ApplicationId,
+                Cvid = e.Cvid,
+                PositionId = e.PositionId,
+                CreatedTime = e.CreatedTime,
+                Company_Status = e.Company_Status,
+                Candidate_Status = e.Candidate_Status,
+                Priority = e.Priority,
+                IsDeleted = e.IsDeleted,
+                Cv = new Cv
+                {
+                    Cvid = e.Cvid,
+                    CvName = e.Cv.CvName,
+                    CandidateId = e.Cv.CandidateId,
+                    CvPdf = e.Cv.CvPdf,
+                    Candidate = new Candidate
+                    {
+                        CandidateId = e.Cv.CandidateId,
+                        CandidateHasSkills = e.Cv.Candidate.CandidateHasSkills,
+                        AboutMe = e.Cv.Candidate.AboutMe,
+                        User = new WebUser
+                        {
+                            FullName = e.Cv.Candidate.User!.FullName,
+                            Email = e.Cv.Candidate.User.Email,
+                            ImageURL = e.Cv.Candidate.User.ImageURL,
+                            DateOfBirth = e.Cv.Candidate.User.DateOfBirth,
+                        },
+                    },
+                },
+            })
                 .ToListAsync();
 
             return listData;
