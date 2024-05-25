@@ -78,12 +78,18 @@ export class UploadCvComponent {
 
 	onClickUpload() {
 		if (!this.selectedFile) {
-			this._toastService.error('Please select a file before uploading', 'No file selected',
-				{
-					timeOut: 3000,
-					progressBar: true
-				});
+			this._toastService.error('Please select a file before uploading', 'No file selected', {
+				timeOut: 3000,
+				progressBar: true
+			});
 			return;
+		}
+		// check if the file is smaller than 5MB
+		else if (this.selectedFile.size > 5 * 1024 * 1024) {
+			this._toastService.error('File size should be less than 5MB', 'File too large', {
+				timeOut: 3000,
+				progressBar: true
+			});
 		}
 
 		this.openCvNameDialog();

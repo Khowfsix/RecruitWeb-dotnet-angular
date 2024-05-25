@@ -21,5 +21,7 @@ namespace Data.Interfaces
         Task<Cv> GetCVById(Guid id);
 
         //Task<Cv> GetCVByIdNoTracking(Guid id);
+
+        Task<Cv> GetDefaultCv(Guid candidateId);
     }
 }

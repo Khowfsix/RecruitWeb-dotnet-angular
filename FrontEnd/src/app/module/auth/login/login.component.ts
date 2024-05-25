@@ -91,6 +91,7 @@ export class LoginComponent implements OnInit {
 	navigate_before(): void {
 		this.route.queryParams.subscribe(params => {
 			const returnUrl = params['returnUrl'] || '/';
+			console.log(returnUrl);
 			this.router.navigateByUrl(decodeURIComponent(returnUrl));
 		});
 	}

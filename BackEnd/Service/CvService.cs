@@ -59,6 +59,13 @@ namespace Service
             return resp;
         }
 
+        public async Task<CvModel?> GetCvDefault(Guid candidateId)
+        {
+            var entityData = await _cvRepository.GetDefaultCv(candidateId);
+            var resp = _mapper.Map<CvModel>(entityData);
+            return resp;
+        }
+
         public async Task<CvModel> SaveCv(CvModel request)
         {
             //// Get list skill

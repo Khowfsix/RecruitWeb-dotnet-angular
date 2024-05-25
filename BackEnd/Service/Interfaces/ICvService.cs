@@ -20,5 +20,7 @@ namespace Service.Interfaces
         Task<CvModel> GetCvById(Guid requestId);
 
         Task<bool> UploadCvPdf(IFormFile? CvFile, Guid Cvid);
+
+        Task<CvModel?> GetCvDefault(Guid candidateId);
     }
 }

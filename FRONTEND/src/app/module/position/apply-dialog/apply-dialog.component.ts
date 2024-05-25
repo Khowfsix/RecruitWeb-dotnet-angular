@@ -30,15 +30,9 @@ import { CV } from '../../../data/cv/cv.model';
 	templateUrl: './apply-dialog.component.html',
 })
 export class ApplyDialogComponent {
+	panelOpenState = false;
 	candidate?: Candidate;
 	listCv?: CV[];
-	option: "default" | "orther" | "upload" = "default";
-
-	listOptions = {
-		default: true,
-		orther: false,
-		upload: false,
-	}
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: ApplyDialogDataInput,
@@ -61,25 +55,5 @@ export class ApplyDialogComponent {
 				}
 			}
 		);
-	}
-
-	uploadOptionCV(option: "default" | "orther" | "upload") {
-		if (option === "default") {
-			this.listOptions.default = true;
-			this.listOptions.orther = false;
-			this.listOptions.upload = false;
-
-
-		} else if (option === "orther") {
-			this.listOptions.default = false;
-			this.listOptions.orther = true;
-			this.listOptions.upload = false;
-		} else if (option === "upload") {
-			this.listOptions.default = false;
-			this.listOptions.orther = false;
-			this.listOptions.upload = true;
-		}
-
-		console.log(this.listOptions);
 	}
 }

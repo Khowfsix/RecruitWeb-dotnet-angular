@@ -4,10 +4,11 @@
 		{{ data.position?.positionName | uppercase }}
 	</p>
 </h2>
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography shadow">
 	<div>Select CV to apply</div>
+
 	<mat-accordion>
-		<mat-expansion-panel (closed)="uploadOptionCV('orther')" (opened)="uploadOptionCV('default')">
+		<mat-expansion-panel class="py-3">
 			<mat-expansion-panel-header>
 				<mat-panel-title> Most recently applied CV: LyHongPhat_Backend_Dev_Intern.pdf </mat-panel-title>
 				<mat-panel-description>
@@ -18,11 +19,11 @@
 			<div>Email: {{ candidate?.user?.email }}</div>
 			<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
 		</mat-expansion-panel>
-	</mat-accordion>
-	<div>Select another CV in my CV library</div>
-
-	<mat-accordion>
-		<mat-expansion-panel (opened)="uploadOptionCV('upload')" (closed)="uploadOptionCV('default')">
+		<mat-expansion-panel class="py-3">
+			<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
+			Panel body
+		</mat-expansion-panel>
+		<mat-expansion-panel class="py-3">
 			<mat-expansion-panel-header>
 				Upload your CV from your computer, select or drag and drop Supports .doc, .docx, pdf formats under 5MB
 				in size
@@ -30,13 +31,14 @@
 			<app-upload-cv></app-upload-cv>
 		</mat-expansion-panel>
 	</mat-accordion>
-	<div>
-		<div>
+
+	<!-- <div>
+		<p>A concise, well-written cover letter will help you become more professional and impress the employer.</p>
+		<mat-form-field>
 			Introducing letter:
-			<p>A concise, well-written cover letter will help you become more professional and impress the employer.</p>
-		</div>
-		<input type="text" placeholder="Enter your letter here" />
-	</div>
+			<input matInput type="text" placeholder="Enter your letter here" />
+		</mat-form-field>
+	</div> -->
 
 	<div class="mt-3 border-dark rounded shadow p-2">
 		<div>

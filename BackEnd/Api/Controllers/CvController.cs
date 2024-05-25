@@ -48,6 +48,18 @@ namespace Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("[action]/{candidateId}")]
+        public async Task<IActionResult> GetCvDefault(Guid candidateId)
+        {
+            var cvDefault = await _cvService.GetCvDefault(candidateId);
+            if (cvDefault is null)
+            {
+                return NotFound();
+            }
+            var response = _mapper.Map<CvViewModel>(cvDefault);
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> SaveCv([FromBody] CvAddModel request)
         {

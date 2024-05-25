@@ -161,5 +161,18 @@ namespace Data.Repositories
 
             return data;
         }
+
+        public async Task<Cv> GetDefaultCv(Guid candidateId)
+        {
+            var listCv = Entities.Where(c => c.CandidateId.Equals(candidateId)).ToList();
+            if (listCv.Any())
+            {
+                var defaultCv = Entities.Where(c => c.IsDefault == true).FirstOrDefault();
+                defaultCv ??= listCv.FirstOrDefault();
+                return defaultCv!;
+            }
+
+            return null!;
+        }
     }
 }
