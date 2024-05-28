@@ -74,7 +74,7 @@ export class HeaderComponent {
 				if (this.getRoleOfUser(this._user).includes('Admin')) {
 					this.updateHeaderForAdmin();
 				}
-				this.updateHeaderForAdmin();
+				// this.updateHeaderForAdmin();
 			} else {
 				this.updateHeaderForLoggedOutUser();
 			}

@@ -37,7 +37,7 @@ namespace Api.Controllers
             var models = await _skillService.GetAllSkills(isAdmin, query);
             if (models == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var resp = _mapper.Map<List<SkillViewModel>>(models);
             return Ok(resp);

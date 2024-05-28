@@ -27,7 +27,7 @@ namespace Api.Controllers
                 var categoryQuestion = await _categoryQuestionService.GetCategoryQuestionById((Guid)id);
                 if (categoryQuestion == null)
                 {
-                    return Ok("Not found");
+                    return NotFound();
                 }
                 var response_id = _mapper.Map<CategoryQuestionViewModel>(categoryQuestion);
                 return Ok(response_id);
@@ -37,7 +37,7 @@ namespace Api.Controllers
                 var listCategoryQuestionbyName = await _categoryQuestionService.GetCategoryQuestionsByName(name);
                 if (listCategoryQuestionbyName == null)
                 {
-                    return Ok("Not found");
+                    return NotFound();
                 }
 
                 var response_name = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestionbyName);
@@ -48,7 +48,7 @@ namespace Api.Controllers
                 var listCategoryQuestionByWeight = await _categoryQuestionService.GetCategoryQuestionsByWeight((double)weight);
                 if (listCategoryQuestionByWeight == null)
                 {
-                    return Ok("Not found");
+                    return NotFound();
                 }
 
                 var response_weight = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestionByWeight);
@@ -66,7 +66,7 @@ namespace Api.Controllers
             var categoryQuestion = await _categoryQuestionService.GetCategoryQuestionById(id);
             if (categoryQuestion == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var response = _mapper.Map<CategoryQuestionViewModel>(categoryQuestion);
             return Ok(response);
@@ -86,7 +86,7 @@ namespace Api.Controllers
             var listCategoryQuestion = await _categoryQuestionService.GetCategoryQuestionsByWeight(weight);
             if (listCategoryQuestion == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var response = _mapper.Map<List<CategoryQuestionViewModel>>(listCategoryQuestion);
             return Ok(response);
@@ -98,7 +98,7 @@ namespace Api.Controllers
         {
             if (categoryQuestion == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var modelData = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
             var listCategoryQuestion = await _categoryQuestionService.SaveCategoryQuestion(modelData);
@@ -111,7 +111,7 @@ namespace Api.Controllers
         {
             if (categoryQuestion == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var modelData = _mapper.Map<CategoryQuestionModel>(categoryQuestion);
             var listCategoryQuestion = await _categoryQuestionService.UpdateCategoryQuestion(modelData, categoryQuestionId);

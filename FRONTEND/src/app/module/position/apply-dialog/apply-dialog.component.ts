@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -30,22 +30,26 @@ import { CV } from '../../../data/cv/cv.model';
 	templateUrl: './apply-dialog.component.html',
 })
 export class ApplyDialogComponent {
+	@Input() candidateId?: string;
+
 	panelOpenState = false;
 	candidate?: Candidate;
 	listCv?: CV[];
+	optionCv?: "default" | "orther" | "upload";
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: ApplyDialogDataInput,
 		private _candidateService: CandidateService,
-		private _cvService: CvService
+		private _cvService: CvService,
+
 	) {
-		_candidateService.getById(data?.candidateId as string).subscribe(
+		this._candidateService.getById(data?.candidateId as string).subscribe(
 			(response) => {
 				this.candidate = response;
 			}
 		);
 
-		_cvService.getListCvsOfCandidate(data?.candidateId as string).subscribe(
+		this._cvService.getListCvsOfCandidate(data?.candidateId as string).subscribe(
 			(response) => {
 				if (typeof response === 'string') {
 					this.listCv = [];
@@ -55,5 +59,10 @@ export class ApplyDialogComponent {
 				}
 			}
 		);
+	}
+
+	onChangeOptionCv(option: "default" | "orther" | "upload") {
+		this.optionCv = option;
+		console.log(this.optionCv);
 	}
 }

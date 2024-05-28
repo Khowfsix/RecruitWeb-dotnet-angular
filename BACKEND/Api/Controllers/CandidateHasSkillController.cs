@@ -24,10 +24,10 @@ namespace Api.Controllers
             if (candidateId.HasValue)
             {
                 var models = await _candidateHasSkillService.GetAllByCandidateId(candidateId.Value);
-                return (models != null) ? Ok(_mapper.Map<List<CandidateHasSkillViewModel>>(models)) : Ok("Not found");
+                return (models != null) ? Ok(_mapper.Map<List<CandidateHasSkillViewModel>>(models)) : NotFound();
             }
-            
-            return Ok("Not found");
+
+            return NotFound();
         }
     }
 }

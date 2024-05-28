@@ -38,7 +38,7 @@ namespace Api.Controllers
         {
             if (request == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var modelData = _mapper.Map<CandidateJoinEventModel>(request);
             var response = await _candidateJoinEventService.SaveCandidateJoinEvent(modelData);
@@ -54,7 +54,7 @@ namespace Api.Controllers
         {
             if (requestId.Equals(Guid.Empty))
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var response = await (_candidateJoinEventService.DeleteCandidateJoinEvent(requestId));
             return Ok(response);
@@ -65,7 +65,7 @@ namespace Api.Controllers
         {
             if (request == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
 
             var modelData = _mapper.Map<CandidateJoinEventModel>(request);

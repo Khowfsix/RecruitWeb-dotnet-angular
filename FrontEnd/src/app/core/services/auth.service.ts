@@ -8,6 +8,7 @@ import { noTokenURLs } from '../constants/noTokenURLs.constants';
 import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,7 +16,12 @@ import { Router } from '@angular/router';
 export class AuthService {
 	// clientUserInfo: string | null = window.localStorage.getItem('currentUser') || null;
 
-	constructor(private api: API, private cookieService: CookieService, private router: Router) {
+	constructor(
+		private api: API,
+		private cookieService: CookieService,
+		private router: Router,
+		private toast: ToastrService
+	) {
 		// afterRender(() => {
 		// 	console.log(localStorage);
 		// 	this.clientUserInfo = localStorage.getItem('currentUser') != '' ? localStorage.getItem('currentUser') : null;
@@ -83,15 +89,25 @@ export class AuthService {
 	}
 
 	logout() {
-		const res = this.api.POST('/api/Authentication/Logout');
-		console.log(res);
-		console.error('clear cookie and local storage');
-		this.cookieService.delete('jwt');
-		this.cookieService.delete('refreshToken');
-		localStorage.removeItem('currentUser');
-		localStorage.removeItem('expirationDate');
-		this.loginStatus.next(false);
+		try {
+			this.api.POST('/api/Authentication/Logout');
+			this.cookieService.delete('jwt');
+			this.cookieService.delete('refreshToken');
+			localStorage.removeItem('currentUser');
+			localStorage.removeItem('expirationDate');
+			this.loginStatus.next(false);
 
+			this.toast.success("Log out successfully", "Success", {
+				timeOut: 3000,
+				progressBar: true,
+			});
+		} catch (error) {
+			console.log(error);
+			this.toast.error("Log out failed", "Error", {
+				timeOut: 3000,
+				progressBar: true,
+			});
+		}
 		return this.router.navigate(['/']);
 	}
 

@@ -3,7 +3,6 @@ using AutoMapper;
 using Data.CustomModel.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -24,7 +23,7 @@ namespace Api.Controllers
             _recruiterService = recruiterService;
             _mapper = mapper;
         }
-            
+
         [HttpGet]
         public async Task<IActionResult> GetAllApplications([FromQuery] ApplicationFilterModel applicationFilterModel, int? status, int? priority, Guid? positionId, string? sortString = "CreatedTime_DESC")
         {
@@ -33,10 +32,11 @@ namespace Api.Controllers
                 var userName = HttpContext.User.Identity!.Name;
                 var foundPosition = await _positionService.GetPositionById(positionId.Value);
                 var foundRecruiter = await _recruiterService.GetRecruiterById(foundPosition.RecruiterId);
-                if (!HttpContext.User.IsInRole("Admin")){
+                if (!HttpContext.User.IsInRole("Admin"))
+                {
                     if (userName != foundRecruiter!.User.UserName)
                     {
-                        return Ok("Not found");
+                        return NotFound();
                     }
                 }
                 var filterModel = _mapper.Map<ApplicationFilter>(applicationFilterModel);

@@ -8,7 +8,10 @@
 	<div>Select CV to apply</div>
 
 	<mat-accordion>
-		<mat-expansion-panel class="py-3">
+		<mat-expansion-panel
+			(afterExpand)="onChangeOptionCv('default')"
+			(afterCollapse)="onChangeOptionCv('default')"
+			class="py-3">
 			<mat-expansion-panel-header>
 				<mat-panel-title> Most recently applied CV: LyHongPhat_Backend_Dev_Intern.pdf </mat-panel-title>
 				<mat-panel-description>
@@ -19,11 +22,17 @@
 			<div>Email: {{ candidate?.user?.email }}</div>
 			<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
 		</mat-expansion-panel>
-		<mat-expansion-panel class="py-3">
+		<mat-expansion-panel
+			(afterExpand)="onChangeOptionCv('orther')"
+			(afterCollapse)="onChangeOptionCv('default')"
+			class="py-3">
 			<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
 			Panel body
 		</mat-expansion-panel>
-		<mat-expansion-panel class="py-3">
+		<mat-expansion-panel
+			(afterExpand)="onChangeOptionCv('upload')"
+			(afterCollapse)="onChangeOptionCv('default')"
+			class="py-3">
 			<mat-expansion-panel-header>
 				Upload your CV from your computer, select or drag and drop Supports .doc, .docx, pdf formats under 5MB
 				in size
@@ -52,7 +61,7 @@
 			<p>
 				Candidates need to be responsible for their application behavior. If you encounter recruitment news or
 				receive suspicious contact from an employer, please immediately report to TopCV via email
-				hotro&#64;topcv.vn for timely support.
+				jasmine&#64;gmail.com for timely support.
 			</p>
 			<p>
 				Learn more about fraud prevention

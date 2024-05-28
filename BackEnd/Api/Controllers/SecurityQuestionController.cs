@@ -26,7 +26,7 @@ namespace Api.Controllers
             var listSecurityQuestion = await _securityQuestionService.GetAllSecurityQuestion();
             if (listSecurityQuestion == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var result = new List<SecurityQuestionViewModel>();
             foreach (var item in listSecurityQuestion)
@@ -41,7 +41,7 @@ namespace Api.Controllers
         {
             if (request == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var model = _mapper.Map<SecurityQuestionModel>(request);
             var listSecurityQuestion = await _securityQuestionService.SaveSecurityQuestion(model);
@@ -53,7 +53,7 @@ namespace Api.Controllers
         {
             if (request == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var model = _mapper.Map<SecurityQuestionModel>(request);
             var listSecurityQuestion = await _securityQuestionService.UpdateSecurityQuestion(model, requestId);
@@ -66,7 +66,7 @@ namespace Api.Controllers
 #pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (requestId == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
 #pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             var listCategoryQuestion = await _securityQuestionService.DeleteSecurityQuestion(requestId);

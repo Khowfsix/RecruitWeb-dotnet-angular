@@ -34,7 +34,7 @@ public class ItrsinterviewController : BaseAPIController
         var reportList = await _itrsinterviewService.GetAllItrsinterview();
         if (reportList == null)
         {
-            return Ok("Not found");
+            return NotFound();
         }
         return Ok(reportList);
     }
@@ -75,6 +75,6 @@ public class ItrsinterviewController : BaseAPIController
     [Authorize(Roles = "Recruiter,Interviewer,Admin")]
     public async Task<IActionResult> DeleteItrsinterview(Guid id)
     {
-        return await _itrsinterviewService.DeleteItrsinterview(id) ? Ok(true) : Ok("Not found");
+        return await _itrsinterviewService.DeleteItrsinterview(id) ? Ok(true) : NotFound();
     }
 }

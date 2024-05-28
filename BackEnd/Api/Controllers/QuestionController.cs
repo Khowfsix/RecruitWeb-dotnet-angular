@@ -41,7 +41,7 @@ namespace Api.Controllers
             var listQuestion = await _questionService.GetAllQuestions(query, null);
             if (listQuestion == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             List<QuestionViewModel> viewModels = new List<QuestionViewModel>();
             foreach (var models in listQuestion)
@@ -91,7 +91,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetQuestion(Guid questionId)
         {
             var model = await _questionService.GetQuestion(questionId);
-            return model is not null ? Ok(_mapper.Map<QuestionViewModel>(model)) : Ok("Not found");
+            return model is not null ? Ok(_mapper.Map<QuestionViewModel>(model)) : NotFound();
         }
 
         [HttpPost]
@@ -112,7 +112,7 @@ namespace Api.Controllers
         {
             var model = _mapper.Map<QuestionModel>(question);
             var response = await _questionService.UpdateQuestion(model, questionId);
-            return response is true ? Ok(true) : Ok("Not found");
+            return response is true ? Ok(true) : NotFound();
         }
 
         [HttpDelete("{questionId:guid}")]
@@ -120,7 +120,7 @@ namespace Api.Controllers
         public async Task<IActionResult> RemoveQuestion(Guid questionId)
         {
             var response = await _questionService.RemoveQuestion(questionId);
-            return response is true ? Ok(true) : Ok("Not found");
+            return response is true ? Ok(true) : NotFound();
         }
     }
 }

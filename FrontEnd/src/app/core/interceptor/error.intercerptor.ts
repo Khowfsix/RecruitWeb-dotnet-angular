@@ -24,8 +24,15 @@ class ErrorInterceptor implements HttpInterceptor {
 					// auto logout if 401 Unauthorized or 403 Forbidden response returned from api
 					const authToken =
 						this.authenticationsService.getAuthenticationToken();
-
-					if (authToken) this.authenticationsService.logout();
+					if (authToken) {
+						try {
+							console.log(`refresh token and recall api`);
+							this.authenticationsService.refreshToken();
+							return next.handle(req);
+						} catch (error) {
+							this.authenticationsService.logout();
+						}
+					}
 				}
 
 				const error = err.error || err.statusText;

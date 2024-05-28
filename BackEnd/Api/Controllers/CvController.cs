@@ -42,7 +42,7 @@ namespace Api.Controllers
             var cvList = await _cvService.GetAllCv(request);
             if (cvList.IsNullOrEmpty())
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var response = _mapper.Map<List<CvViewModel>>(cvList);
             return Ok(response);
@@ -107,7 +107,7 @@ namespace Api.Controllers
                 var cvList = await _cvService.UpdateCv(modelData, requestId);
                 if (!cvList)
                 {
-                    return Ok("Not found");
+                    return NotFound();
                 }
                 return Ok(cvList);
             }
@@ -126,7 +126,7 @@ namespace Api.Controllers
                 var resp = await _cvService.DeleteCv(requestId);
                 if (resp == false)
                 {
-                    return Ok("Not found");
+                    return NotFound();
                 }
                 return Ok(resp);
             }
@@ -140,7 +140,7 @@ namespace Api.Controllers
             var cvList = await _cvService.GetCvsOfCandidate(candidateId);
             if (cvList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(cvList);
         }
@@ -151,7 +151,7 @@ namespace Api.Controllers
             var cv = await _cvService.GetCvById(Cvid);
             if (cv == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(cv);
         }

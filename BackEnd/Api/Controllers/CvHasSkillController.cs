@@ -25,13 +25,13 @@ namespace Api.Controllers
             if (cvId.HasValue)
             {
                 var models = await _cvHasSkillService.GetAllByCvId(cvId.Value);
-                return models != null ? Ok(_mapper.Map<List<CvHasSkillViewModel>>(models)) : Ok("Not found");
+                return models != null ? Ok(_mapper.Map<List<CvHasSkillViewModel>>(models)) : NotFound();
             }
 
             var cvHasSkillList = await _cvHasSkillService.GetAllCvHasSkillService(request);
             if (cvHasSkillList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(cvHasSkillList);
         }
@@ -43,7 +43,7 @@ namespace Api.Controllers
             var cvHasSkillList = await _cvHasSkillService.SaveCvHasSkillService(modelData);
             if (cvHasSkillList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
 
             return Ok(cvHasSkillList);
@@ -56,7 +56,7 @@ namespace Api.Controllers
             var cvHasSkillList = await _cvHasSkillService.UpdateCvHasSkillService(modelData, requestId);
             if (cvHasSkillList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(cvHasSkillList);
         }
@@ -68,7 +68,7 @@ namespace Api.Controllers
 #pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (cvHasSkillList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
 #pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
             return Ok(cvHasSkillList);

@@ -30,7 +30,7 @@ namespace Api.Controllers
             var companyList = _mapper.Map<List<CompanyViewModel>>(modelDatas);
             if (companyList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(companyList);
         }
@@ -51,7 +51,7 @@ namespace Api.Controllers
             var companyList = await _companyService.SaveCompany(modelData);
             if (companyList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(companyList);
         }
@@ -68,7 +68,7 @@ namespace Api.Controllers
             }
             catch (Exception)
             {
-                return Ok("Not found");
+                return NotFound();
             }
         }
 
@@ -83,7 +83,7 @@ namespace Api.Controllers
             }
             catch (Exception)
             {
-                return Ok("Not found");
+                return NotFound();
             }
         }
     }

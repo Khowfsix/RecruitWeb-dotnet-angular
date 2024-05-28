@@ -37,7 +37,7 @@ namespace Api.Controllers
             var roundlist = await _roundService.GetAllRounds(query);
             if (roundlist == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
 
             var result = new List<RoundViewModel>();

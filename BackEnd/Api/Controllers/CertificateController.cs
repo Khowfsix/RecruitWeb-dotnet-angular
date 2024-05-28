@@ -26,7 +26,7 @@ namespace Api.Controllers
             var response = _mapper.Map<List<CertificateViewModel>>(modelDatas);
             if (response == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(response);
         }
@@ -38,7 +38,7 @@ namespace Api.Controllers
             var response = await _certificateService.SaveCertificate(modelData);
             if (response == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             return Ok(response);
         }
@@ -54,7 +54,7 @@ namespace Api.Controllers
             }
             catch (Exception)
             {
-                return Ok("Not found");
+                return NotFound();
             }
         }
 
@@ -68,7 +68,7 @@ namespace Api.Controllers
             }
             catch (Exception)
             {
-                return Ok("Not found");
+                return NotFound();
             }
         }
     }

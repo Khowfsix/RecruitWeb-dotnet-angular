@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Position } from '../../../data/position/position.model';
 import { PositionService } from '../../../data/position/position.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SkillService } from '../../../data/skill/skill.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,12 +29,15 @@ export class PositionDetailComponent implements OnInit {
 		private route: ActivatedRoute,
 		private positionService: PositionService,
 		private skillService: SkillService,
-		public dialog: MatDialog
+		public dialog: MatDialog,
+		private _location: Location
 	) { }
 
 	private paramPositionId: string = '';
 	public curentUserRoles: string[] | null = null;
 	public fetchPosition?: Position;
+
+	isLoggedIn: boolean = false;
 
 
 	public callApiGetPositionById() {
@@ -61,6 +64,17 @@ export class PositionDetailComponent implements OnInit {
 	}
 
 	public handleClickApply() {
+		if (this._authService.checkLoginStatus()) {
+			this.openDialog();
+		}
+		else {
+			this.router.navigate(['/auth/login'], {
+				queryParams: { returnUrl: this._location.path() },
+			});
+		}
+	}
+
+	public openDialog() {
 		const dialogRef = this.dialog.open(ApplyDialogComponent, {
 			data: {
 				position: this.fetchPosition,

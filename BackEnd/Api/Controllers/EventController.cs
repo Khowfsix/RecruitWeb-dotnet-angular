@@ -37,7 +37,7 @@ public class EventController : BaseAPIController
         var eventList = await _EventService.GetAllEvent();
         if (eventList.IsNullOrEmpty())
         {
-            return Ok("Not found");
+            return NotFound();
         }
         var responseList = _mapper.Map<List<EventViewModel>>(eventList);
         return Ok(responseList);
@@ -54,7 +54,7 @@ public class EventController : BaseAPIController
             return Ok(response);
         }
         else
-            return Ok("Not found");
+            return NotFound();
     }
 
     [HttpPut("{id:guid}")]
@@ -68,7 +68,7 @@ public class EventController : BaseAPIController
             return Ok(response);
         }
         else
-            return Ok("Not found");
+            return NotFound();
     }
 
     [HttpDelete("{id:guid}")]
@@ -81,6 +81,6 @@ public class EventController : BaseAPIController
             return Ok(response);
         }
         else
-            return Ok("Not found");
+            return NotFound();
     }
 }

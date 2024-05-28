@@ -26,7 +26,7 @@ namespace Api.Controllers
             var SCsList = await _successfulCandidateService.GetAllSuccessfulCadidates(query);
             if (SCsList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var result = new List<SuccessfulCadidateViewModel>();
             foreach (var SC in SCsList)

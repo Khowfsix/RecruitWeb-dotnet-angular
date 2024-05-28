@@ -27,7 +27,7 @@ namespace Api.Controllers
             var shiftList = await _shiftService.GetAllShifts(query);
             if (shiftList == null)
             {
-                return Ok("Not found");
+                return NotFound();
             }
             var result = new List<ShiftViewModel>();
             foreach (var shift in shiftList)
