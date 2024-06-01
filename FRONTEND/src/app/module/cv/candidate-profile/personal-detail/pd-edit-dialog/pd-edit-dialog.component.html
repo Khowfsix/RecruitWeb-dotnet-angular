@@ -2,44 +2,6 @@
 <mat-divider></mat-divider>
 
 <mat-dialog-content class="mat-typography text-center">
-	<!-- <mat-stepper #stepper>
-		<mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">
-			<form [formGroup]="firstFormGroup">
-				<ng-template matStepLabel>Fill out your name</ng-template>
-				<mat-form-field>
-					<mat-label>Name</mat-label>
-					<input matInput placeholder="Last name, First name" formControlName="firstCtrl" required />
-				</mat-form-field>
-				<div>
-					<p>Go to a different step to see the error state</p>
-					<button mat-button matStepperNext>Next</button>
-				</div>
-			</form>
-		</mat-step>
-		<mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
-			<form [formGroup]="secondFormGroup">
-				<ng-template matStepLabel>Fill out your address</ng-template>
-				<mat-form-field>
-					<mat-label>Address</mat-label>
-					<input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl" required />
-				</mat-form-field>
-				<div>
-					<p>Go to a different step to see the error state</p>
-					<button mat-button matStepperPrevious>Back</button>
-					<button mat-button matStepperNext>Next</button>
-				</div>
-			</form>
-		</mat-step>
-		<mat-step>
-			<ng-template matStepLabel>Done</ng-template>
-			<p>You are now done.</p>
-			<div>
-				<button mat-button matStepperPrevious>Back</button>
-				<button mat-button (click)="stepper.reset()">Reset</button>
-			</div>
-		</mat-step>
-	</mat-stepper> -->
-
 	<div class="justify-content-center">
 		<img src="https://via.placeholder.com/150" alt="Your avatar" class="rounded-circle" style="height: 6rem" />
 		<div class="d-flex justify-content-center p-2">
@@ -69,10 +31,10 @@
 					<mat-label>Phone number</mat-label>
 					<input matInput formControlName="phoneNumber" type="text" placeholder="Your phone number" />
 				</mat-form-field>
-				<mat-form-field appearance="fill" class="px-2">
+				<!-- <mat-form-field appearance="fill" class="px-2">
 					<mat-label>Email</mat-label>
 					<input matInput formControlName="email" type="email" placeholder="Your email" />
-				</mat-form-field>
+				</mat-form-field> -->
 				<mat-form-field appearance="fill" class="px-2">
 					<mat-label>Personal Link</mat-label>
 					<input matInput formControlName="personalLink" type="text" type="url" />
@@ -82,7 +44,8 @@
 				<mat-form-field appearance="fill" class="px-2">
 					<mat-label>Date of Birth</mat-label>
 					<input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
-					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-hint>MM/DD/YYYY</mat-hint>
+					<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-datepicker #picker></mat-datepicker>
 				</mat-form-field>
 				<mat-form-field appearance="fill" class="px-2">
@@ -109,6 +72,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="d-flex px-2">
-	<button mat-button class="px-5 bg-danger text-white rounded" (click)="onCancelClick()">Close dialog</button>
-	<button mat-raised-button color="primary" class="px-5 text-white rounded">Action</button>
+	<button mat-button class="px-5 bg-danger text-white rounded" (click)="onCancelClick()">Cancel</button>
+	<button mat-raised-button color="primary" class="px-5 text-white rounded" (click)="onSaveClick()">Update</button>
 </mat-dialog-actions>

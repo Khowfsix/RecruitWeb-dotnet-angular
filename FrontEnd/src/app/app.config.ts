@@ -17,6 +17,8 @@ import { AuthInterceptorProvider } from './core/interceptor/token.interceptor';
 import { ErrorInterceptorProvider } from './core/interceptor/error.intercerptor';
 import { CookieService } from 'ngx-cookie-service';
 import { NetworkInterceptorProvider } from './core/interceptor/network.interceptor';
+import { provideNativeDateAdapter } from '@angular/material/core';
+// import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -24,6 +26,12 @@ export const appConfig: ApplicationConfig = {
 		provideClientHydration(),
 		provideAnimationsAsync(),
 		provideHttpClient(withFetch(), withInterceptorsFromDi()),
+
+		// provide date adapter
+		// { provide: DateAdapter, useClass: MatNativeDateModule },
+		// Use MatNativeDateModule for default behavior
+		provideNativeDateAdapter(),
+
 
 		// provide interceptor
 		AuthInterceptorProvider,

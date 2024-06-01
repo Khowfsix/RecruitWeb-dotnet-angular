@@ -25,7 +25,7 @@ import { CandidateService } from '../../data/candidate/candidate.service';
 	styleUrl: './cv.component.css'
 })
 export class CvComponent {
-	public mySelf: Candidate = new Candidate();
+	public mySelf?: Candidate;
 
 	constructor(
 		private _authService: AuthService,

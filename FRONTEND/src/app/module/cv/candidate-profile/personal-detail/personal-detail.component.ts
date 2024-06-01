@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
@@ -20,18 +20,19 @@ import { Candidate } from '../../../../data/candidate/candidate.model';
 	styleUrl: './personal-detail.component.css',
 })
 export class PersonalDetailComponent implements OnInit, OnDestroy {
-	@Input() candidate: Candidate = new Candidate();
+	@Input() candidate?: Candidate;
 
-	ngOnInit(): void { }
+	ngOnInit(): void {
+		console.log(this.candidate);
+	}
 
 	ngOnDestroy(): void { }
 
 	constructor(
-		public dialog: MatDialog,
+		@Inject(MatDialog) public dialog: MatDialog,
 		private _candidateService: CandidateService,
 		private _authService: AuthService
 	) {
-		console.log(this.candidate);
 	}
 
 	openDialog(): void {
@@ -39,9 +40,22 @@ export class PersonalDetailComponent implements OnInit, OnDestroy {
 			data: this.candidate
 		});
 		dialogRef.afterClosed().subscribe(
-			result => {
-				console.log(result);
-			},
+			(result) => {
+				console.log(`result: ${result}`);
+				const userId = this._authService.getLocalCurrentUser().id;
+				console.log(userId);
+				this._candidateService.updatePersonalDetail(userId as string, result).subscribe(
+					(resp) => {
+						if (resp) {
+							this._authService.getCurrentUser().subscribe(
+								(user) => {
+									localStorage.setItem('currentUser', JSON.stringify(user));
+								}
+							);
+						}
+					}
+				);
+			}
 		);
 	}
 }

@@ -2,37 +2,37 @@
 <div class="card-body">
 	<div class="card shadow-sm">
 		<div class="card-body">
-			<div class="h4">{{ candidate.user?.fullName }}</div>
-			<h4>Role</h4>
+			<div class="h4">{{ candidate?.user?.fullName }}</div>
+			<h4>{{ candidate?.user?.title }}</h4>
 			<div class="container">
 				<div class="row">
 					<div class="col">
 						<i class="fa-regular fa-envelope p-2" aria-hidden="true"></i>
-						<span><b>email:</b> {{ candidate.user?.email }}</span>
+						<span><b>email:</b> {{ candidate?.user?.email }}</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-phone-slash p-2" aria-hidden="true"></i>
-						<span><b>phone:</b> {{ candidate.user?.phoneNumber }}</span>
+						<span><b>phone:</b> {{ candidate?.user?.phoneNumber }}</span>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<i class="fa-regular fa-calendar p-2" aria-hidden="true"></i>
-						<span><b>Birthday</b>: {{ candidate.user?.dateOfBirth }}</span>
+						<span><b>Birthday</b>: {{ candidate?.user?.dateOfBirth }}</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-venus p-2" aria-hidden="true"></i>
-						<span>Male</span>
+						<span>{{ candidate?.user?.gender }}</span>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<i class="fa fa-address-book p-2" aria-hidden="true"></i>
-						<span>address</span>
+						<span>{{ candidate?.user?.address }}</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-globe p-2" aria-hidden="true"></i>
-						<span>link</span>
+						<span>{{ candidate?.user?.personalLink }}</span>
 					</div>
 				</div>
 			</div>

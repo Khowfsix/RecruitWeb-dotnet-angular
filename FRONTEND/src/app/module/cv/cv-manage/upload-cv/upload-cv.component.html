@@ -6,13 +6,13 @@
 		(dragleave)="onDragLeave($event)">
 		<input type="file" #fileInput hidden (change)="onFileSelected($event)" />
 		<button mat-raised-button (click)="fileInput.click()">
-			{{ selectedFile ? 'Selected file' : 'Choose file' }}
+			<i class="fa fa-file-upload px-3" aria-hidden="true"></i>
+			<span *ngIf="!selectedFile">Choose <b>A</b> file</span>
+			<span *ngIf="selectedFile">Choose <b>ANOTHER</b> file</span>
 		</button>
 		<p class="p-2">or drag and drop files here</p>
+		<p class="p-2" *ngIf="selectedFile"><b>File name:</b> {{ selectedFile.name }}</p>
 	</div>
-
-	<p class="p-2"><b>File name:</b> {{ selectedFile.name }}</p>
-	<!-- <mat-form-field> </mat-form-field> -->
 
 	<div class="d-flex justify-content-center p-5 rounded">
 		<button mat-raised-button class="col-4" color="primary" (click)="onClickUpload()">UPLOAD</button>

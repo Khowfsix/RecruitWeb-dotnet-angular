@@ -14,6 +14,7 @@ export class Application {
 export class ApplicationAddModel {
 	cvid?: string;
 	positionId?: string
+	introduce?: string;
 }
 
 

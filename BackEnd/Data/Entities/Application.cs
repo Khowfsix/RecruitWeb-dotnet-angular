@@ -8,6 +8,8 @@ public partial class Application
 
     public Guid PositionId { get; set; }
 
+    public string? Introduce { get; set; }
+
     public DateTime CreatedTime { get; set; }
 
     public int? Company_Status { get; set; }

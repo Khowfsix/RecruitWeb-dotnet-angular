@@ -553,7 +553,8 @@ namespace Api.Controllers
 
             if (user != null)
             {
-                var viewModelResponse = _mapper.Map<WebUserViewModel>(user);
+                //var viewModelResponse = _mapper.Map<WebUserViewModel>(user);
+                var viewModelResponse = user;
                 return Ok(viewModelResponse);
             }
             return NotFound();

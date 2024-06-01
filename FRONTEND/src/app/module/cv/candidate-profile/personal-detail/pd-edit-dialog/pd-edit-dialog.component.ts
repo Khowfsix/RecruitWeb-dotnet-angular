@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { PersonalDetailComponent } from '../personal-detail.component';
 import { Candidate } from '../../../../../data/candidate/candidate.model';
+import { PersonalDetail } from '../../../../../data/candidate/personalDetail';
+import { LessToDay } from '../../../../../shared/validators/date.validator';
 
 @Component({
 	selector: 'app-pd-edit-dialog',
@@ -29,21 +31,26 @@ import { Candidate } from '../../../../../data/candidate/candidate.model';
 		MatButtonModule,
 		MatStepperModule
 	],
+	providers: [
+		// { provide: DateAdapter, useClass: MatNativeDateModule },
+		// { provide: MAT_DATE_LOCALE, useValue: 'en-US' },
+	],
 	templateUrl: './pd-edit-dialog.component.html',
 	styleUrl: './pd-edit-dialog.component.css'
 })
 export class PDEditDialogComponent implements OnInit, OnDestroy {
 	personalDetailForm: FormGroup = new FormGroup({});
+	detailUpdate?: PersonalDetail;
 
 	fullname = new FormControl(this.data.user?.fullName, [Validators.required]);
-	title = new FormControl('', [Validators.required]);
-	email = new FormControl(this.data.user?.email, [Validators.required, Validators.email]);
+	title = new FormControl(this.data.user?.title, [Validators.required]);
+	// email = new FormControl(this.data.user?.email, [Validators.required, Validators.email]);
 	phoneNumber = new FormControl(this.data.user?.phoneNumber, [Validators.required, Validators.pattern('[0-9]{10}')]);
-	dateOfBirth = new FormControl(this.data.user?.dateOfBirth, [Validators.required]);
-	gender = new FormControl('', [Validators.required]);
-	city = new FormControl('', [Validators.required]);
-	address = new FormControl('', [Validators.required]);
-	personalLink = new FormControl('', [Validators.required]);
+	dateOfBirth = new FormControl(this.data.user?.dateOfBirth?.getDate, [Validators.required, LessToDay]);
+	gender = new FormControl(this.data.user?.gender, [Validators.required]);
+	city = new FormControl(this.data.user?.city, [Validators.required]);
+	address = new FormControl(this.data.user?.address, [Validators.required]);
+	personalLink = new FormControl(this.data.user?.personalLink, []);
 
 	constructor(
 		public dialogRef: MatDialogRef<PersonalDetailComponent>,
@@ -54,7 +61,7 @@ export class PDEditDialogComponent implements OnInit, OnDestroy {
 		this.personalDetailForm = this.formBuilder.group({
 			fullname: this.fullname,
 			title: this.title,
-			email: this.email,
+			// email: this.email,
 			phoneNumber: this.phoneNumber,
 			dateOfBirth: this.dateOfBirth,
 			gender: this.gender,
@@ -77,5 +84,7 @@ export class PDEditDialogComponent implements OnInit, OnDestroy {
 	}
 
 	onSaveClick(): void {
+		this.detailUpdate = this.personalDetailForm.value;
+		this.dialogRef.close(this.detailUpdate!);
 	}
 }

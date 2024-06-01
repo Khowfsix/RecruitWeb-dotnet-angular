@@ -12,18 +12,21 @@ import { CV } from '../../../data/cv/cv.model';
 	imports: [
 		UploadCvComponent,
 		MatDividerModule,
-		MatCardModule
+		MatCardModule,
+
+		CommonModule,
 	],
 	templateUrl: './cv-manage.component.html',
 	styleUrl: './cv-manage.component.css'
 })
 export class CvManageComponent {
-	public listCvsOfCandidate: CV[] = [];
-	private _candidateId: string | undefined = null!;
+	public listCvsOfCandidate?: CV[];
+	private _candidateId?: string;
 
 	constructor(
 		private _cvService: CvService,
-		private _authService: AuthService
+		private _authService: AuthService,
+		private _toastService: ToastrService
 	) {
 		this.handleRefresh();
 	}
@@ -37,10 +40,30 @@ export class CvManageComponent {
 			}
 		})
 	}
+
+
+	onClickView(cvLink: any) {
+		window.open(cvLink, '_blank');
+	}
+
+	onClickDelete(cvId: any) {
+		// this._cvService.deleteCv(cvId).subscribe(
+		// 	() => {
+		// 		this._toastService.success('CV deleted successfully', 'Success', { timeOut: 3000, progressBar: true });
+		// 		this.handleRefresh();
+		// 	},
+		// 	(error) => {
+		// 		console.error('Failed to delete CV', error);
+		// 		this._toastService.error('Failed to delete CV', 'Error', { timeOut: 3000, progressBar: true });
+		// 	}
+		// )
+	}
 }
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Pipe({
 	name: 'safeUrl'

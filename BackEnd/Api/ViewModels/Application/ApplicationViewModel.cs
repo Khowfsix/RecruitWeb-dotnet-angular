@@ -11,6 +11,8 @@ namespace Api.ViewModels.Application
 
         public PositionViewModel Position { get; set; }
 
+        public string Introduce { get; set; }
+
         public DateTime CreatedTime { get; set; }
 
         public int? Company_Status { get; set; }

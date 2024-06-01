@@ -59,17 +59,11 @@
 					</div>
 					<div style="width: 40%; margin-left: 4%">
 						<div class="fs-5 custom-row" style="font-weight: 500; cursor: pointer">
-							<span
-								[routerLink]="['/positions/detail', position.positionId]"
-								[ngbPopover]="positionDetailsHover"
-								[openDelay]="500"
-								[closeDelay]="2000"
-								popoverTitle="Job details"
-								triggers="mouseenter:mouseleave"
+							<span [routerLink]="['/positions/detail', position.positionId]"
 								>{{ position.positionName | uppercase }}
 							</span>
 
-							<ng-template #positionDetailsHover>
+							<!-- <ng-template #positionDetailsHover>
 								<div>
 									{{ position.positionName | uppercase }}
 								</div>
@@ -84,7 +78,7 @@
 										View more
 									</button>
 								</div>
-							</ng-template>
+							</ng-template> -->
 						</div>
 						<div class="custom-row">{{ position.company?.companyName }}</div>
 						<div class="custom-row" style="color: rgb(251, 115, 74)">

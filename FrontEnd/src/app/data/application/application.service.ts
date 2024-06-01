@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../api.service';
-import { Application } from './application.model';
+import { Application, ApplicationAddModel } from './application.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -44,5 +44,9 @@ export class ApplicationService {
 		if (toDate)
 			url = url + '&toDate=' + toDate;
 		return this.api.GET(url);
+	}
+
+	postNewApplication(data: ApplicationAddModel) {
+		return this.api.POST('/api/Application', data);
 	}
 }

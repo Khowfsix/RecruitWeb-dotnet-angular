@@ -100,6 +100,7 @@ export class AuthService {
 			this.toast.success("Log out successfully", "Success", {
 				timeOut: 3000,
 				progressBar: true,
+				newestOnTop: false
 			});
 		} catch (error) {
 			console.log(error);

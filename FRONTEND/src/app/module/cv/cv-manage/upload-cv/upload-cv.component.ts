@@ -18,13 +18,14 @@ import { FormsModule } from '@angular/forms';
 	imports: [
 		MatFormFieldModule,
 		MatButtonModule,
-		MatFormFieldModule
+		MatFormFieldModule,
+		CommonModule
 	],
 	templateUrl: './upload-cv.component.html',
 	styleUrl: './upload-cv.component.css'
 })
 export class UploadCvComponent {
-	selectedFile: File = new File([], '');
+	selectedFile?: File;
 
 	@Output() cvUploaded: EventEmitter<void> = new EventEmitter<void>();
 
@@ -44,8 +45,6 @@ export class UploadCvComponent {
 			return;
 		}
 		this.selectedFile = file;
-		// Handle the file processing here
-		console.log(this.selectedFile);
 	}
 
 	onFileSelected(event: Event) {
@@ -96,6 +95,13 @@ export class UploadCvComponent {
 	}
 
 	openCvNameDialog() {
+		if (!this.selectedFile) {
+			this._toastService.error('Please select a file before uploading', 'No file selected', {
+				timeOut: 3000,
+				progressBar: true
+			})
+			return;
+		}
 		const dialogRef = this.dialog.open(CvNameDialogComponent, {
 			data: {
 				cvName: '',
@@ -106,7 +112,7 @@ export class UploadCvComponent {
 
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				this.callApiUploadCv(this.selectedFile, result.cvName, result.aboutMe, result.isDefault);
+				this.callApiUploadCv(this.selectedFile!, result.cvName, result.aboutMe, result.isDefault);
 			}
 		});
 	}

@@ -24,4 +24,8 @@ export class CvService {
 	updateCvOfCandidate() {
 
 	}
+
+	getDefaultCv(candidateId: string): Observable<string | CV> {
+		return this.api.GET(`/api/Cv/GetCvDefault/${candidateId}`);
+	}
 }

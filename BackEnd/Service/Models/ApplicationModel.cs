@@ -5,6 +5,7 @@
         public Guid ApplicationId { get; set; }
         public Guid Cvid { get; set; }
         public Guid PositionId { get; set; }
+        public string Introduce { get; set; }
         public virtual CvModel Cv { get; set; }
         public virtual PositionModel Position { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;

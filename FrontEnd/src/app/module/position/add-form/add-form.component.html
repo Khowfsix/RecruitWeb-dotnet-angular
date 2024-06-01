@@ -1,214 +1,220 @@
-<div style="background-color:#D0D9E1; padding: 30px 30px 30px 30px;">
+<div style="background-color: #d0d9e1; padding: 30px 30px 30px 30px">
 	<div>
 		@if(!isEditForm){
-		<h1 style="text-align: center; font-weight: 600;">NEW POSITION</h1>
-		}
-		@else {
-		<h1 style="text-align: center; font-weight: 600;">EDIT POSITION</h1>
+		<h1 style="text-align: center; font-weight: 600">NEW POSITION</h1>
+		} @else {
+		<h1 style="text-align: center; font-weight: 600">EDIT POSITION</h1>
 		}
 		<form class="d-flex flex-column" [formGroup]="addForm">
 			<mat-form-field>
 				<mat-label>Name</mat-label>
-				<input matInput type="text" value="" formControlName="positionName">
-				@if(addForm.get('positionName')?.invalid){
-				@if(addForm.get('positionName')?.hasError('required')){
-				<div style="color: red;">Required.</div>
-				}
-				}
+				<input matInput type="text" value="" formControlName="positionName" />
+				@if(addForm.get('positionName')?.invalid){ @if(addForm.get('positionName')?.hasError('required')){
+				<div style="color: red">Required.</div>
+				} }
 			</mat-form-field>
 
 			<mat-form-field class="">
 				<mat-label>Description</mat-label>
-				<textarea style="resize: none;" matInput placeholder="" formControlName="description"></textarea>
-				@if(addForm.get('description')?.invalid){
-				@if(addForm.get('description')?.hasError('required')){
-				<div style="color: red;">Required.</div>
-				}
-				}
+				<textarea style="resize: none" matInput placeholder="" formControlName="description"></textarea>
+				@if(addForm.get('description')?.invalid){ @if(addForm.get('description')?.hasError('required')){
+				<div style="color: red">Required.</div>
+				} }
 			</mat-form-field>
 			<mat-form-field>
 				<mat-label>Salary</mat-label>
-				<mat-select [disabled]="this.isEditForm ? this.isEdit ? false : true : false"
-					[value]="this.selectSalaryOption" (selectionChange)="this.onSalaryChange($event)">
-					<mat-option value="Negotiation">
-						Negotiation
-					</mat-option>
-					<mat-option value="MinMaxRange">
-						Enter min - max range
-					</mat-option>
+				<mat-select
+					[disabled]="this.isEditForm ? (this.isEdit ? false : true) : false"
+					[value]="this.selectSalaryOption"
+					(selectionChange)="this.onSalaryChange($event)">
+					<mat-option value="Negotiation"> Negotiation </mat-option>
+					<mat-option value="MinMaxRange"> Enter min - max range </mat-option>
 				</mat-select>
 			</mat-form-field>
 
-
 			@if (this.enterMinMaxSalaryRange) {
 			<div class="d-flex flex-row">
-				<mat-form-field class="" style="width: 120%;">
-					<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
-						Min Salary (USD)</mat-label>
-					<input oninput="this.value=this.value.replace(/[^0-9]/g,'')" type="number" matInput placeholder=""
-						formControlName="minSalary">
-					<mat-hint style="font-size: 13px; font-weight: 500;">Blank meaning can be
-						negotiated</mat-hint>
+				<mat-form-field class="" style="width: 120%">
+					<mat-label
+						><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px"></i> Min Salary
+						(USD)</mat-label
+					>
+					<input
+						oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+						type="number"
+						matInput
+						placeholder=""
+						formControlName="minSalary" />
+					<mat-hint style="font-size: 13px; font-weight: 500">Blank meaning can be negotiated</mat-hint>
 
-					@if(addForm.get('minSalary')?.invalid){
-					@if(addForm.get('minSalary')?.hasError('required')){
-					<div style="color: red;">Required.</div>
-					}
-					@if(addForm.get('minSalary')?.hasError('min')){
-					<div style="color: red;">Min is 1</div>
-					}
-					@if(addForm.get('minSalary')?.hasError('max')){
-					<div style="color: red;">Max is 6 digits</div>
-					}
-					}
+					@if(addForm.get('minSalary')?.invalid){ @if(addForm.get('minSalary')?.hasError('required')){
+					<div style="color: red">Required.</div>
+					} @if(addForm.get('minSalary')?.hasError('min')){
+					<div style="color: red">Min is 1</div>
+					} @if(addForm.get('minSalary')?.hasError('max')){
+					<div style="color: red">Max is 6 digits</div>
+					} }
 				</mat-form-field>
-				<mat-form-field class="ms-2" style="width: 120%;">
-					<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
-						Max Salary (USD)</mat-label>
-					<input oninput="this.value=this.value.replace(/[^0-9]/g,'')" type="number" matInput placeholder=""
-						formControlName="maxSalary">
-					<mat-hint style="font-size: 13px; font-weight: 500;">Blank meaning can be
-						negotiated</mat-hint>
-					@if(addForm.get('maxSalary')?.invalid){
-					@if(addForm.get('maxSalary')?.hasError('required')){
-					<div style="color: red;">Required.</div>
-					}
-					@if(addForm.get('maxSalary')?.hasError('min')){
-					<div style="color: red;">Min is 1</div>
-					}
-					@if(addForm.get('maxSalary')?.hasError('max')){
-					<div style="color: red;">Max is 6 digits</div>
-					}
-					}
+				<mat-form-field class="ms-2" style="width: 120%">
+					<mat-label
+						><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px"></i> Max Salary
+						(USD)</mat-label
+					>
+					<input
+						oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+						type="number"
+						matInput
+						placeholder=""
+						formControlName="maxSalary" />
+					<mat-hint style="font-size: 13px; font-weight: 500">Blank meaning can be negotiated</mat-hint>
+					@if(addForm.get('maxSalary')?.invalid){ @if(addForm.get('maxSalary')?.hasError('required')){
+					<div style="color: red">Required.</div>
+					} @if(addForm.get('maxSalary')?.hasError('min')){
+					<div style="color: red">Min is 1</div>
+					} @if(addForm.get('maxSalary')?.hasError('max')){
+					<div style="color: red">Max is 6 digits</div>
+					} }
 				</mat-form-field>
 			</div>
 			@if(addForm.hasError('minMaxSalaryRequire')){
-			<div class=" mb-4" style="color: red; font-size: 16px;">Must have at least 1 value.</div>
-			}
-			@if(addForm.hasError('minGreaterThanMax')){
-			<div class=" mb-4" style="color: red; font-size: 16px;">Min must smaller than max.</div>
-			}
-			}
-
+			<div class="mb-4" style="color: red; font-size: 16px">Must have at least 1 value.</div>
+			} @if(addForm.hasError('minGreaterThanMax')){
+			<div class="mb-4" style="color: red; font-size: 16px">Min must smaller than max.</div>
+			} }
 
 			<mat-form-field>
-				<mat-label><i class="bi bi-people-fill" style="font-size: 20px;"></i> Max Hiring
-					Quantity</mat-label>
-				<input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'')" matInput placeholder=""
-					formControlName="maxHiringQty">
-				@if(addForm.get('maxHiringQty')?.invalid){
-				@if(addForm.get('maxHiringQty')?.hasError('required')){
-				<div style="color: red;">Required.</div>
-				}
-				@if(addForm.get('maxHiringQty')?.hasError('min')){
-				<div style="color: red;">Min is 1</div>
-				}
-				@if(addForm.get('maxHiringQty')?.hasError('max')){
-				<div style="color: red;">Max is 3 digits</div>
-				}
-				}
+				<mat-label><i class="bi bi-people-fill" style="font-size: 20px"></i> Max Hiring Quantity</mat-label>
+				<input
+					type="number"
+					oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+					matInput
+					placeholder=""
+					formControlName="maxHiringQty" />
+				@if(addForm.get('maxHiringQty')?.invalid){ @if(addForm.get('maxHiringQty')?.hasError('required')){
+				<div style="color: red">Required.</div>
+				} @if(addForm.get('maxHiringQty')?.hasError('min')){
+				<div style="color: red">Min is 1</div>
+				} @if(addForm.get('maxHiringQty')?.hasError('max')){
+				<div style="color: red">Max is 3 digits</div>
+				} }
 			</mat-form-field>
 
 			<mat-form-field>
 				<mat-label>Date</mat-label>
 				<mat-date-range-input [rangePicker]="picker">
-					<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
-						formControlName="startDate" placeholder="Start date">
-					<input matEndDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')" formControlName="endDate"
-						placeholder="End date">
+					<input
+						matStartDate
+						oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+						formControlName="startDate"
+						placeholder="Start date" />
+					<input
+						matEndDate
+						oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
+						formControlName="endDate"
+						placeholder="End date" />
 				</mat-date-range-input>
 				@if(addForm.get('startDate')?.hasError('invalid')){
-				<div style="color: red;">Start day must be today or in future.</div>
-				}
-
-				@if(addForm.get('endDate')?.hasError('invalid')){
-				<div style="color: red;">End day must be today or in future.</div>
-				}
-
-				@if(addForm.get('startDate')?.hasError('required') || addForm.get('endDate')?.hasError('required')){
-				<span style="color: red;">
+				<div style="color: red">Start day must be today or in future.</div>
+				} @if(addForm.get('endDate')?.hasError('invalid')){
+				<div style="color: red">End day must be today or in future.</div>
+				} @if(addForm.get('startDate')?.hasError('required') || addForm.get('endDate')?.hasError('required')){
+				<span style="color: red">
 					<span>Required: </span>
 					@if(addForm.get('startDate')?.hasError('required')){
 					<span>Start Date; </span>
-					}
-					@if(addForm.get('endDate')?.hasError('required')){
+					} @if(addForm.get('endDate')?.hasError('required')){
 					<span>End Date; </span>
 					}
 				</span>
 
 				}
-				<mat-hint style="font-size: 13px; font-weight: 500;">DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+				<mat-hint style="font-size: 13px; font-weight: 500">DD/MM/YYYY – DD/MM/YYYY</mat-hint>
 				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>
 
-			<app-autocomplete [formField]="'languageId'" [valueField]="'languageId'" [labelField]="'languageName'"
-				[label]="'Language'" [placeholder]="'Ex. English, French'"
-				[observableOptions]="this.observableLanguages" [formGroup]="this.addForm"></app-autocomplete>
+			<app-autocomplete
+				[formField]="'languageId'"
+				[valueField]="'languageId'"
+				[labelField]="'languageName'"
+				[label]="'Language'"
+				[placeholder]="'Ex. English, French'"
+				[observableOptions]="this.observableLanguages"
+				[formGroup]="this.addForm"></app-autocomplete>
 
-			<app-autocomplete [formField]="'categoryPositionId'" [valueField]="'categoryPositionId'"
-				[labelField]="'categoryPositionName'" [label]="'Category'" [placeholder]="'Ex. Digital, Technical'"
-				[observableOptions]="this.observableCategoryPositions" [formGroup]="this.addForm"></app-autocomplete>
+			<app-autocomplete
+				[formField]="'categoryPositionId'"
+				[valueField]="'categoryPositionId'"
+				[labelField]="'categoryPositionName'"
+				[label]="'Category'"
+				[placeholder]="'Ex. Digital, Technical'"
+				[observableOptions]="this.observableCategoryPositions"
+				[formGroup]="this.addForm"></app-autocomplete>
 
 			<mat-form-field>
 				<mat-label>Background image</mat-label>
 				<div class="file-upload d-flex">
-					<input matInput readonly="true" formControlName="imageName" placeholder="image">
+					<input matInput readonly="true" formControlName="imageName" placeholder="image" />
 					<button mat-mini-fab color="primary" class="upload-btn ms-auto" (click)="fileUpload.click()">
 						<mat-icon>attach_file</mat-icon>
 					</button>
-
 				</div>
-				@if(addForm.get('imageName')?.invalid){
-				@if(addForm.get('imageName')?.hasError('required')){
-				<div style="color: red;">Required.</div>
-				}
-				}
+				@if(addForm.get('imageName')?.invalid){ @if(addForm.get('imageName')?.hasError('required')){
+				<div style="color: red">Required.</div>
+				} }
 			</mat-form-field>
 
-			<app-add-requirements-form [formGroup]="this.addForm" [label]="'Requirements'" [fieldName]="'requirements'"
+			<app-add-requirements-form
+				[formGroup]="this.addForm"
+				[label]="'Requirements'"
+				[fieldName]="'requirements'"
 				[placeholder]="'Add requirements'"
 				[isEditForm]="this.isEditForm ? true : false"></app-add-requirements-form>
 
-			@if (isEditForm) {
-			@if (isEdit){
-			<div class="d-flex flex-row justify-content-center" style="width: 100%;">
+			@if (isEditForm) { @if (isEdit){
+			<div class="d-flex flex-row justify-content-center" style="width: 100%">
 				@if (addForm.valid){
-				<button color="primary" style="width: 25%;" class="mx-3" mat-raised-button (click)="editPosition()">
-					<span style="font-size: 16px;">Submit</span>
+				<button color="primary" style="width: 25%" class="mx-3" mat-raised-button (click)="editPosition()">
+					<span style="font-size: 16px">Submit</span>
 				</button>
-				}
-				@else {
-				<button color="primary" disabled="true" style="width: 25%;" class="mx-3" mat-raised-button
+				} @else {
+				<button
+					color="primary"
+					disabled="true"
+					style="width: 25%"
+					class="mx-3"
+					mat-raised-button
 					(click)="editPosition()">
-					<span style="font-size: 16px;">Submit</span>
+					<span style="font-size: 16px">Submit</span>
 				</button>
 				}
-				<button color="warn" style="width: 25%;" class="mx-3" mat-raised-button
+				<button
+					color="warn"
+					style="width: 25%"
+					class="mx-3"
+					mat-raised-button
 					(click)="this.isEdit = false; this.addForm.disable()">
-					<span style="font-size: 16px;">Cancel</span>
+					<span style="font-size: 16px">Cancel</span>
 				</button>
 			</div>
-			}
-			@else {
-			<button color="primary" [disabled]="this.disabledEdit" mat-raised-button
-				(click)="this.isEdit = true; this.addForm.enable()"> <span style="font-size: 16px;">Edit</span>
+			} @else {
+			<button
+				color="primary"
+				[disabled]="this.disabledEdit"
+				mat-raised-button
+				(click)="this.isEdit = true; this.addForm.enable()">
+				<span style="font-size: 16px">Edit</span>
 			</button>
-			}
-			}
-			@else {
-			@if (addForm.invalid){
-			<button color="primary" disabled="true" mat-raised-button (click)="savePosition()"><span
-					style="font-size: 16px;">Submit</span> </button>
-			}
-			@else {
-			<button color="primary" mat-raised-button (click)="savePosition()"> <span
-					style="font-size: 16px;">Submit</span>
+			} } @else { @if (addForm.invalid){
+			<button color="primary" disabled="true" mat-raised-button (click)="savePosition()">
+				<span style="font-size: 16px">Submit</span>
 			</button>
-			}
-			}
-
+			} @else {
+			<button color="primary" mat-raised-button (click)="savePosition()">
+				<span style="font-size: 16px">Submit</span>
+			</button>
+			} }
 		</form>
 	</div>
-	<input type="file" (change)="onFileSelected($event)" hidden accept=".jpg, .jpeg, .png" #fileUpload>
+	<input type="file" (change)="onFileSelected($event)" hidden accept=".jpg, .jpeg, .png" #fileUpload />
 </div>

@@ -32,9 +32,9 @@ import { Candidate } from '../../../data/candidate/candidate.model';
 	styleUrl: './candidate-profile.component.css'
 })
 export class CandidateProfileComponent {
-	@Input() candidate: Candidate = new Candidate();
+	@Input() candidate?: Candidate;
 
 	constructor() {
-		console.log(this.candidate.user?.userName);
+		console.log(this.candidate?.user?.userName);
 	}
 }

@@ -8,12 +8,16 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
 	providedIn: 'root',
 })
 class ErrorInterceptor implements HttpInterceptor {
-	constructor(private authenticationsService: AuthService) { }
+	constructor(
+		private authenticationsService: AuthService,
+		private toastService: ToastrService
+	) { }
 	intercept(
 		req: HttpRequest<unknown>,
 		next: HttpHandler,
@@ -33,6 +37,13 @@ class ErrorInterceptor implements HttpInterceptor {
 							this.authenticationsService.logout();
 						}
 					}
+				}
+
+				if ([500].indexOf(err.status) !== -1) {
+					this.toastService.error("Error! An error occurred. Please try again later", "Transmission error", {
+						progressBar: true,
+						timeOut: 3000,
+					})
 				}
 
 				const error = err.error || err.statusText;

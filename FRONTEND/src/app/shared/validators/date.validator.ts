@@ -24,6 +24,28 @@ export function GreaterOrEqualToDay(): ValidatorFn {
 	};
 }
 
+export function LessToDay(): ValidatorFn {
+	return (control: AbstractControl): ValidationErrors | null => {
+		let value = control.value;
+
+		if (!value) {
+			return null;
+		}
+		if (moment.isMoment(value)) {
+			value = value.startOf('day').add(value.utcOffset(), 'minutes').toDate();
+		}
+		const currentDate = new Date();
+		currentDate.setHours(0, 0, 0, 0);
+
+		// console.log(value)
+		value = new Date(value);
+		value.setHours(0, 0, 0, 0);
+		return value < currentDate
+			? null
+			: { invalid: 'invalid value' };
+	};
+}
+
 export function timeValidator(startFieldName: string, endFieldName: string) {
 	return (control: AbstractControl): { [key: string]: any } | null => {
 		const startTime = control.get(startFieldName)?.value;

@@ -8,37 +8,31 @@
 	<div>Select CV to apply</div>
 
 	<mat-accordion>
-		<mat-expansion-panel
-			(afterExpand)="onChangeOptionCv('default')"
-			(afterCollapse)="onChangeOptionCv('default')"
-			class="py-3">
-			<mat-expansion-panel-header>
-				<mat-panel-title> Most recently applied CV: LyHongPhat_Backend_Dev_Intern.pdf </mat-panel-title>
-				<mat-panel-description>
-					<a href=""> See </a>
-				</mat-panel-description>
-			</mat-expansion-panel-header>
-			<div>First and last name: {{ candidate?.user?.fullName }}</div>
-			<div>Email: {{ candidate?.user?.email }}</div>
-			<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
-		</mat-expansion-panel>
-		<mat-expansion-panel
-			(afterExpand)="onChangeOptionCv('orther')"
-			(afterCollapse)="onChangeOptionCv('default')"
-			class="py-3">
-			<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
-			Panel body
-		</mat-expansion-panel>
-		<mat-expansion-panel
-			(afterExpand)="onChangeOptionCv('upload')"
-			(afterCollapse)="onChangeOptionCv('default')"
-			class="py-3">
-			<mat-expansion-panel-header>
-				Upload your CV from your computer, select or drag and drop Supports .doc, .docx, pdf formats under 5MB
-				in size
-			</mat-expansion-panel-header>
-			<app-upload-cv></app-upload-cv>
-		</mat-expansion-panel>
+		<mat-radio-group aria-label="Select a CV" [(ngModel)]="optionCv">
+			<mat-expansion-panel
+				(afterExpand)="onChangeOptionCv('default')"
+				(afterCollapse)="onChangeOptionCv('default')"
+				class="py-3">
+				<mat-radio-button formControlName="formControlName"></mat-radio-button>
+				<mat-expansion-panel-header>
+					<mat-panel-title> Most recently applied CV: {{ defaultCv?.cvName }}</mat-panel-title>
+					<mat-panel-description>
+						<a href="{{ defaultCv?.cvPdf }}"> See </a>
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+				<div>First and last name: {{ candidate?.user?.fullName }}</div>
+				<div>Email: {{ candidate?.user?.email }}</div>
+				<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel
+				(afterExpand)="onChangeOptionCv('orther')"
+				(afterCollapse)="onChangeOptionCv('default')"
+				class="py-3">
+				<mat-radio-button formControlName="formControlName"></mat-radio-button>
+				<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
+				Panel body
+			</mat-expansion-panel>
+		</mat-radio-group>
 	</mat-accordion>
 
 	<!-- <div>
@@ -72,5 +66,13 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
 	<button mat-button color="warn" mat-dialog-close class="col-2">Cancel</button>
-	<button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial class="col-3">Apply</button>
+	<button
+		mat-raised-button
+		color="primary"
+		[mat-dialog-close]="true"
+		cdkFocusInitial
+		class="col-3"
+		(click)="onClickApply()">
+		Apply
+	</button>
 </mat-dialog-actions>
