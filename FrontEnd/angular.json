@@ -18,7 +18,15 @@
 						"browser": "src/main.ts",
 						"polyfills": ["zone.js"],
 						"tsConfig": "tsconfig.app.json",
-						"assets": ["src/favicon.ico", "src/assets"],
+						"assets": [
+							"src/favicon.ico",
+							"src/assets",
+							{
+								"glob": "**/*",
+								"input": "node_modules/ng2-pdfjs-viewer/pdfjs",
+								"output": "/assets/pdfjs"
+							}
+						],
 						"styles": [
 							"node_modules/ngx-toastr/toastr.css",
 							"@angular/material/prebuilt-themes/indigo-pink.css",

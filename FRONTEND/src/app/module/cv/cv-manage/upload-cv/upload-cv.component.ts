@@ -43,6 +43,12 @@ export class UploadCvComponent {
 			console.log('Invalid file type');
 			this._toastService.error('Only PDF files are allowed', 'Invalid file type', { timeOut: 3000, progressBar: true });
 			return;
+		} else if (file.size > 5 * 1024 * 1024) {
+			this._toastService.error('File size should be less than 5MB', 'File too large', {
+				timeOut: 3000,
+				progressBar: true
+			});
+			return;
 		}
 		this.selectedFile = file;
 	}
@@ -89,6 +95,8 @@ export class UploadCvComponent {
 				timeOut: 3000,
 				progressBar: true
 			});
+			this.selectedFile = undefined;
+			return;
 		}
 
 		this.openCvNameDialog();

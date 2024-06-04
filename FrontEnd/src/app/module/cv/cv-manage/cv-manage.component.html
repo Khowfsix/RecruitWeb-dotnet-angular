@@ -6,15 +6,19 @@
 <div class="card-container d-block">
 	<div class="row">
 		<div class="col-lg-4 col-md-6 mb-4" *ngFor="let cv of listCvsOfCandidate">
-			<div class="card">
-				<img class="card-img-top" src="{{ cv.cvPdf }}" alt="CV preview" />
-				<div class="card-body">
-					<h5 class="card-title">{{ cv.cvName }}</h5>
-					<p class="card-text">{{ cv.aboutMe }}</p>
-					<a href="#" class="btn btn-primary" (click)="onClickView(cv.cvid)">View CV</a>
-					<a href="#" class="btn btn-danger" (click)="onClickDelete(cv.cvPdf)">Delete CV</a>
-				</div>
-			</div>
+			<mat-card>
+				<mat-card-header>
+					<mat-card-title>{{ cv.cvName }}</mat-card-title>
+					<mat-card-subtitle>{{ cv.aboutMe }}</mat-card-subtitle>
+				</mat-card-header>
+				<mat-card-content>
+					<ng2-pdfjs-viewer pdfSrc="{{ cv.cvPdf }}"> </ng2-pdfjs-viewer>
+				</mat-card-content>
+				<mat-card-actions align="end">
+					<button mat-button color="primary" (click)="onClickView(cv.cvPdf)">View CV</button>
+					<button mat-button color="warn" (click)="onClickDelete(cv.cvPdf)">Delete CV</button>
+				</mat-card-actions>
+			</mat-card>
 		</div>
 	</div>
 </div>

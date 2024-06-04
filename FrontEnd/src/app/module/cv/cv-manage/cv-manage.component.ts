@@ -5,14 +5,22 @@ import { CvService } from '../../../data/cv/cv.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { CV } from '../../../data/cv/cv.model';
+import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { MatButtonModule } from '@angular/material/button';
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
 @Component({
 	selector: 'app-cv-manage',
 	standalone: true,
 	imports: [
 		UploadCvComponent,
+
+		PdfJsViewerModule,
+
 		MatDividerModule,
 		MatCardModule,
+		MatButtonModule,
 
 		CommonModule,
 	],
@@ -42,36 +50,45 @@ export class CvManageComponent {
 	}
 
 
-	onClickView(cvLink: any) {
+	onClickView(cvLink: string | undefined) {
 		window.open(cvLink, '_blank');
 	}
 
-	onClickDelete(cvId: any) {
-		// this._cvService.deleteCv(cvId).subscribe(
-		// 	() => {
-		// 		this._toastService.success('CV deleted successfully', 'Success', { timeOut: 3000, progressBar: true });
-		// 		this.handleRefresh();
-		// 	},
-		// 	(error) => {
-		// 		console.error('Failed to delete CV', error);
-		// 		this._toastService.error('Failed to delete CV', 'Error', { timeOut: 3000, progressBar: true });
-		// 	}
-		// )
+	onClickDelete(cvId: any) { }
+	// this._cvService.deleteCv(cvId).subscribe(
+	// 	() => {
+	// 		this._toastService.success('CV deleted successfully', 'Success', { timeOut: 3000, progressBar: true });
+	// 		this.handleRefresh();
+	// 	},
+	// 	(error) => {
+	// 		console.error('Failed to delete CV', error);
+	// 		this._toastService.error('Failed to delete CV', 'Error', { timeOut: 3000, progressBar: true });
+	// 	}
+	// )
+
+	testBeforePrint() {
+		console.log("testBeforePrint() successfully called");
+	}
+	testAfterPrint() {
+		console.log("testAfterPrint() successfully called");
+	}
+	testPagesLoaded(count: number) {
+		console.log("testPagesLoaded() successfully called. Total pages # : " + count);
 	}
 }
 
-import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+// import { Pipe, PipeTransform } from '@angular/core';
+// import { DomSanitizer } from '@angular/platform-browser';
+// import { CommonModule } from '@angular/common';
+// import { ToastrService } from 'ngx-toastr';
 
-@Pipe({
-	name: 'safeUrl'
-})
-export class SafeUrlPipe implements PipeTransform {
-	constructor(private sanitizer: DomSanitizer) { }
+// @Pipe({
+// 	name: 'safeUrl'
+// })
+// export class SafeUrlPipe implements PipeTransform {
+// 	constructor(private sanitizer: DomSanitizer) { }
 
-	transform(url: string) {
-		return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-	}
-}
+// 	transform(url: string) {
+// 		return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+// 	}
+// }

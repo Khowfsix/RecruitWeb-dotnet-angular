@@ -7,41 +7,50 @@
 <mat-dialog-content class="mat-typography shadow">
 	<div>Select CV to apply</div>
 
-	<mat-accordion>
-		<mat-radio-group aria-label="Select a CV" [(ngModel)]="optionCv">
-			<mat-expansion-panel
-				(afterExpand)="onChangeOptionCv('default')"
-				(afterCollapse)="onChangeOptionCv('default')"
-				class="py-3">
-				<mat-radio-button formControlName="formControlName"></mat-radio-button>
-				<mat-expansion-panel-header>
-					<mat-panel-title> Most recently applied CV: {{ defaultCv?.cvName }}</mat-panel-title>
-					<mat-panel-description>
-						<a href="{{ defaultCv?.cvPdf }}"> See </a>
-					</mat-panel-description>
-				</mat-expansion-panel-header>
-				<div>First and last name: {{ candidate?.user?.fullName }}</div>
-				<div>Email: {{ candidate?.user?.email }}</div>
-				<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
-			</mat-expansion-panel>
-			<mat-expansion-panel
-				(afterExpand)="onChangeOptionCv('orther')"
-				(afterCollapse)="onChangeOptionCv('default')"
-				class="py-3">
-				<mat-radio-button formControlName="formControlName"></mat-radio-button>
-				<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
-				Panel body
-			</mat-expansion-panel>
-		</mat-radio-group>
-	</mat-accordion>
+	<form [formGroup]="applyForm" action="">
+		<mat-accordion>
+			<mat-radio-group aria-label="Select a CV" [(ngModel)]="optionCv">
+				<mat-expansion-panel
+					(afterExpand)="onChangeOptionCv('default')"
+					(afterCollapse)="onChangeOptionCv('default')"
+					class="py-3">
+					<mat-expansion-panel-header>
+						<mat-panel-title> Most recently applied CV: {{ defaultCv?.cvName }}</mat-panel-title>
+						<mat-panel-description>
+							<a href="{{ defaultCv?.cvPdf }}"> See </a>
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+					<div>First and last name: {{ candidate?.user?.fullName }}</div>
+					<div>Email: {{ candidate?.user?.email }}</div>
+					<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
+				</mat-expansion-panel>
+				<mat-expansion-panel
+					(afterExpand)="onChangeOptionCv('orther')"
+					(afterCollapse)="onChangeOptionCv('default')"
+					class="py-3">
+					<!-- <mat-radio-button formControlName="formControlName"></mat-radio-button> -->
+					<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
+					<!-- <mat-expansion-panel-content> -->
+					<div *ngFor="let cv of listCv">
+						<!-- <mat-radio-button value="{{cv.cvid}}" name="cvRadioButton"> -->
+						<!-- <mat-radio-button> {{cv.cvName}} </mat-radio-button> -->
+						<a href="{{ cv.cvPdf }}" target="_blank">
+							<!-- <img src="{{ cv.cvPdf | slice : 0 : 45 }}" alt="" width="100rem" height="100rem" /> -->
+							<!-- <pdf-viewer [src]="cv.cvPdf"></pdf-viewer> -->
+						</a>
+						<!-- </mat-radio-button> -->
+					</div>
+					<!-- </mat-expansion-panel-content> -->
+				</mat-expansion-panel>
+			</mat-radio-group>
+		</mat-accordion>
 
-	<!-- <div>
 		<p>A concise, well-written cover letter will help you become more professional and impress the employer.</p>
-		<mat-form-field>
-			Introducing letter:
-			<input matInput type="text" placeholder="Enter your letter here" />
+		<mat-form-field appearance="fill" style="width: 100%">
+			<mat-label>Introducing letter:</mat-label>
+			<textarea matInput formControlName="aboutMe" cdkTextareaAutosize style="width: 100%"></textarea>
 		</mat-form-field>
-	</div> -->
+	</form>
 
 	<div class="mt-3 border-dark rounded shadow p-2">
 		<div>

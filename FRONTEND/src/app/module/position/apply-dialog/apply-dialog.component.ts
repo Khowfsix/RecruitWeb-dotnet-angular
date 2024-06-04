@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, Input } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { ApplicationAddModel, ApplyDialogDataInput } from '../../../data/application/application.model';
-import { UploadCvComponent } from '../../cv/cv-manage/upload-cv/upload-cv.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CandidateService } from '../../../data/candidate/candidate.service';
@@ -12,7 +11,8 @@ import { CvService } from '../../../data/cv/cv.service';
 import { Candidate } from '../../../data/candidate/candidate.model';
 import { CV } from '../../../data/cv/cv.model';
 import { ApplicationService } from '../../../data/application/application.service';
-import { response } from 'express';
+import { MatInputModule } from '@angular/material/input';
+// import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
 	selector: 'app-apply-dialog',
@@ -22,12 +22,13 @@ import { response } from 'express';
 		FormsModule,
 		ReactiveFormsModule,
 
-		UploadCvComponent,
+		// PdfViewerModule,
 
 		MatDialogModule,
 		MatButtonModule,
 		MatExpansionModule,
 		MatFormFieldModule,
+		MatInputModule
 	],
 	templateUrl: './apply-dialog.component.html',
 })
@@ -41,20 +42,15 @@ export class ApplyDialogComponent {
 	listCv?: CV[];
 	optionCv?: "default" | "orther";
 	newApplication?: ApplicationAddModel = new ApplicationAddModel();
-
-
-	applyForm = new FormGroup({
-		aboutMe: new FormControl('', [
-			Validators.minLength(10)
-		]),
-	});
+	applyForm: FormGroup = new FormGroup({});
 
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: ApplyDialogDataInput,
 		private _candidateService: CandidateService,
 		private _cvService: CvService,
-		private _applyService: ApplicationService
+		private _applyService: ApplicationService,
+		private formBuilder: FormBuilder,
 
 	) {
 		this._candidateService.getById(data?.candidateId as string).subscribe(
@@ -86,7 +82,14 @@ export class ApplyDialogComponent {
 		this.newApplication = {
 			positionId: this.data.position?.positionId,
 			cvid: this.defaultCv?.cvid,
+			introduce: ""
 		}
+
+		this.applyForm = this.formBuilder.group({
+			aboutMe: new FormControl('', [
+				Validators.minLength(10)
+			]),
+		});
 	}
 
 	onChangeOptionCv(option: "default" | "orther") {
@@ -95,6 +98,15 @@ export class ApplyDialogComponent {
 	}
 
 	onClickApply() {
+		this.newApplication = {
+			...this.newApplication,
+			introduce: this.applyForm.value.aboutMe,
+		}
+		console.log(this.newApplication);
+		// this.callApiAplly();
+	}
+
+	callApiAplly() {
 		this._applyService.postNewApplication(this.newApplication!).subscribe(
 			(response) => {
 				console.log(response);
