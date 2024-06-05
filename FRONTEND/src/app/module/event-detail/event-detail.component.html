@@ -47,7 +47,7 @@
 									</div>
 								</div>
 								<div class="mt-2 d-flex justify-content-end flex-row">
-									@if(this.curentUserRoles?.includes('Candidate')) {
+									@if(this.curentUserRoles?.includes('Candidate') || this.curentUserRoles === null) {
 									@if (this.alreadyJoinedEvent === true){
 									<div class="me-2" (click)="callApiDeleteCandidateJoinEvent()">
 										<app-expandbutton notExpandedWidth="100px" color="primary" expandedWidth="250px"

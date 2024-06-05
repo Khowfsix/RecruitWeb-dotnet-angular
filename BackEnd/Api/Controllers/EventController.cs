@@ -22,12 +22,15 @@ public class EventController : BaseAPIController
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetEvent([FromQuery] EventFilterModel? eventFilterModel, Guid? id, 
         Guid? recruiterId, string? sortString = "EventName_ASC")
     {
+
+        var isAdmin = HttpContext.User.IsInRole("Admin");
         if (id.HasValue)
         {
-            var data = await _EventService.GetEventById((Guid)id);
+            var data = await _EventService.GetEventById((Guid)id, isAdmin);
             var response = _mapper.Map<EventViewModel>(data);
             return response switch
             {
@@ -37,15 +40,14 @@ public class EventController : BaseAPIController
         }
 
         if (recruiterId.HasValue) {
-            var isAdmin = HttpContext.User.IsInRole("Admin");
             var eventFilter = _mapper.Map<EventFilter>(eventFilterModel);
             var eventModels = await _EventService.GetAllEventByRecruiterId(recruiterId.Value, eventFilter, sortString!, isAdmin);
            
             var resp = _mapper.Map<List<EventViewModel>>(eventModels);
             return Ok(resp);
         }
-
-        var eventList = await _EventService.GetAllEvent();
+        
+        var eventList = await _EventService.GetAllEvent(isAdmin);
         if (eventList.IsNullOrEmpty())
         {
             return Ok("Not found");

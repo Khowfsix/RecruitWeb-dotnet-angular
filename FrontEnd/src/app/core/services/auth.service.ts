@@ -33,7 +33,7 @@ export class AuthService {
 	getLocalCurrentUser(): WebUser {
 		if (localStorage) {
 			const currentUser = localStorage.getItem('currentUser');
-			console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
+			// console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
 			return currentUser ? JSON.parse(currentUser) : null
 		}
 		return {};

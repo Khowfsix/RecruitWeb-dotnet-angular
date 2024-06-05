@@ -28,7 +28,7 @@ public class EventService : IEventService
 
     public async Task<bool> DeleteEvent(Guid eventModelId)
     {
-        var foundEvent = await this.GetEventById(eventModelId);
+        var foundEvent = await this.GetEventById(eventModelId, true);
         if (foundEvent == null)
         {
             return await Task.FromResult(false);
@@ -40,13 +40,14 @@ public class EventService : IEventService
         return await _EventRepository.DeleteEvent(eventModelId);
     }
 
-    public async Task<IEnumerable<EventModel>> GetAllEvent()
+    public async Task<IEnumerable<EventModel>> GetAllEvent(bool isAdmin)
     {
         var data = await _EventRepository.GetAllEvent();
         if (!data.IsNullOrEmpty())
         {
             List<EventModel> result = _mapper.Map<List<EventModel>>(data);
-            return result;
+             
+            return !isAdmin ? result.Where(e => !e.IsDeleted) : result;
         }
         return null!;
     }
@@ -65,7 +66,7 @@ public class EventService : IEventService
 
     public async Task<bool> UpdateEvent(EventModel eventModel, Guid eventModelId)
     {
-        var foundEvent = await this.GetEventById(eventModelId);
+        var foundEvent = await this.GetEventById(eventModelId, true);
         if (foundEvent == null)
         {
             return await Task.FromResult(false);
@@ -78,7 +79,7 @@ public class EventService : IEventService
         return await _EventRepository.UpdateEvent(data, eventModelId);
     }
 
-    public async Task<EventModel> GetEventById(Guid id)
+    public async Task<EventModel> GetEventById(Guid id, bool isAdmin)
     {
         var data = await _EventRepository.GetEventById(id);
         if (data == null)
@@ -86,6 +87,10 @@ public class EventService : IEventService
             return null!;
         }
         var respone = _mapper.Map<EventModel>(data);
+        if (!isAdmin)
+        {
+            return respone.IsDeleted ? null : respone;
+        }
         return respone;
     }
 }

@@ -15,6 +15,7 @@ import { nameTypeInToken } from '../../core/constants/token.constants';
 import { ToastrService } from 'ngx-toastr';
 import { CandidateJoinEvent } from '../../data/candidateJoinEvent/candidate-join-event.model';
 import { CandidateListDialogComponent } from '../reccer/event/candidate-list-dialog/candidate-list-dialog.component';
+import { Router } from '@angular/router';
 @Component({
 	selector: 'app-event-detail',
 	standalone: true,
@@ -28,6 +29,7 @@ import { CandidateListDialogComponent } from '../reccer/event/candidate-list-dia
 })
 export class EventDetailComponent implements OnInit {
 	constructor(
+		private router: Router,
 		private route: ActivatedRoute,
 		private viewContainerRef: ViewContainerRef,
 		private dialog: MatDialog,
@@ -63,7 +65,7 @@ export class EventDetailComponent implements OnInit {
 		if (this.curentUserRoles?.includes('Candidate'))
 			this.callApiGetAllCandidateJoinEventByCandidateId()
 
-		console.log('curentUserRoles', this.curentUserRoles)
+		// console.log('curentUserRoles', this.curentUserRoles)
 		this.paramEventId = this.route.snapshot.paramMap.get('eventId') ?? '';
 		this.callApiGetEventById();
 	}
@@ -71,12 +73,13 @@ export class EventDetailComponent implements OnInit {
 	private callApiGetAllCandidateJoinEventByCandidateId() {
 		this.candidateJoinEventService.getAllByCandidateId(this.authService.getCandidateId_OfUser() ?? '').subscribe((resp) => {
 			this.fetchedCandidateJoinEvents = resp;
-			console.log('resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId)', resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId ?? ''))
+			// console.log('resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId)', resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId ?? ''))
 			if (resp.map(e => e.eventId).includes(this.paramEventId ?? '')) {
 				this.alreadyJoinedEvent = true;
 			}
 		})
 	}
+
 
 	public callApiDeleteCandidateJoinEvent() {
 		const foundCandidateJoinEvent = this.fetchedCandidateJoinEvents?.find(e => e.eventId === this.paramEventId);
@@ -119,6 +122,10 @@ export class EventDetailComponent implements OnInit {
 	}
 
 	public callApiCandidateJoinEvent() {
+		if (!this.authService.checkLoginStatus()) {
+			this.router.navigate(['/auth/login']);
+			return;
+		}
 		const data = {
 			candidateId: this.authService.getCandidateId_OfUser() ?? null,
 			eventId: this.fetchedEvent?.eventId,

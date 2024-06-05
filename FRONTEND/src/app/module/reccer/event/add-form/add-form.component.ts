@@ -111,8 +111,8 @@ export class AddFormComponent implements OnInit {
 		place: [this.foundEvent ? this.foundEvent.place : '', [Validators.required]],
 		startTime: [this.foundEvent ? this.foundEvent.startDateTime?.toString().slice(11, 19) : '', [Validators.required]],
 		endTime: [this.foundEvent ? this.foundEvent.endDateTime?.toString().slice(11, 19) : '', [Validators.required]],
-		startDate: [this.foundEvent ? this.foundEvent.startDateTime : '', [Validators.required, GreaterOrEqualToDay]],
-		endDate: [this.foundEvent ? this.foundEvent.endDateTime : '', [Validators.required, GreaterOrEqualToDay]],
+		startDate: [this.foundEvent ? this.foundEvent.startDateTime : '', [Validators.required, GreaterOrEqualToDay()]],
+		endDate: [this.foundEvent ? this.foundEvent.endDateTime : '', [Validators.required, GreaterOrEqualToDay()]],
 		maxParticipants: [this.foundEvent ? this.foundEvent.maxParticipants : '', [Validators.required, Validators.max(MAX_MAX_PARTICIPANTS)]],
 		eventHasPositions: [this.foundEvent ? this.foundEvent.eventHasPositions : [], [],],
 	}, { validator: [this.DateTimeRangeValidator('startDate', 'startTime', 'endDate', 'endTime'), dateValidator('startDate', 'endDate', true)] });

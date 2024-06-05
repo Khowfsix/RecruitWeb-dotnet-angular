@@ -35,7 +35,7 @@ export class CandidateListDialogComponent implements OnInit {
 	private callApiGetAllCandidateJoinEventByEventId() {
 		this.candidateJoinEventService.getAllByEventId(this.eventId, this.filterForm.value.search).subscribe((resp) => {
 			this.fetchedCandidateJoinEvent = resp;
-			console.log('resp', resp)
+			// console.log('resp', resp)
 		})
 	}
 

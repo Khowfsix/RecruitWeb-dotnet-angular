@@ -168,8 +168,8 @@ export class EventComponent implements OnInit {
 			data: {
 				recruiter: this.localStorageRecruiter,
 			},
-			width: '700px',
-			height: '600px',
+			width: '1000px',
+			height: '500px',
 			enterAnimationDuration,
 			exitAnimationDuration,
 		});

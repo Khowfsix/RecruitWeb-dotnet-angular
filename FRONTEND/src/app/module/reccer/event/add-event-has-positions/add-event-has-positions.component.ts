@@ -148,7 +148,6 @@ export class AddEventHasPositionsComponent {
 			}
 		}
 		const updatedEventHasPositions = [...(currentEventHasPositions ?? []), eventHasPosition];
-
 		this.formGroup?.get(this.fieldName ?? '')?.setValue(updatedEventHasPositions);
 
 		const displayEventHasPosition = {
@@ -158,6 +157,7 @@ export class AddEventHasPositionsComponent {
 			}
 		}
 		this.displayEventHasPositions.push(displayEventHasPosition);
+		// console.log('this.formGroup?.get(this.fieldName)?.value', this.formGroup?.get(this.fieldName ?? '')?.value);
 	}
 
 	private fetchAllPosition() {

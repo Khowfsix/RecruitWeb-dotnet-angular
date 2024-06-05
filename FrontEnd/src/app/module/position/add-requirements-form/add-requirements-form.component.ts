@@ -152,8 +152,6 @@ export class AddRequirementsFormComponent {
 			experience: this.addForm.get('experience')?.value,
 			notes: this.addForm.get('notes')?.value,
 		}
-		currentRequirements?.push(requirement)
-
 		const updatedRequirements = [...(currentRequirements ?? []), requirement];
 		requirement = {
 			...requirement,
@@ -162,6 +160,7 @@ export class AddRequirementsFormComponent {
 		this.formGroup?.get(this.fieldName ?? '')?.setValue(updatedRequirements);
 
 		this.displayRequirements.push(requirement);
+		console.log('this.formGroup?.get(this.fieldName)?.value', this.formGroup?.get(this.fieldName ?? '')?.value);
 	}
 
 	public updateRequirement(): void {
