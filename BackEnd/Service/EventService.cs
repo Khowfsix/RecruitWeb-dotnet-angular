@@ -1,4 +1,5 @@
 using AutoMapper;
+using Data.CustomModel.Event;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -27,6 +28,15 @@ public class EventService : IEventService
 
     public async Task<bool> DeleteEvent(Guid eventModelId)
     {
+        var foundEvent = await this.GetEventById(eventModelId);
+        if (foundEvent == null)
+        {
+            return await Task.FromResult(false);
+        }
+        if (foundEvent.StartDateTime <= DateTime.Now && DateTime.Now <= foundEvent.EndDateTime)
+        {
+            return await Task.FromResult(false);
+        }
         return await _EventRepository.DeleteEvent(eventModelId);
     }
 
@@ -41,8 +51,29 @@ public class EventService : IEventService
         return null!;
     }
 
+    public async Task<IEnumerable<EventModel>> GetAllEventByRecruiterId(Guid recruiterId, EventFilter eventFilter, string sortString, bool isAdmin)
+    {
+        var data = await _EventRepository.GetAllEventByRecruiterId(recruiterId, eventFilter, sortString);
+       
+        if (!data.IsNullOrEmpty())
+        {
+            List<EventModel> result = _mapper.Map<List<EventModel>>(data);
+            return isAdmin ? result : result.Where(o => !o.IsDeleted).ToList();
+        }
+        return null!;
+    }
+
     public async Task<bool> UpdateEvent(EventModel eventModel, Guid eventModelId)
     {
+        var foundEvent = await this.GetEventById(eventModelId);
+        if (foundEvent == null)
+        {
+            return await Task.FromResult(false);
+        }
+        if (foundEvent.StartDateTime <= DateTime.Now && DateTime.Now <= foundEvent.EndDateTime)
+        {
+            return await Task.FromResult(false);
+        }
         var data = _mapper.Map<Event>(eventModel);
         return await _EventRepository.UpdateEvent(data, eventModelId);
     }

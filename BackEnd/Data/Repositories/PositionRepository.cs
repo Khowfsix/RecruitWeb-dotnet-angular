@@ -114,8 +114,6 @@ namespace Data.Repositories
 
             if (positionFilter.FromDate.HasValue && positionFilter.ToDate.HasValue)
             {
-                //query = query.Where(o => o.StartDate >= positionFilter.FromDate.Value);
-                //query = query.Where(o => o.EndDate <= positionFilter.ToDate.Value);
                 query = query.Where(o => !((o.StartDate > positionFilter.ToDate) || (o.EndDate < positionFilter.FromDate)));
             }
 

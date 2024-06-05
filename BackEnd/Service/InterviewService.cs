@@ -63,7 +63,7 @@ public class InterviewService : IInterviewService
     public async Task<bool> UpdateInterview(InterviewModel interviewModel, Guid interviewModelId)
     {
         var foundInterview = await this.GetInterviewById(interviewModelId);
-        if (foundInterview != null) 
+        if (foundInterview == null) 
             return await Task.FromResult(false);
         if (foundInterview!.Company_Status != (int?)EInterviewCompanyStatus.PENDING)
             return await Task.FromResult(false);

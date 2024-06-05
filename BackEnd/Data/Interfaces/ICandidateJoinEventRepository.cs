@@ -6,6 +6,8 @@ namespace Data.Interfaces
     {
         Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId, string sortString);
 
+        Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEventsByEventId(Guid eventId, string? search, string sortString);
+
         Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEvents();
 
         Task<CandidateJoinEvent> SaveCandidateJoinEvent(CandidateJoinEvent request);

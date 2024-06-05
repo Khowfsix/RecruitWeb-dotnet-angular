@@ -66,13 +66,12 @@ export class AutocompleteComponent {
 	ngOnInit(): void {
 		this.observableOptions?.subscribe((data) => {
 			this.options = data;
-
 			// console.log('this.options!.map(e => this.getLabelFieldValue(e)))', this.options!.map(e => this.getLabelFieldValue(e)))
 
 			let isEdit = false;
 			if (this.formGroup.get(this.formField)?.value) {
 				const foundOption = data?.find(e => this.getValueFieldValue(e) === this.formGroup.get(this.formField)?.value)
-				this.autocompleFormGroup.setValue({ search: this.getLabelFieldValue(foundOption) })
+				this.autocompleFormGroup.setValue({ search: this.getLabelFieldValue(foundOption) ?? '' })
 				isEdit = true;
 				if (this.formGroup.get(this.formField)?.disabled) {
 					this.isDisabled = true;
@@ -91,13 +90,19 @@ export class AutocompleteComponent {
 			);
 		});
 
+		this.formGroup.get(this.formField)?.valueChanges.subscribe((newValue: any) => {
+			const foundOption = this.options?.find(e => this.getValueFieldValue(e) === newValue)
+			this.autocompleFormGroup.setValue({ search: this.getLabelFieldValue(foundOption) ?? '' })
+		})
+
 	}
 
 	public getValueFieldValue(item: any): string {
 		const fields = this.valueField.split('.');
 		let fieldValue = item;
 		for (const field of fields) {
-			fieldValue = fieldValue[field];
+			if (fieldValue)
+				fieldValue = fieldValue[field];
 		}
 		return fieldValue;
 	}
@@ -106,7 +111,8 @@ export class AutocompleteComponent {
 		const fields = this.labelField.split('.');
 		let fieldValue = item;
 		for (const field of fields) {
-			fieldValue = fieldValue[field];
+			if (fieldValue)
+				fieldValue = fieldValue[field];
 		}
 		return fieldValue;
 	}

@@ -1,0 +1,16 @@
+<div class="p-2">
+	<h2 mat-dialog-title>Delete</h2>
+	<mat-dialog-content style="font-weight: 600;">
+		Would you like to delete the {{this.objectLabel}}: {{this.objectName}}?
+	</mat-dialog-content>
+	<mat-dialog-actions class="justify-content-center">
+		<button mat-button mat-dialog-close class="mx-4"
+			style="background-color: red; color: white; width: 25%; font-size: 16px;">
+			Cancel
+		</button>
+		<button class="mx-4" (click)="deleteSubmit()" mat-button cdkFocusInitial
+			style="background-color: green; color: white; width: 25%; font-size: 16px;">
+			Ok
+		</button>
+	</mat-dialog-actions>
+</div>

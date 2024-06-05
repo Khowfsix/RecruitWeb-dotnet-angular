@@ -1,0 +1,28 @@
+<div class="w-100 h-100 p-4 bg-primary">
+	<div class="row height d-flex justify-content-center align-items-center py-2">
+		<div class="search-bar d-flex align-items-center mx-4">
+			<i class="fa fa-search fs-3" style="font-size: 17px;"></i>
+			<input type="text" [formControl]="this.searchFormControl"
+				class="ps-4 form-control form-input border border-dark rounded-5"
+				placeholder="Search candidate name...">
+		</div>
+	</div>
+	<div class="fs-5 text-white fw-bold">Result count: {{this.fetchedCandidateJoinEvent?.length}}</div>
+	<div class="p-4 bg-light w-100 rounded-3 mt-2" style="height: 450px; overflow-y: auto;">
+		@for (item of this.fetchedCandidateJoinEvent; track item) {
+		<div class="shadow p-2 border border-dark w-100 rounded-3 d-flex flex-row "
+			style="background-color:rgb(216, 237, 255); height: 120px;">
+			<div class="" style="width: 100px; height: 100px;">
+				<img class="h-100 w-100 rounded-3" alt=" {{item.candidate?.user?.userName}} avatar"
+					src="{{item.candidate?.user?.imageURL}}" />
+			</div>
+			<div class="ms-4 fw-bold" style="line-height: 25px; font-size: 17px;">
+				<div>{{item.candidate?.user?.userName}}</div>
+				<div>Email: {{item.candidate?.user?.email}}</div>
+				<div>Phone: {{item.candidate?.user?.phoneNumber}}</div>
+				<div>Date of birth: {{item.candidate?.user?.dateOfBirth | date: 'dd/MM/yyyy'}}</div>
+			</div>
+		</div>
+		}
+	</div>
+</div>

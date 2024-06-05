@@ -296,10 +296,10 @@ export class DeleteDialog {
 				this.data.company_Status === this.application_CompanyStatus.NEED_SCHEDULE ? this.application_CandidateStatus.PASSED : undefined)
 				.subscribe((data) => {
 					if (data === true) {
-						this.toastr.success("Status Updated!");
+						this.toastr.success("Status Updated!", 'Success', { toastClass: ' my-custom-toast ngx-toastr', });
 					}
 					else {
-						this.toastr.error("Update status failed!");
+						this.toastr.error("Update status failed!", "Error", { toastClass: ' my-custom-toast ngx-toastr', });
 					}
 					this.dialogRef.close();
 				});

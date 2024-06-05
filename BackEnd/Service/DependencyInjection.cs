@@ -44,6 +44,7 @@ namespace Service
             service.AddTransient<ICategoryPositionService, CategoryPositionService>();
             service.AddTransient<ITokenService, TokenService>();
             service.AddTransient<ICandidateHasSkillService, CandidateHasSkillService>();
+            service.AddTransient<IEventHasPositionService, EventHasPositionService>();
             return service;
         }
     }

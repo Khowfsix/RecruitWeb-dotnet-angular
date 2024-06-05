@@ -14,6 +14,7 @@ import { CandidateProfileComponent } from './module/cv/candidate-profile/candida
 import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
 import { JobPreferenceComponent } from './module/cv/job-preference/job-preference.component';
 import { EventComponent } from './module/reccer/event/event.component';
+import { EventDetailComponent } from './module/event-detail/event-detail.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -41,6 +42,8 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 		data: { roles: [] },
 	},
+
+	{ path: 'events/detail/:eventId', component: EventDetailComponent },
 
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 

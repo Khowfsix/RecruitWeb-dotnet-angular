@@ -37,6 +37,16 @@ namespace Service
             }
             return null!;
         }
+        public async Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEventsByEventId(Guid eventId, string? search, string sortString)
+        {
+            var data = await _candidateJoinEventRepository.GetAllCandidateJoinEventsByEventId(eventId, search, sortString);
+            if (!data.IsNullOrEmpty())
+            {
+                List<CandidateJoinEventModel> listData = _mapper.Map<List<CandidateJoinEventModel>>(data);
+                return listData;
+            }
+            return null!;
+        }
 
         public async Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents()
         {

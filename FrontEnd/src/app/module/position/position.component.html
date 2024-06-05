@@ -79,7 +79,7 @@
 					</div>
 					<div class="ms-3 flex-grow-1" style="width: 25%;"></div>
 					<div class="ms-3 me-2" style="width: 3%;">
-						@if(position.recruiter?.userId === currentUser.id) {
+						@if(position.recruiter?.userId === this.currentUser?.id) {
 						<i mat-button [matMenuTriggerFor]="menu" class="bi bi-three-dots custom-3-dot"></i>
 						}
 					</div>

@@ -31,8 +31,12 @@ export class AuthService {
 	}
 
 	getLocalCurrentUser(): WebUser {
-		const currentUser = localStorage.getItem('currentUser');
-		return currentUser ? JSON.parse(currentUser) : null
+		if (localStorage) {
+			const currentUser = localStorage.getItem('currentUser');
+			console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
+			return currentUser ? JSON.parse(currentUser) : null
+		}
+		return {};
 	}
 
 	getCandidateId_OfUser(): string | undefined {

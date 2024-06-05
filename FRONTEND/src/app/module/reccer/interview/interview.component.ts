@@ -311,11 +311,12 @@ export class ConfirmDialog {
 						.subscribe({
 							next: () => { },
 							error: () => {
-								this.toastr.error('Something wrong...', 'Error!!!');
+								this.toastr.error('Something wrong...', 'Error!!!', { toastClass: ' my-custom-toast ngx-toastr', });
 							},
 							complete: () => {
 								this.dialogRef.close();
 								this.toastr.success('Status updated...', 'Successfully!', {
+									toastClass: ' my-custom-toast ngx-toastr',
 									timeOut: 2000,
 								});
 							},

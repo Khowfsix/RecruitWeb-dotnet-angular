@@ -38,7 +38,7 @@ import { Requirements } from '../../../data/requirements/requirements.model';
 import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 import { AuthService } from '../../../core/services/auth.service';
-import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../../core/constants/position.env';
+import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../../core/constants/position.constants';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { GreaterOrEqualToDay } from '../../../shared/validators/date.validator';
 
@@ -89,7 +89,6 @@ export class AddFormComponent {
 	public isEdit: boolean = false;
 	@Input()
 	private fetchObject: Position = this.data ? this.data.fetchObject ?? null : null;
-
 
 	private currentRecruiter?: Recruiter;
 
@@ -350,12 +349,12 @@ export class AddFormComponent {
 							});
 							this.dialogRef.close();
 							this.toastr.success('Position Added...', 'Successfully!', {
-								timeOut: 3000,
+								toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 							});
 						},
 						error: () => {
 							this.toastr.error('Something wrong...', 'Save Position Error!!!', {
-								timeOut: 3000,
+								toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 							});
 						},
 						complete: () => {
@@ -364,7 +363,7 @@ export class AddFormComponent {
 				},
 				error: () => {
 					this.toastr.error('File upload failed.', 'Error!', {
-						timeOut: 3000,
+						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 					});
 					return;
 				},
@@ -377,7 +376,7 @@ export class AddFormComponent {
 			next: () => { },
 			error: () => {
 				this.toastr.error('Something wrong...', 'Save Requirement Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			complete: () => { },
@@ -389,7 +388,7 @@ export class AddFormComponent {
 			next: () => { },
 			error: () => {
 				this.toastr.error('Something wrong...', 'Delete Requirement Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			complete: () => { },
@@ -423,7 +422,7 @@ export class AddFormComponent {
 			next: (resp: any) => {
 				if (resp === false) {
 					this.toastr.error('Something wrong...', 'Error!!!', {
-						timeOut: 3000,
+						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 					});
 					return;
 				} else {
@@ -435,14 +434,14 @@ export class AddFormComponent {
 						this.callApiSaveRequirement(e)
 					});
 					this.toastr.success('Position Updated...', 'Successfully!', {
-						timeOut: 2000,
+						toastClass: ' my-custom-toast ngx-toastr', timeOut: 2000,
 					});
 					this.dialogRef.close();
 				}
 			},
 			error: () => {
 				this.toastr.error('Something wrong...', 'Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			complete: () => {
@@ -469,7 +468,7 @@ export class AddFormComponent {
 					},
 					error: () => {
 						this.toastr.error('File upload failed.', 'Error!', {
-							timeOut: 3000,
+							toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 						});
 						return;
 					},

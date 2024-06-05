@@ -167,12 +167,12 @@ export class AddFormComponent implements OnInit {
 			next: () => {
 				this.dialogRef.close();
 				this.toastr.success('Interview updated...', 'Successfully!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			error: () => {
 				this.toastr.error('Something wrong...', 'Update interview Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 		});
@@ -186,12 +186,12 @@ export class AddFormComponent implements OnInit {
 			next: () => {
 				this.dialogRef.close();
 				this.toastr.success('Created interview...', 'Successfully!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			error: () => {
 				this.toastr.error('Something wrong...', 'Save interview Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 		})

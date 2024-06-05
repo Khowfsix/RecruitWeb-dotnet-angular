@@ -26,7 +26,7 @@ export class ExpandbuttonComponent implements OnInit {
 	public expandedWidth?: string;
 
 	@Input()
-	public icon?: 'add' | 'save' | 'delete' | 'multi-mail' | 'mail' | 'check';
+	public icon?: 'add' | 'save' | 'delete' | 'multi-mail' | 'mail' | 'check' | 'QR' | 'people';
 	@Input()
 	public color?: 'primary' | 'accent' | 'warn';
 

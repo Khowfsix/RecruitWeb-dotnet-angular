@@ -50,6 +50,7 @@ export class LanguageComponent {
 	// 		this._toastService.success("Delete success", "Delete skill success", {
 	// 			timeOut: 3000,
 	// 			positionClass: 'toast-top-center',
+	// 			toastClass: ' my-custom-toast ngx-toastr',
 	// 			progressBar: true
 	// 		});
 	// 	}

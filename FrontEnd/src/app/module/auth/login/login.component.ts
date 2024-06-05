@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Login } from '../../../data/authen/login.model';
@@ -53,7 +54,13 @@ export class LoginComponent implements OnInit {
 			.subscribe({
 				next: (data: any) => {
 					if ('status' in data && data['status'] === 'Email need confirmed') {
-						this.toasts.error(data.message, "Logged in failed", { timeOut: 3000, closeButton: true, progressBar: true });
+						this.toasts.error(data.message, "Logged in failed",
+							{
+								timeOut: 3000,
+								closeButton: true,
+								toastClass: 'my-custom-toast ngx-toastr',
+								progressBar: true
+							});
 						this.router.navigate(['/auth/confirm-email']);
 						return;
 					}
@@ -69,10 +76,23 @@ export class LoginComponent implements OnInit {
 								if (data !== null) {
 									localStorage.setItem('currentUser', JSON.stringify(data));
 									this.navigate_before();
-									this.toasts.success("Logged in successfully", "Success", { timeOut: 3000, closeButton: true, progressBar: true });
+									this.toasts.success("Logged in successfully", "Success",
+										{
+											timeOut: 3000,
+											closeButton: true,
+											progressBar: true,
+											toastClass: ' my-custom-toast ngx-toastr',
+										})
+										;
 								} else {
 									this.authService.logout();
-									this.toasts.warning("Cann't get user information", "Warning!!!", { timeOut: 3000, closeButton: true, progressBar: true });
+									this.toasts.warning("Cann't get user information", "Warning!!!",
+										{
+											timeOut: 3000,
+											closeButton: true,
+											progressBar: true,
+											toastClass: ' my-custom-toast ngx-toastr',
+										});
 								}
 							}
 						});
@@ -80,7 +100,14 @@ export class LoginComponent implements OnInit {
 				},
 				error: (error) => {
 					if (error.status === '401') {
-						this.toasts.error(error.message, "Logged in failed", { timeOut: 3000, closeButton: true, progressBar: true });
+						this.toasts.error(error.message, "Logged in failed",
+							{
+								timeOut: 3000,
+								closeButton: true,
+								progressBar: true,
+								toastClass: ' my-custom-toast ngx-toastr',
+							}
+						);
 						// this.authService.logout();
 					}
 				},

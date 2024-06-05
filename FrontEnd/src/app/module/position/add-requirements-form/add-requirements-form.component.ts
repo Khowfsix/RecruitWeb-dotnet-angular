@@ -143,7 +143,7 @@ export class AddRequirementsFormComponent {
 		const currentRequirements: Requirements[] | null = this.formGroup?.get(this.fieldName)?.value;
 		const skillId = this.addForm.get('skillId')?.value;
 		if (currentRequirements?.map(x => x.skillId).includes(skillId)) {
-			this.toastr.error('Skill conflict !!!!');
+			this.toastr.error('Skill conflict !!!!', 'Error', { toastClass: ' my-custom-toast ngx-toastr', });
 			return;
 		}
 		let requirement: any = {
@@ -153,11 +153,13 @@ export class AddRequirementsFormComponent {
 			notes: this.addForm.get('notes')?.value,
 		}
 		currentRequirements?.push(requirement)
+
+		const updatedRequirements = [...(currentRequirements ?? []), requirement];
 		requirement = {
 			...requirement,
 			skillName: this.fetchSkills?.find(e => e.skillId === this.addForm.get('skillId')?.value)?.skillName,
 		}
-		this.formGroup?.get(this.fieldName ?? '')?.setValue(currentRequirements);
+		this.formGroup?.get(this.fieldName ?? '')?.setValue(updatedRequirements);
 
 		this.displayRequirements.push(requirement);
 	}
@@ -166,7 +168,7 @@ export class AddRequirementsFormComponent {
 		const skillId = this.addForm.get('skillId')?.value;
 
 		if (!this.displayRequirements.map(x => x.skillId).includes(skillId)) {
-			this.toastr.error('Requirement not found!!!')
+			this.toastr.error('Requirement not found!!!', 'Error', { toastClass: ' my-custom-toast ngx-toastr', })
 			return;
 		}
 

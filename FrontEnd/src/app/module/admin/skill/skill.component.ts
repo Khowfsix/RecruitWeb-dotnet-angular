@@ -52,6 +52,7 @@ export class SkillComponent {
 				this._toastService.success("Delete success", "Delete skill success", {
 					timeOut: 3000,
 					positionClass: 'toast-top-center',
+					toastClass: ' my-custom-toast ngx-toastr',
 					progressBar: true
 				});
 			}
@@ -67,6 +68,7 @@ export class SkillComponent {
 				this._toastService.success("Create success", "Create skill success", {
 					timeOut: 3000,
 					positionClass: 'toast-top-center',
+					toastClass: ' my-custom-toast ngx-toastr',
 					progressBar: true
 				});
 			}

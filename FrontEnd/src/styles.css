@@ -7,7 +7,14 @@ html,
 body {
 	height: 100%;
 }
+
 body {
 	margin: 0;
 	font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.my-custom-toast {
+	position: fixed !important;
+	top: inherit !important;
+	right: inherit !important;
 }

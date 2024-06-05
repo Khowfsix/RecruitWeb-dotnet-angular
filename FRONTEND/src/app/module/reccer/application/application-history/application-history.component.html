@@ -47,7 +47,10 @@
 				<div class="card p-4 mt-2 m-3 shadow d-flex flex-row ">
 					<div style=" width: 80%;">
 						<div class="heading fs-4">{{item.event?.eventName}}</div>
-						<div class="mt-1 ms-2" style="font-size: 15px; font-weight: 400;">{{item.event?.datetimeEvent |
+						<div class="mt-1 ms-2" style="font-size: 15px; font-weight: 400;">{{item.event?.startDateTime |
+							date:'hh:mm'}} - {{item.event?.endDateTime | date:'hh:mm'}} </div>
+						<div class=" ms-2" style="font-size: 15px; font-weight: 400;">{{item.event?.startDateTime |
+							date:'fullDate'}} - {{item.event?.endDateTime |
 							date:'fullDate'}}</div>
 						<div class="ms-2" style="font-size: 15px; font-weight: 400;">{{item.event?.place}}</div>
 						<div style="font-size: 17px; font-weight: 500; margin-top: 2px;">Recruiter: <span

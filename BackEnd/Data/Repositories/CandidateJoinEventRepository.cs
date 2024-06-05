@@ -18,17 +18,38 @@ namespace Data.Repositories
 
         public async Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId, string sortString)
         {
-            var query = Entities.Select(o => o);
+            var query = Entities.Where(o => o.CandidateId == candidateId).AsNoTracking();
 
             if (sortString != null)
             {
                 var sort = new Sort<CandidateJoinEvent>(sortString);
                 query = sort.getSort(query);
             }
-            var result = await query.Where(o => o.CandidateId == candidateId)
-                .Include(o => o.Event).ThenInclude(o => o.Recruiter).ThenInclude(o => o.User)
-                .Include(o => o.Candidate)
-                .OrderByDescending(o => o.DateJoin)
+            var result = await query
+                .Include(o => o.Event.Recruiter.User)
+                //.Include(o => o.Candidate)
+                //.OrderByDescending(o => o.DateJoin)
+                .ToListAsync();
+            return result;
+        }
+
+        public async Task<IEnumerable<CandidateJoinEvent>> GetAllCandidateJoinEventsByEventId(Guid eventId, string? search, string sortString)
+        {
+            var query = Entities.Where(o => o.EventId == eventId)
+                //.Include(o => o.Event.Recruiter.User)
+                .Include(o => o.Candidate.User).AsNoTracking();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                query = query.Where(e => e.Candidate!.User!.UserName.ToLower().Contains(search.ToLower()));
+            }
+
+            if (sortString != null)
+            {
+                var sort = new Sort<CandidateJoinEvent>(sortString);
+                query = sort.getSort(query);
+            }
+            var result = await query
                 .ToListAsync();
             return result;
         }
@@ -44,6 +65,7 @@ namespace Data.Repositories
         public async Task<CandidateJoinEvent> SaveCandidateJoinEvent(CandidateJoinEvent request)
         {
             request.CandidateJoinEventId = Guid.NewGuid();
+            request.DateJoin = DateTime.Today;
 
             Entities.Add(request);
             _uow.SaveChanges();
