@@ -20,7 +20,7 @@ export class AuthService {
 		private api: API,
 		private cookieService: CookieService,
 		private router: Router,
-		private toast: ToastrService
+		private toast: ToastrService,
 	) {
 		// afterRender(() => {
 		// 	console.log(localStorage);
@@ -93,6 +93,10 @@ export class AuthService {
 			this.api.POST('/api/Authentication/Logout');
 			this.cookieService.delete('jwt');
 			this.cookieService.delete('refreshToken');
+
+			document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+			document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
 			localStorage.removeItem('currentUser');
 			localStorage.removeItem('expirationDate');
 			this.loginStatus.next(false);
@@ -102,6 +106,8 @@ export class AuthService {
 				progressBar: true,
 				newestOnTop: false
 			});
+			location.reload();
+			this.router.navigate(['/auth/login']);
 		} catch (error) {
 			console.log(error);
 			this.toast.error("Log out failed", "Error", {
