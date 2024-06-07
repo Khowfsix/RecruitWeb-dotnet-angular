@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { NgbProgressbarModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,8 @@ import { PersonalProjectComponent } from './personal-project/personal-project.co
 import { CandidateCertificateComponent } from './candidate-certificate/candidate-certificate.component';
 import { CandidateAwardsComponent } from './candidate-awards/candidate-awards.component';
 import { Candidate } from '../../../data/candidate/candidate.model';
+import { CandidateService } from '../../../data/candidate/candidate.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
 	selector: 'app-candidate-profile',
@@ -32,9 +34,22 @@ import { Candidate } from '../../../data/candidate/candidate.model';
 	styleUrl: './candidate-profile.component.css'
 })
 export class CandidateProfileComponent {
-	@Input() candidate?: Candidate;
+	candidateId?: string;
+	candidate?: Candidate;
 
-	constructor() {
-		console.log(this.candidate?.user?.userName);
+	constructor(
+		private _candidateService: CandidateService,
+		private _authService: AuthService,
+	) {
+		this.candidateId = this._authService.getCandidateId_OfUser() as string;
+		this.refreshPage();
+	}
+
+	refreshPage() {
+		this._candidateService.getById(this.candidateId as string).subscribe(
+			(candidate) => {
+				this.candidate = candidate;
+			}
+		);
 	}
 }

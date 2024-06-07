@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
+import { Candidate } from '../../../../data/candidate/candidate.model';
 
 @Component({
 	selector: 'app-work-experience',
@@ -9,5 +10,6 @@ import { MatDividerModule } from '@angular/material/divider';
 	styleUrl: './work-experience.component.css'
 })
 export class WorkExperienceComponent {
-
+	@Input() candidate?: Candidate;
+	@Output() refresh = new EventEmitter<void>();
 }

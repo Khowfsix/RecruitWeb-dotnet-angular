@@ -8,31 +8,55 @@
 				<div class="row">
 					<div class="col">
 						<i class="fa-regular fa-envelope p-2" aria-hidden="true"></i>
-						<span><b>email:</b> {{ candidate?.user?.email }}</span>
+						<span
+							><b>email: </b>
+							<a
+								class="text-decoration-none text-primary"
+								target="_blank"
+								href="mailto:{{ candidate?.user?.email }}"
+								>{{ candidate?.user?.email }}</a
+							></span
+						>
 					</div>
 					<div class="col">
 						<i class="fa fa-phone-slash p-2" aria-hidden="true"></i>
-						<span><b>phone:</b> {{ candidate?.user?.phoneNumber }}</span>
+						<span
+							><b>phone: </b>
+							<a
+								target="_blank"
+								class="text-decoration-none text-primary"
+								href="tel:+{{ candidate?.user?.phoneNumber }}"
+								>{{ candidate?.user?.phoneNumber }}</a
+							></span
+						>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<i class="fa-regular fa-calendar p-2" aria-hidden="true"></i>
-						<span><b>Birthday</b>: {{ candidate?.user?.dateOfBirth }}</span>
+						<span><b>Birthday</b>: {{ candidate?.user?.dateOfBirth | date : 'dd/MM/yyyy' }} </span>
 					</div>
 					<div class="col">
 						<i class="fa fa-venus p-2" aria-hidden="true"></i>
-						<span>{{ candidate?.user?.gender }}</span>
+						<span><b>Gender</b>: {{ candidate?.user?.gender | uppercase }}</span>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<i class="fa fa-address-book p-2" aria-hidden="true"></i>
-						<span>{{ candidate?.user?.address }}</span>
+						<span><b>Addres</b>: {{ candidate?.user?.address }}</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-globe p-2" aria-hidden="true"></i>
-						<span>{{ candidate?.user?.personalLink }}</span>
+						<span
+							><b>Personal link: </b>
+							<a
+								class="text-primary text-decoration-none"
+								target="_blank"
+								href="{{ candidate?.user?.personalLink }}">
+								{{ candidate?.user?.personalLink }}
+							</a>
+						</span>
 					</div>
 				</div>
 			</div>

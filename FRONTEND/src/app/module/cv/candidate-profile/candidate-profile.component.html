@@ -1,4 +1,4 @@
-<p class="h1 text-center py-1">Candidate profile</p>
+<p class="h1 text-center py-3">Candidate profile</p>
 <div class="container-fluid justify-content-center py-2">
 	<div class="row">
 		<div class="d-none d-lg-block px-3 mx-5 col-auto">
@@ -42,25 +42,21 @@
 		<div class="col">
 			<div class="card shadow-lg border border-dark rounded">
 				<!-- GENERAL INFORMATION -->
-				<app-personal-detail [candidate]="candidate"></app-personal-detail>
-
+				<app-personal-detail [candidate]="candidate" (refresh)="refreshPage()"></app-personal-detail>
 				<!-- EDUCATION -->
-				<app-candidate-education></app-candidate-education>
-
+				<app-candidate-education [candidate]="candidate" (refresh)="refreshPage()"></app-candidate-education>
 				<!-- WORK EXPERIENCE -->
-				<app-work-experience></app-work-experience>
-
+				<app-work-experience [candidate]="candidate" (refresh)="refreshPage()"></app-work-experience>
 				<!-- SKILLS -->
-				<app-candidate-skills></app-candidate-skills>
-
+				<app-candidate-skills [candidate]="candidate" (refresh)="refreshPage()"></app-candidate-skills>
 				<!-- PERSONAL PROJECT -->
-				<app-personal-project></app-personal-project>
-
+				<app-personal-project [candidate]="candidate" (refresh)="refreshPage()"></app-personal-project>
 				<!-- CERTIFICATE -->
-				<app-candidate-certificate></app-candidate-certificate>
-
+				<app-candidate-certificate
+					[candidate]="candidate"
+					(refresh)="refreshPage()"></app-candidate-certificate>
 				<!-- AWARDS -->
-				<app-candidate-awards></app-candidate-awards>
+				<app-candidate-awards [candidate]="candidate" (refresh)="refreshPage()"></app-candidate-awards>
 			</div>
 		</div>
 	</div>

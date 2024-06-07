@@ -8,4 +8,6 @@ export class PersonalDetail {
 	gender?: "Male" | "Female" | "Orther";
 	city?: string;
 	address?: string;
+
+	imgUrl?: string;
 }

@@ -3,12 +3,16 @@
 
 <mat-dialog-content class="mat-typography text-center">
 	<div class="justify-content-center">
-		<img src="https://via.placeholder.com/150" alt="Your avatar" class="rounded-circle" style="height: 6rem" />
+		<img *ngIf="imgSrc" [src]="imgSrc" alt="Your avatar" class="rounded-circle" style="height: 6rem" />
+		<img
+			*ngIf="!imgSrc"
+			src="https://via.placeholder.com/150"
+			alt="Your avatar"
+			class="rounded-circle"
+			style="height: 6rem" />
 		<div class="d-flex justify-content-center p-2">
-			<button mat-icon-button>
-				<i class="fa-solid fa-camera text-danger"></i>
-			</button>
-			<button mat-icon-button>
+			<input type="file" #avatarInput hidden (change)="onAvatarChange($event)" />
+			<button mat-icon-button (click)="avatarInput.click()">
 				<i class="fa-solid fa-pen text-danger"></i>
 			</button>
 		</div>
@@ -43,8 +47,7 @@
 			<div class="d-flex p-2">
 				<mat-form-field appearance="fill" class="px-2">
 					<mat-label>Date of Birth</mat-label>
-					<input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
-					<mat-hint>MM/DD/YYYY</mat-hint>
+					<input matInput [matDatepicker]="picker" formControlName="dob" />
 					<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-datepicker #picker></mat-datepicker>
 				</mat-form-field>
@@ -58,13 +61,13 @@
 				</mat-form-field>
 			</div>
 			<div class="d-flex p-2">
-				<mat-form-field appearance="fill" class="px-2">
+				<!-- <mat-form-field appearance="fill" class="px-2">
 					<mat-label>Current City</mat-label>
 					<input matInput formControlName="city" />
-				</mat-form-field>
-				<mat-form-field appearance="fill" class="px-2">
+				</mat-form-field> -->
+				<mat-form-field appearance="fill" class="px-2 w-100">
 					<mat-label>Address</mat-label>
-					<input matInput type="text" formControlName="address" />
+					<input matInput type="text" formControlName="address" class="w-100" />
 				</mat-form-field>
 			</div>
 		</form>
