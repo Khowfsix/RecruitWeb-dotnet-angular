@@ -88,6 +88,18 @@ export class AuthService {
 		return this.api.POST('/api/Authentication/Login', loginModel);
 	}
 
+	updateUserLogin() {
+		this.getCurrentUser().subscribe(
+			{
+				next: (data) => {
+					if (data !== null) {
+						localStorage.setItem('currentUser', JSON.stringify(data));
+					}
+				}
+			}
+		)
+	}
+
 	logout() {
 		try {
 			this.api.POST('/api/Authentication/Logout');

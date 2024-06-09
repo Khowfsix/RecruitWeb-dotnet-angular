@@ -6,8 +6,8 @@ public partial class WebUser : IdentityUser
 {
     public string? FullName { get; set; }
     public string? Title { get; set; }
-    public string? Email { get; set; }
-    public string? PhoneNumber { get; set; }
+    public override string? Email { get; set; }
+    public override string? PhoneNumber { get; set; }
     public string? PersonalLink { get; set; }
     public string? Gender { get; set; }
     public DateTime? DateOfBirth { get; set; }

@@ -20,4 +20,6 @@ export class CandidateService {
 	updatePersonalDetail(userId: string, data: PersonalDetail): Observable<WebUser> {
 		return this.api.PUT('/api/Candidate/UpdateCandidateProfile/' + userId, data);
 	}
+
+
 }

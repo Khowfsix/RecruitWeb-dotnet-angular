@@ -98,6 +98,7 @@ export class PDEditDialogComponent implements OnInit, OnDestroy {
 		this.detailUpdate = this.personalDetailForm.value;
 		if (this.avatarImage) {
 			const formData: FormData = new FormData();
+			console.log(this.avatarImage.type);
 			formData.append('formFile', this.avatarImage);
 			this.fileService.uploadFile(formData).subscribe(
 				(res) => {

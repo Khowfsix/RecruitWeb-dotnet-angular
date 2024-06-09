@@ -18,6 +18,7 @@ import { ErrorInterceptorProvider } from './core/interceptor/error.intercerptor'
 import { CookieService } from 'ngx-cookie-service';
 import { NetworkInterceptorProvider } from './core/interceptor/network.interceptor';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { DateInterceptorProvider } from './core/interceptor/date.interceptor';
 // import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
@@ -37,6 +38,7 @@ export const appConfig: ApplicationConfig = {
 		AuthInterceptorProvider,
 		ErrorInterceptorProvider,
 		NetworkInterceptorProvider,
+		DateInterceptorProvider,
 
 		// provide store
 		provideStore(),

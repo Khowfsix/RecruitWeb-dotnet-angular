@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../core/services/auth.service';
-import { Login } from '../../../data/authen/login.model';
 import {
 	FormBuilder,
 	FormGroup,
@@ -9,10 +7,12 @@ import {
 	Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { JWT } from '../../../data/authen/jwt.model';
 import { ToastrService } from 'ngx-toastr';
+import { first } from 'rxjs';
+import { AuthService } from '../../../core/services/auth.service';
+import { JWT } from '../../../data/authen/jwt.model';
+import { Login } from '../../../data/authen/login.model';
 
 @Component({
 	selector: 'app-login',
@@ -36,6 +36,11 @@ export class LoginComponent implements OnInit {
 		private CookieService: CookieService,
 		private toasts: ToastrService
 	) {
+		if (authService.checkLoginStatus()) {
+			this.navigate_before();
+		}
+
+
 		this.loginForm = this.fb.group({
 			username: ['', [Validators.required]],
 			password: ['', [Validators.required]],

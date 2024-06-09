@@ -119,22 +119,28 @@ namespace Api.Controllers
         [Authorize(Roles = "Candidate")]
         public async Task<IActionResult> UpdateCandidateProfile(string userId, UpdatePersonalProfile data)
         {
+            System.Console.WriteLine(data.Dob);
             var user = await _userManager.FindByIdAsync(userId);
-            user.FullName = data.Fullname;
-            user.Title = data.Title;
-            user.PhoneNumber = data.PhoneNumber;
-            user.Email = data.Email;
-            user.PersonalLink = data.PersonalLink;
-            user.DateOfBirth = data.Dob;
-            user.Gender = data.Gender;
-            user.City = data.City;
-            user.Address = data.Address;
-            var resp = await _userManager.UpdateAsync(user);
-            if (!resp.Succeeded)
+            if (user is not null)
             {
-                return BadRequest();
+                user.ImageURL = data.imgUrl;
+
+                user.FullName = data.Fullname;
+                user.Title = data.Title;
+                user.PhoneNumber = data.PhoneNumber;
+                user.PersonalLink = data.PersonalLink;
+                user.DateOfBirth = data.Dob;
+                user.Gender = data.Gender;
+                user.City = data.City;
+                user.Address = data.Address;
+                var resp = await _userManager.UpdateAsync(user);
+                if (!resp.Succeeded)
+                {
+                    return BadRequest();
+                }
+                return Ok(user);
             }
-            return Ok(user);
+            return NotFound();
         }
     }
 }

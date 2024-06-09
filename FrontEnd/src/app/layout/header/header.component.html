@@ -67,7 +67,7 @@
 	</mat-toolbar-row>
 
 	<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
-		<button mat-menu-item>
+		<button mat-menu-item (click)="handleRouteToProfile()">
 			<i class="fa-solid fa-user"></i>
 			<span class="mx-5 align-right">Profile</span>
 		</button>

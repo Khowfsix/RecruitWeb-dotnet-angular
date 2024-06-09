@@ -5,14 +5,12 @@ import { CompanyComponent } from './module/reccer/company/company.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { Type } from '@angular/core';
 import { PositionDetailComponent } from './module/position-detail/position-detail/position-detail.component';
-import { ProfileComponent } from './module/auth/profile/profile.component';
 import { ApplicationComponent } from './module/reccer/application/application.component';
 import { CvComponent } from './module/cv/cv.component';
 import { InterviewerComponent } from './module/reccer/interviewer/interviewer.component';
 import { InterviewComponent } from './module/reccer/interview/interview.component';
 import { CandidateProfileComponent } from './module/cv/candidate-profile/candidate-profile.component';
 import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
-import { JobPreferenceComponent } from './module/cv/job-preference/job-preference.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -34,12 +32,6 @@ export const routes: Routes = [
 	},
 
 	// need authentication but no roles
-	{
-		path: 'profile',
-		component: ProfileComponent,
-		canActivate: [AuthGuard],
-		data: { roles: [] },
-	},
 
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 
@@ -70,6 +62,8 @@ export const routes: Routes = [
 
 	// url for candidate
 	createRouteWithRoles('cv', CvComponent, [role.CANDIDATE]),
+	createRouteWithRoles('profile', CandidateProfileComponent, [role.CANDIDATE]),
+	createRouteWithRoles('cv-manage', CvManageComponent, [role.CANDIDATE]),
 	// createRouteWithRoles('cv/candidateProfile', CandidateProfileComponent, [role.CANDIDATE]),
 	// createRouteWithRoles('cv/cvManage', CvManageComponent, [role.CANDIDATE]),
 	// createRouteWithRoles('cv/jobPreference', JobPreferenceComponent, [role.CANDIDATE]),

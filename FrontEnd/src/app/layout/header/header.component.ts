@@ -111,7 +111,11 @@ export class HeaderComponent {
 	}
 
 	handleRouteToCVManage() {
-		this._router.navigate(['/cv'])
+		this._router.navigate(['/cv-manage'])
+	}
+
+	handleRouteToProfile() {
+		this._router.navigate(['/profile'])
 	}
 
 	handleRouteToAdminConsole() {

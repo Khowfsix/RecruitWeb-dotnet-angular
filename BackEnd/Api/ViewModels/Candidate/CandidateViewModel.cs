@@ -14,7 +14,7 @@ namespace Api.ViewModels.Candidate
         public string UserId { get; set; }
         public string? AboutMe { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public WebUserViewModel User { get; set; }
+        public WebUser User { get; set; }
 
         public virtual ICollection<Education> Educations { get; set; } = new List<Education>();
         public virtual ICollection<WorkExperience> WorkExperiences { get; set; } = new List<WorkExperience>();
