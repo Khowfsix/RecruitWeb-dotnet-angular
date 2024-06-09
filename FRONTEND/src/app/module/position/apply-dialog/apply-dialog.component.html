@@ -5,19 +5,21 @@
 	</p>
 </h2>
 <mat-dialog-content class="mat-typography shadow">
-	<div>Select CV to apply</div>
+	<div>
+		<p class="p-3 text-primary">Select CV to apply</p>
+	</div>
 
-	<form [formGroup]="applyForm" action="">
+	<form [formGroup]="applyForm">
 		<mat-accordion>
-			<mat-radio-group aria-label="Select a CV" [(ngModel)]="optionCv">
+			<mat-radio-group aria-label="Select a CV">
 				<mat-expansion-panel
 					(afterExpand)="onChangeOptionCv('default')"
 					(afterCollapse)="onChangeOptionCv('default')"
 					class="py-3">
 					<mat-expansion-panel-header>
 						<mat-panel-title> Most recently applied CV: {{ defaultCv?.cvName }}</mat-panel-title>
-						<mat-panel-description>
-							<a href="{{ defaultCv?.cvPdf }}"> See </a>
+						<mat-panel-description class="d-flex justify-content-end">
+							<a href="{{ defaultCv?.cvPdf }}" target="_blank"> View CV </a>
 						</mat-panel-description>
 					</mat-expansion-panel-header>
 					<div>First and last name: {{ candidate?.user?.fullName }}</div>
@@ -30,22 +32,21 @@
 					class="py-3">
 					<!-- <mat-radio-button formControlName="formControlName"></mat-radio-button> -->
 					<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
-					<!-- <mat-expansion-panel-content> -->
-					<div *ngFor="let cv of listCv">
-						<!-- <mat-radio-button value="{{cv.cvid}}" name="cvRadioButton"> -->
-						<!-- <mat-radio-button> {{cv.cvName}} </mat-radio-button> -->
-						<a href="{{ cv.cvPdf }}" target="_blank">
-							<!-- <img src="{{ cv.cvPdf | slice : 0 : 45 }}" alt="" width="100rem" height="100rem" /> -->
-							<!-- <pdf-viewer [src]="cv.cvPdf"></pdf-viewer> -->
-						</a>
-						<!-- </mat-radio-button> -->
-					</div>
-					<!-- </mat-expansion-panel-content> -->
+					<mat-radio-group formControlName="selectedCv">
+						<div *ngFor="let cv of listCv">
+							<div class="d-flex align-items-center">
+								<mat-radio-button [value]="cv.cvid"> {{ cv.cvName }} </mat-radio-button>
+								<button mat-button>View CV {{ cv.cvName }}</button>
+							</div>
+						</div>
+					</mat-radio-group>
 				</mat-expansion-panel>
 			</mat-radio-group>
 		</mat-accordion>
 
-		<p>A concise, well-written cover letter will help you become more professional and impress the employer.</p>
+		<p class="p-3 text-primary">
+			A concise, well-written cover letter will help you become more professional and impress the employer.
+		</p>
 		<mat-form-field appearance="fill" style="width: 100%">
 			<mat-label>Introducing letter:</mat-label>
 			<textarea matInput formControlName="aboutMe" cdkTextareaAutosize style="width: 100%"></textarea>

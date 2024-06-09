@@ -3,15 +3,17 @@ import { Component, Inject, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { ApplicationAddModel, ApplyDialogDataInput } from '../../../data/application/application.model';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { CandidateService } from '../../../data/candidate/candidate.service';
-import { CvService } from '../../../data/cv/cv.service';
-import { Candidate } from '../../../data/candidate/candidate.model';
-import { CV } from '../../../data/cv/cv.model';
-import { ApplicationService } from '../../../data/application/application.service';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
+import { ApplicationAddModel, ApplyDialogDataInput } from '../../../data/application/application.model';
+import { ApplicationService } from '../../../data/application/application.service';
+import { Candidate } from '../../../data/candidate/candidate.model';
+import { CandidateService } from '../../../data/candidate/candidate.service';
+import { CV } from '../../../data/cv/cv.model';
+import { CvService } from '../../../data/cv/cv.service';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
@@ -28,7 +30,10 @@ import { MatInputModule } from '@angular/material/input';
 		MatButtonModule,
 		MatExpansionModule,
 		MatFormFieldModule,
-		MatInputModule
+		MatInputModule,
+		MatRadioModule,
+
+		PdfJsViewerModule
 	],
 	templateUrl: './apply-dialog.component.html',
 })
@@ -41,6 +46,8 @@ export class ApplyDialogComponent {
 	defaultCv?: CV;
 	listCv?: CV[];
 	optionCv?: "default" | "orther";
+	selected_CvId?: string;
+
 	newApplication?: ApplicationAddModel = new ApplicationAddModel();
 	applyForm: FormGroup = new FormGroup({});
 
@@ -65,7 +72,7 @@ export class ApplyDialogComponent {
 					this.listCv = [];
 				}
 				else {
-					this.listCv = response;
+					this.listCv = response.filter(cv => !cv.isDefault);
 				}
 			}
 		);
@@ -74,7 +81,6 @@ export class ApplyDialogComponent {
 			(response) => {
 				if (typeof response !== 'string') {
 					this.defaultCv = response;
-					console.log(this.defaultCv);
 				}
 			}
 		)
@@ -89,21 +95,24 @@ export class ApplyDialogComponent {
 			aboutMe: new FormControl('', [
 				Validators.minLength(10)
 			]),
+			selectedCv: new FormControl()
 		});
+
+		this.optionCv = 'default';
 	}
 
 	onChangeOptionCv(option: "default" | "orther") {
 		this.optionCv = option;
-		console.log(this.optionCv);
 	}
 
 	onClickApply() {
 		this.newApplication = {
 			...this.newApplication,
 			introduce: this.applyForm.value.aboutMe,
+			cvid: this.optionCv === "default" ? this.defaultCv?.cvid : this.applyForm.value.selectedCv
 		}
 		console.log(this.newApplication);
-		// this.callApiAplly();
+		this.callApiAplly();
 	}
 
 	callApiAplly() {
