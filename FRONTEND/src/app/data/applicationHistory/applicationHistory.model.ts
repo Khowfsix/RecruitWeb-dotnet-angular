@@ -5,7 +5,7 @@ export class ApplicationHistory {
 	positionId?: string;
 	position?: Position;
 	cvId?: string;
-	dateTime?: Date;
+	createdTime?: Date;
 	candidate_Status?: number;
 	priority?: string;
 }

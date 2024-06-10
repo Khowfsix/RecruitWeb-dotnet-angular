@@ -150,6 +150,10 @@
 				[labelField]="'categoryPositionName'" [label]="'Category'" [placeholder]="'Ex. Digital, Technical'"
 				[observableOptions]="this.observableCategoryPositions" [formGroup]="this.addForm"></app-autocomplete>
 
+			<app-autocomplete [formField]="'levelId'" [valueField]="'levelId'" [labelField]="'levelName'"
+				[label]="'Level'" [placeholder]="'Ex. Senior, Junior'" [observableOptions]="this.observableLevels"
+				[formGroup]="this.addForm"></app-autocomplete>
+
 			<mat-form-field>
 				<mat-label>Background image</mat-label>
 				<div class="file-upload d-flex">

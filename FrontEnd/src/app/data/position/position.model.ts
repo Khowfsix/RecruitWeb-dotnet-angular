@@ -1,6 +1,7 @@
 import { CategoryPosition } from '../categoryPosition/category-position.model';
 import { Company } from '../company/company.model';
 import { Language } from '../language/language.model';
+import { Level } from '../level/level.model';
 import { Recruiter } from '../recruiter/recruiter.model';
 import { Requirements } from '../requirements/requirements.model';
 
@@ -18,6 +19,8 @@ export class Position {
 	language?: Language;
 	recruiterId?: string;
 	recruiter?: Recruiter;
+	levelId?: string;
+	level?: Level;
 	categoryPositionId?: string;
 	categoryPosition?: CategoryPosition;
 	isDeleted?: boolean;
@@ -34,6 +37,7 @@ export class PositionFilterModel {
 	toMaxHiringQty?: number;
 	fromDate?: Date;
 	toDate?: Date;
+	stringOfLevelIds?: string;
 	stringOfCategoryPositionIds?: string;
 	stringOfCompanyIds?: string;
 	stringOfLanguageIds?: string;

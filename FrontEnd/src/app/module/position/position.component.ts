@@ -122,6 +122,10 @@ export class PositionComponent implements OnInit {
 			null,
 			[]
 		],
+		stringOfLevelIds: [
+			'',
+			[Validators.min(1),],
+		],
 		stringOfCategoryPositionIds: [
 			'',
 			[Validators.min(1),],

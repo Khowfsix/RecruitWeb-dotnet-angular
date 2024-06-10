@@ -16,6 +16,7 @@ using Api.ViewModels.Interview;
 using Api.ViewModels.Interviewer;
 using Api.ViewModels.Itrsinterview;
 using Api.ViewModels.Language;
+using Api.ViewModels.Level;
 using Api.ViewModels.Position;
 using Api.ViewModels.Question;
 using Api.ViewModels.QuestionSkill;
@@ -60,13 +61,18 @@ namespace Data.Mapping
 
             #endregion CandidateHasSkill
 
-            #region CategoryPosition
+            #region Level
+            CreateMap<Level, LevelModel>().ReverseMap();
+            CreateMap<LevelModel, LevelViewModel>().ReverseMap();
+            CreateMap<LevelModel, LevelAddModel>().ReverseMap();
+            CreateMap<LevelModel, LevelUpdateModel>().ReverseMap();
+            #endregion Level
 
+            #region CategoryPosition
             CreateMap<CategoryPosition, CategoryPositionModel>().ReverseMap();
             CreateMap<CategoryPositionModel, CategoryPositionViewModel>().ReverseMap();
             CreateMap<CategoryPositionModel, CategoryPositionAddModel>().ReverseMap();
             CreateMap<CategoryPositionModel, CategoryPositionUpdateModel>().ReverseMap();
-
             #endregion CategoryPosition
 
             #region Language

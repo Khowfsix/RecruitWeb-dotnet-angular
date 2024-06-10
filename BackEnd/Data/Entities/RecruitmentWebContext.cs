@@ -83,6 +83,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     public virtual DbSet<PersonalProject> PersonalProjects { get; set; }
     public virtual DbSet<Certificate> Certificates { get; set; }
     public virtual DbSet<Award> Awards { get; set; }
+    public virtual DbSet<Level> Levels { get; set; }
 
     #endregion Dbset
 
@@ -430,6 +431,11 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.MaxSalary).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.StartDate).HasColumnType("date");
 
+            entity.HasOne(d => d.Level).WithMany(p => p.Positions)
+               .HasForeignKey(d => d.LevelId)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_LevelPosition");
+
             entity.HasOne(d => d.Company).WithMany(p => p.Positions)
                 .HasForeignKey(d => d.CompanyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -724,6 +730,13 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.HasOne(e => e.Candidate).WithMany(c => c.WorkExperiences)
                 .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_CandidateHasWorkExperience");
+        });
+
+
+        modelBuilder.Entity<Level>(entity =>
+        {
+            entity.HasKey(e => e.LevelId).HasName("PK_level");
+            entity.ToTable("Level"); 
         });
 
         modelBuilder.Entity<CandidateHasSkill>(entity =>

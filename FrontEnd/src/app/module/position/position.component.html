@@ -1,6 +1,6 @@
 <div class=" d-flex flex-column justify-content-center" style="margin-left: 7%; margin-right: 7%;">
 	<!-- <span class=" mt-4 mx-auto" style="font-size: 35px;">POSITIONS</span> -->
-	<div class="mx-3">
+	<div class="mx-3 mt-4">
 		<div class="container py-3 d-flex flex-row">
 			<div class="d-flex flex-column" style="width: 70%;">
 				<div class=" d-flex flex-row" style="width: 100%;">
@@ -33,66 +33,71 @@
 						Result count: {{this.fetchedPositions?.length}}
 					</div>
 				</div>
-
-				@for (position of fetchedPositions; track position) {
-				<div class="d-flex flex-row rounded-4 hover-overlay my-2"
-					style="padding: 10px 10px 10px 10px; width: 100%; background-color: rgb(230, 241, 250); border: 1px solid rgb(134, 134, 232);">
-					<div class="ms-4" style="width: 15%;">
-						<img src="{{position.company?.logo}}" class="rounded-4" style="width: 120px; height: 120px;"
-							alt="{{position.company?.companyName + ' logo'}}">
-					</div>
-					<div style="width: 40%; margin-left: 4%;">
-						<div class="fs-5 custom-row" style="font-weight: 500; cursor: pointer;">
-							<span [routerLink]="['/positions/detail', position.positionId]">{{
-								position.positionName | uppercase }}</span>
+				<div class="mt-2 mb-2" style="height: 580px; overflow-y: scroll;">
+					@for (position of fetchedPositions; track position) {
+					<div class="d-flex flex-row rounded-4 hover-overlay my-2"
+						style="padding: 10px 10px 10px 10px; width: 100%; background-color: rgb(230, 241, 250); border: 1px solid rgb(134, 134, 232);">
+						<div class="ms-2" style="width: 15%;">
+							<img src="{{position.company?.logo}}" class="rounded-4" style="width: 140px; height: 140px;"
+								alt="{{position.company?.companyName + ' logo'}}">
 						</div>
-						<div class="custom-row"> {{ position.company?.companyName }}</div>
-						<div class="custom-row" style="color: rgb(251, 115, 74);">
-							@if (position.minSalary && position.maxSalary) {
-							@if (position.minSalary === position.maxSalary) {
+						<div style="width: 40%; margin-left: 4%;">
+							<div class="fs-5 custom-row" style="font-weight: 500; cursor: pointer;">
+								<span [routerLink]="['/positions/detail', position.positionId]">{{
+									position.positionName | uppercase }}</span>
+							</div>
+							<div class="custom-row rounded-2"
+								style="padding: 2px 2px 2px 2px; background-color: rgb(253, 255, 198) ;width: fit-content;">
+								{{ position.level?.levelName }}</div>
+							<div class="custom-row"> {{ position.company?.companyName }}</div>
+							<div class="custom-row" style="color: rgb(251, 115, 74);">
+								@if (position.minSalary && position.maxSalary) {
+								@if (position.minSalary === position.maxSalary) {
 
-							{{'$' + position.minSalary}}
-							}
-							@else {
-							{{'$' + position.minSalary + ' - ' + '$'+position.maxSalary}}
-							}
-							}
-							@else if (position.minSalary) {
-							{{'$' +position.minSalary + ' and higher'}}
-							}
-							@else if (position.maxSalary) {
-							{{'Up to $'+ position.maxSalary}}
-							}
-							@else {
-							$ Negotiable
+								{{'$' + position.minSalary}}
+								}
+								@else {
+								{{'$' + position.minSalary + ' - ' + '$'+position.maxSalary}}
+								}
+								}
+								@else if (position.minSalary) {
+								{{'$' +position.minSalary + ' and higher'}}
+								}
+								@else if (position.maxSalary) {
+								{{'Up to $'+ position.maxSalary}}
+								}
+								@else {
+								$ Negotiable
+								}
+							</div>
+							<div class="custom-row"> Max hiring quantity: {{ position.maxHiringQty }}</div>
+							<div class="custom-row"><i class="bi bi-calendar3"></i> {{ position.startDate |
+								date:'dd/MM/yyyy' }}
+								- {{ position.endDate |
+								date:'dd/MM/yyyy' }}</div>
+							<div class="custom-row rounded-2"
+								style="padding: 2px 2px 2px 2px; background-color: rgb(224, 224, 224) ;width: fit-content;">
+								{{
+								position.language?.languageName}}</div>
+						</div>
+						<div class="ms-3 flex-grow-1" style="width: 25%;"></div>
+						<div class="ms-3 me-2" style="width: 3%;">
+							@if(position.recruiter?.userId === this.currentUser?.id) {
+							<i mat-button [matMenuTriggerFor]="menu" class="bi bi-three-dots custom-3-dot"></i>
 							}
 						</div>
-						<div class="custom-row"> Max hiring quantity: {{ position.maxHiringQty }}</div>
-						<div class="custom-row"><i class="bi bi-calendar3"></i> {{ position.startDate |
-							date:'dd/MM/yyyy' }}
-							- {{ position.endDate |
-							date:'dd/MM/yyyy' }}</div>
-						<div class="custom-row rounded-2"
-							style="padding: 2px 2px 2px 2px; background-color: rgb(224, 224, 224) ;width: fit-content;">
-							{{
-							position.language?.languageName}}</div>
-					</div>
-					<div class="ms-3 flex-grow-1" style="width: 25%;"></div>
-					<div class="ms-3 me-2" style="width: 3%;">
-						@if(position.recruiter?.userId === this.currentUser?.id) {
-						<i mat-button [matMenuTriggerFor]="menu" class="bi bi-three-dots custom-3-dot"></i>
-						}
-					</div>
-					<mat-menu #menu="matMenu">
-						<button mat-menu-item [routerLink]="['/applications', position.positionId]"><i
-								style="color: blue;" class="bi bi-eye-fill"></i> Application
-							List</button>
-						<button mat-menu-item (click)="openEditFormDialog(position, '100ms', '0ms')"><i
-								class="bi bi-pencil-square"></i> Edit</button>
-						<button mat-menu-item (click)="openDeleteDialog(position.positionId??'', '100ms', '0ms')"><i
-								class="bi bi-trash3-fill" style="color: red;"></i> Delete </button>
-					</mat-menu>
-				</div>}
+						<mat-menu #menu="matMenu">
+							<button mat-menu-item [routerLink]="['/applications', position.positionId]"><i
+									style="color: blue;" class="bi bi-eye-fill"></i> Application
+								List</button>
+							<button mat-menu-item (click)="openEditFormDialog(position, '100ms', '0ms')"><i
+									class="bi bi-pencil-square"></i> Edit</button>
+							<button mat-menu-item (click)="openDeleteDialog(position.positionId??'', '100ms', '0ms')"><i
+									class="bi bi-trash3-fill" style="color: red;"></i> Delete </button>
+						</mat-menu>
+					</div>}
+				</div>
+
 
 				<div style="width: 100%;" class="d-flex flex-row justify-content-center">
 					<mat-paginator class=" mb-2" style="font-size: 17px;" [length]="this.totalMatchedInDb"

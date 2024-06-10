@@ -41,6 +41,8 @@ import { AuthService } from '../../../core/services/auth.service';
 import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../../core/constants/position.constants';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { GreaterOrEqualToDay } from '../../../shared/validators/date.validator';
+import { LevelService } from '../../../data/level/level.service';
+import { Level } from '../../../data/level/level.model';
 
 @Component({
 	selector: 'app-add-form',
@@ -77,6 +79,7 @@ export class AddFormComponent {
 		private toastr: ToastrService,
 		private languageService: LanguageService,
 		private categoryPositionService: CategoryPositionService,
+		private levelService: LevelService,
 		private recruiterService: RecruiterService,
 		private positionService: PositionService,
 		private customDateService: CustomDateTimeService,
@@ -98,6 +101,9 @@ export class AddFormComponent {
 	public observableCategoryPositions =
 		this.categoryPositionService.getAllCategoryPositions();
 	public fetchCategoryPositions: CategoryPosition[] = [];
+	public observableLevels =
+		this.levelService.getAllLevels();
+	public fetchLevels: Level[] = [];
 
 	public enterMinMaxSalaryRange = false;
 
@@ -133,6 +139,12 @@ export class AddFormComponent {
 		});
 	}
 
+	private fetchAllLevels() {
+		this.observableLevels.subscribe((data) => {
+			this.fetchLevels = data;
+		});
+	}
+
 	private fetchAllCategoryPositions() {
 		this.observableCategoryPositions.subscribe((data) => {
 			this.fetchCategoryPositions = data;
@@ -162,8 +174,20 @@ export class AddFormComponent {
 				),
 			]);
 
+		this.addForm
+			.get('levelId')
+			?.setValidators([
+				Validators.required,
+				this.isInAllowedValues(
+					this.fetchLevels.map(
+						(x) => x.levelId,
+					),
+				),
+			]);
+
 		this.addForm.get('languageId')?.updateValueAndValidity();
 		this.addForm.get('categoryPositionId')?.updateValueAndValidity();
+		this.addForm.get('levelId')?.updateValueAndValidity();
 	}
 
 	public addForm: FormGroup = this.formBuilder.group({
@@ -206,6 +230,7 @@ export class AddFormComponent {
 		endDate: [this.isEditForm ? this.fetchObject.endDate : null, [Validators.required, GreaterOrEqualToDay()]],
 		languageId: [this.isEditForm ? this.fetchObject.language?.languageId : '', [Validators.required]],
 		categoryPositionId: [this.isEditForm ? this.fetchObject.categoryPositionId : null, [Validators.required]],
+		levelId: [this.isEditForm ? this.fetchObject.levelId : null, [Validators.required]],
 		requirements: [
 			this.isEditForm ? this.fetchObject.requirements?.filter(e => e.isDeleted === false) : [],
 			[
@@ -279,13 +304,16 @@ export class AddFormComponent {
 		this.getLocalRecruiterInfor();
 		this.fetchAllLanguages();
 		this.fetchAllCategoryPositions();
+		this.fetchAllLevels();
 
 		combineLatest([
 			this.observableLanguages,
 			this.observableCategoryPositions,
-		]).subscribe(([languages, categoryPositions]) => {
+			this.observableLevels,
+		]).subscribe(([languages, categoryPositions, levels]) => {
 			this.fetchLanguages = languages;
 			this.fetchCategoryPositions = categoryPositions;
+			this.fetchLevels = levels;
 
 			this.setupValidators();
 		});

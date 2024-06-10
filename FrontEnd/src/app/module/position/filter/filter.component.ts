@@ -20,6 +20,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MAX_SALARY, MAX_MAX_HIRING_QTY } from '../../../core/constants/position.constants';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { LevelService } from '../../../data/level/level.service';
 
 export const MY_FORMATS = {
 	parse: {
@@ -69,6 +70,7 @@ export class FilterComponent implements OnInit {
 	public MAX_MAXHIRINGQTY_CONSTANT = MAX_MAX_HIRING_QTY;
 
 	constructor(
+		public levelService: LevelService,
 		public categoryPositionService: CategoryPositionService,
 		public languageService: LanguageService,
 		public companyService: CompanyService,

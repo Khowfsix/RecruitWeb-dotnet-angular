@@ -65,12 +65,14 @@ export class PositionService {
 		if (positionFilterModel.toMaxHiringQty !== undefined) {
 			params += `&toMaxHiringQty=${encodeURIComponent(positionFilterModel.toMaxHiringQty)}`;
 		}
-
 		if (positionFilterModel.fromDate) {
 			params += `&fromDate=${positionFilterModel.fromDate}`;
 		}
 		if (positionFilterModel.toDate) {
 			params += `&toDate=${positionFilterModel.toDate}`;
+		}
+		if (positionFilterModel.stringOfLevelIds) {
+			params += `&stringOfLevelIds=${encodeURIComponent(positionFilterModel.stringOfLevelIds)}`;
 		}
 		if (positionFilterModel.stringOfCategoryPositionIds) {
 			params += `&stringOfCategoryPositionIds=${encodeURIComponent(positionFilterModel.stringOfCategoryPositionIds)}`;

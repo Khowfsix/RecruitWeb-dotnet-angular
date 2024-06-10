@@ -158,6 +158,7 @@ namespace Data.Repositories
             var data = await Entities
                 .Where(entity => entity.Cv.CandidateId == candidateId)
                 .Include(entity => entity.Position).ThenInclude(o => o.Company)
+                .Include(entity => entity.Position).ThenInclude(o => o.Level)
                 .OrderByDescending(entity => entity.CreatedTime)
                 .ToListAsync();
             return data;
