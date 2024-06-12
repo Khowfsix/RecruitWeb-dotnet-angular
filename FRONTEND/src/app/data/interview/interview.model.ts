@@ -34,4 +34,5 @@ export class InterviewFilterModel {
 	toTime?: string;
 	fromDate?: Date;
 	toDate?: Date;
+	positionId?: string;
 }

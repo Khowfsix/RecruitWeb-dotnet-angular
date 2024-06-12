@@ -32,6 +32,7 @@ import { PositionService } from '../../../data/position/position.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 import { ToastrService } from 'ngx-toastr';
+import { AutocompleteComponent } from '../../../shared/component/inputs/autocomplete/autocomplete.component';
 @Component({
 	selector: 'app-interview',
 	standalone: true,
@@ -42,6 +43,7 @@ import { ToastrService } from 'ngx-toastr';
 	templateUrl: './interview.component.html',
 	styleUrl: './interview.component.css',
 	imports: [
+		AutocompleteComponent,
 		MatMenuModule,
 		RouterModule,
 		MatDatepickerModule,
@@ -80,6 +82,7 @@ export class InterviewComponent implements OnInit {
 	public interview_CompanyStatus: typeof Interview_CompanyStatus = Interview_CompanyStatus;
 	public interview_CandidateStatus: typeof Interview_CandidateStatus = Interview_CandidateStatus;
 	public fetchedInterviews?: Interview[];
+	public positionData$ = this.positionService.getAllPositions(undefined, undefined, undefined, undefined, this.authService.getRecruiterId_OfUser())
 
 	public openEditFormDialog(interview: Interview, enterAnimationDuration: string,
 		exitAnimationDuration: string) {
@@ -202,6 +205,7 @@ export class InterviewComponent implements OnInit {
 		toTime: ['', []],
 		fromDate: [null, []],
 		toDate: [null, []],
+		positionId: ['', []],
 	});
 
 	private fetchInterviews(companyId?: string, interviewFilterModel?: any, sortString?: string) {

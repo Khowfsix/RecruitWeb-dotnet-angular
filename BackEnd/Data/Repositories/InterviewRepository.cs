@@ -66,6 +66,11 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                     break;
             }
         }
+
+        if (interviewFilter.PositionId.HasValue)
+        {
+            query = query.Where(e => e.Application.PositionId ==  interviewFilter.PositionId);
+        }
       
 
         if (!string.IsNullOrEmpty(interviewFilter.Search))

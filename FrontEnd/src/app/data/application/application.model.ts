@@ -1,4 +1,5 @@
 import { CV } from "../cv/cv.model";
+import { Interview } from "../interview/interview.model";
 import { Position } from "../position/position.model";
 
 export class Application {
@@ -9,4 +10,5 @@ export class Application {
 	company_Status?: number;
 	candidate_Status?: number;
 	priority?: string;
+	interviews?: Interview[];
 }

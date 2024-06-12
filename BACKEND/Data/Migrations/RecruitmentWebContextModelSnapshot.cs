@@ -756,7 +756,7 @@ namespace Data.Migrations
                     b.HasIndex(new[] { "QuestionId", "LanguageId" }, "UQ__Question_LanguageId")
                         .IsUnique();
 
-                    b.ToTable("QuestionLanguages");
+                    b.ToTable("QuestionLanguages", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.QuestionSkill", b =>
@@ -778,7 +778,7 @@ namespace Data.Migrations
                     b.HasIndex(new[] { "QuestionId", "SkillId" }, "UQ__Question__603A66B596184E51")
                         .IsUnique();
 
-                    b.ToTable("QuestionSkills");
+                    b.ToTable("QuestionSkills", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Recruiter", b =>
@@ -896,7 +896,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("Requirements");
+                    b.ToTable("Requirements", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.ResetPassword", b =>
@@ -920,7 +920,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResetPasswords");
+                    b.ToTable("ResetPasswords", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Round", b =>

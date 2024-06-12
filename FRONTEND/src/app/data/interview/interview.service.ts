@@ -41,7 +41,9 @@ export class InterviewService {
 
 	private buildQueryParams(interviewFilterModel: InterviewFilterModel): string {
 		let params = '';
-
+		if (interviewFilterModel.positionId) {
+			params += `&positionId=${interviewFilterModel.positionId}`;
+		}
 		if (interviewFilterModel.search) {
 			params += `&search=${interviewFilterModel.search}`;
 		}

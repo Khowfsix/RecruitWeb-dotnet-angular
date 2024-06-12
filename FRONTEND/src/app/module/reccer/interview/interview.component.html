@@ -34,6 +34,10 @@
 					</mat-select>
 				</mat-form-field>
 
+				<app-autocomplete [formField]="'positionId'" [valueField]="'positionId'" [labelField]="'positionName'"
+					[placeholder]="'Please select'" [label]="'Position'" [observableOptions]="this.positionData$"
+					[formGroup]="this.filterForm"></app-autocomplete>
+
 				<mat-form-field style="width: 100%;">
 					<mat-label>Status</mat-label>
 					<mat-select formControlName="companyStatus">

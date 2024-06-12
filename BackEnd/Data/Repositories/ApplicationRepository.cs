@@ -49,8 +49,11 @@ namespace Data.Repositories
         {
             var query = Entities.Where(e => e.PositionId == positionId);
             query = query
+                .Include(e => e.Interviews)
                 .Include(a => a.Cv.Candidate.User)
-                .Include(e => e.Cv.CvHasSkills).ThenInclude(e => e.Skill);
+                .Include(e => e.Cv.CvHasSkills).ThenInclude(e => e.Skill)
+                .AsNoTracking()
+                ;
 
             if (!String.IsNullOrEmpty(applicationFilter!.Search))
             {
@@ -107,11 +110,12 @@ namespace Data.Repositories
                         },
                     },
                 },
+                Interviews = e.Interviews,  
             })
                 .ToListAsync();
 
             return listData;
-        }
+        }   
 
 
         public async Task<Application> SaveApplication(Application request)

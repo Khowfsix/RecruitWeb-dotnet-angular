@@ -166,6 +166,14 @@
 									<mat-icon>more_vert</mat-icon>
 								</div>
 								<mat-menu style="font-size: 15px;" #menu="matMenu">
+									<button
+										[disabled]="(item.company_Status !== this.application_CompanyStatus.CONFIRM_N_MAILED) || (item.interviews?.length !== 0)"
+										class="bg-success text-white"
+										(click)="openAddInterviewDialog(item.applicationId, '100ms' , '0ms' )"
+										mat-menu-item><i class="bi bi-person-add"></i>
+										Create
+										Interview</button>
+
 									<button class="bg-secondary text-white"
 										(click)=" openViewApplicationHistoryDialog(item.cv?.candidateId, '100ms' , '0ms' )"
 										mat-menu-item><i class="bi bi-clock-history"></i>

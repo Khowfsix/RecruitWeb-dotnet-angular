@@ -32,6 +32,8 @@ import { ToastrService } from 'ngx-toastr';
 import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AddFormComponent } from '../interview/add-form/add-form.component';
+import { AuthService } from '../../../core/services/auth.service';
 export const MY_FORMATS = {
 	parse: {
 		dateInput: 'DD/MM/YYYY',
@@ -81,6 +83,7 @@ export class ApplicationComponent implements OnInit {
 		private viewContainerRef: ViewContainerRef,
 		private candidateJoinEventService: CandidateJoinEventService,
 		private applicationService: ApplicationService,
+		private authService: AuthService,
 		private candidateService: CandidateService,
 		private blackListService: BlackListService,
 		private customDateService: CustomDateTimeService,
@@ -93,6 +96,7 @@ export class ApplicationComponent implements OnInit {
 	public fetchedCandidates?: Candidate[];
 	public fetchedSkills?: Skill[];
 	public sortString?: string;
+	private recruiter = this.authService.getLocalCurrentUser().recruiters?.pop();
 
 	public filterForm: FormGroup = this.formBuilder.group({
 		sortString: ['CreatedTime_DESC', []],
@@ -109,6 +113,31 @@ export class ApplicationComponent implements OnInit {
 			[]
 		],
 	});
+
+	public openAddInterviewDialog(
+		applicationId: string | undefined,
+		enterAnimationDuration: string,
+		exitAnimationDuration: string,
+	): void {
+		if (applicationId) {
+			const dialogRef = this.dialog.open(AddFormComponent, {
+				viewContainerRef: this.viewContainerRef,
+				data: {
+					recruiter: this.recruiter,
+					applicationId: applicationId,
+					positionId: this.paramPositionId,
+				},
+				width: '1000px',
+				height: '500px',
+				enterAnimationDuration,
+				exitAnimationDuration,
+			});
+			dialogRef.afterClosed().subscribe(() => {
+				this.getAllApplicationsByPositionId(this.paramPositionId, this.filterForm.value);
+			});
+		}
+
+	}
 
 	public openViewApplicationHistoryDialog(candidateId: string | undefined, enterAnimationDuration: string,
 		exitAnimationDuration: string) {

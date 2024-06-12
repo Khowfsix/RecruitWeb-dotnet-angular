@@ -69,6 +69,8 @@ export class AddFormComponent implements OnInit {
 	}, { validator: timeValidator('startTime', 'endTime') });
 
 	private interviewerId = this.data ? this.data.interviewerId : '';
+	private applicationId = this.data ? this.data.applicationId : '';
+	private positionId = this.data ? this.data.positionId : '';
 	private recruiter: Recruiter = this.data ? this.data.recruiter : undefined;
 	public foundInterview?: Interview = this.data ? this.data.interview : undefined;
 	public positionData$ = this.positionService.getAllPositions(undefined, undefined, undefined, undefined, this.recruiter.recruiterId);
@@ -118,8 +120,6 @@ export class AddFormComponent implements OnInit {
 		})
 
 		this.addForm.get('positionId')?.valueChanges.pipe(startWith(null), pairwise()).subscribe(([oldValue, newValue]: [any, any]) => {
-			// console.log('oldValue', oldValue);
-			// console.log('newValue', newValue);
 			if (this.positionData?.map(e => e.positionId).includes(newValue)) {
 				// console.log('newValue', newValue);
 				// if (this.addForm.get('positionId')?.value !== newValue)
@@ -147,6 +147,15 @@ export class AddFormComponent implements OnInit {
 			this.applicationData$ = this.applicationService.getAllByPositionId(positionId);
 			this.showApplicationAutocomplete = true;
 		})
+
+
+		if (this.applicationId) {
+			// console.log('applicationId', this.applicationId)
+			this.applicationData$ = this.applicationService.getAllByPositionId(this.positionId);
+			this.addForm.get('positionId')?.setValue(this.positionId);
+			this.addForm.get('applicationId')?.setValue(this.applicationId);
+			this.showApplicationAutocomplete = true;
+		}
 		// this.addForm.get('positionName')?.valueChanges.subscribe((newValue: any) => {
 		// 	console.log(newValue)
 		// 	this.positionData$.subscribe((data) => this.positionData = data);
