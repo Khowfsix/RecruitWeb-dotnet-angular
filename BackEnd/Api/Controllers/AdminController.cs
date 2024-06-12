@@ -231,7 +231,9 @@ namespace Api.Controllers
             }
 
             // Send the new password to the user's email (optional)
+#pragma warning disable CS8601 // Possible null reference assignment.
             var message = new Message(new string[] { user.Email }, "Password Reset", $"Your new password: {newPassword}");
+#pragma warning restore CS8601 // Possible null reference assignment.
             _emailService.SendEmail(message);
 
             return Ok(new { Status = "Success", Message = "Password reset successfully" });
@@ -314,6 +316,7 @@ namespace Api.Controllers
         [Route("PassInterview/{interviewId:guid}")]
         public async Task<IActionResult> BrowsePassInterview(Guid interviewId)
         {
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (interviewId != null)
             {
                 // Update Interview status
@@ -354,6 +357,7 @@ namespace Api.Controllers
             {
                 return BadRequest();
             }
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
 #pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
         }
 

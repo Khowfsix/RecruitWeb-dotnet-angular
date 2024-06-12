@@ -30,7 +30,7 @@ public class InterviewService : IInterviewService
     {
         var data = await this.GetInterviewsByInterviewer(interviewerId);
         if (data == null || data.Count() == 0)
-            return null;
+            return null!;
         data.OrderByDescending(o => o.MeetingDate);
         var result = _mapper.Map<InterviewModel>(data.First());
         return result;
@@ -63,7 +63,7 @@ public class InterviewService : IInterviewService
     public async Task<bool> UpdateInterview(InterviewModel interviewModel, Guid interviewModelId)
     {
         var foundInterview = await this.GetInterviewById(interviewModelId);
-        if (foundInterview != null) 
+        if (foundInterview != null)
             return await Task.FromResult(false);
         if (foundInterview!.Company_Status != (int?)EInterviewCompanyStatus.PENDING)
             return await Task.FromResult(false);
@@ -82,7 +82,11 @@ public class InterviewService : IInterviewService
         return null!;
     }
 
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
     public async Task<IEnumerable<InterviewModel>> GetInterviewsByCompanyId(Guid requestId, InterviewFilter interviewFilter, string sortString)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
     {
         var data = await _interviewRepository.GetInterviewsByCompanyId(requestId, interviewFilter, sortString);
         if (!data.IsNullOrEmpty())

@@ -11,6 +11,10 @@ import { InterviewerComponent } from './module/reccer/interviewer/interviewer.co
 import { InterviewComponent } from './module/reccer/interview/interview.component';
 import { CandidateProfileComponent } from './module/cv/candidate-profile/candidate-profile.component';
 import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
+import { ListInterviewComponent } from './module/interview/list-interview/list-interview.component';
+import { InfoCandidateComponent } from './module/interview/info-candidate/info-candidate.component';
+import { InterviewQuestionsComponent } from './module/interview/interview-questions/interview-questions.component';
+import { ZoomIntergrateComponent } from './module/interview/zoom-intergrate/zoom-intergrate.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -59,6 +63,24 @@ export const routes: Routes = [
 	]),
 
 	// url for interviewer
+	createRouteWithRoles('list-interviews', ListInterviewComponent, [
+		role.INTERVIEWER,
+		role.ADMIN
+	]),
+	createRouteWithRoles('candidate-infomation', InfoCandidateComponent, [
+		role.INTERVIEWER,
+		role.ADMIN
+	]),
+	createRouteWithRoles('interview-questions', InterviewQuestionsComponent, [
+		role.INTERVIEWER,
+		role.CANDIDATE,
+		role.ADMIN
+	]),
+	createRouteWithRoles('zoom-interview', ZoomIntergrateComponent, [
+		role.ADMIN,
+		role.INTERVIEWER,
+		role.CANDIDATE
+	]),
 
 	// url for candidate
 	createRouteWithRoles('cv', CvComponent, [role.CANDIDATE]),

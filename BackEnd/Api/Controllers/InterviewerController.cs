@@ -24,8 +24,8 @@ public class InterviewerController : BaseAPIController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllInterviewer([FromQuery] InterviewerFilterModel interviewerFilterModel, 
-        Guid? id, 
+    public async Task<IActionResult> GetAllInterviewer([FromQuery] InterviewerFilterModel interviewerFilterModel,
+        Guid? id,
         Guid? companyId,
         string? sortString = "FullName_ASC")
     {
@@ -41,7 +41,7 @@ public class InterviewerController : BaseAPIController
         else if (companyId != null)
         {
             var filter = _mapper.Map<InterviewerFilter>(interviewerFilterModel);
-            var models = await _interviewerService.GetInterviewersInCompany((Guid)companyId, filter, sortString);
+            var models = await _interviewerService.GetInterviewersInCompany((Guid)companyId, filter, sortString!);
             var response = _mapper.Map<List<InterviewerViewModel>>(models);
             foreach (var interviewer in response)
             {
@@ -51,7 +51,7 @@ public class InterviewerController : BaseAPIController
                     interviewer.daysToLastInterview = null;
                     continue;
                 }
-                TimeSpan date = (TimeSpan)(lastInterview.MeetingDate - DateTime.Now);
+                TimeSpan date = (TimeSpan)(lastInterview.MeetingDate! - DateTime.Now);
                 interviewer.daysToLastInterview = date.Days;
             }
 

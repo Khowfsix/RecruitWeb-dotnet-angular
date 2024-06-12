@@ -83,12 +83,12 @@ public class InterviewController : BaseAPIController
     {
         //try
         //{
-            var dataList = await _interviewService.GetInterviewsByInterviewer(requestId);
-            if (dataList == null)
-            {
-                return Ok();
-            }
-            return Ok(_mapper.Map<List<InterviewViewModel>>(dataList.ToList()));
+        var dataList = await _interviewService.GetInterviewsByInterviewer(requestId);
+        if (dataList == null)
+        {
+            return Ok();
+        }
+        return Ok(_mapper.Map<List<InterviewViewModel>>(dataList.ToList()));
         //}
         //catch (Exception)
         //{
@@ -115,12 +115,8 @@ public class InterviewController : BaseAPIController
     }
 
     [HttpGet("[action]/{companyId}")]
-    public async Task<IActionResult> GetInterviewsByCompany(Guid companyId, [FromQuery] InterviewFilterModel interviewFilterModel,string? sortString = "MeetingDate_DESC")
+    public async Task<IActionResult> GetInterviewsByCompany(Guid companyId, [FromQuery] InterviewFilterModel interviewFilterModel, string? sortString = "MeetingDate_DESC")
     {
-        if (companyId == null)
-        {
-            return BadRequest();
-        }
         var filter = _mapper.Map<InterviewFilter>(interviewFilterModel);
         var models = await _interviewService.GetInterviewsByCompanyId(companyId, filter, sortString);
 
