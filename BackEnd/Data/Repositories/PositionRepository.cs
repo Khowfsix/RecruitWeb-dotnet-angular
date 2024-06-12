@@ -114,9 +114,12 @@ namespace Data.Repositories
 
             if (positionFilter.FromDate.HasValue && positionFilter.ToDate.HasValue)
             {
-                //query = query.Where(o => o.StartDate >= positionFilter.FromDate.Value);
-                //query = query.Where(o => o.EndDate <= positionFilter.ToDate.Value);
                 query = query.Where(o => !((o.StartDate > positionFilter.ToDate) || (o.EndDate < positionFilter.FromDate)));
+            }
+
+            if (positionFilter.LevelIds != null && positionFilter.LevelIds.Count > 0)
+            {
+                query = query.Where(o => positionFilter.LevelIds.Contains(o.LevelId));
             }
 
             if (positionFilter.CategoryPositionIds != null && positionFilter.CategoryPositionIds.Count > 0)
@@ -138,7 +141,8 @@ namespace Data.Repositories
                 .Include(o => o.Requirements)
                 .Include(o => o.Company)
                 .Include(o => o.Language)
-                .Include(o => o.Recruiter);
+                .Include(o => o.Recruiter)
+                .Include(e => e.Level);
 
             var result = await query.ToListAsync();
 
@@ -153,6 +157,7 @@ namespace Data.Repositories
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .Include(o => o.CategoryPosition)
+                .Include(e => e.Level)
                 .ToListAsync();
 
             return positionListWithName;
@@ -171,6 +176,7 @@ namespace Data.Repositories
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .Include(o => o.CategoryPosition)
+                .Include(e => e.Level)
                 .ToListAsync();
 
             return positionListWithName;
@@ -189,6 +195,7 @@ namespace Data.Repositories
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .Include(o => o.CategoryPosition)
+                .Include(o => o.Level)
                 .FirstOrDefaultAsync();
 
             /*------------------------------*/
@@ -211,6 +218,7 @@ namespace Data.Repositories
                 .Include(o => o.Language)
                 .Include(o => o.Recruiter)
                 .Include(o => o.CategoryPosition)
+                .Include(e => e.Level)
                 .ToListAsync();
 
             return positionList;
@@ -264,6 +272,7 @@ namespace Data.Repositories
             foundEntity.EndDate = position.EndDate;
             foundEntity.LanguageId = position.LanguageId;
             foundEntity.CategoryPositionId = position.CategoryPositionId;
+            foundEntity.LevelId = position.LevelId;
 
             Entities.Update(foundEntity);
             _unitOfWork.SaveChanges();

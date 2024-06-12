@@ -1,5 +1,5 @@
-<button [disabled]="this.disabled" class="expandButton d-flex" mat-flat-button color="{{this.color ? this.color : ''}}"
-	(mouseenter)="expandPanel()" (mouseleave)="collapsePanel()">
+<button [disabled]="this.disabled" class="expandButton d-flex" mat-raised-button
+	color="{{this.color ? this.color : ''}}" (mouseenter)="expandPanel()" (mouseleave)="collapsePanel()">
 	<div style="overflow: hidden; white-space: nowrap;">
 		@switch(this.icon){
 		@case ('add') {
@@ -10,6 +10,12 @@
 		}
 		@case ('check') {
 		<i class="bi bi-check-square fs-4"></i>
+		}
+		@case ('QR') {
+		<i class="bi bi-qr-code fs-5"></i>
+		}
+		@case ('people') {
+		<i class="bi bi-people fs-5"></i>
 		}
 		@case ('multi-mail') {
 		<i class="bi bi-envelope-at fs-4"></i>

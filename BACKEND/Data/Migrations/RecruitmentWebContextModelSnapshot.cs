@@ -86,7 +86,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 5, 30, 4, 39, 38, 272, DateTimeKind.Local).AddTicks(9161));
+                        .HasDefaultValue(new DateTime(2024, 6, 8, 21, 36, 26, 927, DateTimeKind.Local).AddTicks(7467));
 
                     b.HasKey("AwardId")
                         .HasName("PK_award");
@@ -267,7 +267,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 5, 30, 4, 39, 38, 265, DateTimeKind.Local).AddTicks(4942));
+                        .HasDefaultValue(new DateTime(2024, 6, 8, 21, 36, 26, 917, DateTimeKind.Local).AddTicks(1199));
 
                     b.HasKey("CertificateId")
                         .HasName("PK__Certific__BBF8A7C122402FA9");
@@ -402,7 +402,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("From")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 5, 30, 4, 39, 38, 271, DateTimeKind.Local).AddTicks(5279));
+                        .HasDefaultValue(new DateTime(2024, 6, 8, 21, 36, 26, 925, DateTimeKind.Local).AddTicks(7871));
 
                     b.Property<string>("Major")
                         .IsRequired()
@@ -428,11 +428,11 @@ namespace Data.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DatetimeEvent")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("EventName")
                         .IsRequired()
@@ -456,12 +456,37 @@ namespace Data.Migrations
                     b.Property<Guid>("RecruiterId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("EventId")
                         .HasName("PK__Event__7944C8101630C102");
 
                     b.HasIndex("RecruiterId");
 
                     b.ToTable("Event", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.EventHasPosition", b =>
+                {
+                    b.Property<Guid>("EventHasPositionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EventHasPositionId")
+                        .HasName("PK__EventHasPosition__7944C8101630D001");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("EventHasPositions", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Interview", b =>
@@ -570,6 +595,25 @@ namespace Data.Migrations
                     b.ToTable("Language", (string)null);
                 });
 
+            modelBuilder.Entity("Data.Entities.Level", b =>
+                {
+                    b.Property<Guid>("LevelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LevelName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LevelId")
+                        .HasName("PK_level");
+
+                    b.ToTable("Level", (string)null);
+                });
+
             modelBuilder.Entity("Data.Entities.PersonalProject", b =>
                 {
                     b.Property<Guid>("PersonalProjectId")
@@ -582,7 +626,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 5, 30, 4, 39, 38, 272, DateTimeKind.Local).AddTicks(6671));
+                        .HasDefaultValue(new DateTime(2024, 6, 8, 21, 36, 26, 926, DateTimeKind.Local).AddTicks(9753));
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
@@ -633,6 +677,9 @@ namespace Data.Migrations
                     b.Property<Guid>("LanguageId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("LevelId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("MaxHiringQty")
                         .HasColumnType("int");
 
@@ -662,6 +709,8 @@ namespace Data.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("LanguageId");
+
+                    b.HasIndex("LevelId");
 
                     b.HasIndex("RecruiterId");
 
@@ -1088,7 +1137,7 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "da8d473f-e3f5-4ade-bd6f-8a902ad9900b",
+                            Id = "a1b4e09b-e017-4101-9b2b-8e5ce7e98775",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "d00d37a8-0c8d-4b37-a8b7-823901b3b98d",
                             Email = "lyhongphat261202@gmail.com",
@@ -1105,7 +1154,7 @@ namespace Data.Migrations
                         },
                         new
                         {
-                            Id = "68a7e9fc-811d-4184-ac11-c8e77c0829b9",
+                            Id = "f2a2207d-2a62-4539-9461-094c57edac07",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "37a3f448-08e1-4d5b-8d9d-97edd7ed2441",
                             Email = "jasmineandhongphat@gmail.com",
@@ -1141,7 +1190,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 5, 30, 4, 39, 38, 271, DateTimeKind.Local).AddTicks(9142));
+                        .HasDefaultValue(new DateTime(2024, 6, 8, 21, 36, 26, 926, DateTimeKind.Local).AddTicks(588));
 
                     b.Property<string>("JobTitle")
                         .IsRequired()
@@ -1190,28 +1239,28 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "105d3b39-bd4f-4d84-9f49-a359be9ed345",
+                            Id = "840c2524-f550-4516-ae62-ee69860d5534",
                             ConcurrencyStamp = "1",
                             Name = "Candidate",
                             NormalizedName = "Candidate"
                         },
                         new
                         {
-                            Id = "9b972521-03bb-4369-bb0e-8743a863009f",
+                            Id = "f060d2bd-4141-4045-b2a9-996939b6f266",
                             ConcurrencyStamp = "2",
                             Name = "Interviewer",
                             NormalizedName = "Interviewer"
                         },
                         new
                         {
-                            Id = "3002412a-8498-4a97-a0d1-a18ea96a7dcf",
+                            Id = "6b77db64-ff1d-4b5f-a045-96c590f99dab",
                             ConcurrencyStamp = "3",
                             Name = "Recruiter",
                             NormalizedName = "Recruiter"
                         },
                         new
                         {
-                            Id = "2fb8f8a8-7d47-4679-8b55-56f5f11df173",
+                            Id = "4a79764e-9b60-42d1-a251-eb68cad1c36e",
                             ConcurrencyStamp = "4",
                             Name = "Admin",
                             NormalizedName = "Admin"
@@ -1307,33 +1356,33 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "da8d473f-e3f5-4ade-bd6f-8a902ad9900b",
-                            RoleId = "105d3b39-bd4f-4d84-9f49-a359be9ed345"
+                            UserId = "a1b4e09b-e017-4101-9b2b-8e5ce7e98775",
+                            RoleId = "840c2524-f550-4516-ae62-ee69860d5534"
                         },
                         new
                         {
-                            UserId = "da8d473f-e3f5-4ade-bd6f-8a902ad9900b",
-                            RoleId = "3002412a-8498-4a97-a0d1-a18ea96a7dcf"
+                            UserId = "a1b4e09b-e017-4101-9b2b-8e5ce7e98775",
+                            RoleId = "6b77db64-ff1d-4b5f-a045-96c590f99dab"
                         },
                         new
                         {
-                            UserId = "68a7e9fc-811d-4184-ac11-c8e77c0829b9",
-                            RoleId = "2fb8f8a8-7d47-4679-8b55-56f5f11df173"
+                            UserId = "f2a2207d-2a62-4539-9461-094c57edac07",
+                            RoleId = "4a79764e-9b60-42d1-a251-eb68cad1c36e"
                         },
                         new
                         {
-                            UserId = "68a7e9fc-811d-4184-ac11-c8e77c0829b9",
-                            RoleId = "105d3b39-bd4f-4d84-9f49-a359be9ed345"
+                            UserId = "f2a2207d-2a62-4539-9461-094c57edac07",
+                            RoleId = "840c2524-f550-4516-ae62-ee69860d5534"
                         },
                         new
                         {
-                            UserId = "68a7e9fc-811d-4184-ac11-c8e77c0829b9",
-                            RoleId = "9b972521-03bb-4369-bb0e-8743a863009f"
+                            UserId = "f2a2207d-2a62-4539-9461-094c57edac07",
+                            RoleId = "f060d2bd-4141-4045-b2a9-996939b6f266"
                         },
                         new
                         {
-                            UserId = "68a7e9fc-811d-4184-ac11-c8e77c0829b9",
-                            RoleId = "3002412a-8498-4a97-a0d1-a18ea96a7dcf"
+                            UserId = "f2a2207d-2a62-4539-9461-094c57edac07",
+                            RoleId = "6b77db64-ff1d-4b5f-a045-96c590f99dab"
                         });
                 });
 
@@ -1515,6 +1564,25 @@ namespace Data.Migrations
                     b.Navigation("Recruiter");
                 });
 
+            modelBuilder.Entity("Data.Entities.EventHasPosition", b =>
+                {
+                    b.HasOne("Data.Entities.Event", "Event")
+                        .WithMany("EventHasPositions")
+                        .HasForeignKey("EventId")
+                        .IsRequired()
+                        .HasConstraintName("FK_EventHasPositions");
+
+                    b.HasOne("Data.Entities.Position", "Position")
+                        .WithMany("EventHasPositions")
+                        .HasForeignKey("PositionId")
+                        .IsRequired()
+                        .HasConstraintName("FK_PositionJoinEvents");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Position");
+                });
+
             modelBuilder.Entity("Data.Entities.Interview", b =>
                 {
                     b.HasOne("Data.Entities.Application", "Application")
@@ -1593,6 +1661,12 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasConstraintName("Fk_language");
 
+                    b.HasOne("Data.Entities.Level", "Level")
+                        .WithMany("Positions")
+                        .HasForeignKey("LevelId")
+                        .IsRequired()
+                        .HasConstraintName("FK_LevelPosition");
+
                     b.HasOne("Data.Entities.Recruiter", "Recruiter")
                         .WithMany("Positions")
                         .HasForeignKey("RecruiterId")
@@ -1604,6 +1678,8 @@ namespace Data.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("Language");
+
+                    b.Navigation("Level");
 
                     b.Navigation("Recruiter");
                 });
@@ -1899,6 +1975,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Entities.Event", b =>
                 {
                     b.Navigation("CandidateJoinEvents");
+
+                    b.Navigation("EventHasPositions");
                 });
 
             modelBuilder.Entity("Data.Entities.Interview", b =>
@@ -1918,9 +1996,16 @@ namespace Data.Migrations
                     b.Navigation("QuestionLanguages");
                 });
 
+            modelBuilder.Entity("Data.Entities.Level", b =>
+                {
+                    b.Navigation("Positions");
+                });
+
             modelBuilder.Entity("Data.Entities.Position", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("EventHasPositions");
 
                     b.Navigation("Requirements");
 

@@ -1,4 +1,3 @@
-@if (this.formGroup){
 <form class="d-flex flex-column" [formGroup]="this.autocompleFormGroup">
 	<mat-form-field>
 		<mat-label>{{this.label}}</mat-label>
@@ -27,7 +26,3 @@
 		}
 	</mat-form-field>
 </form>
-}
-@else {
-<div>Not found formGroup</div>
-}

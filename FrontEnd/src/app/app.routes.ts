@@ -11,6 +11,9 @@ import { InterviewerComponent } from './module/reccer/interviewer/interviewer.co
 import { InterviewComponent } from './module/reccer/interview/interview.component';
 import { CandidateProfileComponent } from './module/cv/candidate-profile/candidate-profile.component';
 import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
+import { JobPreferenceComponent } from './module/cv/job-preference/job-preference.component';
+import { EventComponent } from './module/reccer/event/event.component';
+import { EventDetailComponent } from './module/event-detail/event-detail.component';
 import { ListInterviewComponent } from './module/interview/list-interview/list-interview.component';
 import { InfoCandidateComponent } from './module/interview/info-candidate/info-candidate.component';
 import { InterviewQuestionsComponent } from './module/interview/interview-questions/interview-questions.component';
@@ -37,9 +40,16 @@ export const routes: Routes = [
 
 	// need authentication but no roles
 
+	{ path: 'events/detail/:eventId', component: EventDetailComponent },
+
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 
 	{ path: 'positions', component: PositionComponent },
+
+	createRouteWithRoles('events', EventComponent, [
+		role.RECRUITER,
+		role.ADMIN,
+	]),
 
 	createRouteWithRoles('applications/:positionId', ApplicationComponent, [
 		role.RECRUITER,

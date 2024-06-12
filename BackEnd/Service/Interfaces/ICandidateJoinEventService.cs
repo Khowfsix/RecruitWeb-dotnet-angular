@@ -6,6 +6,8 @@ namespace Service.Interfaces
     {
         Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEventsByCandidateId(Guid candidateId, string sortString);
 
+        Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEventsByEventId(Guid eventId, string? search, string sortString);
+
         Task<IEnumerable<CandidateJoinEventModel>> GetAllCandidateJoinEvents();
 
         Task<CandidateJoinEventModel> SaveCandidateJoinEvent(CandidateJoinEventModel request);

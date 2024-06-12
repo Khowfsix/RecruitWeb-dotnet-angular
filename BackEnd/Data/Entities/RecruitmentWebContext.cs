@@ -33,7 +33,7 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     public virtual DbSet<CvHasSkill> CvHasSkills { get; set; }
 
     public virtual DbSet<Company> Companies { get; set; }
-
+    public virtual DbSet<EventHasPosition> EventHasPositions { get; set; }
     public virtual DbSet<Event> Events { get; set; }
 
     public virtual DbSet<Interview> Interviews { get; set; }
@@ -83,14 +83,15 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
     public virtual DbSet<PersonalProject> PersonalProjects { get; set; }
     public virtual DbSet<Certificate> Certificates { get; set; }
     public virtual DbSet<Award> Awards { get; set; }
+    public virtual DbSet<Level> Levels { get; set; }
 
     #endregion Dbset
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //=> optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection");
     //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-LNGKOTN\\DEVELOPER;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
-    //=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
-    => optionsBuilder.UseSqlServer("Server=tcp:jasminerecwebdbserver.database.windows.net,1433;Initial Catalog=RecruitmentWeb;Persist Security Info=False;User ID=jasmine;Password=bruh@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+    => optionsBuilder.UseSqlServer("Data Source=LAPTOP-1F69K9NB\\SQLEXPRESS;Initial Catalog=RecruitmentWeb;Integrated Security=True;TrustServerCertificate=True");
+    //=> optionsBuilder.UseSqlServer("Server=tcp:jasminerecwebdbserver.database.windows.net,1433;Initial Catalog=RecruitmentWeb;Persist Security Info=False;User ID=jasmine;Password=bruh@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -302,6 +303,23 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasConstraintName("FK_EventManagedBy");
         });
 
+        modelBuilder.Entity<EventHasPosition>(entity =>
+        {
+            entity.HasKey(e => e.EventHasPositionId).HasName("PK__EventHasPosition__7944C8101630D001");
+
+            entity.ToTable("EventHasPositions");
+
+            entity.HasOne(d => d.Event).WithMany(p => p.EventHasPositions)
+                .HasForeignKey(d => d.EventId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EventHasPositions");
+
+            entity.HasOne(d => d.Position).WithMany(p => p.EventHasPositions)
+                .HasForeignKey(d => d.PositionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PositionJoinEvents");
+        });
+
         modelBuilder.Entity<Interview>(entity =>
         {
             entity.HasKey(e => e.InterviewId).HasName("PK__Intervie__C97C58525A846D87");
@@ -412,6 +430,11 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
             entity.Property(e => e.MinSalary).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.MaxSalary).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.StartDate).HasColumnType("date");
+
+            entity.HasOne(d => d.Level).WithMany(p => p.Positions)
+               .HasForeignKey(d => d.LevelId)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_LevelPosition");
 
             entity.HasOne(d => d.Company).WithMany(p => p.Positions)
                 .HasForeignKey(d => d.CompanyId)
@@ -707,6 +730,13 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.HasOne(e => e.Candidate).WithMany(c => c.WorkExperiences)
                 .HasForeignKey(e => e.CandidateId).HasConstraintName("FK_CandidateHasWorkExperience");
+        });
+
+
+        modelBuilder.Entity<Level>(entity =>
+        {
+            entity.HasKey(e => e.LevelId).HasName("PK_level");
+            entity.ToTable("Level"); 
         });
 
         modelBuilder.Entity<CandidateHasSkill>(entity =>

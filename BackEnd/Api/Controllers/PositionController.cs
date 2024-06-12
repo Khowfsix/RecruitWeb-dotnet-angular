@@ -60,6 +60,7 @@ namespace Api.Controllers
                 return models != null ? Ok(_mapper.Map<List<PositionViewModel>>(models)) : NoContent();
             }
             var filter = _mapper.Map<PositionFilter>(positionFilterModel);
+            filter.LevelIds = positionFilterModel.getListOfLevelIds();
             filter.CompanyIds = positionFilterModel.getListOfCompanyIds();
             filter.CategoryPositionIds = positionFilterModel.getListOfCategoryPositionIds();
             filter.LanguageIds = positionFilterModel.getListOfLanguageIds();

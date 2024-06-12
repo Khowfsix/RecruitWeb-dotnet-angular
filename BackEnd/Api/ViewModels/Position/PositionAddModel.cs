@@ -20,6 +20,7 @@
         public Guid CompanyId { get; set; }
 
         public Guid LanguageId { get; set; }
+        public Guid LevelId { get; set; }
 
         public Guid RecruiterId { get; set; }
 

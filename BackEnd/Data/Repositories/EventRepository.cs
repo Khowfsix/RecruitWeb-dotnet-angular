@@ -1,7 +1,11 @@
+using Data.CustomModel.Event;
+using Data.CustomModel.Interviewer;
+using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
-
+using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Data.Repositories;
 
@@ -23,10 +27,57 @@ public class EventRepository : Repository<Event>, IEventRepository
         return listDatas;
     }
 
+    public async Task<IEnumerable<Event>> GetAllEventByRecruiterId(Guid recruiterId, EventFilter eventFilter, string sortString)
+    {
+        var query = Entities
+            .Where(iDel => iDel.IsDeleted == false && iDel.RecruiterId == recruiterId)
+            .Include(e => e.Recruiter.User)
+            .Include(e => e.EventHasPositions).ThenInclude(e => e.Position)
+            .AsNoTracking();
+       
+        if (!string.IsNullOrEmpty(sortString)) {
+            var sort = new Sort<Event>(sortString);
+            query = sort.getSort(query);
+        }
+
+        if (!string.IsNullOrEmpty(eventFilter.Search))
+        {
+            var lowewedSearch = eventFilter.Search.ToLower();
+            query = query
+            .Where(e =>
+                e.EventName.ToLower().Contains(lowewedSearch)
+                || e.Description.ToLower().Contains(lowewedSearch)
+                || e.Place.ToLower().Contains(lowewedSearch)
+            );
+        }
+
+        if (eventFilter.FromDate.HasValue && eventFilter.ToDate.HasValue)
+        {
+            query = query.Where(o => !((o.StartDateTime.Date > eventFilter.ToDate.Value.Date) || (o.EndDateTime.Date < eventFilter.FromDate.Value.Date)));
+        }
+
+        if (eventFilter.FromMaxParticipants.HasValue && eventFilter.ToMaxParticipants.HasValue)
+        {
+            query = query.Where(o => o.MaxParticipants >= eventFilter.FromMaxParticipants.Value);
+            query = query.Where(o => o.MaxParticipants <= eventFilter.ToMaxParticipants.Value);
+        }
+
+        var result = await query.ToListAsync();
+
+        return result;
+    }
+
     public async Task<Event> GetEventById(Guid id)
     {
-        var item = await Entities.FindAsync(id);
-        if (item is null or { IsDeleted: true }) return null!;
+        var item = await Entities.Where(e => e.EventId == id)
+            .Include(e => e.EventHasPositions)
+                .ThenInclude(e => e.Position)
+            .Include(e => e.Recruiter.User)
+            .Include(e => e.Recruiter.Company)
+            .AsNoTracking()
+            .FirstAsync();
+        if (item is null) 
+            return null!;
         return item;
     }
 
@@ -49,14 +100,22 @@ public class EventRepository : Repository<Event>, IEventRepository
     {
         try
         {
-            var entity = await Entities.AsNoTracking().FirstOrDefaultAsync(x => x.EventId == requestId);
-            if (entity is null or { IsDeleted: true })
+            var entity = await Entities.FindAsync(requestId);
+            if (entity is null)
             {
                 return await Task.FromResult(false);
             }
 
-            request.EventId = requestId;
-            Entities.Update(request);
+            entity.EventName = request.EventName;
+            entity.ImageURL = request.ImageURL;
+            entity.RecruiterId = request.RecruiterId;
+            entity.Description = request.Description;
+            entity.Place = request.Place;
+            entity.StartDateTime = request.StartDateTime;
+            entity.EndDateTime = request.EndDateTime;
+            entity.MaxParticipants = request.MaxParticipants;
+
+            Entities.Update(entity);
 
             _uow.SaveChanges();
         }

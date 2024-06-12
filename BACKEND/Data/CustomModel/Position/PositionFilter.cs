@@ -23,6 +23,8 @@
 
         public List<Guid>? CompanyIds { get; set; }
 
+        public List<Guid>? LevelIds { get; set; }
+
         public List<Guid>? LanguageIds { get; set; }
     }
 }

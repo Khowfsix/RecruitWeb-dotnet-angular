@@ -1,0 +1,11 @@
+<div class="qrcodeImage w-100 d-flex flex-column align-items-center justify-content-center">
+	<div class="my-3 fs-3 fw-bold">QR CODE</div>
+	<qrcode [qrdata]="this.qrdata" [allowEmptyString]="false" [alt]="'QR Code image of ' + this.qrdata"
+		[ariaLabel]="'QR Code image with the following content...'" [cssClass]="'center'" [colorDark]="'#000000ff'"
+		[colorLight]="'#ffffffff'" [elementType]="'img'" [errorCorrectionLevel]="'M'" [margin]="4" [scale]="1"
+		[width]="300" (qrCodeURL)="onChangeURL($event)"></qrcode>
+
+	<div class="my-2 d-flex flex-row">
+		<a class="fs-4" [href]="qrCodeDownloadLink" download="qrcode">Download</a>
+	</div>
+</div>

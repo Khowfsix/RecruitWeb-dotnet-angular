@@ -18,6 +18,8 @@ public class PositionModel
     public DateTime? StartDate { get; set; }
 
     public DateTime? EndDate { get; set; }
+    public Guid LevelId { get; set; }
+    public LevelModel Level { get; set; }
 
     public Guid CompanyId { get; set; }
     public CompanyModel? Company { get; set; }

@@ -95,6 +95,13 @@ this.formGroup.get('fromDate')?.setValue(''); this.formGroup.get('toDate')?.setV
 				</div>
 
 				<div class="">
+					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Level'"
+						[formGroup]="this.formGroup" [formField]="'stringOfLevelIds'" [displayFieldName]="'levelName'"
+						[valueFieldName]="'levelId'"
+						[observableData]="this.levelService.getAllLevels()"></app-chips-autocomplete>
+				</div>
+
+				<div class="">
 					<app-chips-autocomplete [placeholder]="'Search something...'" [label]="'Category Position'"
 						[formGroup]="this.formGroup" [formField]="'stringOfCategoryPositionIds'"
 						[displayFieldName]="'categoryPositionName'" [valueFieldName]="'categoryPositionId'"

@@ -1,0 +1,1 @@
+export const MAX_MAX_PARTICIPANTS = 9999;

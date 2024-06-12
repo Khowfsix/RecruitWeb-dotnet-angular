@@ -1,6 +1,7 @@
 using Api.ViewModels.CategoryPosition;
 using Api.ViewModels.Company;
 using Api.ViewModels.Language;
+using Api.ViewModels.Level;
 using Api.ViewModels.Recruiter;
 using Api.ViewModels.Requirement;
 using System.ComponentModel.DataAnnotations;
@@ -36,6 +37,8 @@ namespace Api.ViewModels.Position
         public RecruiterViewModel Recruiter { get; set; } = null!;
 
         public Guid CategoryPositionId { get; set; }
+        public Guid LevelId { get; set; }
+        public LevelViewModel Level { get; set; }
 
         public CategoryPositionViewModel CategoryPosition { get; set; } 
 

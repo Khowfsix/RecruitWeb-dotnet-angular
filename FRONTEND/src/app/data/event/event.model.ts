@@ -1,3 +1,4 @@
+import { EventHasPosition } from "../eventHasPosition/eventHasPosition.model";
 import { Recruiter } from "../recruiter/recruiter.model";
 
 export class Event {
@@ -8,7 +9,17 @@ export class Event {
 	description?: string;
 	imageURL?: string;
 	place?: string;
-	datetimeEvent?: Date;
+	startDateTime?: Date;
+	endDateTime?: Date;
 	maxParticipants?: number;
 	isDeleted?: boolean;
+	eventHasPositions?: EventHasPosition[];
+}
+
+export class EventFilter {
+	search?: string;
+	fromDate?: Date;
+	toDate?: Date;
+	fromMaxParticipants?: number;
+	toMaxParticipants?: number;
 }

@@ -20,7 +20,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCandidateJoinEvents(Guid? candidateId, string? sortString = "DateJoin_DESC")
+        public async Task<IActionResult> GetAllCandidateJoinEvents(string? search, Guid? candidateId, Guid? eventId, string? sortString = "DateJoin_DESC")
         {
             if (candidateId.HasValue)
             {
@@ -28,6 +28,14 @@ namespace Api.Controllers
                 var resp = _mapper.Map<List<CandidateJoinEventViewModel>>(models);
                 return Ok(resp);
             }
+
+            if (eventId.HasValue)
+            {
+                var models = await _candidateJoinEventService.GetAllCandidateJoinEventsByEventId(eventId.Value, search, sortString!);
+                var resp = _mapper.Map<List<CandidateJoinEventViewModel>>(models);
+                return Ok(resp);
+            }
+
             var modelDatas = await _candidateJoinEventService.GetAllCandidateJoinEvents();
             var response = _mapper.Map<List<CandidateJoinEventViewModel>>(modelDatas);
             return Ok(response);

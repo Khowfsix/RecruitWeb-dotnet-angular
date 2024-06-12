@@ -116,7 +116,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	onSubmit() {
 		if (!this.registerForm.valid) {
 			this.registerForm.markAllAsTouched(); // clear
-			this.toastr.error('Vui lòng điền đầy đủ thông tin');
+			this.toastr.error('Vui lòng điền đầy đủ thông tin', 'Error', {
+				toastClass: ' my-custom-toast ngx-toastr',
+			});
 			return;
 		}
 
@@ -135,7 +137,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 				console.log(error);
 			},
 			complete: () => {
-				this.toastr.success('Đăng ký tài khoản thành công');
+				this.toastr.success('Đăng ký tài khoản thành công', 'Success', {
+					toastClass: ' my-custom-toast ngx-toastr',
+				});
 				this.router.navigate(['/auth/confirm-email']);
 			},
 		});

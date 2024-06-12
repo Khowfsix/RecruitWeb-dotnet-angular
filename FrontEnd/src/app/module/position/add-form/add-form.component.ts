@@ -38,9 +38,11 @@ import { Requirements } from '../../../data/requirements/requirements.model';
 import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 import { AuthService } from '../../../core/services/auth.service';
-import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../../core/constants/position.env';
+import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../../core/constants/position.constants';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { GreaterOrEqualToDay } from '../../../shared/validators/date.validator';
+import { LevelService } from '../../../data/level/level.service';
+import { Level } from '../../../data/level/level.model';
 
 @Component({
 	selector: 'app-add-form',
@@ -77,6 +79,7 @@ export class AddFormComponent {
 		private toastr: ToastrService,
 		private languageService: LanguageService,
 		private categoryPositionService: CategoryPositionService,
+		private levelService: LevelService,
 		private recruiterService: RecruiterService,
 		private positionService: PositionService,
 		private customDateService: CustomDateTimeService,
@@ -90,7 +93,6 @@ export class AddFormComponent {
 	@Input()
 	private fetchObject: Position = this.data ? this.data.fetchObject ?? null : null;
 
-
 	private currentRecruiter?: Recruiter;
 
 	public observableLanguages = this.languageService.getAllLanguagues();
@@ -99,6 +101,9 @@ export class AddFormComponent {
 	public observableCategoryPositions =
 		this.categoryPositionService.getAllCategoryPositions();
 	public fetchCategoryPositions: CategoryPosition[] = [];
+	public observableLevels =
+		this.levelService.getAllLevels();
+	public fetchLevels: Level[] = [];
 
 	public enterMinMaxSalaryRange = false;
 
@@ -134,6 +139,12 @@ export class AddFormComponent {
 		});
 	}
 
+	private fetchAllLevels() {
+		this.observableLevels.subscribe((data) => {
+			this.fetchLevels = data;
+		});
+	}
+
 	private fetchAllCategoryPositions() {
 		this.observableCategoryPositions.subscribe((data) => {
 			this.fetchCategoryPositions = data;
@@ -163,8 +174,20 @@ export class AddFormComponent {
 				),
 			]);
 
+		this.addForm
+			.get('levelId')
+			?.setValidators([
+				Validators.required,
+				this.isInAllowedValues(
+					this.fetchLevels.map(
+						(x) => x.levelId,
+					),
+				),
+			]);
+
 		this.addForm.get('languageId')?.updateValueAndValidity();
 		this.addForm.get('categoryPositionId')?.updateValueAndValidity();
+		this.addForm.get('levelId')?.updateValueAndValidity();
 	}
 
 	public addForm: FormGroup = this.formBuilder.group({
@@ -207,6 +230,7 @@ export class AddFormComponent {
 		endDate: [this.isEditForm ? this.fetchObject.endDate : null, [Validators.required, GreaterOrEqualToDay()]],
 		languageId: [this.isEditForm ? this.fetchObject.language?.languageId : '', [Validators.required]],
 		categoryPositionId: [this.isEditForm ? this.fetchObject.categoryPositionId : null, [Validators.required]],
+		levelId: [this.isEditForm ? this.fetchObject.levelId : null, [Validators.required]],
 		requirements: [
 			this.isEditForm ? this.fetchObject.requirements?.filter(e => e.isDeleted === false) : [],
 			[
@@ -280,13 +304,16 @@ export class AddFormComponent {
 		this.getLocalRecruiterInfor();
 		this.fetchAllLanguages();
 		this.fetchAllCategoryPositions();
+		this.fetchAllLevels();
 
 		combineLatest([
 			this.observableLanguages,
 			this.observableCategoryPositions,
-		]).subscribe(([languages, categoryPositions]) => {
+			this.observableLevels,
+		]).subscribe(([languages, categoryPositions, levels]) => {
 			this.fetchLanguages = languages;
 			this.fetchCategoryPositions = categoryPositions;
+			this.fetchLevels = levels;
 
 			this.setupValidators();
 		});
@@ -350,12 +377,12 @@ export class AddFormComponent {
 							});
 							this.dialogRef.close();
 							this.toastr.success('Position Added...', 'Successfully!', {
-								timeOut: 3000,
+								toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 							});
 						},
 						error: () => {
 							this.toastr.error('Something wrong...', 'Save Position Error!!!', {
-								timeOut: 3000,
+								toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 							});
 						},
 						complete: () => {
@@ -364,7 +391,7 @@ export class AddFormComponent {
 				},
 				error: () => {
 					this.toastr.error('File upload failed.', 'Error!', {
-						timeOut: 3000,
+						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 					});
 					return;
 				},
@@ -377,7 +404,7 @@ export class AddFormComponent {
 			next: () => { },
 			error: () => {
 				this.toastr.error('Something wrong...', 'Save Requirement Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			complete: () => { },
@@ -389,7 +416,7 @@ export class AddFormComponent {
 			next: () => { },
 			error: () => {
 				this.toastr.error('Something wrong...', 'Delete Requirement Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			complete: () => { },
@@ -423,7 +450,7 @@ export class AddFormComponent {
 			next: (resp: any) => {
 				if (resp === false) {
 					this.toastr.error('Something wrong...', 'Error!!!', {
-						timeOut: 3000,
+						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 					});
 					return;
 				} else {
@@ -435,14 +462,14 @@ export class AddFormComponent {
 						this.callApiSaveRequirement(e)
 					});
 					this.toastr.success('Position Updated...', 'Successfully!', {
-						timeOut: 2000,
+						toastClass: ' my-custom-toast ngx-toastr', timeOut: 2000,
 					});
 					this.dialogRef.close();
 				}
 			},
 			error: () => {
 				this.toastr.error('Something wrong...', 'Error!!!', {
-					timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 				});
 			},
 			complete: () => {
@@ -469,7 +496,7 @@ export class AddFormComponent {
 					},
 					error: () => {
 						this.toastr.error('File upload failed.', 'Error!', {
-							timeOut: 3000,
+							toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 						});
 						return;
 					},

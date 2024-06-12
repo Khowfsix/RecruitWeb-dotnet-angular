@@ -11,10 +11,12 @@ using Api.ViewModels.Company;
 using Api.ViewModels.Cv;
 using Api.ViewModels.CvHasSkill;
 using Api.ViewModels.Event;
+using Api.ViewModels.EventHasPosition;
 using Api.ViewModels.Interview;
 using Api.ViewModels.Interviewer;
 using Api.ViewModels.Itrsinterview;
 using Api.ViewModels.Language;
+using Api.ViewModels.Level;
 using Api.ViewModels.Position;
 using Api.ViewModels.Question;
 using Api.ViewModels.QuestionSkill;
@@ -31,6 +33,7 @@ using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
 using AutoMapper;
 using Data.CustomModel.Application;
+using Data.CustomModel.Event;
 using Data.CustomModel.Interviewer;
 using Data.CustomModel.Position;
 using Data.Entities;
@@ -42,6 +45,15 @@ namespace Data.Mapping
     {
         public AutoMapperConfiguration()
         {
+            #region EventHasPosition
+
+            CreateMap<EventHasPosition, EventHasPositionModel>().ReverseMap();
+            CreateMap<EventHasPositionViewModel, EventHasPositionModel>().ReverseMap();
+            CreateMap<EventHasPositionAddModel, EventHasPositionModel>().ReverseMap();
+            CreateMap<EventHasPositionUpdateModel, EventHasPositionModel>().ReverseMap();
+
+            #endregion EventHasPosition
+
             #region CandidateHasSkill
 
             CreateMap<CandidateHasSkill, CandidateHasSkillModel>().ReverseMap();
@@ -49,13 +61,18 @@ namespace Data.Mapping
 
             #endregion CandidateHasSkill
 
-            #region CategoryPosition
+            #region Level
+            CreateMap<Level, LevelModel>().ReverseMap();
+            CreateMap<LevelModel, LevelViewModel>().ReverseMap();
+            CreateMap<LevelModel, LevelAddModel>().ReverseMap();
+            CreateMap<LevelModel, LevelUpdateModel>().ReverseMap();
+            #endregion Level
 
+            #region CategoryPosition
             CreateMap<CategoryPosition, CategoryPositionModel>().ReverseMap();
             CreateMap<CategoryPositionModel, CategoryPositionViewModel>().ReverseMap();
             CreateMap<CategoryPositionModel, CategoryPositionAddModel>().ReverseMap();
             CreateMap<CategoryPositionModel, CategoryPositionUpdateModel>().ReverseMap();
-
             #endregion CategoryPosition
 
             #region Language
@@ -69,6 +86,7 @@ namespace Data.Mapping
 
             #region Position
 
+            CreateMap<Position, PositionViewModel>().ReverseMap();
             CreateMap<PositionModel, PositionModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
                 {
@@ -239,6 +257,7 @@ namespace Data.Mapping
             #region CandidateJoinEvent
 
             CreateMap<CandidateJoinEvent, CandidateJoinEventModel>().ReverseMap();
+            CreateMap<CandidateJoinEvent, CandidateJoinEventViewModel>().ReverseMap();
             CreateMap<CandidateJoinEventModel, CandidateJoinEventAddModel>().ReverseMap();
             CreateMap<CandidateJoinEventModel, CandidateJoinEventUpdateModel>().ReverseMap();
             CreateMap<CandidateJoinEventModel, CandidateJoinEventViewModel>().ReverseMap();
@@ -298,7 +317,9 @@ namespace Data.Mapping
 
             #region Event
 
+            CreateMap<Event, EventViewModel>().ReverseMap();
             CreateMap<Event, EventModel>().ReverseMap();
+            CreateMap<EventFilter, EventFilterModel>().ReverseMap();
             CreateMap<EventModel, EventAddModel>().ReverseMap();
             CreateMap<EventModel, EventUpdateModel>().ReverseMap();
             CreateMap<EventModel, EventViewModel>().ReverseMap();

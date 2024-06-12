@@ -12,7 +12,6 @@ import { Position } from '../../data/position/position.model';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { AuthenticationService } from '../../data/authentication/authentication.service';
 import { WebUser } from '../../data/authentication/web-user.model';
 import {
 	MAT_DIALOG_DATA,
@@ -37,8 +36,8 @@ import { Subject } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { CustomDateTimeService } from '../../shared/service/custom-datetime.service';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../core/constants/position.env';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../core/constants/position.constants';
+import { AuthService } from '../../core/services/auth.service';
 
 
 @Component({
@@ -66,11 +65,11 @@ export class PositionComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private cookieService: CookieService,
 		private positionService: PositionService,
-		private authenticationService: AuthenticationService,
 		private customDateTimeService: CustomDateTimeService,
+		private authService: AuthService,
 	) { }
 	public fetchedPositions?: Position[];
-	public currentUser: WebUser = {};
+	public currentUser?: WebUser = this.authService.getLocalCurrentUser();
 	public curentUserRoles: string[] | null = null;
 
 	public sortString?: string = 'PositionName_ASC';
@@ -83,7 +82,7 @@ export class PositionComponent implements OnInit {
 
 	public handleOnlyMine(event: MatSlideToggleChange) {
 		if (event.checked) {
-			this.filterForm.get('userId')?.setValue(this.currentUser.id);
+			this.filterForm.get('userId')?.setValue(this.currentUser?.id);
 		}
 		else {
 
@@ -125,6 +124,10 @@ export class PositionComponent implements OnInit {
 			null,
 			[]
 		],
+		stringOfLevelIds: [
+			'',
+			[Validators.min(1),],
+		],
 		stringOfCategoryPositionIds: [
 			'',
 			[Validators.min(1),],
@@ -153,7 +156,6 @@ export class PositionComponent implements OnInit {
 		else {
 			this.curentUserRoles = null
 		}
-		this.fetchUserLoginInfo();
 		this.fetchedAllPositions();
 
 		this.initFilterValuesChange();
@@ -228,7 +230,7 @@ export class PositionComponent implements OnInit {
 		const dialogRef = this.dialog.open(AddFormComponent, {
 			viewContainerRef: this.viewContainerRef,
 			data: {
-				currentUserId: this.currentUser.id,
+				currentUserId: this.currentUser?.id,
 				isEditForm: true,
 				fetchObject: fetchObject,
 			},
@@ -250,7 +252,7 @@ export class PositionComponent implements OnInit {
 		const dialogRef = this.dialog.open(AddFormComponent, {
 			viewContainerRef: this.viewContainerRef,
 			data: {
-				currentUserId: this.currentUser.id,
+				currentUserId: this.currentUser?.id,
 			},
 			width: '700px',
 			height: '600px',
@@ -260,14 +262,6 @@ export class PositionComponent implements OnInit {
 
 		dialogRef.afterClosed().subscribe(() => {
 			this.fetchedAllPositions();
-		});
-	}
-
-	private fetchUserLoginInfo(): void {
-		this.authenticationService.userLogin().subscribe({
-			next: (data) => {
-				this.currentUser = data;
-			},
 		});
 	}
 
@@ -337,12 +331,12 @@ export class DeleteDialog {
 		this.positionService.delete(this.data.positionId).subscribe({
 			next: () => { },
 			error: () => {
-				this.toastr.error('Something wrong...', 'Error!!!');
+				this.toastr.error('Something wrong...', 'Error!!!', { toastClass: ' my-custom-toast ngx-toastr', });
 			},
 			complete: () => {
 				this.dialogRef.close();
 				this.toastr.success('Position Deleted...', 'Successfully!', {
-					timeOut: 2000,
+					toastClass: ' my-custom-toast ngx-toastr', timeOut: 2000,
 				});
 			},
 		});

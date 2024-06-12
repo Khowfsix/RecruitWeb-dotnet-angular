@@ -2,9 +2,9 @@ import { Candidate } from "../candidate/candidate.model";
 import { Event } from "../event/event.model";
 
 export class CandidateJoinEvent {
-	candidateJoinEventId?: number;
-	candidateid?: number;
-	eventId?: number;
+	candidateJoinEventId?: string;
+	candidateid?: string;
+	eventId?: string;
 	dateJoin?: Date;
 	event?: Event;
 	candidate?: Candidate;

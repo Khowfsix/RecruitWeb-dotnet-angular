@@ -1,0 +1,84 @@
+@if (this.formGroup){
+<form class="d-flex flex-column" [formGroup]="this.addForm">
+	<div class="d-flex flex-row" style="margin-bottom: 35px;">
+		<div class="me-3 rounded-1 flex-grow-1">
+			<form [formGroup]="this.formGroup" style="height: 100%; width: 100%;">
+				<mat-form-field style="height: 110%; width: 100%;">
+					<mat-label>{{this.label}}</mat-label>
+					<div class="mb-3">
+						<input type="text" hidden readonly="true" placeholder=" {{this.placeholder}}"
+							aria-label="Number" matInput formControlName="{{this.fieldName}}">
+						<div class="d-flex flex-wrap">
+							@for (item of this.displayEventHasPositions; track item) {
+							<div (click)="getEventHasPosition(item.positionId!)"
+								class="mt-2 shadow p-2 rounded-2 d-flex flex-row mx-1"
+								style="width: fit-content; cursor: pointer; background-color: aliceblue;">
+								<div>{{item.position?.positionName}}</div>
+								<div (click)="removeEventHasPosition(item.positionId!)" class="ms-1"><i
+										class="bi bi-x-circle custom-cancel"></i>
+								</div>
+							</div>
+							}
+						</div>
+					</div>
+
+					@if(formGroup.get(this.fieldName)?.invalid){
+					@if(formGroup.get(this.fieldName)?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					@if(formGroup.get(this.fieldName)?.hasError('invalid')){
+					<div style="color: red;">Invalid value.</div>
+					}
+					}
+				</mat-form-field>
+			</form>
+
+		</div>
+		<div class="d-flex flex-column">
+			<app-autocomplete [formField]="'positionId'" [valueField]="'positionId'" [labelField]="'positionName'"
+				[label]="'Position'" [placeholder]="'Type position name'" [observableOptions]="this.observablePositions"
+				[formGroup]="this.addForm"></app-autocomplete>
+
+			<div class="d-flex justify-content-center">
+				@if (this.formGroup.enabled){
+				@if (this.addForm.valid){
+				@if(this.isUpdateEventHasPosition){
+				<button color="primary" disabled class="me-2" mat-raised-button (click)="addEventHasPositionToList()">
+					Add
+					to list
+				</button>
+				<!-- <button color="accent" mat-raised-button (click)="updateEventHasPosition()"> Update </button> -->
+				}
+				@else {
+				<button color="primary" class="me-2" mat-raised-button (click)="addEventHasPositionToList()"> Add
+					to list
+				</button>
+				<button color="accent" mat-raised-button (click)="clearAllPositions()"> Clear All </button>
+				}
+				}
+				@else {
+				<button color="primary" disabled class="me-2" mat-raised-button (click)="addEventHasPositionToList()">
+					Add
+					to list
+				</button>
+				<button color="accent" mat-raised-button (click)="clearAllPositions()"> Clear All </button>
+				}
+				}
+				@else {
+				<button color="primary" disabled class="me-2" mat-raised-button (click)="addEventHasPositionToList()">
+					Add
+					to list
+				</button>
+				<button color="accent" disabled mat-raised-button (click)="clearAllPositions()"> Clear All </button>
+
+				}
+
+			</div>
+		</div>
+
+	</div>
+</form>
+}
+@else {
+<div>Not found formGroup</div>
+}

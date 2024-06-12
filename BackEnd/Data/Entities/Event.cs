@@ -15,13 +15,16 @@ public partial class Event
     public string? ImageURL { get; set; }
 
     [Required]
-    public string Place { get; set; } 
+    public string Place { get; set; }
 
-    public DateTime? DatetimeEvent { get; set; }
+    public DateTime StartDateTime { get; set; }
+    public DateTime EndDateTime { get; set; }
 
     public int MaxParticipants { get; set; }
 
     public bool IsDeleted { get; set; }
+    
+    public virtual ICollection<EventHasPosition> EventHasPositions { get; set; } = new List<EventHasPosition>();
 
     public virtual ICollection<CandidateJoinEvent> CandidateJoinEvents { get; set; } = new List<CandidateJoinEvent>();
 

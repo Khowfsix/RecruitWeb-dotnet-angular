@@ -41,7 +41,7 @@ export class UploadCvComponent {
 		if (file.type !== 'application/pdf') {
 			// Handle the error here
 			console.log('Invalid file type');
-			this._toastService.error('Only PDF files are allowed', 'Invalid file type', { timeOut: 3000, progressBar: true });
+			this._toastService.error('Only PDF files are allowed', 'Invalid file type', { toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000, progressBar: true });
 			return;
 		} else if (file.size > 5 * 1024 * 1024) {
 			this._toastService.error('File size should be less than 5MB', 'File too large', {
@@ -142,11 +142,11 @@ export class UploadCvComponent {
 
 					this._cvService.uploadNewCvFile(data).subscribe(
 						() => {
-							this._toastService.success('CV uploaded successfully', 'Success', { timeOut: 3000, progressBar: true });
+							this._toastService.success('CV uploaded successfully', 'Success', { toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000, progressBar: true });
 						},
 						(error) => {
 							console.error('Failed to upload CV', error);
-							this._toastService.error('Failed to upload CV', 'Error', { timeOut: 3000, progressBar: true });
+							this._toastService.error('Failed to upload CV', 'Error', { toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000, progressBar: true });
 						}
 					)
 

@@ -56,7 +56,7 @@ export class SendMultiEmailComponent implements OnInit {
 			this.dialogRef.close()
 		}
 		else {
-			this.toastr.error("Something wrong.......");
+			this.toastr.error("Something wrong.......", "Error", { toastClass: ' my-custom-toast ngx-toastr', });
 			this.dialogRef.close()
 		}
 	}

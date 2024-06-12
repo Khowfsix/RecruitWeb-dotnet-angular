@@ -4,26 +4,25 @@
     {
         public string? Search { get; set; }
         public Guid? UserId { get; set; }
-
         public int? FromSalary { get; set; }
-
         public int? ToSalary { get; set; }
-
         public bool NegotiatedSalary { get; set; }
         public int? FromMaxHiringQty { get; set; }
-
         public int? ToMaxHiringQty { get; set; }
-
         public DateTime? FromDate { get; set; }
-
         public DateTime? ToDate { get; set; }
-
+        public string? StringOfLevelIds { get; set; }
         public string? StringOfCategoryPositionIds { get; set; }
-
         public string? StringOfCompanyIds { get; set; }
-
         public string? StringOfLanguageIds { get; set; }
-
+        public List<Guid> getListOfLevelIds()
+        {
+            if (this.StringOfLevelIds != null)
+            {
+                return this.StringOfLevelIds.Split(',').Select(Guid.Parse).ToList();
+            }
+            return null;
+        }
         public List<Guid> getListOfCategoryPositionIds()
         {
             if (this.StringOfCategoryPositionIds != null)
