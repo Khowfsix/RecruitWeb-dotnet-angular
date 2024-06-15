@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,7 +28,7 @@ import { FormsModule } from '@angular/forms';
 export class UploadCvComponent {
 	selectedFile?: File;
 
-	@Output() cvUploaded: EventEmitter<void> = new EventEmitter<void>();
+	@Output() cvUploaded: EventEmitter<any> = new EventEmitter<any>();
 
 	constructor(
 		private _fileService: FileService,
@@ -143,6 +144,7 @@ export class UploadCvComponent {
 					this._cvService.uploadNewCvFile(data).subscribe(
 						() => {
 							this._toastService.success('CV uploaded successfully', 'Success', { toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000, progressBar: true });
+							this.cvUploaded.emit();
 						},
 						(error) => {
 							console.error('Failed to upload CV', error);
