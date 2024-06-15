@@ -28,4 +28,8 @@ export class CvService {
 	getDefaultCv(candidateId: string): Observable<string | CV> {
 		return this.api.GET(`/api/Cv/GetCvDefault/${candidateId}`);
 	}
+
+	deleteCv(cvId: string): Observable<boolean> {
+		return this.api.DELETE(`/api/Cv/${cvId}`);
+	}
 }
