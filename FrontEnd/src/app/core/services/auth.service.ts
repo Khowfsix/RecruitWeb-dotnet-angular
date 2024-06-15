@@ -149,6 +149,9 @@ export class AuthService {
 	}
 
 	isInWhiteListUrl(url: string): boolean {
+		if (url.includes('/api/File/UploadFile')) {
+			return true; // Bypass token addition for upload endpoint
+		}
 		return noTokenURLs.some((item) => item.startsWith(url));
 	}
 

@@ -12,15 +12,11 @@ export class FileService {
 	constructor(private api: API) { }
 
 	public uploadFile(formFile: FormData): Observable<any> {
-		const boundary = '---------------------------7db2f68a03849578';
-		let headers = new HttpHeaders();
-		headers = headers.append('Content-Type', `multipart/form-data; boundary=${boundary}`);
-		// headers = headers.append('enctype', 'multipart/form-data');
-		// The browser will automatically add this header, but the server needs it
-		// We can't use formFile.getBoundary() because it's non-standard and not supported in Safari
-		// Instead, we'll manually set the Content-Type header to include the boundary
-
-		return this.api.POST('/api/File/UploadFile', formFile, { headers: headers });
+		// let headers = new HttpHeaders();
+		// const boundary = Math.random().toString().replace(/\./g, '-'); // Generate random boundary
+		// headers = headers.append('Content-Type', `multipart/form-data; boundary=${boundary}`);
+		// return this.api.POST('/api/File/UploadFile', formFile, { headers: headers });
+		return this.api.POST('/api/File/UploadFile', formFile);
 	}
 
 	public updateFile(data: FormData): Observable<any> {

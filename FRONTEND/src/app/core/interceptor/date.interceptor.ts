@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -7,6 +8,10 @@ import moment from 'moment';
 export class DateInterceptor implements HttpInterceptor {
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		// console.log(req.url);
+		if (req.url.includes('api/File/UploadFile')) {
+			return next.handle(req);
+		}
 		const clonedReq = req.clone({
 			body: this.convertDatesToUtcMidnight(req.body)
 		});
