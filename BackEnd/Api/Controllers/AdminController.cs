@@ -423,7 +423,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAccountByUserId(userId);
             if (response == null)
                 return BadRequest("This user is not on the System");
-            else if (response.RecruiterId == null)
+            else if (response.Recruiters.FirstOrDefault() == null)
                 return BadRequest("This user is not on the Recruiterlist");
             else return Ok(response);
         }
@@ -435,7 +435,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAccountByUserId(userId);
             if (response == null)
                 return BadRequest("This user is not on the System");
-            else if (response.InterviewerId == null)
+            else if (response.Recruiters.FirstOrDefault() == null)
                 return BadRequest("This user is not on the Interviewerlist");
             else return Ok(response);
         }
@@ -447,7 +447,7 @@ namespace Api.Controllers
             var response = await _authenticationService.GetAccountByUserId(userId);
             if (response == null)
                 return BadRequest("This user is not on the System");
-            else if (response.CandidateId == null)
+            else if (response.Recruiters.FirstOrDefault() == null)
                 return BadRequest("This user is not on the Candidatelist");
             else return Ok(response);
         }

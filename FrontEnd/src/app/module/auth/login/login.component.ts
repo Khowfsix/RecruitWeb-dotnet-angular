@@ -76,19 +76,19 @@ export class LoginComponent implements OnInit {
 						this.CookieService.set('refreshToken', jwtData.refreshToken, expTime, '/') // save refreshtoken
 						localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
 
-						this.authService.getCurrentUser().subscribe({
-							next: (data) => {
+						this.authService.getCurrentUser().subscribe(
+							(data) => {
+								console.log(`get current user`);
 								if (data !== null) {
 									localStorage.setItem('currentUser', JSON.stringify(data));
-									this.navigate_before();
 									this.toasts.success("Logged in successfully", "Success",
 										{
 											timeOut: 3000,
 											closeButton: true,
 											progressBar: true,
 											toastClass: ' my-custom-toast ngx-toastr',
-										})
-										;
+										});
+									this.navigate_before();
 								} else {
 									this.authService.logout();
 									this.toasts.warning("Cann't get user information", "Warning!!!",
@@ -99,8 +99,7 @@ export class LoginComponent implements OnInit {
 											toastClass: ' my-custom-toast ngx-toastr',
 										});
 								}
-							}
-						});
+							});
 					}
 				},
 				error: (error) => {
@@ -116,11 +115,14 @@ export class LoginComponent implements OnInit {
 						// this.authService.logout();
 					}
 				},
-				complete: () => { },
 			});
 	}
 
 	navigate_before(): void {
+		if (!this.route.snapshot.queryParams['returnUrl']) {
+			this.router.navigate(['/']);
+			return;
+		}
 		this.route.queryParams.subscribe(params => {
 			const returnUrl = params['returnUrl'] || '/';
 			console.log(returnUrl);

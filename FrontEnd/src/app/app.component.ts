@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LoadingService } from './shared/service/loading.service';
+import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 // import { StoreModule } from '@ngrx/store';
 
 @Component({
@@ -22,6 +23,7 @@ import { LoadingService } from './shared/service/loading.service';
 		FlexLayoutServerModule,
 		HeaderComponent,
 		FooterComponent,
+		BreadcrumbComponent,
 
 		// loader
 		MatProgressSpinnerModule,

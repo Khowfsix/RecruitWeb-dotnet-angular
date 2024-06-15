@@ -23,7 +23,6 @@ namespace Api.Controllers
         }
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
         public async Task<IActionResult> UploadFiles(List<IFormFile> formFiles)
         {
             var response = await _fileService.AddListFileAsync(formFiles);
@@ -31,7 +30,6 @@ namespace Api.Controllers
         }
 
         [HttpDelete("[action]")]
-        [AllowAnonymous]
         public async Task<IActionResult> DeleteFile(string url)
         {
             var response = await _fileService.DeleteFileAsync(url);
@@ -39,7 +37,6 @@ namespace Api.Controllers
         }
 
         [HttpDelete("[action]")]
-        [AllowAnonymous]
         public async Task<IActionResult> DeleteFiles(List<string> listUrls)
         {
             var response = await _fileService.DeleteListFileAsync(listUrls);
@@ -47,7 +44,6 @@ namespace Api.Controllers
         }
 
         [HttpPut("[action]")]
-        [AllowAnonymous]
         public async Task<IActionResult> UpdateFile([FromForm] string oldImageUrl, IFormFile newImage)
         {
             var response = await _fileService.UpdateFileAsync(newImage, oldImageUrl);
@@ -59,7 +55,6 @@ namespace Api.Controllers
         }
 
         [HttpGet("[action]")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetFile()
         {
             var response = await _fileService.GetAllFileAsync();

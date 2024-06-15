@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -98,26 +99,27 @@ export class PDEditDialogComponent implements OnInit, OnDestroy {
 		this.detailUpdate = this.personalDetailForm.value;
 		if (this.avatarImage) {
 			const formData: FormData = new FormData();
-			console.log(this.avatarImage.type);
-			formData.append('formFile', this.avatarImage);
+			formData.append('formFile', this.avatarImage!, this.avatarImage.name!);
 			this.fileService.uploadFile(formData).subscribe(
-				(res) => {
-					this.detailUpdate = {
-						...this.detailUpdate,
-						imgUrl: res.url,
-					};
-					this.dialogRef.close(this.detailUpdate!);
-				},
-				(error) => {
-					console.error('Error uploading image:', error);
-					// Use the old URL and display an error message to the user
-					this.detailUpdate = {
-						...this.detailUpdate,
-						imgUrl: this.data.user?.imageURL,
-					};
-					this.dialogRef.close(this.detailUpdate!);
+				{
+					next: (res) => {
+						this.detailUpdate = {
+							...this.detailUpdate,
+							imgUrl: res.url,
+						};
+						this.dialogRef.close(this.detailUpdate!);
+					},
+					error: (err: Error) => {
+						console.error('Error uploading image:', err);
+						// Use the old URL and display an error message to the user
+						this.detailUpdate = {
+							...this.detailUpdate,
+							imgUrl: this.data.user?.imageURL,
+						};
+						this.dialogRef.close(this.detailUpdate!);
+					}
 				}
-			);
+			)
 		} else {
 			console.log('no new');
 			this.detailUpdate = {

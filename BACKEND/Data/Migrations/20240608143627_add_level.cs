@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -13,13 +12,6 @@ namespace Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "LevelId",
-                table: "Position",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
             migrationBuilder.CreateTable(
                 name: "Level",
                 columns: table => new
@@ -32,6 +24,21 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_level", x => x.LevelId);
                 });
+
+            //migrationBuilder.InsertData(
+            //    table: "Level",
+            //    columns: new[] { "LevelId", "IsDeleted", "LevelName" },
+            //    values: new object[,]
+            //    {
+            //        { new Guid("00000000-0000-0000-0000-000000000000"), false, "Null Level" },
+            //    });
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "LevelId",
+                table: "Position",
+                type: "uniqueidentifier",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.CreateIndex(
                 name: "IX_Position_LevelId",

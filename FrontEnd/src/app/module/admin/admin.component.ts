@@ -25,7 +25,7 @@ export class AdminComponent {
 		{
 			title: 'Dashboard',
 			children: [
-				'Overview', 'Reports', 'Analytics'
+				'Overview', 'Reports', 'Analytics', 'User manage'
 			]
 		},
 		{
@@ -40,6 +40,6 @@ export class AdminComponent {
 	];
 
 	handleClickRoute(name: string) {
-		this.router.navigate([`admin/${name.toLowerCase()}`]);
+		this.router.navigate([`admin/${name.toLowerCase().replace(" ", "-")}`]);
 	}
 }

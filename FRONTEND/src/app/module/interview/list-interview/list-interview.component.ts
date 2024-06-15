@@ -14,7 +14,6 @@ import { CommonModule } from '@angular/common';
 	standalone: true,
 	imports: [
 		CommonModule,
-
 		MatCardModule,
 		MatButtonModule,
 		MatButtonToggleModule,

@@ -400,15 +400,13 @@ namespace Data.Mapping
 
             #region WebUser
 
-            CreateMap<WebUser, UserViewModel>().ReverseMap();
             CreateMap<WebUser, WebUserViewModel>().ReverseMap();
             CreateMap<WebUser, ProfileViewModel>().ReverseMap();
 
-            CreateMap<WebUser, UserModel>().ReverseMap();
             CreateMap<WebUser, WebUserModel>().ReverseMap();
-
             CreateMap<WebUserModel, WebUserViewModel>().ReverseMap();
-            CreateMap<UserModel, WebUserViewModel>().ReverseMap();
+            CreateMap<WebUser, WebUserViewModel>().ReverseMap();
+
 
             #endregion WebUser
 

@@ -38,6 +38,7 @@ import { CustomDateTimeService } from '../../shared/service/custom-datetime.serv
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MAX_MAX_HIRING_QTY, MAX_SALARY } from '../../core/constants/position.constants';
 import { AuthService } from '../../core/services/auth.service';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({

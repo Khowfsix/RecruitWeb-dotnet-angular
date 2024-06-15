@@ -24,15 +24,15 @@ namespace Service.Interfaces
 
         Task<IEnumerable<ProfileModel>> GetUsersInBlacklist();
 
-        Task<IEnumerable<UserModel>> GetAllCandidate();
+        Task<IEnumerable<WebUserModel>> GetAllCandidate();
 
-        Task<IEnumerable<UserModel>> GetAllInterviewer();
+        Task<IEnumerable<WebUserModel>> GetAllInterviewer();
 
-        Task<IEnumerable<UserModel>> GetAllRecruiter();
+        Task<IEnumerable<WebUserModel>> GetAllRecruiter();
 
-        Task<IEnumerable<UserModel>> GetAllAccount();
+        Task<IEnumerable<WebUserModel>> GetAllAccount();
 
-        Task<UserModel> GetAccountByUserId(string userId);
+        Task<WebUserModel> GetAccountByUserId(string userId);
 
         Task<IEnumerable<WebUserModel>> GetAllSystemAccount();
 

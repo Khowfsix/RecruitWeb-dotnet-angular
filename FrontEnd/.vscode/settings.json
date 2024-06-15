@@ -3,5 +3,7 @@
 	"gitlens.currentLine.uncommittedChangesFormat": "✏️ ${ago}",
 	"gitlens.currentLine.enabled": true,
 	"gitlens.hovers.currentLine.over": "line",
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"editor.fontFamily": "Cascadia Code ,Consolas, 'Courier New', monospace",
+	"editor.fontLigatures": true
 }

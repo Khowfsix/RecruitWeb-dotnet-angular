@@ -123,7 +123,7 @@ export class AuthService {
 				newestOnTop: false
 			});
 			location.reload();
-			this.router.navigate(['/auth/login']);
+			this.router.navigate(['/']);
 		} catch (error) {
 			console.log(error);
 			this.toast.error("Log out failed", "Error", {
@@ -131,7 +131,7 @@ export class AuthService {
 				progressBar: true,
 			});
 		}
-		return this.router.navigate(['/']);
+		return this.router.navigate(['']);
 	}
 
 	// todo: get current user

@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
-import { SkillComponent } from './skill/skill.component';
-import { LanguageComponent } from './language/language.component';
+import { AnalysisComponent } from './analysis/analysis.component';
 import { CategoryComponent } from './category/category.component';
 import { CompanyComponent } from './company/company.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LanguageComponent } from './language/language.component';
 import { ReportComponent } from './report/report.component';
-import { AnalysisComponent } from './analysis/analysis.component';
+import { SkillComponent } from './skill/skill.component';
+import { UserManageComponent } from './user-manage/user-manage.component';
 
 const routes: Routes = [
 	{
@@ -17,37 +18,52 @@ const routes: Routes = [
 			//Dashboards
 			{
 				path: '',
-				component: DashboardComponent
+				component: DashboardComponent,
+				data: { breadcrumb: 'Overview' }
+
 			},
 			{
 				path: 'overview',
-				component: DashboardComponent
+				component: DashboardComponent,
+				data: { breadcrumb: 'Overview' }
+
 			},
 			{
 				path: 'reports',
-				component: ReportComponent
+				component: ReportComponent,
+				data: { breadcrumb: 'Reports' }
 			},
 			{
 				path: 'analytics',
-				component: AnalysisComponent
+				component: AnalysisComponent,
+				data: { breadcrumb: 'Analytics' }
+			},
+			{
+				path: 'user-manage',
+				component: UserManageComponent,
+				data: { breadcrumb: 'User manage' }
 			},
 
 			//Table console
 			{
 				path: 'skills',
-				component: SkillComponent
+				component: SkillComponent,
+				data: { breadcrumb: 'Skills manage' }
 			},
 			{
 				path: 'languages',
-				component: LanguageComponent
+				component: LanguageComponent,
+				data: { breadcrumb: 'Languages manage' }
 			},
 			{
 				path: 'categories',
-				component: CategoryComponent
+				component: CategoryComponent,
+				data: { breadcrumb: 'Categories manage' }
 			},
 			{
 				path: 'companies',
-				component: CompanyComponent
+				component: CompanyComponent,
+				data: { breadcrumb: 'Companies manage' }
 			},
 
 			// otherwise

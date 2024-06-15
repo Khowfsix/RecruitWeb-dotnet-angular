@@ -39,7 +39,7 @@ namespace Service
             var data = await _applicationRepository.GetAllApplicationsByPositionId(positionId, applicationFilter, sortString);
             if (!data.IsNullOrEmpty())
             {
-                if (applicationFilter.NotInBlackList!.Value)
+                if (applicationFilter!.NotInBlackList!.Value)
                 {
                     var blackLists = await _blacklistRepository.GetAllBlackLists();
                     var candidateIdsInBlackList = blackLists.Select(o => o.CandidateId);

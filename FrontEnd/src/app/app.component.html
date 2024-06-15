@@ -1,5 +1,6 @@
 <div class="d-flex flex-column min-vh-100 g-1">
 	<app-header></app-header>
+	<app-breadcrumb></app-breadcrumb>
 	@if(this.isLoading$ | async){
 	<div class="spinner_overlay">
 		<mat-progress-spinner [mode]="'indeterminate'"> </mat-progress-spinner>

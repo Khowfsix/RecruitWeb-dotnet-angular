@@ -237,19 +237,19 @@ namespace Service.Services
                 return false;
         }
 
-        public async Task<IEnumerable<UserModel>> GetAllAccount()
+        public async Task<IEnumerable<WebUserModel>> GetAllAccount()
         {
-            var listUserVM = new List<UserModel>();
+            var listUserVM = new List<WebUserModel>();
             var listWebUser = await _userManager.Users.ToListAsync();
             if (listWebUser != null)
             {
                 foreach (var item in listWebUser)
                 {
-                    var user = _mapper.Map<UserModel>(item);
-                    user.CandidateId = await GetCandidateId(user.Id);
-                    user.InterviewerId = await GetInterviewerId(user.Id);
-                    user.RecruiterId = await GetRecruiterId(user.Id);
-                    user.CompanyId = await GetCompanyId(user.Id);
+                    var user = _mapper.Map<WebUserModel>(item);
+                    //user.CandidateId = await GetCandidateId(user.Id);
+                    //user.InterviewerId = await GetInterviewerId(user.Id);
+                    //user.RecruiterId = await GetRecruiterId(user.Id);
+                    //user.CompanyId = await GetCompanyId(user.Id);
                     listUserVM.Add(user);
                 }
             }
@@ -261,10 +261,10 @@ namespace Service.Services
             return listUserVM;
         }
 
-        public async Task<IEnumerable<UserModel>> GetAllCandidate()
+        public async Task<IEnumerable<WebUserModel>> GetAllCandidate()
         {
             string roleName = "Candidate";
-            var listCandidate = new List<UserModel>();
+            var listCandidate = new List<WebUserModel>();
             var role = await _roleManager.FindByNameAsync(roleName);
             if (role != null)
             {
@@ -273,12 +273,12 @@ namespace Service.Services
                 {
                     foreach (var item in userInRole)
                     {
-                        var user = _mapper.Map<UserModel>(item);
-                        user.CandidateId = await GetCandidateId(user.Id);
-                        user.InterviewerId = await GetInterviewerId(user.Id);
-                        user.RecruiterId = await GetRecruiterId(user.Id);
-                        user.CompanyId = await GetCompanyId(user.Id);
-                        if (user.CandidateId != null)
+                        var user = _mapper.Map<WebUserModel>(item);
+                        //user.CandidateId = await GetCandidateId(user.Id);
+                        //user.InterviewerId = await GetInterviewerId(user.Id);
+                        //user.RecruiterId = await GetRecruiterId(user.Id);
+                        //user.CompanyId = await GetCompanyId(user.Id);
+                        if (user.Candidates.Any())
                             listCandidate.Add(user);
                     }
                 }
@@ -288,10 +288,10 @@ namespace Service.Services
             return listCandidate;
         }
 
-        public async Task<IEnumerable<UserModel>> GetAllInterviewer()
+        public async Task<IEnumerable<WebUserModel>> GetAllInterviewer()
         {
             string roleName = "Interviewer";
-            var listInterviewer = new List<UserModel>();
+            var listInterviewer = new List<WebUserModel>();
             var role = await _roleManager.FindByNameAsync(roleName);
             if (role != null)
             {
@@ -300,12 +300,12 @@ namespace Service.Services
                 {
                     foreach (var item in userInRole)
                     {
-                        var user = _mapper.Map<UserModel>(item);
-                        user.CandidateId = await GetCandidateId(user.Id);
-                        user.InterviewerId = await GetInterviewerId(user.Id);
-                        user.RecruiterId = await GetRecruiterId(user.Id);
-                        user.CompanyId = await GetCompanyId(user.Id);
-                        if (user.InterviewerId != null)
+                        var user = _mapper.Map<WebUserModel>(item);
+                        //user.CandidateId = await GetCandidateId(user.Id);
+                        //user.InterviewerId = await GetInterviewerId(user.Id);
+                        //user.RecruiterId = await GetRecruiterId(user.Id);
+                        //user.CompanyId = await GetCompanyId(user.Id);
+                        if (user.Candidates.Any())
                             listInterviewer.Add(user);
                     }
                 }
@@ -390,10 +390,10 @@ namespace Service.Services
                 return null;
         }
 
-        public async Task<IEnumerable<UserModel>> GetAllRecruiter()
+        public async Task<IEnumerable<WebUserModel>> GetAllRecruiter()
         {
             string roleName = "Recruiter";
-            var listRecruiter = new List<UserModel>();
+            var listRecruiter = new List<WebUserModel>();
             var role = await _roleManager.FindByNameAsync(roleName);
             if (role != null)
             {
@@ -402,26 +402,28 @@ namespace Service.Services
                 {
                     foreach (var item in userInRole)
                     {
-                        var user = _mapper.Map<UserModel>(item);
-                        user.CandidateId = await GetCandidateId(user.Id);
-                        user.InterviewerId = await GetInterviewerId(user.Id);
-                        user.RecruiterId = await GetRecruiterId(user.Id);
-                        user.CompanyId = await GetCompanyId(user.Id);
-                        if (user.RecruiterId != null)
+                        var user = _mapper.Map<WebUserModel>(item);
+                        //user.CandidateId = await GetCandidateId(user.Id);
+                        //user.InterviewerId = await GetInterviewerId(user.Id);
+                        //user.RecruiterId = await GetRecruiterId(user.Id);
+                        //user.CompanyId = await GetCompanyId(user.Id);
+                        if (user.Recruiters.Any())
                             listRecruiter.Add(user);
                     }
                 }
                 else
-#pragma warning disable CS8603 // Possible null reference return.
-                    return null;
-#pragma warning restore CS8603 // Possible null reference return.
+                    return null!;
             }
             return listRecruiter;
         }
 
         public async Task<IEnumerable<WebUserModel>> GetAllUsers()
         {
-            var listWebUser = await _userManager.Users.ToListAsync();
+            var listWebUser = await _userManager.Users
+                .Include(u => u.Candidates)
+                .Include(u => u.Interviewers)
+                .Include(u => u.Recruiters)
+                .ToListAsync();
             if (listWebUser == null)
                 return null!;
             return _mapper.Map<List<WebUserModel>>(listWebUser);
@@ -431,9 +433,7 @@ namespace Service.Services
         {
             var listWebUser = await _userManager.Users.ToListAsync();
             if (listWebUser == null)
-#pragma warning disable CS8603 // Possible null reference return.
-                return null;
-#pragma warning restore CS8603 // Possible null reference return.
+                return null!;
             var listUserVM = new List<WebUserModel>();
             foreach (var item in listWebUser)
             {
@@ -444,16 +444,16 @@ namespace Service.Services
             return listUserVM;
         }
 
-        public async Task<UserModel> GetAccountByUserId(string userId)
+        public async Task<WebUserModel> GetAccountByUserId(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return null!;
-            var webUser = _mapper.Map<UserModel>(user);
-            webUser.CandidateId = await GetCandidateId(user.Id);
-            webUser.InterviewerId = await GetInterviewerId(user.Id);
-            webUser.RecruiterId = await GetRecruiterId(user.Id);
-            webUser.CompanyId = await GetCompanyId(user.Id);
+            var webUser = _mapper.Map<WebUserModel>(user);
+            //webUser.CandidateId = await GetCandidateId(user.Id);
+            //webUser.InterviewerId = await GetInterviewerId(user.Id);
+            //webUser.RecruiterId = await GetRecruiterId(user.Id);
+            //webUser.CompanyId = await GetCompanyId(user.Id);
             if (webUser != null)
                 return webUser;
             else
@@ -467,7 +467,7 @@ namespace Service.Services
             var userInBL = new ProfileModel();
             foreach (var item in users)
             {
-                if (item.CandidateId == user.CandidateId)
+                if (item.CandidateId == user.Candidates.FirstOrDefault()!.CandidateId)
                 {
                     userInBL = await _candidateService.GetProfile(item.CandidateId);
                 }
