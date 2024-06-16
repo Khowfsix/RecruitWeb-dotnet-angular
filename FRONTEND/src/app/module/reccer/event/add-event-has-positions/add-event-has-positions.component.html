@@ -1,7 +1,7 @@
 @if (this.formGroup){
 <form class="d-flex flex-column" [formGroup]="this.addForm">
-	<div class="d-flex flex-row" style="margin-bottom: 35px;">
-		<div class="me-3 rounded-1 flex-grow-1">
+	<div class="row" style="margin-bottom: 35px;">
+		<div class="col-lg-6 rounded-1 flex-grow-1">
 			<form [formGroup]="this.formGroup" style="height: 100%; width: 100%;">
 				<mat-form-field style="height: 110%; width: 100%;">
 					<mat-label>{{this.label}}</mat-label>
@@ -34,10 +34,13 @@
 			</form>
 
 		</div>
-		<div class="d-flex flex-column">
+		<div class="col-lg-6 d-flex flex-column">
+			<div class="d-flex justify-content-center text-white fs-5 fw-bold">
+				Add Position Form
+			</div>
 			<app-autocomplete [formField]="'positionId'" [valueField]="'positionId'" [labelField]="'positionName'"
-				[label]="'Position'" [placeholder]="'Type position name'" [observableOptions]="this.observablePositions"
-				[formGroup]="this.addForm"></app-autocomplete>
+				[label]="'Position'" [placeholder]="'Type position name'"
+				[observableOptions]=" this.observablePositions" [formGroup]="this.addForm"></app-autocomplete>
 
 			<div class="d-flex justify-content-center">
 				@if (this.formGroup.enabled){
