@@ -16,16 +16,17 @@
 									alt="{{ fetchPosition?.company?.companyName + ' logo' }}" />
 							</div>
 							<div style="width: 40%; margin-left: 4%">
-								<div class="fs-3" style="font-weight: 500; cursor: pointer; margin-bottom: 15px">
+								<div class="fs-3"
+									style="font-weight: 500; cursor: pointer; margin-bottom: 15px; word-break: break-all;">
 									{{ fetchPosition?.positionName | uppercase }}
 								</div>
 								<div class="custom-row rounded-2"
-									style="padding: 3px 2px 2px 2px; background-color: rgb(253, 255, 198) ;width: fit-content;">
+									style="word-break: break-all; padding: 3px 2px 2px 2px; background-color: rgb(253, 255, 198) ;width: fit-content;">
 									{{ fetchPosition?.level?.levelName }}</div>
-								<div class="custom-row" style="color: blue">
+								<div class="custom-row" style="color: blue; word-break: break-all;">
 									{{ fetchPosition?.company?.companyName }}
 								</div>
-								<div class="custom-row" style="color: rgb(251, 115, 74)">
+								<div class="custom-row" style="color: rgb(251, 115, 74); word-break: break-all;">
 									@if (fetchPosition?.minSalary && fetchPosition?.maxSalary) {
 									{{ fetchPosition?.minSalary + '-' + fetchPosition?.maxSalary }}
 									} @else if (fetchPosition?.minSalary) {
@@ -34,10 +35,10 @@
 									{{ 'Up to ' + fetchPosition?.maxSalary }}
 									} @else { Negotiable }
 								</div>
-								<div class="custom-row" style="color: black">
+								<div class="custom-row" style="color: black; word-break: break-all;">
 									Hiring quantity: {{ fetchPosition?.maxHiringQty }}
 								</div>
-								<div class="custom-row" style="color: rgb(100, 100, 100)">
+								<div class="custom-row" style="color: rgb(100, 100, 100); word-break: break-all;">
 									<i class="bi bi-calendar3"></i>
 									{{ fetchPosition?.startDate | date : 'dd/MM/yyyy' }} -
 									{{ fetchPosition?.endDate | date : 'dd/MM/yyyy' }}
@@ -45,7 +46,7 @@
 								<div class="custom-row rounded-2" style="
 										padding: 2px 2px 2px 2px;
 										background-color: rgb(224, 224, 224);
-										width: fit-content;
+										width: fit-content; word-break: break-all;
 									">
 									{{ fetchPosition?.language?.languageName }}
 								</div>
@@ -56,7 +57,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="" style="margin-left: 14%; margin-right: 14%; margin-top: 110px">
+	<div class="" style="margin-left: 14%; margin-right: 14%; margin-top: 160px">
 		<div class="fs-5 d-flex flex-column" style="background-color: rgb(236, 236, 236); height: 100%">
 			<mat-tab-group dynamicHeight mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
 				<mat-tab>
@@ -113,7 +114,7 @@
 								<div style="font-size: 18px; margin-top: 10px">
 									Website:
 									<a href="{{ fetchPosition?.company?.website }}" class="mt-3"
-										style="line-height: 1.5; font-size: 16px">
+										style="line-height: 1.5; font-size: 16px; word-break: break-all;">
 										{{ fetchPosition?.company?.website }}
 									</a>
 								</div>
@@ -141,13 +142,15 @@
 									<i class="bi bi-envelope-fill"></i>
 									<a href="https://mail.google.com/mail/?view=cm&fs=1&to={{
 											fetchPosition?.company?.email
-										}}" class="mt-3 ms-2" style="line-height: 1.5; font-size: 16px">{{ fetchPosition?.company?.email }}
+										}}" class="mt-3 ms-2" style="line-height: 1.5; font-size: 16px; word-break: break-all;">{{
+										fetchPosition?.company?.email }}
 									</a>
 								</div>
 								<div style="font-size: 18px; margin-top: 10px">
 									<i class="bi bi-telephone-fill"></i>
 									<a href="tel:{{ fetchPosition?.company?.phone }}" class="mt-3 ms-2"
-										style="line-height: 1.5; font-size: 16px">{{ fetchPosition?.company?.phone }}
+										style="line-height: 1.5; font-size: 16px; word-break: break-all;">{{
+										fetchPosition?.company?.phone }}
 									</a>
 								</div>
 							</div>
