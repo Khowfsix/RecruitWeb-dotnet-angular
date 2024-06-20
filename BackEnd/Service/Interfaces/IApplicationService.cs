@@ -25,5 +25,6 @@ namespace Service.Interfaces
         Task<bool> UpdateStatusApplication(Guid applicationId, int? Candidate_Status, int? Company_Status);
 
         Task<bool> DeleteApplication(Guid applicationId);
+        Task<IEnumerable<ApplicationModel>> GetApplicationOfCandidate(Guid CandidateId);
     }
 }

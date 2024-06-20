@@ -25,5 +25,6 @@ namespace Data.Interfaces
         Task<bool> DeleteApplication(Guid applicationId);
 
         Task<IEnumerable<Application>> ApplicationReport(DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<Application>> GetApplicationsOfCandidate(Guid CandidateId);
     }
 }

@@ -1,13 +1,15 @@
 <div class="bg-body-tertiary align-content-center justify-content-center">
-	<h1 matDialogTitle class="text-center">Chế muốn đăng xuất thật à</h1>
+	<h1 matDialogTitle class="text-center">Are you sure you want to logout?</h1>
 
-	<mat-dialog-content> Đừng xa em đêm nay khi bóng trăng qua hàng cây </mat-dialog-content>
+	<mat-dialog-content>
+		<img src="../../../../assets/logout_meme.jpg" alt="" />
+	</mat-dialog-content>
 
-	<mat-dialog-actions align="center">
+	<mat-dialog-actions align="end">
 		<!-- <button mat-raised-button color="primary" matDialogClose></button> -->
 		<!-- <button cdkFocusInitial></button> -->
 
-		<button mat-raised-button color="primary" (click)="onNoClick()" class="me-3">Thôi, không đăng xuất nữa</button>
-		<button mat-button color="warn" (click)="onLogoutClick()" cdkFocusInitial>Đăng xuất đi</button>
+		<button mat-raised-button color="primary" (click)="onNoClick()" class="me-3">No</button>
+		<button mat-button color="warn" (click)="onLogoutClick()" cdkFocusInitial>Goodbye</button>
 	</mat-dialog-actions>
 </div>

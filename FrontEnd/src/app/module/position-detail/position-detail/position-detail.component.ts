@@ -76,6 +76,7 @@ export class PositionDetailComponent implements OnInit {
 
 	public openDialog() {
 		const dialogRef = this.dialog.open(ApplyDialogComponent, {
+			width: '600px',
 			data: {
 				position: this.fetchPosition,
 				candidateId: this._authService.getCandidateId_OfUser()

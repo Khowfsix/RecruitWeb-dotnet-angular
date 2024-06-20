@@ -64,6 +64,15 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("[action]/{candidateId:guid}")]
+        [Authorize(Roles = "Candidate")]
+        public async Task<IActionResult> GetApplicationsOfCandidate(Guid candidateId)
+        {
+            var modelDatas = await _applicationService.GetApplicationOfCandidate(candidateId);
+            var response = _mapper.Map<IEnumerable<ApplicationViewModel>>(modelDatas);
+            return Ok(response);
+        }
+
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetApplicationById(Guid id)
         {
@@ -77,7 +86,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Recruiter")]
+        [Authorize(Roles = "Recruiter, Candidate")]
         public async Task<IActionResult> SaveApplication(ApplicationAddModel request)
         {
             if (request == null)

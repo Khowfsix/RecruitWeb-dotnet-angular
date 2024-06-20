@@ -14,6 +14,7 @@ import { Candidate } from '../../../data/candidate/candidate.model';
 import { CandidateService } from '../../../data/candidate/candidate.service';
 import { CV } from '../../../data/cv/cv.model';
 import { CvService } from '../../../data/cv/cv.service';
+import { MatDividerModule } from '@angular/material/divider';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
@@ -32,6 +33,7 @@ import { CvService } from '../../../data/cv/cv.service';
 		MatFormFieldModule,
 		MatInputModule,
 		MatRadioModule,
+		MatDividerModule,
 
 		PdfJsViewerModule
 	],
@@ -50,6 +52,7 @@ export class ApplyDialogComponent {
 
 	newApplication?: ApplicationAddModel = new ApplicationAddModel();
 	applyForm: FormGroup = new FormGroup({});
+	cvHover?: string | null;
 
 
 	constructor(

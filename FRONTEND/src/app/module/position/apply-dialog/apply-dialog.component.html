@@ -33,12 +33,22 @@
 					<!-- <mat-radio-button formControlName="formControlName"></mat-radio-button> -->
 					<mat-expansion-panel-header>Select another CV in my CV library</mat-expansion-panel-header>
 					<mat-radio-group formControlName="selectedCv">
-						<div *ngFor="let cv of listCv">
-							<div class="d-flex align-items-center">
-								<mat-radio-button [value]="cv.cvid"> {{ cv.cvName }} </mat-radio-button>
-								<button mat-button>View CV {{ cv.cvName }}</button>
+						<!-- <div *ngFor="let cv of listCv"> -->
+						<div
+							*ngFor="let cv of listCv"
+							class="d-flex justify-content-between rounded-2"
+							(mouseenter)="cvHover = cv.cvid"
+							(mouseleave)="cvHover = null"
+							[ngClass]="{ border: cvHover === cv.cvid }"
+							(click)="applyForm.get('selectedCv')?.setValue(cv.cvid)">
+							<div class="d-flex align-items-center col-6">
+								<mat-radio-button [value]="cv.cvid" class="mr-2"></mat-radio-button>
+								<p class="mb-0">{{ cv.cvName }}</p>
 							</div>
+							<!-- <button mat-button>View CV</button> -->
+							<a href="{{ cv.cvPdf }}" class="col-auto pe-2 pt-2" target="_blank"> View CV </a>
 						</div>
+						<!-- </div> -->
 					</mat-radio-group>
 				</mat-expansion-panel>
 			</mat-radio-group>
@@ -59,12 +69,12 @@
 		</div>
 		<div>
 			<p>
-				TopCV advises all of you to always be careful during the job search process and proactively research
-				company information and job positions before applying.
+				Jasmine Recruiment advises all of you to always be careful during the job search process and proactively
+				research company information and job positions before applying.
 			</p>
 			<p>
 				Candidates need to be responsible for their application behavior. If you encounter recruitment news or
-				receive suspicious contact from an employer, please immediately report to TopCV via email
+				receive suspicious contact from an employer, please immediately report to Jasmine Recruiment via email
 				jasmine&#64;gmail.com for timely support.
 			</p>
 			<p>

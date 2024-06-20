@@ -202,5 +202,17 @@ namespace Data.Repositories
 
             return data;
         }
+
+        public async Task<IEnumerable<Application>> GetApplicationsOfCandidate(Guid CandidateId)
+        {
+            var data = await Entities
+                .AsNoTracking()
+                .Where(a => a.Cv.CandidateId.Equals(CandidateId))
+                .Include(a => a.Cv)
+                .Include(a => a.Position)
+                .ToListAsync();
+
+            return data;
+        }
     }
 }
