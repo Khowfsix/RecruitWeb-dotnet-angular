@@ -6,7 +6,7 @@ import moment, { Moment } from 'moment';
 export class CustomDateTimeService {
 	public sameValueToUTC(date: Moment, onlyDate: boolean = false) {
 		if (!date || date === null)
-			return null
+			return undefined
 		if (!moment.isMoment(date)) {
 			return date;
 		}

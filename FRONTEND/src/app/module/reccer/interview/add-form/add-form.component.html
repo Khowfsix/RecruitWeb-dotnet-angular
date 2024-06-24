@@ -14,7 +14,6 @@
 		<app-autocomplete class="slide-down" [formField]="'applicationId'" [valueField]="'applicationId'"
 			[labelField]="'cv.candidate.user.fullName'" [label]="'Candidate'" [placeholder]="'Please select'"
 			[observableOptions]="this.applicationData$" [formGroup]="this.addForm"></app-autocomplete>
-
 		}
 
 		<app-autocomplete class="slide-down" [formField]="'interviewerId'" [valueField]="'interviewerId'"
@@ -63,23 +62,30 @@
 
 		</div>
 
+		<section class="w-100"
+			style="background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+			<p class="p-3"><mat-slide-toggle formControlName="onlineMeeting"> Online Meeting</mat-slide-toggle>
+			</p>
+		</section>
+
 		<mat-form-field class="w-100">
-			<mat-label>Address</mat-label>
-			<input type="text" style="resize: none;" matInput placeholder="Address" formControlName="address" />
-			@if(addForm.get('address')?.invalid){
-			@if(addForm.get('address')?.hasError('required')){
+			<mat-label>Address or Start URL For Interviewer</mat-label>
+			<input type="text" style="resize: none;" matInput placeholder="Address or Start URL For Interviewer"
+				formControlName="addressOrStartURL" />
+			@if(addForm.get('addressOrStartURL')?.invalid){
+			@if(addForm.get('addressOrStartURL')?.hasError('required')){
 			<div style="color: red;">Required.</div>
 			}
 			}
 		</mat-form-field>
 
 		<mat-form-field class="w-100">
-			<mat-label>Detail location</mat-label>
+			<mat-label>Detail location or Join URL For Candidate</mat-label>
 			<input type="text" style="resize: none;" matInput
-				placeholder="which room, which department,  etc.. inside the company."
-				formControlName="detailLocation" />
-			@if(addForm.get('detailLocation')?.invalid){
-			@if(addForm.get('detailLocation')?.hasError('required')){
+				placeholder="which room, which department,  etc.. inside the company or Join URL For Candidate."
+				formControlName="detailLocationOrJoinURL" />
+			@if(addForm.get('detailLocationOrJoinURL')?.invalid){
+			@if(addForm.get('detailLocationOrJoinURL')?.hasError('required')){
 			<div style="color: red;">Required.</div>
 			}
 			}

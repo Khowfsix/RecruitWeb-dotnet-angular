@@ -21,8 +21,8 @@ namespace Service.Models
         public bool? IsDeleted { get; set; } = false;
 
         public Guid? ResultId { get; set; }
-        public string? Address { get; set; }
-        public string? DetailLocation { get; set; }
+        public string? AddressOrStartURL { get; set; }
+        public string? DetailLocationOrJoinURL { get; set; }
         public DateTime? MeetingDate { get; set; }
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }

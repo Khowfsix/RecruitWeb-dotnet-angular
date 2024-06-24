@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { API } from './../../data/api.service';
 import { BehaviorSubject, Observable, first, lastValueFrom } from 'rxjs';
 import { Register } from '../../data/authen/register.model';
@@ -8,6 +8,7 @@ import { noTokenURLs } from '../constants/noTokenURLs.constants';
 import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
 import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,12 +16,16 @@ import { Router } from '@angular/router';
 export class AuthService {
 	// clientUserInfo: string | null = window.localStorage.getItem('currentUser') || null;
 
-	constructor(private api: API, private cookieService: CookieService, private router: Router) {
+	private localStorage: Storage | undefined;
+	constructor(private api: API, private cookieService: CookieService, private router: Router, @Inject(DOCUMENT) private document: Document) {
 		// afterRender(() => {
 		// 	console.log(localStorage);
 		// 	this.clientUserInfo = localStorage.getItem('currentUser') != '' ? localStorage.getItem('currentUser') : null;
 		// });
+		this.localStorage = document.defaultView?.localStorage;
+
 	}
+
 
 	private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 
@@ -31,8 +36,8 @@ export class AuthService {
 	}
 
 	getLocalCurrentUser(): WebUser {
-		if (localStorage) {
-			const currentUser = localStorage.getItem('currentUser');
+		if (this.localStorage !== undefined) {
+			const currentUser = this.localStorage.getItem('currentUser');
 			// console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
 			return currentUser ? JSON.parse(currentUser) : null
 		}
@@ -92,8 +97,11 @@ export class AuthService {
 		console.error('clear cookie and local storage');
 		this.cookieService.delete('jwt');
 		this.cookieService.delete('refreshToken');
-		localStorage.removeItem('currentUser');
-		localStorage.removeItem('expirationDate');
+		if (this.localStorage !== undefined) {
+			this.localStorage.removeItem('currentUser');
+			this.localStorage.removeItem('expirationDate');
+		}
+
 		this.loginStatus.next(false);
 
 		return this.router.navigate(['/']);

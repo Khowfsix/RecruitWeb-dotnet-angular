@@ -50,7 +50,7 @@ public class InterviewService : IInterviewService
         var interviewData = _mapper.Map<Interview>(interviewModel);
 
         var foundInterviews = await this.GetInterviewsByInterviewer(interviewData.InterviewerId);
-        if (foundInterviews
+        if (foundInterviews != null && foundInterviews
             .Any(e => 
                 interviewData.MeetingDate == e.MeetingDate
                 && !(interviewData.EndTime < e.StartTime || interviewData.StartTime > e.EndTime)

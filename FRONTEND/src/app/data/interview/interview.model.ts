@@ -18,8 +18,8 @@ export class Interview {
 	notes?: string;
 	priority?: string;
 	isDeleted?: boolean;
-	address?: string;
-	detailLocation?: string;
+	addressOrStartURL?: string;
+	detailLocationOrJoinURL?: string;
 	meetingDate?: Date;
 	startTime?: string;
 	rounds?: Round[];

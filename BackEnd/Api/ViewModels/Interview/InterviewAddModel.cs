@@ -7,8 +7,8 @@ namespace Api.ViewModels.Interview
         public Guid ApplicationId { get; set; }
         public int? Priority { get; set; }
         public string? Notes { get; set; }
-        public string Address { get; set; }
-        public string DetailLocation { get; set; }
+        public string AddressOrStartURL{ get; set; }
+        public string DetailLocationOrJoinURL { get; set; }
         public DateTime MeetingDate { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
