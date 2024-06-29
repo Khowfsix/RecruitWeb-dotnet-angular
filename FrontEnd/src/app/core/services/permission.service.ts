@@ -1,57 +1,57 @@
 import { Injectable } from '@angular/core';
-import { API } from '../../data/api.service';
+// import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { nameTypeInToken } from '../constants/token.constants';
+// import { BehaviorSubject } from 'rxjs';
 // import { Role } from '../../data/authen/role.model';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class PermissionService {
-	constructor(private api: API) { }
+	constructor() { }
 
-	// getUserRoles(): Promise<string[] | null> {
-	// 	return new Promise((resolve) => {
-	// 		if (typeof localStorage != 'undefined') {
-	// 			const roles = localStorage.getItem('roles');
-	// 			if (roles != '') {
-	// 				resolve(JSON.parse(roles!));
-	// 			}
-	// 		}
+	// private roles = new BehaviorSubject<string[]>(this.getUserRoles());
 
-	// 		this.api.GET('/api/Authentication/Role').subscribe({
-	// 			next: (data: Role) => {
-	// 				localStorage.setItem('roles', JSON.stringify(data.role));
-	// 				resolve(data.role);
-	// 			},
-	// 			error: (err) => {
-	// 				console.log(err);
-	// 				resolve(null);
-	// 			},
-	// 		});
-
-	// 	});
+	// get getRoles() {
+	// 	return this.roles.asObservable();
 	// }
 
-	// async hasRole(requiredRole: string[], currentUserRole: string[]): Promise<boolean> {
+	// private getUserRoles(): string[] {
+	// 	const jwt = this._cookieService.get('jwt');
+	// 	if (jwt) {
+	// 		try {
+	// 			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(jwt as string)));
+	// 			const listRoles = authenPayload[nameTypeInToken.roles] as string[];
+	// 			console.log(listRoles);
+	// 			return listRoles;
+	// 		} catch (error) {
+	// 			return [];
+	// 		}
+	// 	} else {
+	// 		return [];
+	// 	}
+	// }
+
+	// private hasRole(requiredRole: string[], currentUserRole: string[]): boolean {
 	// 	// Kiểm tra xem người dùng hiện tại có role đó không
-	// 	return new Promise<boolean>((resolve) => {
-	// 		if (!requiredRole.some((role) => currentUserRole.includes(role))) {
-	// 			console.log(`Don't have required role: ${requiredRole}`);
-	// 			resolve(false);
-	// 		}
+	// 	if (!requiredRole.some((role) => currentUserRole.includes(role))) {
+	// 		console.log(`Don't have required role: ${requiredRole}`);
+	// 		return (false);
+	// 	}
 
-	// 		console.log(
-	// 			`currentUserRole: ${currentUserRole}, requiredRole: ${requiredRole}`,
-	// 		);
-	// 		resolve(true);
-	// 	});
+	// 	console.log(
+	// 		`currentUserRole: ${currentUserRole}, requiredRole: ${requiredRole}`,
+	// 	);
+	// 	return true;
 	// }
 
-	// async isAuthorized(requiredRole: string[]): Promise<boolean> {
+	// public isAuthorized(requiredRole: string[]) {
 	// 	if (requiredRole.length === 0) {
 	// 		return true;
 	// 	}
 
-	// 	const currentUserRole = await this.getUserRoles();
+	// 	const currentUserRole = this.getUserRoles();
 
 	// 	if (currentUserRole === null) {
 	// 		console.log('User has no role');
@@ -60,4 +60,14 @@ export class PermissionService {
 
 	// 	return this.hasRole(requiredRole, currentUserRole);
 	// }
+
+	getRoleOfUser(jwt: string | null) {
+		if (jwt) {
+			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(jwt as string)));
+			const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];
+			// console.log(currentUserRole);
+			return currentUserRole;
+		}
+		return [];
+	}
 }

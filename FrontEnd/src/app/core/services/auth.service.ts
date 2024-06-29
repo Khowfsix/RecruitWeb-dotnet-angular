@@ -28,7 +28,7 @@ export class AuthService {
 		// });
 	}
 
-	private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
+	public loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 
 	checkLoginStatus(): boolean {
 		if (this.cookieService.get('jwt') != '') {
@@ -37,7 +37,7 @@ export class AuthService {
 	}
 
 	getLocalCurrentUser(): WebUser {
-		if (localStorage) {
+		if (localStorage != undefined) {
 			const currentUser = localStorage.getItem('currentUser');
 			// console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
 			return currentUser ? JSON.parse(currentUser) : null
@@ -88,7 +88,7 @@ export class AuthService {
 	}
 
 	login(loginModel: Login): Observable<unknown> {
-		this.loginStatus.next(true);
+		// this.loginStatus.next(true);
 		return this.api.POST('/api/Authentication/Login', loginModel);
 	}
 

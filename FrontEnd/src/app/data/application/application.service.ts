@@ -49,4 +49,9 @@ export class ApplicationService {
 	postNewApplication(data: ApplicationAddModel) {
 		return this.api.POST('/api/Application', data);
 	}
+
+
+	getApplicationsOfCandidate(candidateId: string) {
+		return this.api.GET('api/Application/GetApplicationsOfCandidate/' + candidateId);
+	}
 }

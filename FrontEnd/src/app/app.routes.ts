@@ -69,6 +69,8 @@ export const routes: Routes = [
 	createRouteWithRoles('companies', CompanyComponent, [
 		role.RECRUITER,
 		role.ADMIN,
+		role.CANDIDATE,
+		role.INTERVIEWER
 	], 'Company '),
 
 	// url for interviewer

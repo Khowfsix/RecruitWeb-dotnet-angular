@@ -8,7 +8,16 @@
 			</button>
 
 			<div class="d-none d-md-inline">
-				<button mat-button (click)="handleRouteToJobs()">All Jobs</button>
+				<!-- <button mat-button (click)="handleRouteToJobs()">All Jobs</button> -->
+				<button mat-button [matMenuTriggerFor]="menuJobs">
+					All Jobs
+					<mat-icon class="mat-18">arrow_drop_down</mat-icon>
+				</button>
+				<mat-menu #menuJobs="" xPosition="before" yPosition="below">
+					<button mat-menu-item (click)="handleRouteToJobs()">All Jobs</button>
+					<button mat-menu-item (click)="handleRouteToJobs('applied jobs')">Jobs applied</button>
+					<button mat-menu-item (click)="handleRouteToJobs('')">Jobs applied</button>
+				</mat-menu>
 				<button mat-button (click)="handleRouteToCompanies()">Companies</button>
 				<button mat-button>Events</button>
 			</div>

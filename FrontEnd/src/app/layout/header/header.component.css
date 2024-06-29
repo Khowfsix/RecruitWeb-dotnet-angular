@@ -22,3 +22,70 @@
 	/* height: 50px; */
 	background-color: #1c395f;
 }
+
+/* ========================================================================
+Custom CSS FOR HOVER DROPDOWN MENU */
+
+/* Dropdown container */
+.custom-dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown trigger button */
+.custom-dropdown-btn {
+	padding: 10px 15px;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.custom-dropdown-btn:hover {
+	background-color: #e9ecef;
+}
+
+/* Dropdown content */
+.custom-dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #fff;
+	min-width: 160px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	z-index: 1;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+/* Show dropdown content on hover */
+.custom-dropdown:hover .custom-dropdown-content {
+	display: block;
+}
+
+/* Dropdown items */
+.custom-dropdown-item {
+	display: block;
+	padding: 10px 15px;
+	text-decoration: none;
+	color: #212529;
+	transition: background-color 0.3s;
+}
+
+.custom-dropdown-item:hover {
+	background-color: #f8f9fa;
+}
+
+/* Optional: Animation for smooth appearance */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.custom-dropdown:hover .custom-dropdown-content {
+	animation: fadeIn 0.3s;
+}

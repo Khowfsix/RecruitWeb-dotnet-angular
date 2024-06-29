@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit {
 											toastClass: ' my-custom-toast ngx-toastr',
 										});
 									this.navigate_before();
+									this.authService.loginStatus.next(true);
 								} else {
 									this.authService.logout();
 									this.toasts.warning("Cann't get user information", "Warning!!!",

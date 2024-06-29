@@ -7,11 +7,14 @@
 			<div class="translate-middle" style="margin-left: 14%; margin-right: 14%; background-color: white">
 				<div
 					class="rounded-3 position-absolute top-50 start-50 background-image d-flex flex-column justify-content-center">
-					<div class="d-flex flex-row rounded-2"
+					<div
+						class="d-flex flex-row rounded-2"
 						style="background-color: rgb(255, 255, 255); padding: 30px 30px 30px 30px">
 						<div class="d-flex flex-row rounded-4 hover-overlay" style="width: 100%">
 							<div class="" style="width: 170px; height: 170px">
-								<img src="{{ fetchPosition?.company?.logo }}" class="rounded-4"
+								<img
+									src="{{ fetchPosition?.company?.logo }}"
+									class="rounded-4"
 									style="width: 100%; height: 100%"
 									alt="{{ fetchPosition?.company?.companyName + ' logo' }}" />
 							</div>
@@ -19,9 +22,15 @@
 								<div class="fs-3" style="font-weight: 500; cursor: pointer; margin-bottom: 15px">
 									{{ fetchPosition?.positionName | uppercase }}
 								</div>
-								<div class="custom-row rounded-2"
-									style="padding: 3px 2px 2px 2px; background-color: rgb(253, 255, 198) ;width: fit-content;">
-									{{ fetchPosition?.level?.levelName }}</div>
+								<div
+									class="custom-row rounded-2"
+									style="
+										padding: 3px 2px 2px 2px;
+										background-color: rgb(253, 255, 198);
+										width: fit-content;
+									">
+									{{ fetchPosition?.level?.levelName }}
+								</div>
 								<div class="custom-row" style="color: blue">
 									{{ fetchPosition?.company?.companyName }}
 								</div>
@@ -42,7 +51,9 @@
 									{{ fetchPosition?.startDate | date : 'dd/MM/yyyy' }} -
 									{{ fetchPosition?.endDate | date : 'dd/MM/yyyy' }}
 								</div>
-								<div class="custom-row rounded-2" style="
+								<div
+									class="custom-row rounded-2"
+									style="
 										padding: 2px 2px 2px 2px;
 										background-color: rgb(224, 224, 224);
 										width: fit-content;
@@ -58,10 +69,18 @@
 	</div>
 	<div class="pt-2" style="margin-left: 14%; margin-right: 14%; margin-top: 110px">
 		<div>
-			<button mat-raised-button color="primary" class="w-100 py-3" (click)="handleClickApply()">
+			@if (this.curentUserRoles?.length == 0 || this.curentUserRoles?.includes('Candidate')) {
+			@if(this.isAvailable == "outOfDate"){
+			<button mat-raised-button color="primary" class="w-100 py-3" disabled>
 				<i class="fa-regular fa-paper-plane px-3"></i>
 				Apply now
 			</button>
+			} @else {
+			<button mat-raised-button color="primary" class="w-100 py-3" (click)="handleClickApply()">
+				<i class="fa-regular fa-paper-plane px-3"></i>
+				@if (this.isAvailable === "available") {Apply now} @else if (this.isAvailable === "reapply") {Reapply}
+			</button>
+			} }
 		</div>
 		<div class="fs-5 d-flex flex-column" style="background-color: rgb(236, 236, 236); height: 100%">
 			<mat-tab-group dynamicHeight mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
@@ -96,7 +115,9 @@
 					</ng-template>
 					<div class="rounded-3 p-4 d-flex flex-row" style="background-color: rgb(255, 255, 255)">
 						<div class="me-3" style="border: 1px solid #1c395f; width: 60%; border-radius: 10px">
-							<div class="p-3" style="
+							<div
+								class="p-3"
+								style="
 									font-weight: 700;
 									width: 100%;
 									background-color: #1c395f;
@@ -118,7 +139,9 @@
 								</div>
 								<div style="font-size: 18px; margin-top: 10px">
 									Website:
-									<a href="{{ fetchPosition?.company?.website }}" class="mt-3"
+									<a
+										href="{{ fetchPosition?.company?.website }}"
+										class="mt-3"
 										style="line-height: 1.5; font-size: 16px">
 										{{ fetchPosition?.company?.website }}
 									</a>
@@ -126,7 +149,9 @@
 							</div>
 						</div>
 						<div style="height: fit-content; border: 1px solid #1c395f; width: 40%; border-radius: 10px">
-							<div class="p-3" style="
+							<div
+								class="p-3"
+								style="
 									font-weight: 600;
 									width: 100%;
 									background-color: #1c395f;
@@ -145,15 +170,22 @@
 								</div>
 								<div style="font-size: 18px; margin-top: 10px">
 									<i class="bi bi-envelope-fill"></i>
-									<a href="https://mail.google.com/mail/?view=cm&fs=1&to={{
+									<a
+										href="https://mail.google.com/mail/?view=cm&fs=1&to={{
 											fetchPosition?.company?.email
-										}}" class="mt-3 ms-2" style="line-height: 1.5; font-size: 16px">{{ fetchPosition?.company?.email }}
+										}}"
+										class="mt-3 ms-2"
+										style="line-height: 1.5; font-size: 16px"
+										>{{ fetchPosition?.company?.email }}
 									</a>
 								</div>
 								<div style="font-size: 18px; margin-top: 10px">
 									<i class="bi bi-telephone-fill"></i>
-									<a href="tel:{{ fetchPosition?.company?.phone }}" class="mt-3 ms-2"
-										style="line-height: 1.5; font-size: 16px">{{ fetchPosition?.company?.phone }}
+									<a
+										href="tel:{{ fetchPosition?.company?.phone }}"
+										class="mt-3 ms-2"
+										style="line-height: 1.5; font-size: 16px"
+										>{{ fetchPosition?.company?.phone }}
 									</a>
 								</div>
 							</div>
