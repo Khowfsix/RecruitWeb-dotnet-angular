@@ -17,9 +17,14 @@ import { AuthInterceptorProvider } from './core/interceptor/token.interceptor';
 import { ErrorInterceptorProvider } from './core/interceptor/error.intercerptor';
 import { CookieService } from 'ngx-cookie-service';
 import { NetworkInterceptorProvider } from './core/interceptor/network.interceptor';
+// import { GGMeetService } from './shared/service/ggmeet.service';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
+		// GG Meet
+		provideOAuthClient(),
+
 		provideRouter(routes),
 		provideClientHydration(),
 		provideAnimationsAsync(),

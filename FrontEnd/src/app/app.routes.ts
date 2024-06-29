@@ -15,6 +15,8 @@ import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
 import { JobPreferenceComponent } from './module/cv/job-preference/job-preference.component';
 import { EventComponent } from './module/reccer/event/event.component';
 import { EventDetailComponent } from './module/event-detail/event-detail.component';
+import { LoginMeetComponent } from './shared/component/gg-meet/login-meet/login-meet.component';
+import { CallBackComponent } from './shared/component/gg-meet/call-back/call-back.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -48,6 +50,9 @@ export const routes: Routes = [
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 
 	{ path: 'positions', component: PositionComponent },
+
+	{ path: 'meet/login', component: LoginMeetComponent },
+	{ path: 'meet/login/callback', component: CallBackComponent },
 
 	createRouteWithRoles('events', EventComponent, [
 		role.RECRUITER,

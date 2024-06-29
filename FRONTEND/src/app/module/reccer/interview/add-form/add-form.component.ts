@@ -23,11 +23,10 @@ import { ToastrService } from 'ngx-toastr';
 import { GreaterOrEqualToDay, timeValidator } from '../../../../shared/validators/date.validator';
 import { CustomDateTimeService } from '../../../../shared/service/custom-datetime.service';
 import { Interview } from '../../../../data/interview/interview.model';
-import { ZoomService } from '../../../../shared/service/zoom.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ZoomMeeting } from '../../../../shared/service/zoom-meeting.model';
 import { Moment } from 'moment';
 import moment from 'moment';
+import { GGMeetService } from '../../../../shared/service/ggmeet.service';
 
 @Component({
 	selector: 'app-add-form',
@@ -52,9 +51,9 @@ export class AddFormComponent implements OnInit {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private formBuilder: FormBuilder,
-		private zoomService: ZoomService,
 		public dialogRef: MatDialogRef<AddFormComponent>,
 		// private openStreetMapService: OpenStreetMapService,
+		private ggMeetService: GGMeetService,
 		private customDateTimeService: CustomDateTimeService,
 		private toastr: ToastrService,
 		private positionService: PositionService,
@@ -196,35 +195,36 @@ export class AddFormComponent implements OnInit {
 		})
 	}
 
-	private callApiCreateZoom() {
-		const meetingDate = this.addForm.get('meetingDate')?.value;
-		const startTime = this.addForm.get('startTime')?.value;
-		const endTime = this.addForm.get('endTime')?.value;
-		// console.log('meeting dateTime', this.createMeetingDateTime(meetingDate, startTime));
-		// console.log('this.createDuration(startTime, endTime),', this.createDuration(startTime, endTime));
-		const meetingData: ZoomMeeting = {
-			topic: `${this.recruiter.company?.companyName} Interview`,
-			default_password: false,
-			type: 2,
-			start_time: this.createMeetingDateTime(meetingDate, startTime),
-			duration: this.createDuration(startTime, endTime),
-			timezone: 'Asia/Saigon',
-			agenda: `${this.recruiter.company?.companyName} Interview`,
-			settings: {
-				host_video: false,
-				participant_video: false,
-				join_before_host: true,
-				mute_upon_entry: true,
-				use_pmi: false,
-				watermark: true,
-				approval_type: 0,
-				audio: 'both',
-				auto_recording: "none",
-				// alternative_hosts: this.recruiter.user?.email,
-			}
-		}
-		return this.zoomService.callApiCreateScheduledMeeting(meetingData);
-	}
+	// private callApiCreateMeet() {
+	// 	const meetingDate = this.addForm.get('meetingDate')?.value;
+	// 	const startTime = this.addForm.get('startTime')?.value;
+	// 	const endTime = this.addForm.get('endTime')?.value;
+	// 	return null;
+	// 	// console.log('meeting dateTime', this.createMeetingDateTime(meetingDate, startTime));
+	// 	// console.log('this.createDuration(startTime, endTime),', this.createDuration(startTime, endTime));
+	// 	// const meetingData: ZoomMeeting = {
+	// 	// 	topic: `${this.recruiter.company?.companyName} Interview`,
+	// 	// 	default_password: false,
+	// 	// 	type: 2,
+	// 	// 	start_time: this.createMeetingDateTime(meetingDate, startTime),
+	// 	// 	duration: this.createDuration(startTime, endTime),
+	// 	// 	timezone: 'Asia/Saigon',
+	// 	// 	agenda: `${this.recruiter.company?.companyName} Interview`,
+	// 	// 	settings: {
+	// 	// 		host_video: false,
+	// 	// 		participant_video: false,
+	// 	// 		join_before_host: true,
+	// 	// 		mute_upon_entry: true,
+	// 	// 		use_pmi: false,
+	// 	// 		watermark: true,
+	// 	// 		approval_type: 0,
+	// 	// 		audio: 'both',
+	// 	// 		auto_recording: "none",
+	// 	// 		// alternative_hosts: this.recruiter.user?.email,
+	// 	// 	}
+	// 	// }
+	// 	// return this.zoomService.callApiCreateScheduledMeeting(meetingData);
+	// }
 
 	private createDuration(startTime: string, endTime: string) {
 		// console.log('startTime', startTime)
@@ -281,36 +281,24 @@ export class AddFormComponent implements OnInit {
 		fieldValue.recruiterId = this.recruiter.recruiterId;
 		fieldValue.meetingDate = this.customDateTimeService.sameValueToUTC(fieldValue.meetingDate, true);
 		if (fieldValue.onlineMeeting === true) {
-			this.callApiCreateZoom().subscribe({
-				next: (resp) => {
-					this.toastr.success('Create meeting...', 'Successfully!', {
+			// if (this.ggMeetService.isLoggedIn !== true) {
+			// 	console.log('not lgoin')
+			// 	// this.ggMeetService.login();
+			// }
+			delete fieldValue.onlineMeeting;
+			this.interviewService.save(fieldValue).subscribe({
+				next: () => {
+					this.dialogRef.close();
+					this.toastr.success('Created interview...', 'Successfully!', {
 						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 					});
-					this.addForm.patchValue({ addressOrStartURL: resp.start_url })
-					this.addForm.patchValue({ detailLocationOrJoinURL: resp.join_url })
-					fieldValue.addressOrStartURL = resp.start_url;
-					fieldValue.detailLocationOrJoinURL = resp.join_url;
-					delete fieldValue.onlineMeeting;
-					this.interviewService.save(fieldValue).subscribe({
-						next: () => {
-							this.dialogRef.close();
-							this.toastr.success('Created interview...', 'Successfully!', {
-								toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
-							});
-						},
-						error: () => {
-							this.toastr.error('Something wrong...', 'Save interview Error!!!', {
-								toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
-							});
-						},
-					})
 				},
 				error: () => {
-					this.toastr.error('Something wrong...', 'Create meeting Error!!!', {
+					this.toastr.error('Something wrong...', 'Save interview Error!!!', {
 						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
 					});
 				},
-			});
+			})
 		}
 		else {
 			this.interviewService.save(fieldValue).subscribe({
@@ -329,4 +317,58 @@ export class AddFormComponent implements OnInit {
 		}
 
 	}
+
+	// public saveInterview() {
+	// 	const fieldValue = this.addForm.value;
+	// 	fieldValue.recruiterId = this.recruiter.recruiterId;
+	// 	fieldValue.meetingDate = this.customDateTimeService.sameValueToUTC(fieldValue.meetingDate, true);
+	// 	if (fieldValue.onlineMeeting === true) {
+	// 		this.callApiCreateZoom().subscribe({
+	// 			next: (resp) => {
+	// 				this.toastr.success('Create meeting...', 'Successfully!', {
+	// 					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+	// 				});
+	// 				this.addForm.patchValue({ addressOrStartURL: resp.start_url })
+	// 				this.addForm.patchValue({ detailLocationOrJoinURL: resp.join_url })
+	// 				fieldValue.addressOrStartURL = resp.start_url;
+	// 				fieldValue.detailLocationOrJoinURL = resp.join_url;
+	// 				delete fieldValue.onlineMeeting;
+	// 				this.interviewService.save(fieldValue).subscribe({
+	// 					next: () => {
+	// 						this.dialogRef.close();
+	// 						this.toastr.success('Created interview...', 'Successfully!', {
+	// 							toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+	// 						});
+	// 					},
+	// 					error: () => {
+	// 						this.toastr.error('Something wrong...', 'Save interview Error!!!', {
+	// 							toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+	// 						});
+	// 					},
+	// 				})
+	// 			},
+	// 			error: () => {
+	// 				this.toastr.error('Something wrong...', 'Create meeting Error!!!', {
+	// 					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+	// 				});
+	// 			},
+	// 		});
+	// 	}
+	// 	else {
+	// 		this.interviewService.save(fieldValue).subscribe({
+	// 			next: () => {
+	// 				this.dialogRef.close();
+	// 				this.toastr.success('Created interview...', 'Successfully!', {
+	// 					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+	// 				});
+	// 			},
+	// 			error: () => {
+	// 				this.toastr.error('Something wrong...', 'Save interview Error!!!', {
+	// 					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+	// 				});
+	// 			},
+	// 		})
+	// 	}
+
+	// }
 }

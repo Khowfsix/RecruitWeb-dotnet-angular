@@ -26,13 +26,13 @@ import { CustomDateTimeService } from '../../../shared/service/custom-datetime.s
 import { ExpandbuttonComponent } from "../../../shared/component/expandbutton/expandbutton.component";
 import { AddFormComponent } from './add-form/add-form.component';
 import { SendMultiEmailComponent } from './send-multi-email/send-multi-email.component';
-import { ApplicationService } from '../../../data/application/application.service';
-import { InterviewerService } from '../../../data/interviewer/interviewer.service';
 import { PositionService } from '../../../data/position/position.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 import { ToastrService } from 'ngx-toastr';
 import { AutocompleteComponent } from '../../../shared/component/inputs/autocomplete/autocomplete.component';
+import { GGMeetService } from '../../../shared/service/ggmeet.service';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
 	selector: 'app-interview',
 	standalone: true,
@@ -70,11 +70,13 @@ export class InterviewComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private interviewService: InterviewService,
 		private recruiterService: RecruiterService,
-		private applicationService: ApplicationService,
-		private interviewerService: InterviewerService,
+		private cookieService: CookieService,
+		// private applicationService: ApplicationService,
+		// private interviewerService: InterviewerService,
 		private customDateService: CustomDateTimeService,
 		private positionService: PositionService,
 		private authService: AuthService,
+		private ggmeetService: GGMeetService,
 	) { }
 
 	private filterSubject = new Subject<any>();
@@ -83,6 +85,28 @@ export class InterviewComponent implements OnInit {
 	public interview_CandidateStatus: typeof Interview_CandidateStatus = Interview_CandidateStatus;
 	public fetchedInterviews?: Interview[];
 	public positionData$ = this.positionService.getAllPositions(undefined, undefined, undefined, undefined, this.authService.getRecruiterId_OfUser())
+
+	public openCenteredWindow(url: string, title: string, w: number, h: number) {
+		const left = (screen.width / 2) - (w / 2);
+		const top = (screen.height / 2) - (h / 2);
+
+
+		const windowFeatures = `width=${w},height=${h},top=${top},left=${left}`;
+		window.open(url, title, windowFeatures);
+	}
+
+	public log() {
+		// console.log('cookieService.get(fragment)', this.cookieService.get(this.ggmeetService.GGMEET_FRAGMENT_COOKIE_NAME));
+		// console.log('this.oauthService?.hasValidAccessToken()', this.oauthService?.hasValidAccessToken());
+		console.log('this.ggmeetService.isLoggedIn()', this.ggmeetService.isLoggedIn())
+	}
+
+	public signInWithGoogle() {
+		this.openCenteredWindow(`${window.origin}/meet/login`, 'Google Login Window', 500, 600);
+		// window.open(`${window.origin}/meet/login`, '_blank')
+		// const loginWindow = window.open(`${window.origin}/meet/login`, '_blank')
+		// loginWindow?.addEventListener()
+	}
 
 	public openEditFormDialog(interview: Interview, enterAnimationDuration: string,
 		exitAnimationDuration: string) {
@@ -227,6 +251,10 @@ export class InterviewComponent implements OnInit {
 		}
 	}
 
+	public refreshOAuthService() {
+
+	}
+
 	ngOnInit(): void {
 		const currentUserId = this.authService.getLocalCurrentUser().id;
 		if (currentUserId) {
@@ -254,6 +282,19 @@ export class InterviewComponent implements OnInit {
 			formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
 			this.fetchInterviews(this.recruiter?.companyId, formValue, formValue.sortString);
 		});
+
+		this.ggmeetService.tryLogin();
+
+		// this.ggmeetService.dataEmit.subscribe((newOauthService: string) => {
+		// 	console.log('dataEmit', newOauthService);
+		// });
+
+		// this.ggmeetService.oauthServiceEmit.subscribe((newOauthService: OAuthService) => {
+		// 	console.log('newOauthService', newOauthService);
+		// 	console.log('newOauthService.hasValidAccessToken()', newOauthService.hasValidAccessToken());
+		// 	2
+		// 	this.oauthService = newOauthService;
+		// });
 	}
 }
 

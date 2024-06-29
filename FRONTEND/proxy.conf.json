@@ -1,12 +1,10 @@
 {
-	"/zoom-proxy-server": {
-		"target": "http://localhost:3000",
-		"secure": false,
-		"changeOrigin": true
-	},
-	"/refreshtoken-zoom-proxy-server": {
-		"target": "http://localhost:4000",
-		"secure": false,
-		"changeOrigin": true
+	"/google-api": {
+		"target": "https://accounts.google.com",
+		"secure": true,
+		"changeOrigin": true,
+		"pathRewrite": {
+			"^/google-api": ""
+		}
 	}
 }
