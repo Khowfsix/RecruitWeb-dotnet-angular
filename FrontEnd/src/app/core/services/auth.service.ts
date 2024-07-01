@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
+import { GGMeetUrls } from '../../shared/constant/ggmeet.constant';
 
 @Injectable({
 	providedIn: 'root',
@@ -42,6 +43,10 @@ export class AuthService {
 			return currentUser ? JSON.parse(currentUser) : null
 		}
 		return {};
+	}
+
+	public isInGGMeetUrls(url: string): boolean {
+		return GGMeetUrls.some((item) => item.startsWith(url));
 	}
 
 	getCandidateId_OfUser(): string | undefined {

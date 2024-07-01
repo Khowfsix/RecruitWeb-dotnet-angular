@@ -19,9 +19,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { NetworkInterceptorProvider } from './core/interceptor/network.interceptor';
 // import { GGMeetService } from './shared/service/ggmeet.service';
 import { provideOAuthClient } from 'angular-oauth2-oidc';
+import { WINDOW } from './shared/service/window.token';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
+		// Fix window is not defined
+		{ provide: WINDOW, useFactory: () => (typeof window !== 'undefined' ? window : {}) as Window },
+
 		// GG Meet
 		provideOAuthClient(),
 

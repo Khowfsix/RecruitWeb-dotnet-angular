@@ -53,7 +53,7 @@ export class AddFormComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		public dialogRef: MatDialogRef<AddFormComponent>,
 		// private openStreetMapService: OpenStreetMapService,
-		private ggMeetService: GGMeetService,
+		public ggMeetService: GGMeetService,
 		private customDateTimeService: CustomDateTimeService,
 		private toastr: ToastrService,
 		private positionService: PositionService,
@@ -92,14 +92,6 @@ export class AddFormComponent implements OnInit {
 	public isEditing = false;
 
 	ngOnInit(): void {
-		// console.log('foundInterview', this.foundInterview ? this.foundInterview : ': undefine')
-
-		// console.log('this.addForm.value', this.addForm.value)
-		// console.log('call api googlleeeeeeee')
-		// this.openStreetMapService.search('võ văn ngân').subscribe((data: any) => {
-		// 	console.log('open street map data', data)
-		// 	this.openStreetMapData = data;
-		// })
 		if (this.interviewerId)
 			this.addForm.get('interviewerId')?.setValue(this.interviewerId);
 
@@ -175,13 +167,10 @@ export class AddFormComponent implements OnInit {
 
 		this.addForm.get('onlineMeeting')?.valueChanges.subscribe((newData) => {
 			if (newData === true) {
-				const meetingDate = this.addForm.get('meetingDate')?.value;
-				const startTime = this.addForm.get('startTime')?.value;
-				const endTime = this.addForm.get('endTime')?.value;
-				if (meetingDate === '' || startTime === '' || endTime === '') {
+				if (this.ggMeetService.isLoggedIn === false) {
 					this.addForm.patchValue({ onlineMeeting: false });
-					this.toastr.error('Must have meeting date, start time and end time...', 'Missing Data Error!!!!!!', {
-						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+					this.toastr.error('Must linked google first...', 'No Google Account Error!!!!!!', {
+						toastClass: 'my-custom-toast ngx-toastr', timeOut: 3000,
 					});
 					return;
 				}
@@ -195,36 +184,51 @@ export class AddFormComponent implements OnInit {
 		})
 	}
 
-	// private callApiCreateMeet() {
-	// 	const meetingDate = this.addForm.get('meetingDate')?.value;
-	// 	const startTime = this.addForm.get('startTime')?.value;
-	// 	const endTime = this.addForm.get('endTime')?.value;
-	// 	return null;
-	// 	// console.log('meeting dateTime', this.createMeetingDateTime(meetingDate, startTime));
-	// 	// console.log('this.createDuration(startTime, endTime),', this.createDuration(startTime, endTime));
-	// 	// const meetingData: ZoomMeeting = {
-	// 	// 	topic: `${this.recruiter.company?.companyName} Interview`,
-	// 	// 	default_password: false,
-	// 	// 	type: 2,
-	// 	// 	start_time: this.createMeetingDateTime(meetingDate, startTime),
-	// 	// 	duration: this.createDuration(startTime, endTime),
-	// 	// 	timezone: 'Asia/Saigon',
-	// 	// 	agenda: `${this.recruiter.company?.companyName} Interview`,
-	// 	// 	settings: {
-	// 	// 		host_video: false,
-	// 	// 		participant_video: false,
-	// 	// 		join_before_host: true,
-	// 	// 		mute_upon_entry: true,
-	// 	// 		use_pmi: false,
-	// 	// 		watermark: true,
-	// 	// 		approval_type: 0,
-	// 	// 		audio: 'both',
-	// 	// 		auto_recording: "none",
-	// 	// 		// alternative_hosts: this.recruiter.user?.email,
-	// 	// 	}
-	// 	// }
-	// 	// return this.zoomService.callApiCreateScheduledMeeting(meetingData);
-	// }
+	public googleLogin() {
+		if (typeof window !== 'undefined')
+			this.ggMeetService.loginWithPopup('/interviews');
+	}
+
+	public log() {
+		console.log('this.ggMeetService.accessToken', this.ggMeetService.accessToken);
+		console.log('this.ggMeetService.scope', this.ggMeetService.scope);
+		console.log('this.ggMeetService.accessTokenExpiration', this.ggMeetService.accessTokenExpiration);
+		console.log(' this.ggMeetService.identityClaims', this.ggMeetService.identityClaims);
+		console.log(' this.ggMeetService.identityClaims[name]', this.ggMeetService.identityClaims['name'])
+		this.ggMeetService.getAllMyCalendars().subscribe((data) => {
+			console.log('all calendars: ', data);
+		});
+	}
+
+	private callApiCreateMeet() {
+		// const meetingDate = this.addForm.get('meetingDate')?.value;
+		// const startTime = this.addForm.get('startTime')?.value;
+		// const endTime = this.addForm.get('endTime')?.value;
+		// console.log('meeting dateTime', this.createMeetingDateTime(meetingDate, startTime));
+		// console.log('this.createDuration(startTime, endTime),', this.createDuration(startTime, endTime));
+		// const meetingData: ZoomMeeting = {
+		// 	topic: `${this.recruiter.company?.companyName} Interview`,
+		// 	default_password: false,
+		// 	type: 2,
+		// 	start_time: this.createMeetingDateTime(meetingDate, startTime),
+		// 	duration: this.createDuration(startTime, endTime),
+		// 	timezone: 'Asia/Saigon',
+		// 	agenda: `${this.recruiter.company?.companyName} Interview`,
+		// 	settings: {
+		// 		host_video: false,
+		// 		participant_video: false,
+		// 		join_before_host: true,
+		// 		mute_upon_entry: true,
+		// 		use_pmi: false,
+		// 		watermark: true,
+		// 		approval_type: 0,
+		// 		audio: 'both',
+		// 		auto_recording: "none",
+		// 		// alternative_hosts: this.recruiter.user?.email,
+		// 	}
+		// }
+		// return this.ggMeetService.callApiCreateScheduledMeeting(meetingData);
+	}
 
 	private createDuration(startTime: string, endTime: string) {
 		// console.log('startTime', startTime)
@@ -281,10 +285,7 @@ export class AddFormComponent implements OnInit {
 		fieldValue.recruiterId = this.recruiter.recruiterId;
 		fieldValue.meetingDate = this.customDateTimeService.sameValueToUTC(fieldValue.meetingDate, true);
 		if (fieldValue.onlineMeeting === true) {
-			// if (this.ggMeetService.isLoggedIn !== true) {
-			// 	console.log('not lgoin')
-			// 	// this.ggMeetService.login();
-			// }
+
 			delete fieldValue.onlineMeeting;
 			this.interviewService.save(fieldValue).subscribe({
 				next: () => {

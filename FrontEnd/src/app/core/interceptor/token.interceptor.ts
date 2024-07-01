@@ -13,13 +13,15 @@ import { AuthService } from '../services/auth.service';
 	providedIn: 'root',
 })
 class AuthInterceptor implements HttpInterceptor {
-	constructor(private authService: AuthService) { }
+	constructor(
+		private authService: AuthService,
+	) { }
 
 	intercept(
 		req: HttpRequest<unknown>,
 		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
-		if (!this.authService.isInWhiteListUrl(req.url)) {
+		if (!this.authService.isInWhiteListUrl(req.url) && !this.authService.isInGGMeetUrls(req.url)) {
 			const authToken = this.authService.getAuthenticationToken();
 
 			if (authToken !== null) {

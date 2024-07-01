@@ -70,16 +70,20 @@
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"proxyConfig": "proxy.conf.json"
-					},
 					"configurations": {
 						"production": {
 							"buildTarget": "demo:build:production"
 						},
 						"development": {
-							"buildTarget": "demo:build:development"
+							"buildTarget": "demo:build:development",
+							"headers": {
+								"X-Max-Test": "my-test-header",
+								"Content-Security-Policy": "default-src 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com/; style-src 'self' https://fonts.googleapis.com/ 'unsafe-inline'; img-src 'self' data:;"
+							}
 						}
+					},
+					"options": {
+						"proxyConfig": "proxy.conf.json"
 					},
 					"defaultConfiguration": "development"
 				},
@@ -99,7 +103,8 @@
 						"tsConfig": "tsconfig.spec.json",
 						"assets": [
 							"src/favicon.ico",
-							"src/assets"
+							"src/assets",
+							"silent-refresh.html"
 						],
 						"styles": [
 							"@angular/material/prebuilt-themes/indigo-pink.css",
