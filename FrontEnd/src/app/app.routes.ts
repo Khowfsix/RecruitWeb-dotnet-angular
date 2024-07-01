@@ -27,7 +27,7 @@ const enum role {
 }
 
 export const routes: Routes = [
-	{ path: '', component: LoginMeetComponent },
+	{ path: 'meet/login', component: LoginMeetComponent },
 
 
 	// home page
