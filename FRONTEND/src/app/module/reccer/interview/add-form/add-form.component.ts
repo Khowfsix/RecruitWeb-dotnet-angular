@@ -14,7 +14,7 @@ import { Recruiter } from '../../../../data/recruiter/recruiter.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, DateAdapter, MatOptionModule } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MY_DAY_FORMATS } from '../../../../core/constants/app.env';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,8 @@ import { Interview } from '../../../../data/interview/interview.model';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Moment } from 'moment';
 import moment from 'moment';
-import { GGMeetService } from '../../../../shared/service/ggmeet.service';
+import { Interview_Type } from '../../../../shared/enums/EInterview.model';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
 	selector: 'app-add-form',
@@ -38,6 +39,8 @@ import { GGMeetService } from '../../../../shared/service/ggmeet.service';
 		{ provide: MAT_DATE_FORMATS, useValue: MY_DAY_FORMATS },
 	],
 	imports: [
+		MatSelectModule,
+		MatOptionModule,
 		MatSlideToggleModule,
 		ReactiveFormsModule,
 		MatButtonModule,
@@ -53,7 +56,7 @@ export class AddFormComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		public dialogRef: MatDialogRef<AddFormComponent>,
 		// private openStreetMapService: OpenStreetMapService,
-		public ggMeetService: GGMeetService,
+		// public ggMeetService: GGMeetService,
 		private customDateTimeService: CustomDateTimeService,
 		private toastr: ToastrService,
 		private positionService: PositionService,
@@ -61,6 +64,7 @@ export class AddFormComponent implements OnInit {
 		private interviewService: InterviewService,
 		private interviewerService: InterviewerService,
 	) { }
+	public interview_Type: typeof Interview_Type = Interview_Type;
 
 	public addForm: FormGroup = this.formBuilder.group({
 		positionId: [this.foundInterview ? this.foundInterview.application?.position?.positionId : '', [Validators.required]],
@@ -68,7 +72,7 @@ export class AddFormComponent implements OnInit {
 		applicationId: [this.foundInterview ? this.foundInterview.applicationId : '', [Validators.required]],
 		priority: [this.foundInterview ? this.foundInterview.priority : '', []],
 		notes: [this.foundInterview ? this.foundInterview.notes : '', []],
-		onlineMeeting: [false, [Validators.required]],
+		interviewType: [this.foundInterview ? this.foundInterview.interviewType : null, [Validators.required]],
 		addressOrStartURL: [this.foundInterview ? this.foundInterview.addressOrStartURL : '', [Validators.required]],
 		detailLocationOrJoinURL: [this.foundInterview ? this.foundInterview.detailLocationOrJoinURL : '', [Validators.required]],
 		meetingDate: [this.foundInterview ? this.foundInterview.meetingDate : '', [Validators.required, GreaterOrEqualToDay()]],
@@ -102,6 +106,7 @@ export class AddFormComponent implements OnInit {
 				applicationId: this.foundInterview.applicationId,
 				priority: this.foundInterview.priority,
 				notes: this.foundInterview.notes,
+				interviewType: this.foundInterview.interviewType,
 				addressOrStartURL: this.foundInterview.addressOrStartURL,
 				detailLocationOrJoinURL: this.foundInterview.detailLocationOrJoinURL,
 				meetingDate: this.foundInterview.meetingDate,
@@ -165,15 +170,15 @@ export class AddFormComponent implements OnInit {
 		// 	this.applicationData$ = this.applicationService.getAllByPositionId(foundPosition?.positionId);
 		// });
 
-		this.addForm.get('onlineMeeting')?.valueChanges.subscribe((newData) => {
-			if (newData === true) {
-				if (this.ggMeetService.isLoggedIn === false) {
-					this.addForm.patchValue({ onlineMeeting: false });
-					this.toastr.error('Must linked google first...', 'No Google Account Error!!!!!!', {
-						toastClass: 'my-custom-toast ngx-toastr', timeOut: 3000,
-					});
-					return;
-				}
+		this.addForm.get('interviewType')?.valueChanges.subscribe((newData) => {
+			if (newData === this.interview_Type.ONLINE_GG_MEET) {
+				// if (this.ggMeetService.isLoggedIn === false) {
+				// 	this.addForm.patchValue({ onlineMeeting: false });
+				// 	this.toastr.error('Must linked google first...', 'No Google Account Error!!!!!!', {
+				// 		toastClass: 'my-custom-toast ngx-toastr', timeOut: 3000,
+				// 	});
+				// 	return;
+				// }
 				this.addForm.get('addressOrStartURL')?.disable();
 				this.addForm.get('detailLocationOrJoinURL')?.disable();
 			}
@@ -184,51 +189,63 @@ export class AddFormComponent implements OnInit {
 		})
 	}
 
-	public googleLogin() {
-		if (typeof window !== 'undefined')
-			this.ggMeetService.loginWithPopup('/interviews');
+	public enableForm() {
+		this.isEditing = true; this.addForm.enable();
+		this.addForm.get('positionId')?.disable();
+		this.addForm.get('applicationId')?.disable();
+		this.addForm.get('priority')?.disable();
+		if (this.foundInterview?.interviewType === this.interview_Type.ONLINE_GG_MEET) {
+			this.addForm.get('addressOrStartURL')?.disable();
+			this.addForm.get('detailLocationOrJoinURL')?.disable();
+		}
 	}
 
-	public log() {
-		console.log('this.ggMeetService.accessToken', this.ggMeetService.accessToken);
-		console.log('this.ggMeetService.scope', this.ggMeetService.scope);
-		console.log('this.ggMeetService.accessTokenExpiration', this.ggMeetService.accessTokenExpiration);
-		console.log(' this.ggMeetService.identityClaims', this.ggMeetService.identityClaims);
-		console.log(' this.ggMeetService.identityClaims[name]', this.ggMeetService.identityClaims['name'])
-		this.ggMeetService.getAllMyCalendars().subscribe((data) => {
-			console.log('all calendars: ', data);
-		});
-	}
+	// public googleLogin() {
+	// 	if (typeof window !== 'undefined')
+	// 		this.ggMeetService.loginWithPopup('/interviews');
+	// }
 
-	private callApiCreateMeet() {
-		// const meetingDate = this.addForm.get('meetingDate')?.value;
-		// const startTime = this.addForm.get('startTime')?.value;
-		// const endTime = this.addForm.get('endTime')?.value;
-		// console.log('meeting dateTime', this.createMeetingDateTime(meetingDate, startTime));
-		// console.log('this.createDuration(startTime, endTime),', this.createDuration(startTime, endTime));
-		// const meetingData: ZoomMeeting = {
-		// 	topic: `${this.recruiter.company?.companyName} Interview`,
-		// 	default_password: false,
-		// 	type: 2,
-		// 	start_time: this.createMeetingDateTime(meetingDate, startTime),
-		// 	duration: this.createDuration(startTime, endTime),
-		// 	timezone: 'Asia/Saigon',
-		// 	agenda: `${this.recruiter.company?.companyName} Interview`,
-		// 	settings: {
-		// 		host_video: false,
-		// 		participant_video: false,
-		// 		join_before_host: true,
-		// 		mute_upon_entry: true,
-		// 		use_pmi: false,
-		// 		watermark: true,
-		// 		approval_type: 0,
-		// 		audio: 'both',
-		// 		auto_recording: "none",
-		// 		// alternative_hosts: this.recruiter.user?.email,
-		// 	}
-		// }
-		// return this.ggMeetService.callApiCreateScheduledMeeting(meetingData);
-	}
+	// public log() {
+	// 	console.log('this.ggMeetService.accessToken', this.ggMeetService.accessToken);
+	// 	console.log('this.ggMeetService.scope', this.ggMeetService.scope);
+	// 	console.log('this.ggMeetService.accessTokenExpiration', this.ggMeetService.accessTokenExpiration);
+	// 	console.log(' this.ggMeetService.identityClaims', this.ggMeetService.identityClaims);
+	// 	console.log(' this.ggMeetService.identityClaims[name]', this.ggMeetService.identityClaims['name'])
+	// 	this.ggMeetService.getAllMyCalendars()
+	// 		.subscribe((data) => {
+	// 			console.log('all calendars: ', data);
+	// 		});
+	// }
+
+	// private callApiCreateMeet() {
+	// 	// const meetingDate = this.addForm.get('meetingDate')?.value;
+	// 	// const startTime = this.addForm.get('startTime')?.value;
+	// 	// const endTime = this.addForm.get('endTime')?.value;
+	// 	// console.log('meeting dateTime', this.createMeetingDateTime(meetingDate, startTime));
+	// 	// console.log('this.createDuration(startTime, endTime),', this.createDuration(startTime, endTime));
+	// 	// const meetingData: ZoomMeeting = {
+	// 	// 	topic: `${this.recruiter.company?.companyName} Interview`,
+	// 	// 	default_password: false,
+	// 	// 	type: 2,
+	// 	// 	start_time: this.createMeetingDateTime(meetingDate, startTime),
+	// 	// 	duration: this.createDuration(startTime, endTime),
+	// 	// 	timezone: 'Asia/Saigon',
+	// 	// 	agenda: `${this.recruiter.company?.companyName} Interview`,
+	// 	// 	settings: {
+	// 	// 		host_video: false,
+	// 	// 		participant_video: false,
+	// 	// 		join_before_host: true,
+	// 	// 		mute_upon_entry: true,
+	// 	// 		use_pmi: false,
+	// 	// 		watermark: true,
+	// 	// 		approval_type: 0,
+	// 	// 		audio: 'both',
+	// 	// 		auto_recording: "none",
+	// 	// 		// alternative_hosts: this.recruiter.user?.email,
+	// 	// 	}
+	// 	// }
+	// 	// return this.ggMeetService.callApiCreateScheduledMeeting(meetingData);
+	// }
 
 	private createDuration(startTime: string, endTime: string) {
 		// console.log('startTime', startTime)

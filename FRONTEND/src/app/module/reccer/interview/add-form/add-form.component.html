@@ -1,8 +1,8 @@
 <div class="d-flex flex-column w-100 h-100"
 	style="padding: 30px; background: linear-gradient(to right, #364cc7, #cf6868); height: 500px; overflow-y: scroll;">
-	<div class="login-button">
+	<!-- <div class="login-button">
 		<div id="google-login-button" class="login-button btn btn-primary" (click)="this.log()">CONSOLE LOG</div>
-	</div>
+	</div> -->
 	@if (this.foundInterview) {
 	<div class="fs-4 mx-auto text-white mb-3" style="font-weight: 500;">EDIT INTERVIEW</div>
 	}
@@ -65,7 +65,14 @@
 
 		</div>
 
-		<section class="w-100 p-3 mb-3"
+		<mat-form-field class="w-100">
+			<mat-label>Type</mat-label>
+			<mat-select formControlName="interviewType">
+				<mat-option [value]="this.interview_Type.FACE2FACE">FACE TO FACE</mat-option>
+				<mat-option [value]="this.interview_Type.ONLINE_GG_MEET">ONLINE BY GG MEET</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<!-- <section class="w-100 p-3 mb-3"
 			style="background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
 			<p class="my-2"><mat-slide-toggle formControlName="onlineMeeting"> Online Meeting</mat-slide-toggle>
 			</p>
@@ -89,7 +96,7 @@
 			<button class="px-3" (click)="this.googleLogin()" mat-raised-button color="accent">Login With
 				Google</button>
 			}
-		</section>
+		</section> -->
 
 		<mat-form-field class=" w-100">
 			<mat-label>Address or Start URL For Interviewer</mat-label>
@@ -146,10 +153,7 @@
 					color="warn">Cancel</button>
 				}
 				@else {
-				<button class="w-25" mat-raised-button
-					(click)="this.isEditing = true; this.addForm.enable();
-				this.addForm.get('positionId')?.disable(); this.addForm.get('applicationId')?.disable(); this.addForm.get('priority')?.disable()"
-					color="primary">Edit</button>
+				<button class="w-25" mat-raised-button (click)="this.enableForm()" color="primary">Edit</button>
 				}
 			</div>
 

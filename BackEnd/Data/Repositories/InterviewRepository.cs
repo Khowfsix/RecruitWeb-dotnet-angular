@@ -88,6 +88,11 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
             query = query.Where(e => e.Candidate_Status.Equals(interviewFilter.CandidateStatus.Value));
         }
 
+        if (interviewFilter.InterviewType.HasValue)
+        {
+            query = query.Where(e => e.InterviewType.Equals(interviewFilter.InterviewType.Value));
+        }
+
         if (interviewFilter.CompanyStatus.HasValue)
         {
             query = query.Where(e => e.Company_Status.Equals(interviewFilter.CompanyStatus.Value));

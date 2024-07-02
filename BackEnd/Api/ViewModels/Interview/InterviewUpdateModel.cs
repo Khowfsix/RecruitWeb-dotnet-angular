@@ -5,7 +5,8 @@ namespace Api.ViewModels.Interview
         public Guid InterviewerId { get; set; }
         public Guid RecruiterId { get; set; }
         public int? Priority { get; set; }
-        public string? Notes { get; set; }
+        public string? Notes { get; set; } 
+        public int InterviewType { get; set; }
         public string AddressOrStartURL { get; set; }
         public string DetailLocationOrJoinURL { get; set; }
         public DateTime MeetingDate { get; set; }

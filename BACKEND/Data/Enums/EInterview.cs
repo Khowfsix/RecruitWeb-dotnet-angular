@@ -12,4 +12,9 @@
         PASSED_N_MAILED = 102011,
         FAILED = 202020,
     }
+    public enum EInterviewType
+    {
+        FACE2FACE = 203010,
+        ONLINE_GG_MEET = 203020,
+    }
 }

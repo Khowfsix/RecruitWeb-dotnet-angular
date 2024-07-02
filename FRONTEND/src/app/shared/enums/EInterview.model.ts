@@ -9,3 +9,8 @@ export enum Interview_CompanyStatus {
 	PASSED_N_MAILED = 202011,
 	FAILED = 202020,
 }
+
+export enum Interview_Type {
+	FACE2FACE = 203010,
+	ONLINE_GG_MEET = 203020,
+}

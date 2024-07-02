@@ -10,12 +10,12 @@ import { WINDOW } from './window.token';
 export class GGMeetService {
 	private authConfig: AuthConfig = {
 		issuer: 'https://accounts.google.com',
-		redirectUri: `${this._window && this._window.location ? this._window.location.origin : ''}/meet/login/callback/`,
+		redirectUri: `${this._window.location.origin}/meet/login/callback/`,
 		clientId: '402442749760-23gqfj74lcb44tt794kskrud80389vgm.apps.googleusercontent.com',
 		scope: 'openid profile email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.events.readonly',
 		strictDiscoveryDocumentValidation: false,
 		showDebugInformation: true,
-		silentRefreshRedirectUri: this._window && this._window.location ? `${this._window.location.origin}/silent-refresh.html` : undefined,
+		silentRefreshRedirectUri: `${this._window.location.origin}/silent-refresh.html`,
 		useSilentRefresh: true,
 	};
 
@@ -51,15 +51,15 @@ export class GGMeetService {
 
 	public getAllMyCalendars() {
 		// DEVELOPMENT
-		const url = '/proxy-server/https://www.googleapis.com/calendar/v3/users/me/calendarList'
+		// const url = '/proxy-server/https://www.googleapis.com/calendar/v3/users/me/calendarList'
 
 		// DEPLOYMENT
-		// const url = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
+		const url = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
 		const headers = new HttpHeaders({
-			'Authorization': 'Bearer ' + this.oauthService.getAccessToken(),
+			Authorization: 'Bearer ' + this.oauthService.getAccessToken(),
 			'Content-Type': 'application/json'
 		});
-		return this.http.get(url, { headers });
+		return this.http.get(url, { headers: headers });
 	}
 
 	// public creatEventIncludeMeeting() {

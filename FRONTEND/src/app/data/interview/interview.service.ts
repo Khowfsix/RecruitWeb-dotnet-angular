@@ -44,6 +44,9 @@ export class InterviewService {
 		if (interviewFilterModel.positionId) {
 			params += `&positionId=${interviewFilterModel.positionId}`;
 		}
+		if (interviewFilterModel.interviewType) {
+			params += `&interviewType=${interviewFilterModel.interviewType}`;
+		}
 		if (interviewFilterModel.search) {
 			params += `&search=${interviewFilterModel.search}`;
 		}

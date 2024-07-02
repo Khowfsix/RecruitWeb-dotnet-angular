@@ -18,6 +18,7 @@ public partial class Interview
     //public Guid? ResultId { get; set; }
     public string? Notes { get; set; }
     public bool IsDeleted { get; set; }
+    public int InterviewType { get; set; }
     public virtual Application Application { get; set; }
     public virtual Interviewer Interviewer { get; set; }
     public virtual Recruiter Recruiter { get; set; }

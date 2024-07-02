@@ -1,4 +1,4 @@
-import { Interview_CandidateStatus, Interview_CompanyStatus } from "../../shared/enums/EInterview.model";
+import { Interview_CandidateStatus, Interview_CompanyStatus, Interview_Type } from "../../shared/enums/EInterview.model";
 import { Application } from "../application/application.model"
 import { Interviewer } from "../interviewer/interviewer.model"
 import { Recruiter } from "../recruiter/recruiter.model"
@@ -22,6 +22,7 @@ export class Interview {
 	detailLocationOrJoinURL?: string;
 	meetingDate?: Date;
 	startTime?: string;
+	interviewType?: Interview_Type;
 	rounds?: Round[];
 }
 
@@ -34,5 +35,6 @@ export class InterviewFilterModel {
 	toTime?: string;
 	fromDate?: Date;
 	toDate?: Date;
+	interviewType?: Interview_Type;
 	positionId?: string;
 }
