@@ -82,6 +82,9 @@ export class HeaderComponent {
 		if (!option) {
 			this._router.navigate(['/positions']);
 		}
+		else if (option === 'applied-jobs') {
+			this._router.navigate(['/application-history']);
+		}
 	}
 
 	subscribeToLoginStatus() {

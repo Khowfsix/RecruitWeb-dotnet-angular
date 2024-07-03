@@ -14,6 +14,7 @@ import { ApplicationService } from '../../../data/application/application.servic
 import { Application } from '../../../data/application/application.model';
 import { PermissionService } from '../../../core/services/permission.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MatIconModule } from '@angular/material/icon';
 
 export type isAvalable = "available" | "full" | "outOfDate" | "reapply";
 
@@ -23,7 +24,8 @@ export type isAvalable = "available" | "full" | "outOfDate" | "reapply";
 	imports: [
 		CommonModule,
 		MatTabsModule,
-		MatButtonModule
+		MatButtonModule,
+		MatIconModule
 	],
 	templateUrl: './position-detail.component.html',
 	styleUrl: './position-detail.component.css'

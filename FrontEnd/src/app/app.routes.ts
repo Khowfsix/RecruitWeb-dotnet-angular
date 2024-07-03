@@ -1,6 +1,7 @@
 import { Type } from '@angular/core';
 import { Route, Routes } from '@angular/router';
 import { AuthGuard } from './core/guard/auth.guard';
+import { CandidateJobAppliedComponent } from './module/application/candidate-job-applied/candidate-job-applied.component';
 import { CandidateProfileComponent } from './module/cv/candidate-profile/candidate-profile.component';
 import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
 import { CvComponent } from './module/cv/cv.component';
@@ -97,6 +98,7 @@ export const routes: Routes = [
 	createRouteWithRoles('cv', CvComponent, [role.CANDIDATE], 'Cv Management'),
 	createRouteWithRoles('profile', CandidateProfileComponent, [role.CANDIDATE], 'Candidate Profile'),
 	createRouteWithRoles('cv-manage', CvManageComponent, [role.CANDIDATE], 'Cv Manage'),
+	createRouteWithRoles('application-history', CandidateJobAppliedComponent, [role.CANDIDATE], 'Jobs applied'),
 	// createRouteWithRoles('cv/candidateProfile', CandidateProfileComponent, [role.CANDIDATE]),
 	// createRouteWithRoles('cv/cvManage', CvManageComponent, [role.CANDIDATE]),
 	// createRouteWithRoles('cv/jobPreference', JobPreferenceComponent, [role.CANDIDATE]),
