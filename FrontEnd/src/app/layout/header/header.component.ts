@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -12,6 +12,8 @@ import { LogoutDialogComponent } from '../../module/auth/logout-dialog/logout-di
 // import { jwtDecode, JwtPayload } from 'jwt-decode';
 // import { nameTypeInToken } from '../../core/constants/token.constants';
 import { PermissionService } from '../../core/services/permission.service';
+import { CategoryPosition } from '../../data/categoryPosition/category-position.model';
+import { CategoryPositionService } from '../../data/categoryPosition/category-position.service';
 
 @Component({
 	selector: 'app-header',
@@ -29,19 +31,28 @@ import { PermissionService } from '../../core/services/permission.service';
 export class HeaderComponent {
 	_user: string | null = this._cookieService.get('jwt');
 	_isAdmin: boolean = false;
+	isMenuOpen = false;
+	listCategoryJobs: CategoryPosition[] = [];
 
 	@Input() deviceXs: boolean | null = null;
-	// @ViewChild('jobMenuTrigger') jobMenuTrigger: MatMenuTrigger = new MatMenuTrigger();
+	@ViewChild(MatMenuTrigger) menuTrigger?: MatMenuTrigger;
+
 
 	constructor(
 		public _authService: AuthService,
-		private _permService: PermissionService,
+		private _categoryPositionService: CategoryPositionService,
 
+		private _permService: PermissionService,
 		private _router: Router,
 		private _cookieService: CookieService,
 		public _matdialog: MatDialog) {
+
 		this.subscribeToLoginStatus();
-		// console.log(this.deviceXs);
+		this._categoryPositionService.getAllCategoryPositions().subscribe(
+			(data) => {
+				this.listCategoryJobs = data;
+			}
+		);
 	}
 
 
@@ -87,8 +98,6 @@ export class HeaderComponent {
 		});
 	}
 
-
-
 	updateHeaderForLoggedInUser() {
 		// logic to update header for logged-in user
 		this._user = this._cookieService.get('jwt');
@@ -118,5 +127,26 @@ export class HeaderComponent {
 
 	handleRouteToAdminConsole() {
 		this._router.navigate(['/admin'])
+	}
+
+
+	handleRouteToJobsWithCategory(category: string) {
+		console.log(category);
+	}
+
+	openMenu() {
+		if (this.menuTrigger) {
+			setTimeout(() => {
+				this.menuTrigger!.openMenu();
+			}, 300);
+		}
+	}
+
+	closeMenu() {
+		if (this.menuTrigger) {
+			setTimeout(() => {
+				this.menuTrigger!.closeMenu();
+			}, 300);
+		}
 	}
 }

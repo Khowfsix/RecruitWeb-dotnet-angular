@@ -9,16 +9,41 @@
 
 			<div class="d-none d-md-inline">
 				<!-- <button mat-button (click)="handleRouteToJobs()">All Jobs</button> -->
-				<button mat-button [matMenuTriggerFor]="menuJobs">
-					All Jobs
-					<mat-icon class="mat-18">arrow_drop_down</mat-icon>
+				<button mat-button [matMenuTriggerFor]="menuJobs" (mouseenter)="openMenu()">
+					Jobs
+					<mat-icon class="mat-18">cases</mat-icon>
 				</button>
-				<mat-menu #menuJobs="" xPosition="before" yPosition="below">
-					<button mat-menu-item (click)="handleRouteToJobs()">All Jobs</button>
-					<button mat-menu-item (click)="handleRouteToJobs('applied jobs')">Jobs applied</button>
-					<button mat-menu-item (click)="handleRouteToJobs('')">Jobs applied</button>
+				<mat-menu #menuJobs="matMenu" xPosition="before" yPosition="below">
+					<button mat-menu-item (click)="handleRouteToJobs()">
+						<mat-icon class="mat-18">search</mat-icon>
+						All Jobs
+					</button>
+					<button mat-menu-item [matMenuTriggerFor]="menuJobsWithCategory">
+						<mat-icon class="mat-18">category</mat-icon>
+						Jobs with category
+					</button>
+					<button mat-menu-item (click)="handleRouteToJobs('applied jobs')">
+						Jobs applied
+						<mat-icon class="mat-18">mail</mat-icon>
+					</button>
 				</mat-menu>
-				<button mat-button (click)="handleRouteToCompanies()">Companies</button>
+
+				<mat-menu
+					#menuJobsWithCategory="matMenu"
+					x-position="after"
+					y-position="below"
+					[overlapTrigger]="false">
+					@for (category of listCategoryJobs; track $index) {
+					<button mat-menu-item (click)="handleRouteToJobsWithCategory(category.categoryPositionName!)">
+						{{ category.categoryPositionName }}
+					</button>
+					}
+				</mat-menu>
+
+				<button mat-button (click)="handleRouteToCompanies()">
+					Companies
+					<mat-icon class="mat-18">business</mat-icon>
+				</button>
 				<button mat-button>Events</button>
 			</div>
 		</div>
