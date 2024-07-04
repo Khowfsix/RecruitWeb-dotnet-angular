@@ -66,6 +66,11 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
                     break;
             }
         }
+
+        if (interviewFilter.PositionId.HasValue)
+        {
+            query = query.Where(e => e.Application.PositionId ==  interviewFilter.PositionId);
+        }
       
 
         if (!string.IsNullOrEmpty(interviewFilter.Search))
@@ -81,6 +86,11 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
         if (interviewFilter.CandidateStatus.HasValue)
         {
             query = query.Where(e => e.Candidate_Status.Equals(interviewFilter.CandidateStatus.Value));
+        }
+
+        if (interviewFilter.InterviewType.HasValue)
+        {
+            query = query.Where(e => e.InterviewType.Equals(interviewFilter.InterviewType.Value));
         }
 
         if (interviewFilter.CompanyStatus.HasValue)

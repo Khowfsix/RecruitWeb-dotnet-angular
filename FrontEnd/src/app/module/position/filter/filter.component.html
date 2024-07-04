@@ -17,12 +17,12 @@
 				<div class="mb-3 custom-formfield">
 					<mat-label>Salary:</mat-label>
 					<div class="d-flex flex-row mt-2">
-						<mat-form-field>
-							<input matInput type="number" [value]="formGroup.get('fromSalary')?.value"
+						<mat-form-field class="w-50">
+							<input matInput class="w-100" type="number" [value]="formGroup.get('fromSalary')?.value"
 								(change)="this.setValue($event, 'fromSalary')" />
 						</mat-form-field>
-						<mat-form-field>
-							<input matInput type="number" [value]="this.formGroup.get('toSalary')?.value"
+						<mat-form-field class="w-50">
+							<input matInput class="w-100" type="number" [value]="this.formGroup.get('toSalary')?.value"
 								(change)="this.setValue($event, 'toSalary')" />
 						</mat-form-field>
 					</div>
@@ -40,12 +40,14 @@
 				<div class="mb-3 custom-formfield">
 					<mat-label>Hiring Quantity:</mat-label>
 					<div class="d-flex flex-row mt-2">
-						<mat-form-field>
-							<input matInput type="number" [value]="this.formGroup.get('fromMaxHiringQty')?.value"
+						<mat-form-field class="w-50">
+							<input matInput class="w-100" type="number"
+								[value]="this.formGroup.get('fromMaxHiringQty')?.value"
 								(change)="this.setValue($event, 'fromMaxHiringQty')" />
 						</mat-form-field>
-						<mat-form-field>
-							<input matInput type="number" [value]="this.formGroup.get('toMaxHiringQty')?.value"
+						<mat-form-field class="w-50">
+							<input matInput class="w-100" type="number"
+								[value]="this.formGroup.get('toMaxHiringQty')?.value"
 								(change)="this.setValue($event, 'toMaxHiringQty')" />
 						</mat-form-field>
 					</div>
@@ -58,7 +60,7 @@
 					</mat-slider>
 				</div>
 
-				<div class="my-2">
+				<div class="my-2 mb-lg-0 mb-4">
 					<mat-form-field style="width: 100%;">
 						<mat-label>Time</mat-label>
 						<mat-date-range-input [rangePicker]="picker">

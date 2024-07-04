@@ -1,19 +1,20 @@
 <div class="container">
-	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
+	<div class="w-100 d-flex flex-row justify-content-center">
 		<div class="fs-3 p-4" style="margin: auto; margin-top: 50px; margin-bottom: 20px;">APPLICATION LIST</div>
 	</div>
 	<div class="mt-2 mb-2 d-flex me-4 flex-row-reverse fs-3">
 		Result count: {{this.fetchedApplications?.length}}
 	</div>
-	<div class="d-flex flex-row" style="height: fit-content; margin-bottom: 20px;">
-		<div class="p-2 rounded-3" style="width: 25%; background-color: rgb(37, 114, 176); height: fit-content;">
-			<div class="mt-2 ms-4" style="width: 100%; color: white; font-size: 18px; font-weight: 600;">FILTER</div>
-			<form class="p-4" style="width: 100%;" [formGroup]="this.filterForm">
-				<mat-form-field style="width: 100%;">
+	<!-- start -->
+	<div class="row g-0" style="height: fit-content; margin-bottom: 20px;">
+		<div class="col-lg-3 col-md-12 p-2 rounded-3" style="background-color: rgb(37, 114, 176); height: fit-content;">
+			<div class="mt-2 ms-4 w-100" style="color: white; font-size: 18px; font-weight: 600;">FILTER</div>
+			<form class="p-4 w-100" [formGroup]="this.filterForm">
+				<mat-form-field class="w-100">
 					<mat-label>Search</mat-label>
 					<input matInput type="text" formControlName="search" placeholder="Candidate name, skill name">
 				</mat-form-field>
-				<mat-form-field style="width: 100%;">
+				<mat-form-field class="w-100">
 					<mat-label>Sort</mat-label>
 					<mat-select formControlName="sortString">
 						<mat-option value="CreatedTime_DESC">Newest</mat-option>
@@ -22,7 +23,7 @@
 						<mat-option value="Priority_ASC">Ascending Prioriry</mat-option>
 					</mat-select>
 				</mat-form-field>
-				<!-- <mat-form-field style="width: 100%;">
+				<!-- <mat-form-field class="w-100">
 					<mat-label>Candidate Status</mat-label>
 					<mat-select formControlName="candidateStatus">
 						<mat-option value=""></mat-option>
@@ -30,7 +31,7 @@
 						<mat-option value="{{this.application_CandidateStatus.Passed}}">Passed</mat-option>
 					</mat-select>
 				</mat-form-field> -->
-				<mat-form-field style="width: 100%;">
+				<mat-form-field class="w-100">
 					<mat-label>Status</mat-label>
 					<mat-select formControlName="companyStatus">
 						<mat-option value=""></mat-option>
@@ -53,13 +54,13 @@
 							value="{{this.application_CompanyStatus.REJECTED}}">REJECTED</mat-option>
 					</mat-select>
 				</mat-form-field>
-				<section
-					style="width: 100%; background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+				<section class="w-100"
+					style="background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
 					<p class="p-3"><mat-slide-toggle formControlName="notInBlackList"> Not in
 							blacklist</mat-slide-toggle>
 					</p>
 				</section>
-				<mat-form-field style="width: 100%;" class="mt-2">
+				<mat-form-field class="w-100 mt-2">
 					<mat-label>Date</mat-label>
 					<mat-date-range-input [rangePicker]="picker">
 						<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
@@ -80,17 +81,17 @@
 				</mat-form-field>
 			</form>
 		</div>
-		<div class="p-2" style="width: 75%; height: 570px; overflow-y: scroll;">
+		<div class="col-lg-9 col-md-12 p-2" style="height: 570px; overflow-y: scroll;">
 			@for (item of fetchedApplications ; track item) {
-			<div class="d-flex flex-row align-items-center p-2 my-4" style="width: 100%; height: fit-content;">
-				<div class="d-flex flex-row "
-					style="width: 60%; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; width: 60%; height: 150px; background-color: rgb(241, 199, 136);">
-					<div style="width: 80%;">
-						<div class="p-1 ps-4 shadow"
-							style="color: #ffffff; font-weight: 500; font-size: 17px; border-top-left-radius: 0.25rem; border-bottom-right-radius: 0.9rem; width: 100%; background-color: rgb(0, 32, 149);">
+			<div class="row g-0 align-items-center py-3 my-4 w-100" style="height: fit-content;">
+				<div class="col-lg-6 col-md-12 col-sm-12"
+					style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; height: 150px; background-color: rgb(241, 199, 136);">
+					<div class="w-75">
+						<div class="p-1 px-4 w-100 shadow"
+							style="color: #ffffff; font-weight: 500; font-size: 17px; border-top-left-radius: 0.25rem; border-bottom-right-radius: 0.9rem; background-color: rgb(0, 32, 149);">
 							{{item.createdTime | date:'fullDate'}}
 						</div>
-						<div class="p-2 mt-2 d-flex flex-row" style="width: 100%;">
+						<div class="p-2 mt-2 d-flex flex-row w-100">
 							@for (candidateHasSkill of item.cv?.candidate?.candidateHasSkills; track candidateHasSkill)
 							{
 							<div matTooltip="{{candidateHasSkill.level}}">
@@ -145,12 +146,12 @@
 
 					</div>
 				</div>
-				<div class="rounded-2 d-flex flex-column justify-content-between"
-					style="border: rgb(106, 106, 106) solid 2px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); width: 400px; background-color: rgb(241, 199, 136); color:black; font-size: 16px; font-weight: 500; height: 170px;">
-					<div class="d-flex flex-row">
-						<div class=" ps-3 pe-3 pt-4" style="width: 85%; font-size: 20px;">
-							<div class="d-flex flex-row" style="width: 100%;">
-								<div style="width: 100%;">{{item.cv?.candidate?.user?.fullName| uppercase }}</div>
+				<div class="col-lg-4 col-md-6 col-sm-12 rounded-2 d-flex flex-column justify-content-between"
+					style="border: rgb(106, 106, 106) solid 2px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); background-color: rgb(241, 199, 136); color:black; font-size: 16px; font-weight: 500; height: 170px;">
+					<div class="row px-3">
+						<div class="pe-3 pt-4 col-9" style="font-size: 20px;">
+							<div class="d-flex flex-row w-100">
+								<div class="w-100">{{item.cv?.candidate?.user?.fullName| uppercase }}</div>
 								@if (this.isInBlackList(item.cv?.candidateId)) {
 								<div style="font-size: 30px; color: black; width: 14%;"
 									matTooltip="This candidate is in blacklist">
@@ -159,13 +160,21 @@
 								}
 							</div>
 						</div>
-						<div class="">
+						<div class="col-3">
 							<div matRipple [matRippleCentered]="true" style="height: fit-content; width: fit-content;"
 								class="custom-button rounded-5 p-2 mt-3">
 								<div style="height: 24px; width: 24px;" [matMenuTriggerFor]="menu">
 									<mat-icon>more_vert</mat-icon>
 								</div>
 								<mat-menu style="font-size: 15px;" #menu="matMenu">
+									<button
+										[disabled]="(item.company_Status !== this.application_CompanyStatus.CONFIRM_N_MAILED) || (item.interviews?.length !== 0)"
+										class="bg-success text-white"
+										(click)="openAddInterviewDialog(item.applicationId, '100ms' , '0ms' )"
+										mat-menu-item><i class="bi bi-person-add"></i>
+										Create
+										Interview</button>
+
 									<button class="bg-secondary text-white"
 										(click)=" openViewApplicationHistoryDialog(item.cv?.candidateId, '100ms' , '0ms' )"
 										mat-menu-item><i class="bi bi-clock-history"></i>
@@ -217,33 +226,37 @@
 							</div>
 						</div>
 					</div>
-					<div class=" ps-3 pe-3 pb-4" style="font-size: 17px; line-height: 25px; width: 350px;">
-						<span>
+					<div class="ps-3 pe-3 pb-4" style="font-size: 17px; line-height: 25px;">
+						<div>
 							Date of birth:
 							<span style="font-weight:400;">{{item.cv?.candidate?.user?.dateOfBirth
 								|
 								date:'dd/MM/yyyy' }}</span>
-						</span>
-						<div style="font-weight: 400; overflow: hidden;
-						text-overflow: ellipsis;">{{item.cv?.candidate?.aboutMe}}</div>
-						<div>CV: <a href="{{item.cv?.cvPdf}}">{{item.cv?.cvName}}</a></div>
+						</div>
+						<div class="w-100" matTooltip="{{item.cv?.candidate?.aboutMe}}" style="white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis; font-weight: 400; ">
+							{{item.cv?.candidate?.aboutMe}}</div>
+						<div class="w-100">CV: <a href="{{item.cv?.cvPdf}}">{{item.cv?.cvName}}</a></div>
 					</div>
 				</div>
-				<div class="d-flex ms-3 flex-column">
+				<div class="col-lg-2 col-md-6 col-sm-12 py-2 d-flex flex-column align-items-center">
 					@if (item.cv?.candidate?.user?.imageURL) {
-					<img style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border: black solid 2px; border-radius: 50%; width: 160px; height: 160px;"
+					<img class="ms-2"
+						style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border: black solid 2px; border-radius: 50%; width: 160px; height: 160px;"
 						src="{{item.cv?.candidate?.user?.imageURL}}" alt="{{item.cv?.candidate?.user?.fullName}}" />
 					}
 					@else {
-					<img style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-radius: 50%; width: 160px; height: 160px; border: black solid 1px;"
+					<img class="ms-2"
+						style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); border-radius: 50%; width: 160px; height: 160px; border: black solid 1px;"
 						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
 						alt="{{item.cv?.candidate?.user?.fullName}}" />
 					}
 				</div>
-
 			</div>
 			}
 		</div>
 
 	</div>
+	<!-- End -->
 </div>

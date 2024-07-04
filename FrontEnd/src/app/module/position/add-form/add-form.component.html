@@ -33,19 +33,14 @@
 			</mat-form-field>
 
 			@if (this.enterMinMaxSalaryRange) {
-			<div class="d-flex flex-row">
-				<mat-form-field class="" style="width: 120%">
-					<mat-label
-						><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px"></i> Min Salary
-						(USD)</mat-label
-					>
-					<input
-						oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-						type="number"
-						matInput
-						placeholder=""
-						formControlName="minSalary" />
-					<mat-hint style="font-size: 13px; font-weight: 500">Blank meaning can be negotiated</mat-hint>
+			<div class="row">
+				<mat-form-field class="col-lg-6">
+					<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
+						Min Salary (USD)</mat-label>
+					<input oninput="this.value=this.value.replace(/[^0-9]/g,'')" type="number" matInput placeholder=""
+						formControlName="minSalary">
+					<mat-hint style="font-size: 13px; font-weight: 500;">Blank meaning can be
+						negotiated</mat-hint>
 
 					@if(addForm.get('minSalary')?.invalid){ @if(addForm.get('minSalary')?.hasError('required')){
 					<div style="color: red">Required.</div>
@@ -55,25 +50,24 @@
 					<div style="color: red">Max is 6 digits</div>
 					} }
 				</mat-form-field>
-				<mat-form-field class="ms-2" style="width: 120%">
-					<mat-label
-						><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px"></i> Max Salary
-						(USD)</mat-label
-					>
-					<input
-						oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-						type="number"
-						matInput
-						placeholder=""
-						formControlName="maxSalary" />
-					<mat-hint style="font-size: 13px; font-weight: 500">Blank meaning can be negotiated</mat-hint>
-					@if(addForm.get('maxSalary')?.invalid){ @if(addForm.get('maxSalary')?.hasError('required')){
-					<div style="color: red">Required.</div>
-					} @if(addForm.get('maxSalary')?.hasError('min')){
-					<div style="color: red">Min is 1</div>
-					} @if(addForm.get('maxSalary')?.hasError('max')){
-					<div style="color: red">Max is 6 digits</div>
-					} }
+				<mat-form-field class="col-lg-6">
+					<mat-label><i class="bi bi-coin" style="color: rgb(150, 150, 42); font-size: 20px;"></i>
+						Max Salary (USD)</mat-label>
+					<input oninput="this.value=this.value.replace(/[^0-9]/g,'')" type="number" matInput placeholder=""
+						formControlName="maxSalary">
+					<mat-hint style="font-size: 13px; font-weight: 500;">Blank meaning can be
+						negotiated</mat-hint>
+					@if(addForm.get('maxSalary')?.invalid){
+					@if(addForm.get('maxSalary')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					@if(addForm.get('maxSalary')?.hasError('min')){
+					<div style="color: red;">Min is 1</div>
+					}
+					@if(addForm.get('maxSalary')?.hasError('max')){
+					<div style="color: red;">Max is 6 digits</div>
+					}
+					}
 				</mat-form-field>
 			</div>
 			@if(addForm.hasError('minMaxSalaryRequire')){

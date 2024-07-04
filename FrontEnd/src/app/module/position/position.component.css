@@ -1,18 +1,18 @@
 .custom-3-dot {
-    font-size: 22px;
-    cursor: pointer;
-    opacity: 0.6; 
-    transition: opacity 0.3s; 
+	font-size: 30px;
+	cursor: pointer;
+	opacity: 0.6;
+	transition: opacity 0.3s;
 }
 
 .custom-3-dot:hover {
-    opacity: 0.9; 
+	opacity: 0.9;
 }
 
 .custom-row {
-    transition: color 0.3s; 
+	transition: color 0.3s;
 }
 
 .custom-row:hover {
-    color: rgb(243, 151, 123);
+	color: rgb(243, 151, 123);
 }

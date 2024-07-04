@@ -1,9 +1,9 @@
-<div class="container border border-primary">
+<div class="container">
 	<div class="d-flex flex-row w-100 mt-4 justify-content-center">
 		<div class="fs-3 p-4 m-auto fw-bold">ALL EVENTS</div>
 	</div>
-	<div class="h-100 d-flex flex-row">
-		<div class="w-75 ">
+	<div class="h-100 row">
+		<div class="col-lg-9 mt-lg-0 mt-4 order-lg-1 order-2">
 			<div class="row height d-flex justify-content-center align-items-center py-2">
 				<div class="search-bar d-flex align-items-center">
 					<i class="fa fa-search fs-3" style="font-size: 17px;"></i>
@@ -13,16 +13,12 @@
 				</div>
 			</div>
 			<div class="px-2 mt-2 row align-items-center">
-				<div class="col"><button mat-raised-button color="primary" (click)="openAddFormDialog('100ms', '0ms')"
-						class="fs-5 py-2"><i class="bi bi-plus-circle fs-4"></i> Add
+				<div class="col-lg col-6"><button mat-raised-button color="primary"
+						(click)="openAddFormDialog('100ms', '0ms')" class="w-75 fs-5 py-4"><i
+							class="bi bi-plus-circle fs-4"></i> Add
 						new
 						event</button></div>
-				<div class="col d-flex justify-content-center">
-					<div class="fs-4">
-						Result Count: {{this.fetchedEvents?.length}}
-					</div>
-				</div>
-				<div class="col d-flex justify-content-end align-items-center">
+				<div class="col-lg col-6 d-flex justify-content-end align-items-center">
 					<div class="fs-4">Sort:</div>
 					<select class="ms-2 form-select border-1 border-dark shadow" style="width: fit-content;"
 						[formControl]='this.sortString' [value]="this.sortString" aria-label="Default select example">
@@ -31,6 +27,11 @@
 						<option class="p-2" value="StartDateTime_DESC">Start Date (Newest)</option>
 						<option class="p-2" value="StartDateTime_ASC">Start Date (Oldest)</option>
 					</select>
+				</div>
+				<div class="col-lg col-12 mt-lg-0 mt-3 d-flex justify-content-center">
+					<div class="fs-4">
+						Result Count: {{this.fetchedEvents?.length}}
+					</div>
 				</div>
 				<!-- <button mat-raised-button color="primary" class="fs-5 py-2"><i class="bi bi-plus-circle fs-4"></i> Add
 					new
@@ -45,7 +46,7 @@
 				<!-- for ... -->
 				@for (event of this.fetchedEvents; track event) {
 				<div class="border border-primary card text-white custom-selected"
-					style="width: 30%; height: 430px; margin: 15px; background: lightslategrey; box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.4);">
+					style="width: 280px; height: 430px; margin: 15px; background: lightslategrey; box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.4);">
 					<div class="h-50 image-container">
 						<img src="{{event.imageURL}}" class="card-img-top h-100" alt="Event image">
 						<button class="btn-position" [matMenuTriggerFor]="menu" mat-icon-button>
@@ -97,15 +98,12 @@
 				<!-- end for -->
 			</div>
 		</div>
-		<div class="w-25 mt-2">
-			<div style="width: 100%;" class="d-flex flex-row justify-content-center">
-				<div class="fs-4 p-4 m-auto fw-bold">FILTER</div>
-			</div>
-			<form class="p-4 mx-2 rounded-4 mt-1" style="background: linear-gradient(to right, #1732c8, #f32929);"
-				[formGroup]="
+		<div class="col-lg-3 order-lg-2 px-lg-0 px-4 order-1 mt-lg-2">
+			<form class="p-4 mx-2 shadow rounded-4 mt-1"
+				style="background: linear-gradient(to right, #1732c8, #f32929);" [formGroup]="
 				this.filterForm">
 
-				<mat-form-field class="mt-4" style="width: 100%;">
+				<mat-form-field class="mt-4 w-100">
 					<mat-label>Date</mat-label>
 					<mat-date-range-input [rangePicker]="picker">
 						<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
@@ -127,12 +125,12 @@
 
 				<div class="mt-3 mb-4 custom-formfield">
 					<mat-label style="font-size: 18px;">Max Participants:</mat-label>
-					<div class="d-flex flex-row mt-2">
-						<mat-form-field>
+					<div class="row mt-2">
+						<mat-form-field class="col">
 							<input matInput type="number" [value]="this.filterForm.get('fromMaxParticipants')?.value"
 								(change)="this.setValue($event, 'fromMaxParticipants')" />
 						</mat-form-field>
-						<mat-form-field>
+						<mat-form-field class="col">
 							<input matInput type="number" [value]="this.filterForm.get('toMaxParticipants')?.value"
 								(change)="this.setValue($event, 'toMaxParticipants')" />
 						</mat-form-field>

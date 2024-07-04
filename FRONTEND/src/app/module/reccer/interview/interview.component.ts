@@ -14,7 +14,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Interview_CandidateStatus, Interview_CompanyStatus } from '../../../shared/enums/EInterview.model';
+import { Interview_CandidateStatus, Interview_CompanyStatus, Interview_Type } from '../../../shared/enums/EInterview.model';
 import { InterviewService } from '../../../data/interview/interview.service';
 import { RecruiterService } from '../../../data/recruiter/recruiter.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -26,12 +26,13 @@ import { CustomDateTimeService } from '../../../shared/service/custom-datetime.s
 import { ExpandbuttonComponent } from "../../../shared/component/expandbutton/expandbutton.component";
 import { AddFormComponent } from './add-form/add-form.component';
 import { SendMultiEmailComponent } from './send-multi-email/send-multi-email.component';
-import { ApplicationService } from '../../../data/application/application.service';
-import { InterviewerService } from '../../../data/interviewer/interviewer.service';
 import { PositionService } from '../../../data/position/position.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MY_DAY_FORMATS } from '../../../core/constants/app.env';
 import { ToastrService } from 'ngx-toastr';
+import { AutocompleteComponent } from '../../../shared/component/inputs/autocomplete/autocomplete.component';
+import { CookieService } from 'ngx-cookie-service';
+import { GGMeetService } from '../../../shared/service/ggmeet.service';
 @Component({
 	selector: 'app-interview',
 	standalone: true,
@@ -42,6 +43,7 @@ import { ToastrService } from 'ngx-toastr';
 	templateUrl: './interview.component.html',
 	styleUrl: './interview.component.css',
 	imports: [
+		AutocompleteComponent,
 		MatMenuModule,
 		RouterModule,
 		MatDatepickerModule,
@@ -68,18 +70,30 @@ export class InterviewComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private interviewService: InterviewService,
 		private recruiterService: RecruiterService,
-		private applicationService: ApplicationService,
-		private interviewerService: InterviewerService,
+		private cookieService: CookieService,
+		// private applicationService: ApplicationService,
+		// private interviewerService: InterviewerService,
 		private customDateService: CustomDateTimeService,
 		private positionService: PositionService,
 		private authService: AuthService,
+		private ggmeetService: GGMeetService,
 	) { }
 
 	private filterSubject = new Subject<any>();
 	public recruiter?: Recruiter;
 	public interview_CompanyStatus: typeof Interview_CompanyStatus = Interview_CompanyStatus;
+	public interview_Type: typeof Interview_Type = Interview_Type;
 	public interview_CandidateStatus: typeof Interview_CandidateStatus = Interview_CandidateStatus;
 	public fetchedInterviews?: Interview[];
+	public positionData$ = this.positionService.getAllPositions(undefined, undefined, undefined, undefined, this.authService.getRecruiterId_OfUser())
+
+	public login() {
+		this.ggmeetService.loginWithPopup('/interviews');
+	}
+
+	public log() {
+		console.log('this.ggmeetService.accessTokenExpiration', this.ggmeetService.accessTokenExpiration);
+	}
 
 	public openEditFormDialog(interview: Interview, enterAnimationDuration: string,
 		exitAnimationDuration: string) {
@@ -197,11 +211,13 @@ export class InterviewComponent implements OnInit {
 		sortString: ['MeetingDate_DESC', []],
 		onlyMine: [false, []],
 		// candidateStatus: ['', []],
+		interviewType: [null, []],
 		companyStatus: ['', []],
 		fromTime: ['', []],
 		toTime: ['', []],
 		fromDate: [null, []],
 		toDate: [null, []],
+		positionId: ['', []],
 	});
 
 	private fetchInterviews(companyId?: string, interviewFilterModel?: any, sortString?: string) {
@@ -221,6 +237,10 @@ export class InterviewComponent implements OnInit {
 					// console.log('this.fetchedInterviews', this.fetchedInterviews)
 				});
 		}
+	}
+
+	public refreshOAuthService() {
+
 	}
 
 	ngOnInit(): void {

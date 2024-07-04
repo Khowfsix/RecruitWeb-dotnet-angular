@@ -1,5 +1,8 @@
 <div class="d-flex flex-column w-100 h-100"
 	style="padding: 30px; background: linear-gradient(to right, #364cc7, #cf6868); height: 500px; overflow-y: scroll;">
+	<!-- <div class="login-button">
+		<div id="google-login-button" class="login-button btn btn-primary" (click)="this.log()">CONSOLE LOG</div>
+	</div> -->
 	@if (this.foundInterview) {
 	<div class="fs-4 mx-auto text-white mb-3" style="font-weight: 500;">EDIT INTERVIEW</div>
 	}
@@ -14,15 +17,14 @@
 		<app-autocomplete class="slide-down" [formField]="'applicationId'" [valueField]="'applicationId'"
 			[labelField]="'cv.candidate.user.fullName'" [label]="'Candidate'" [placeholder]="'Please select'"
 			[observableOptions]="this.applicationData$" [formGroup]="this.addForm"></app-autocomplete>
-
 		}
 
 		<app-autocomplete class="slide-down" [formField]="'interviewerId'" [valueField]="'interviewerId'"
 			[labelField]="'user.fullName'" [label]="'Interviewer'" [observableOptions]="this.interviewerData$"
 			[formGroup]="this.addForm"></app-autocomplete>
 
-		<div class="d-flex flex-row w-100 mb-2">
-			<mat-form-field class="w-50">
+		<div class="row g-0 w-100 mb-2">
+			<mat-form-field class="col-lg-6 col-12">
 				<mat-label>Meeting Date</mat-label>
 				<input formControlName="meetingDate" oninput="this.value=this.value.replace(/[^0-9\/]/g,'')" matInput
 					[matDatepicker]="picker">
@@ -38,9 +40,9 @@
 				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-datepicker #picker></mat-datepicker>
 			</mat-form-field>
-			<div class="w-50">
-				<div class="d-flex flex-row w-100">
-					<mat-form-field class="ms-2 w-50">
+			<div class="col-lg-6 col-12">
+				<div class="d-flex ms-lg-2 flex-row w-100">
+					<mat-form-field class="w-50">
 						<mat-label>Start time</mat-label>
 						<input matInput type="time" placeholder="Start time" formControlName="startTime">
 						@if(addForm.get('startTime')?.invalid){
@@ -64,22 +66,56 @@
 		</div>
 
 		<mat-form-field class="w-100">
-			<mat-label>Address</mat-label>
-			<input type="text" style="resize: none;" matInput placeholder="Address" formControlName="address" />
-			@if(addForm.get('address')?.invalid){
-			@if(addForm.get('address')?.hasError('required')){
+			<mat-label>Type</mat-label>
+			<mat-select formControlName="interviewType">
+				<mat-option [value]="this.interview_Type.FACE2FACE">FACE TO FACE</mat-option>
+				<mat-option [value]="this.interview_Type.ONLINE_GG_MEET">ONLINE BY GG MEET</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<!-- <section class="w-100 p-3 mb-3"
+			style="background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+			<p class="my-2"><mat-slide-toggle formControlName="onlineMeeting"> Online Meeting</mat-slide-toggle>
+			</p>
+			@if (this.ggMeetService.isLoggedIn) {
+			<div class="row align-items-center">
+				<div class="col-6 fs-5 fw-bold">
+					Current Google Account:
+				</div>
+				<div class="col-6 row">
+					<div class="col-7 d-flex flex-row align-items-center ">
+						{{this.ggMeetService.identityClaims['name']}}
+						<img width="35px" height="35px" class="ms-2 rounded-5"
+							[src]="this.ggMeetService.identityClaims['picture']" />
+					</div>
+					<button class="col-5 px-3" (click)="this.ggMeetService.logout()" mat-raised-button
+						color="primary">Logout</button>
+				</div>
+			</div>
+			}
+			@else {
+			<button class="px-3" (click)="this.googleLogin()" mat-raised-button color="accent">Login With
+				Google</button>
+			}
+		</section> -->
+
+		<mat-form-field class=" w-100">
+			<mat-label>Address or Start URL For Interviewer</mat-label>
+			<input type="text" style="resize: none;" matInput placeholder="Address or Start URL For Interviewer"
+				formControlName="addressOrStartURL" />
+			@if(addForm.get('addressOrStartURL')?.invalid){
+			@if(addForm.get('addressOrStartURL')?.hasError('required')){
 			<div style="color: red;">Required.</div>
 			}
 			}
 		</mat-form-field>
 
 		<mat-form-field class="w-100">
-			<mat-label>Detail location</mat-label>
+			<mat-label>Detail location or Join URL For Candidate</mat-label>
 			<input type="text" style="resize: none;" matInput
-				placeholder="which room, which department,  etc.. inside the company."
-				formControlName="detailLocation" />
-			@if(addForm.get('detailLocation')?.invalid){
-			@if(addForm.get('detailLocation')?.hasError('required')){
+				placeholder="which room, which department,  etc.. inside the company or Join URL For Candidate."
+				formControlName="detailLocationOrJoinURL" />
+			@if(addForm.get('detailLocationOrJoinURL')?.invalid){
+			@if(addForm.get('detailLocationOrJoinURL')?.hasError('required')){
 			<div style="color: red;">Required.</div>
 			}
 			}
@@ -117,10 +153,7 @@
 					color="warn">Cancel</button>
 				}
 				@else {
-				<button class="w-25" mat-raised-button
-					(click)="this.isEditing = true; this.addForm.enable();
-				this.addForm.get('positionId')?.disable(); this.addForm.get('applicationId')?.disable(); this.addForm.get('priority')?.disable()"
-					color="primary">Edit</button>
+				<button class="w-25" mat-raised-button (click)="this.enableForm()" color="primary">Edit</button>
 				}
 			</div>
 

@@ -8,8 +8,8 @@ public partial class Interview
     public Guid ApplicationId { get; set; }
     public int? Company_Status { get; set; }
     public int? Candidate_Status { get; set; }
-    public string? Address { get; set; }
-    public string? DetailLocation { get; set; }
+    public string? AddressOrStartURL { get; set; }
+    public string? DetailLocationOrJoinURL { get; set; }
     public DateTime? MeetingDate { get; set; }
     public TimeSpan? StartTime { get; set; }
     public TimeSpan? EndTime { get; set; }
@@ -18,6 +18,7 @@ public partial class Interview
     //public Guid? ResultId { get; set; }
     public string? Notes { get; set; }
     public bool IsDeleted { get; set; }
+    public int InterviewType { get; set; }
     public virtual Application Application { get; set; }
     public virtual Interviewer Interviewer { get; set; }
     public virtual Recruiter Recruiter { get; set; }

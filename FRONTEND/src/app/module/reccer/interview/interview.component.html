@@ -1,26 +1,30 @@
+<div>
+	<button mat-button class="m-4" (click)="login()">LOGIN</button>
+	<button mat-button class="m-4" (click)="log()">LOG</button>
+</div>
 <div class="container" style="margin-top: 50px; margin-bottom: 50px;">
-	<div style="width: 100%;" class="d-flex flex-row justify-content-center">
+	<div class="w-100 d-flex flex-row justify-content-center">
 		<div class="fs-3 p-4 " style="margin: auto;">{{this.recruiter?.company?.companyName |
 			uppercase }}
 			INTERVIEWS
 		</div>
 	</div>
-	<div class="d-flex flex-row" style="height: fit-content;">
-		<div class="p-2 rounded-2 mt-4"
-			style="width: 25%; height: fit-content; border: green solid 1px; background: linear-gradient(to right, #1732c8, #f32929);">
-			<form class="p-4" style="width: 100%;" [formGroup]="this.filterForm">
-				<mat-form-field style="width: 100%;">
+	<div class="row" style="height: fit-content;">
+		<div class="col-lg-3 p-2 rounded-2 mt-4"
+			style="height: fit-content; border: green solid 1px; background: linear-gradient(to right, #1732c8, #f32929);">
+			<form class="p-4 w-100" [formGroup]="this.filterForm">
+				<mat-form-field class="w-100">
 					<mat-label>Search</mat-label>
 					<input matInput type="text" formControlName="search" placeholder="User name">
 				</mat-form-field>
 
-				<section
-					style="width: 100%; background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+				<section class="w-100"
+					style="background-color: #ffffff; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
 					<p class="p-3"><mat-slide-toggle formControlName="onlyMine"> Only Mine</mat-slide-toggle>
 					</p>
 				</section>
 
-				<mat-form-field style="width: 100%;">
+				<mat-form-field class="w-100">
 					<mat-label>Sort</mat-label>
 					<mat-select formControlName="sortString">
 						<mat-option value="MeetingDate_DESC">Newest</mat-option>
@@ -34,7 +38,21 @@
 					</mat-select>
 				</mat-form-field>
 
-				<mat-form-field style="width: 100%;">
+				<app-autocomplete [formField]="'positionId'" [valueField]="'positionId'" [labelField]="'positionName'"
+					[placeholder]="'Please select'" [label]="'Position'" [observableOptions]="this.positionData$"
+					[formGroup]="this.filterForm"></app-autocomplete>
+
+
+				<mat-form-field class="w-100">
+					<mat-label>Type</mat-label>
+					<mat-select formControlName="interviewType">
+						<mat-option [value]="null"></mat-option>
+						<mat-option [value]="this.interview_Type.FACE2FACE">FACE TO FACE</mat-option>
+						<mat-option [value]="this.interview_Type.ONLINE_GG_MEET">ONLINE BY GG MEET</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<mat-form-field class="w-100">
 					<mat-label>Status</mat-label>
 					<mat-select formControlName="companyStatus">
 						<mat-option value=""></mat-option>
@@ -51,18 +69,18 @@
 					</mat-select>
 				</mat-form-field>
 
-				<div class="d-flex flex-row">
-					<mat-form-field>
+				<div class="row">
+					<mat-form-field class="col-6">
 						<mat-label>From time</mat-label>
 						<input matInput type="time" placeholder="From time" formControlName="fromTime">
 					</mat-form-field>
-					<mat-form-field class="ms-2">
+					<mat-form-field class="col-6">
 						<mat-label>To time</mat-label>
 						<input matInput type="time" placeholder="To time" formControlName="toTime">
 					</mat-form-field>
 				</div>
 
-				<mat-form-field style="width: 100%;">
+				<mat-form-field class="w-100">
 					<mat-label>Date</mat-label>
 					<mat-date-range-input [rangePicker]="picker">
 						<input matStartDate oninput="this.value=this.value.replace(/[^0-9\/]/g,'')"
@@ -84,7 +102,7 @@
 
 			</form>
 		</div>
-		<div class="ms-2 p-2 rounded-1" style="width: 75%;">
+		<div class="col-lg-9 p-2 rounded-1">
 			<div class="mt-3 mb-3 d-flex flex-row">
 				<div (click)="this.openAddFormDialog('100ms', '0ms')">
 					<app-expandbutton notExpandedWidth="50px" color="primary" expandedWidth="200px"
@@ -134,19 +152,36 @@
 								{{item.endTime?.slice(0, 5)}}
 							</div>
 						</div>
+						<div class="py-1">
+							@switch (item.interviewType) {
+							@case (this.interview_Type.FACE2FACE) {
+							<div class="p-2 rounded-2 bg-warning fw-bold" style="width: fit-content;">
+								FACE TO FACE
+							</div>
+							}
+							@case (this.interview_Type.ONLINE_GG_MEET) {
+							<div class="p-2 rounded-2 fw-bold bg-success text-white" style="width: fit-content;">
+								ONLINE GOOGLE MEET
+							</div>
+							}
+							@default {
+							not match
+							}
+							}
+						</div>
 						<div class="mt-1 d-flex flex-row" style="line-height: 20px; font-weight: 400;">
 							<div>
 								<i class="bi bi-building-fill"></i>
-								{{item.address}}
+								{{item.addressOrStartURL}}
 							</div>
 							<div class="ms-auto">
-								{{item.detailLocation}}
+								{{item.detailLocationOrJoinURL}}
 							</div>
 						</div>
 					</div>
 
-					<div class="d-flex flex-row" style="width: 100%;">
-						<div class="fs-5 mt-4" style="width: 100%;">
+					<div class="d-flex flex-row w-100">
+						<div class="fs-5 mt-4 w-100">
 							<div class="heading fs-5 d-flex flex-row">
 								<div style="cursor: pointer;"
 									[routerLink]="['/positions/detail', item.application?.position?.positionId]">

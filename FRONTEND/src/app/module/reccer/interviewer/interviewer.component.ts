@@ -24,6 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { InterviewHistoryComponent } from './interview-history/interview-history.component';
 import { InterviewService } from '../../../data/interview/interview.service';
 import { AddFormComponent } from '../interview/add-form/add-form.component';
+import { GGMeetService } from '../../../shared/service/ggmeet.service';
 export const MY_FORMATS = {
 	parse: {
 		dateInput: 'DD/MM/YYYY',
@@ -62,6 +63,7 @@ export const MY_FORMATS = {
 })
 export class InterviewerComponent implements OnInit {
 	constructor(
+		private ggmeetService: GGMeetService,
 		private dialog: MatDialog,
 		private viewContainerRef: ViewContainerRef,
 		private formBuilder: FormBuilder,
@@ -175,6 +177,5 @@ export class InterviewerComponent implements OnInit {
 			formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
 			this.fetchInterviewers(this.recruiter?.companyId, formValue);
 		});
-
 	}
 }

@@ -6,6 +6,8 @@ import { CandidateProfileComponent } from './module/cv/candidate-profile/candida
 import { CvManageComponent } from './module/cv/cv-manage/cv-manage.component';
 import { CvComponent } from './module/cv/cv.component';
 import { EventDetailComponent } from './module/event-detail/event-detail.component';
+import { CallBackComponent } from './shared/component/gg-meet/call-back/call-back.component';
+import { LoginMeetComponent } from './shared/component/gg-meet/login-meet/login-meet.component';
 import { HomeComponent } from './module/home/home.component';
 import { InfoCandidateComponent } from './module/interview/info-candidate/info-candidate.component';
 import { InterviewQuestionsComponent } from './module/interview/interview-questions/interview-questions.component';
@@ -28,6 +30,9 @@ const enum role {
 }
 
 export const routes: Routes = [
+	{ path: 'meet/login', component: LoginMeetComponent },
+
+
 	// home page
 	{ path: '', component: HomeComponent },
 
@@ -45,6 +50,8 @@ export const routes: Routes = [
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent, data: { breadcrumb: 'Position Detail' } },
 
 	{ path: 'positions', component: PositionComponent, data: { breadcrumb: 'Positions' } },
+
+	{ path: 'meet/login/callback', component: CallBackComponent },
 
 	createRouteWithRoles('events', EventComponent, [
 		role.RECRUITER,

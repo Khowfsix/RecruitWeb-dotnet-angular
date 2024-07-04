@@ -240,6 +240,7 @@ namespace Data.Mapping
             #region Candidate
 
             CreateMap<Candidate, CandidateModel>().ReverseMap();
+            CreateMap<Candidate, CandidateViewModel>().ReverseMap();
             CreateMap<CandidateModel, CandidateAddModel>().ReverseMap();
             CreateMap<CandidateModel, CandidateUpdateModel>().ReverseMap();
             CreateMap<CandidateModel, Api.ViewModels.Candidate.CandidateViewModel>().ReverseMap();
@@ -353,6 +354,7 @@ namespace Data.Mapping
                    return true;
                }));
             CreateMap<InterviewFilter, InterviewFilterModel>().ReverseMap();
+            CreateMap<Interview, InterviewViewModel>().ReverseMap();
             CreateMap<Interview, InterviewModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewUpdateModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewAddModel>().ReverseMap();

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { API } from './../../data/api.service';
 import { BehaviorSubject, Observable, first, lastValueFrom } from 'rxjs';
 import { Register } from '../../data/authen/register.model';
@@ -8,6 +8,8 @@ import { noTokenURLs } from '../constants/noTokenURLs.constants';
 import { CookieService } from 'ngx-cookie-service';
 import { WebUser } from '../../data/authentication/web-user.model';
 import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
+import { GGMeetUrls } from '../../shared/constant/ggmeet.constant';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
@@ -16,6 +18,8 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthService {
 	// clientUserInfo: string | null = window.localStorage.getItem('currentUser') || null;
 
+	private localStorage: Storage | undefined;
+	constructor(private api: API, private cookieService: CookieService, private router: Router, @Inject(DOCUMENT) private document: Document) {
 	constructor(
 		private api: API,
 		private cookieService: CookieService,
@@ -26,8 +30,12 @@ export class AuthService {
 		// 	console.log(localStorage);
 		// 	this.clientUserInfo = localStorage.getItem('currentUser') != '' ? localStorage.getItem('currentUser') : null;
 		// });
+		this.localStorage = document.defaultView?.localStorage;
+
 	}
 
+
+	private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 	public loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 
 	checkLoginStatus(): boolean {
@@ -37,12 +45,18 @@ export class AuthService {
 	}
 
 	getLocalCurrentUser(): WebUser {
+		if (this.localStorage !== undefined) {
+			const currentUser = this.localStorage.getItem('currentUser');
 		if (localStorage != undefined) {
 			const currentUser = localStorage.getItem('currentUser');
 			// console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
 			return currentUser ? JSON.parse(currentUser) : null
 		}
 		return {};
+	}
+
+	public isInGGMeetUrls(url: string): boolean {
+		return GGMeetUrls.some((item) => item.startsWith(url));
 	}
 
 	getCandidateId_OfUser(): string | undefined {
@@ -92,6 +106,18 @@ export class AuthService {
 		return this.api.POST('/api/Authentication/Login', loginModel);
 	}
 
+	logout() {
+		const res = this.api.POST('/api/Authentication/Logout');
+		console.log(res);
+		console.error('clear cookie and local storage');
+		this.cookieService.delete('jwt');
+		this.cookieService.delete('refreshToken');
+		if (this.localStorage !== undefined) {
+			this.localStorage.removeItem('currentUser');
+			this.localStorage.removeItem('expirationDate');
+		}
+
+		this.loginStatus.next(false);
 	updateUserLogin() {
 		this.getCurrentUser().subscribe(
 			{

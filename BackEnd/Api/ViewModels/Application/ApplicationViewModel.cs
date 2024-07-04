@@ -1,4 +1,5 @@
 using Api.ViewModels.Cv;
+using Api.ViewModels.Interview;
 using Api.ViewModels.Position;
 
 namespace Api.ViewModels.Application
@@ -20,5 +21,9 @@ namespace Api.ViewModels.Application
         public int? Candidate_Status { get; set; }
 
         public string Priority { get; set; }
+
+
+        public virtual ICollection<InterviewViewModel> Interviews { get; set; } = new List<InterviewViewModel>();
+
     }
 }

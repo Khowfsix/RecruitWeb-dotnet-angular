@@ -17,12 +17,21 @@ import { AuthInterceptorProvider } from './core/interceptor/token.interceptor';
 import { ErrorInterceptorProvider } from './core/interceptor/error.intercerptor';
 import { CookieService } from 'ngx-cookie-service';
 import { NetworkInterceptorProvider } from './core/interceptor/network.interceptor';
+// import { GGMeetService } from './shared/service/ggmeet.service';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
+import { WINDOW } from './shared/service/window.token';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DateInterceptorProvider } from './core/interceptor/date.interceptor';
 // import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
+		// Fix window is not defined
+		{ provide: WINDOW, useFactory: () => (typeof window !== 'undefined' ? window : {}) as Window },
+
+		// GG Meet
+		provideOAuthClient(),
+
 		provideRouter(routes),
 		provideClientHydration(),
 		provideAnimationsAsync(),

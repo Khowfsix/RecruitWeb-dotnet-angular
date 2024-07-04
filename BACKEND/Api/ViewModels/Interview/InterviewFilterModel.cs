@@ -9,5 +9,7 @@ namespace Api.ViewModels.Interview
         public string? ToTime { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
+        public Guid? PositionId { get; set; }
+        public int? InterviewType { get; set; }
     }
 }

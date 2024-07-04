@@ -13,5 +13,7 @@
         public int Company_Status { get; set; }
         public int? Priority { get; set; }
         public bool IsDeleted { get; set; } = false;
+
+        public virtual ICollection<InterviewModel> Interviews { get; set; } = new List<InterviewModel>();
     }
 }

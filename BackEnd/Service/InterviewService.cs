@@ -49,6 +49,17 @@ public class InterviewService : IInterviewService
         interviewModel.Company_Status = (int?)EInterviewCompanyStatus.PENDING;
         var interviewData = _mapper.Map<Interview>(interviewModel);
 
+        var foundInterviews = await this.GetInterviewsByInterviewer(interviewData.InterviewerId);
+        if (foundInterviews != null && foundInterviews
+            .Any(e => 
+                interviewData.MeetingDate == e.MeetingDate
+                && !(interviewData.EndTime < e.StartTime || interviewData.StartTime > e.EndTime)
+            )
+        )
+        {
+            return null;
+        }
+
         var response = await _interviewRepository.SaveInterview(interviewData);
         return _mapper.Map<InterviewModel>(response);
     }

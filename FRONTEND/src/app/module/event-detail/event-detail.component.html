@@ -1,6 +1,6 @@
 <div style="background-color: rgb(236, 236, 236); padding-bottom: 200px;">
 	<div style="background-color: rgb(236, 236, 236)">
-		<div style="width: 100%; height: 400px">
+		<div class="w-100" style="height: 400px">
 			@if (fetchedEvent?.imageURL) {
 			<img src="{{ fetchedEvent?.imageURL }}" class="w-100 h-100" alt="logo" />
 			}
@@ -14,27 +14,32 @@
 			<div class="translate-middle" style="margin-left: 20%; margin-right: 20%; background-color: white;">
 				<div
 					class="rounded-3 position-absolute top-25 start-50 background-image d-flex flex-column justify-content-center">
-					<div class="d-flex flex-row rounded-2 shadow"
+					<div class="rounded-2 shadow"
 						style="background-color: rgb(255, 255, 255); padding: 30px 30px 30px 30px; ">
-						<div class="rounded-4 hover-overlay" style="width: 100%;">
+						<div class="rounded-4 hover-overlay w-100">
 							<div class="row align-items-center">
-								<div class="col-8 d-flex flex-row h-100">
-									<img class="me-3 rounded-3" [src]="fetchedEvent?.recruiter?.company?.logo"
-										height="120px" width="120px" />
-									<div class="py-2" style="line-height: 25px;">
+								<div class="col-lg-8 col-12 row h-100">
+									<div
+										class="col-lg-3 col-sm-4 col-5 d-flex justify-content-center align-items-center">
+										<img class="rounded-3" [src]="fetchedEvent?.recruiter?.company?.logo"
+											height="120px" width="120px" />
+									</div>
+									<div class="col-lg-9 col-sm-8 col-7 py-2" style="line-height: 25px;">
 										<div class="fs-5">
 											{{fetchedEvent?.recruiter?.company?.companyName}}
 										</div>
 										<div class="mt-1" style="font-size: medium;"><i
 												class="bi bi-telephone-fill"></i>
 											{{fetchedEvent?.recruiter?.company?.phone}}</div>
-										<div style="font-size: medium;"><i class="bi bi-envelope-at"></i>
+										<div style="font-size: medium; word-break: break-all;"><i
+												class="bi bi-envelope-at"></i>
 											{{fetchedEvent?.recruiter?.company?.email}}</div>
-										<div style="font-size: medium;">
+										<div style="font-size: medium; word-break: break-all;">
 											{{fetchedEvent?.recruiter?.company?.website}}</div>
 									</div>
 								</div>
-								<div class="mt-2 col-4 d-flex flex-column align-items-end" style="line-height: 25px;">
+								<div class="mt-2 col-lg-4 col-12 d-flex flex-column align-items-end"
+									style="line-height: 25px;">
 									<div class="fs-4 fw-bold ">
 										{{fetchedEvent?.eventName}}</div>
 									<div class="mt-1" style="font-size: medium;"><i class="bi bi-building"></i>
@@ -46,17 +51,18 @@
 										{{fetchedEvent?.endDateTime | date : 'medium'}}
 									</div>
 								</div>
-								<div class="mt-2 d-flex justify-content-end flex-row">
+								<div
+									class="mt-2 col-12 d-flex justify-content-lg-end flex-lg-row flex-column align-items-end">
 									@if(this.curentUserRoles?.includes('Candidate') || this.curentUserRoles === null) {
 									@if (this.alreadyJoinedEvent === true){
-									<div class="me-2" (click)="callApiDeleteCandidateJoinEvent()">
+									<div class="me-lg-2 my-lg-0 my-1" (click)="callApiDeleteCandidateJoinEvent()">
 										<app-expandbutton notExpandedWidth="100px" color="primary" expandedWidth="250px"
 											expandedLabel="Left This Event" notExpandLabel="Left"
 											icon="check"></app-expandbutton>
 									</div>
 									}
 									@else {
-									<div class="me-2" (click)="callApiCandidateJoinEvent()">
+									<div class="me-lg-2 my-lg-0 my-1" (click)="callApiCandidateJoinEvent()">
 										<app-expandbutton notExpandedWidth="100px" color="accent" expandedWidth="250px"
 											expandedLabel="Join This Event" notExpandLabel="Join"
 											icon="check"></app-expandbutton>
@@ -64,14 +70,14 @@
 									}
 
 									}
-									<div class="me-2"
+									<div class="me-lg-2 my-lg-0 my-1"
 										(click)="openQRCodeDialog(this.fetchedEvent ?? {}, '100ms', '0ms')">
 										<app-expandbutton notExpandedWidth="100px" color="primary" expandedWidth="250px"
 											expandedLabel="Open QR Code" notExpandLabel="QR"
 											icon="QR"></app-expandbutton>
 									</div>
 									@if (this.curentUserRoles?.includes('Recruiter')) {
-									<div (click)="openCandidateListDialog('100ms', '0ms')">
+									<div class="my-lg-0 my-1" (click)="openCandidateListDialog('100ms', '0ms')">
 										<app-expandbutton notExpandedWidth="170px" color="accent" expandedWidth="250px"
 											expandedLabel="Open Candidate List" notExpandLabel="Candidate List"
 											icon="people"></app-expandbutton>
@@ -84,8 +90,8 @@
 				</div>
 			</div>
 		</div>
-		<div class=" shadow" style=" margin-left: 14%; margin-right: 14%; margin-top: 80px;">
-			<div class="p-4 fs-5 d-flex flex-column rounded-3"
+		<div style="margin-top: 80px">
+			<div class="shadow custom-container p-4 fs-5 d-flex flex-column rounded-3"
 				style="background-color: rgb(255, 255, 255); height: 800px;">
 				<div class="w-100 d-flex justify-content-center lead px-4" style="margin-top: 50px;">
 					<em>{{fetchedEvent?.description}}</em>
@@ -94,8 +100,7 @@
 				</div>
 				<div class="m-2 border border-dark d-flex flex-wrap mt-4 mx-4" style="height: 500px; overflow-y: auto;">
 					@for (item of fetchedEvent?.eventHasPositions; track item) {
-					<div class="border border-dark card custom-hover p-2"
-						style="width: 45%; height: 200px; margin: 24px; box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.4);">
+					<div class="custom-event border border-dark card custom-hover p-2">
 						<div style="margin-left: 4%; line-height: 30px;">
 							<div class="fs-5 custom-row" style="font-weight: 500; cursor: pointer;">
 								<span [routerLink]="['/positions/detail', item.position?.positionId]">{{

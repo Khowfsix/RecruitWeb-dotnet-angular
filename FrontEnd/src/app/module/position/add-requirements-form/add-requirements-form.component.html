@@ -1,13 +1,13 @@
 @if (this.formGroup){
 <form class="d-flex flex-column" [formGroup]="this.addForm">
-	<div class="d-flex flex-row" style="margin-bottom: 35px;">
-		<div class="me-3 rounded-1 flex-grow-1">
+	<div class="row" style="margin-bottom: 35px;">
+		<div class="rounded-1 col">
 			<form [formGroup]="this.formGroup" style="height: 100%; width: 100%;">
 				<mat-form-field style="height: 110%; width: 100%;">
 					<mat-label>{{this.label}}</mat-label>
 					<div class="mb-3">
-						<input type="text" hidden readonly="true" placeholder=" {{this.placeholder}}"
-							aria-label="Number" matInput formControlName="{{this.fieldName}}">
+						<input type="text" hidden readonly="true" placeholder="{{this.placeholder}}" aria-label="Number"
+							matInput formControlName="{{this.fieldName}}">
 						<div class="d-flex flex-wrap">
 							@for (item of this.displayRequirements; track item) {
 							<div (click)="getRequirement(item.skillId)"
@@ -34,7 +34,8 @@
 			</form>
 
 		</div>
-		<div class="d-flex flex-column">
+		<div class="col d-flex flex-column ">
+			<div class="fs-5 fw-bold my-1 d-flex justify-content-center">Add Requirement Form</div>
 			<app-autocomplete [formField]="'skillId'" [valueField]="'skillId'" [labelField]="'skillName'"
 				[label]="'Skill'" [placeholder]="'Ex. Blabla'" [observableOptions]="this.observableSkills"
 				[formGroup]="this.addForm"></app-autocomplete>
