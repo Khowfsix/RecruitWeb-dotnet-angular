@@ -8,7 +8,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { ApplicationService } from '../../../data/application/application.service';
 
 @Component({
 	selector: 'app-list-interview',
@@ -33,8 +32,7 @@ export class ListInterviewComponent {
 
 
 	constructor(
-		private interviewService: InterviewService,
-		private application: ApplicationService,
+		private interviewService: InterviewService
 	) {
 		this.interviewService.getAllByInterviewerId(this.interviewerId as string).subscribe(res => {
 			this.listInterviews = res;
