@@ -19,23 +19,16 @@ export class AuthService {
 	// clientUserInfo: string | null = window.localStorage.getItem('currentUser') || null;
 
 	private localStorage: Storage | undefined;
-	constructor(private api: API, private cookieService: CookieService, private router: Router, @Inject(DOCUMENT) private document: Document) {
-	constructor(
-		private api: API,
-		private cookieService: CookieService,
-		private router: Router,
-		private toast: ToastrService,
-	) {
+	constructor(private api: API, private cookieService: CookieService, private router: Router, private toast: ToastrService, @Inject(DOCUMENT) private document: Document) {
 		// afterRender(() => {
 		// 	console.log(localStorage);
 		// 	this.clientUserInfo = localStorage.getItem('currentUser') != '' ? localStorage.getItem('currentUser') : null;
 		// });
 		this.localStorage = document.defaultView?.localStorage;
-
 	}
 
 
-	private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
+	// private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 	public loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 
 	checkLoginStatus(): boolean {
@@ -45,8 +38,6 @@ export class AuthService {
 	}
 
 	getLocalCurrentUser(): WebUser {
-		if (this.localStorage !== undefined) {
-			const currentUser = this.localStorage.getItem('currentUser');
 		if (localStorage != undefined) {
 			const currentUser = localStorage.getItem('currentUser');
 			// console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
@@ -106,18 +97,20 @@ export class AuthService {
 		return this.api.POST('/api/Authentication/Login', loginModel);
 	}
 
-	logout() {
-		const res = this.api.POST('/api/Authentication/Logout');
-		console.log(res);
-		console.error('clear cookie and local storage');
-		this.cookieService.delete('jwt');
-		this.cookieService.delete('refreshToken');
-		if (this.localStorage !== undefined) {
-			this.localStorage.removeItem('currentUser');
-			this.localStorage.removeItem('expirationDate');
-		}
+	// logout() {
+	// 	const res = this.api.POST('/api/Authentication/Logout');
+	// 	console.log(res);
+	// 	console.error('clear cookie and local storage');
+	// 	this.cookieService.delete('jwt');
+	// 	this.cookieService.delete('refreshToken');
+	// 	if (this.localStorage !== undefined) {
+	// 		this.localStorage.removeItem('currentUser');
+	// 		this.localStorage.removeItem('expirationDate');
+	// 	}
 
-		this.loginStatus.next(false);
+	// 	this.loginStatus.next(false);
+	// }
+
 	updateUserLogin() {
 		this.getCurrentUser().subscribe(
 			{
