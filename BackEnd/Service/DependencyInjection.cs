@@ -46,6 +46,14 @@ namespace Service
             service.AddTransient<ICandidateHasSkillService, CandidateHasSkillService>();
             service.AddTransient<IEventHasPositionService, EventHasPositionService>();
             service.AddTransient<ILevelService, LevelService>();
+            service.AddTransient<IRoleService, RoleService>();
+            service.AddTransient<IUserRoleService, UserRoleService>();
+            service.AddTransient<IUserService, UserService>();
+            service.AddTransient<IAwardService, AwardService>();
+            service.AddTransient<IEducationService, EducationService>();
+            service.AddTransient<IPersonalProjectService, PersonalProjectService>();
+            service.AddTransient<IQuestionLanguageService, QuestionLanguageService>();
+            service.AddTransient<IWorkExperienceService, WorkExperienceService>();
             return service;
         }
     }

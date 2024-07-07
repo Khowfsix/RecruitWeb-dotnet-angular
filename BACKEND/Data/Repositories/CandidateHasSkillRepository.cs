@@ -20,5 +20,13 @@ namespace Data.Repositories
             return listData!;
         }
 
+        public async Task<IEnumerable<CandidateHasSkill>> GetAll()
+        {
+            var listData = await Entities
+                .Include(e => e.Skill)
+                .ToListAsync();
+            return listData!;
+        }
+
     }
 }

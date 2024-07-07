@@ -1,7 +1,9 @@
+using Api.ViewModels.AdminAward;
 using Api.ViewModels.EventHasPosition;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -45,5 +47,13 @@ public class EventHasPositionController : BaseAPIController
         }
         else
             return Ok("Not found");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllEventHasPositions()
+    {
+        var listModelDatas = await _EventHasPositionService.GetAllEventHasPositions();
+        var response = _mapper.Map<List<EventHasPositionViewModel>>(listModelDatas);
+        return Ok(response);
     }
 }

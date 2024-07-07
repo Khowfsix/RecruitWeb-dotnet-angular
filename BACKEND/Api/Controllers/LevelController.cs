@@ -1,4 +1,5 @@
 ﻿using Api.ViewModels.Level;
+using Api.ViewModels.Level;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,5 +42,28 @@ namespace Api.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPut("{levelId:Guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateLevel(LevelUpdateModel obj, Guid levelId)
+        {
+            if (obj is null)
+            {
+                return BadRequest();
+            }
+
+            var modelData = _mapper.Map<LevelModel>(obj);
+            var response = await _levelService.UpdateLevel(modelData, levelId);
+            return response is true ? Ok(true) : NotFound(levelId);
+        }
+
+        [HttpDelete("{levelId:Guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteLevel(Guid levelId)
+        {
+            var response = await _levelService.RemoveLevel(levelId);
+            return response is true ? Ok(true) : NotFound(levelId);
+        }
+
     }
 }

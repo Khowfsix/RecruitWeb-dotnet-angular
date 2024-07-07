@@ -95,6 +95,7 @@ namespace Data.Repositories
             if (await Entities.AnyAsync(l => l.CategoryPositionId.Equals(categoryPositionId)) is false)
                 return await Task.FromResult(false);
 
+            categoryPosition.CategoryPositionId = categoryPositionId;
             Entities.Update(categoryPosition);
             _unitOfWork.SaveChanges();
 

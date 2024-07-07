@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../api.service';
-import { Application } from './application.model';
+import { Application, ApplicationAddModel } from './application.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,6 +13,15 @@ export class ApplicationService {
 
 	getAll(): Observable<Application[]> {
 		return this.api.GET('/api/Application');
+	}
+
+	deleteApplication(id?: string): Observable<boolean> {
+		console.log(`start`);
+		return this.api.DELETE('/api/Application/' + id);
+	}
+
+	createApplication(newApplication: ApplicationAddModel): Observable<Application> {
+		return this.api.POST('/api/Application/', newApplication);
 	}
 
 	updateStatusApplication(applicationId: string, companyStatus?: number, candidateStatus?: number): Observable<any> {

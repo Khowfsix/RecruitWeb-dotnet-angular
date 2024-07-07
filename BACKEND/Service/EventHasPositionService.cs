@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
@@ -16,6 +17,14 @@ public class EventHasPositionService : IEventHasPositionService
     {
         _EventHasPositionRepository = EventHasPositionRepository;
         _mapper = mapper;
+    }
+
+    public async Task<IEnumerable<EventHasPositionModel>> GetAllEventHasPositions()
+    {
+        var data = await _EventHasPositionRepository.GetAllEventHasPositions();
+        var modelDatas = _mapper.Map<List<EventHasPositionModel>>(data);
+
+        return modelDatas;
     }
 
     public async Task<EventHasPositionModel> SaveEventHasPosition(EventHasPositionModel EventHasPositionModel)

@@ -6,5 +6,6 @@ namespace Service.Interfaces
     {
         Task<IEnumerable<CategoryPositionModel>> GetAllCategoryPositions(bool isAdmin);
         Task<CategoryPositionModel> CreateCategoryPosition(CategoryPositionModel request);
+        Task<bool> UpdateCategoryPosition(CategoryPositionModel request, Guid id);
     }
 }

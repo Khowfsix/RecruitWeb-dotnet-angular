@@ -1,15 +1,14 @@
-﻿namespace Api.ViewModels.Certificate
+﻿using Api.ViewModels.Candidate;
+namespace Api.ViewModels.Certificate
 {
     public class CertificateViewModel
     {
         public Guid CertificateId { get; set; }
-        public string CertificateName { get; set; } = null!;
-        public string? Description { get; set; }
-        public string? OrganizationName { get; set; }
-        public DateTime DateEarned { get; set; }
-        public DateTime? ExpirationDate { get; set; }
-        public string? Link { get; set; }
-        public Guid Cvid { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public string? CertificateName { get; set; }
+        public string? Description { get; set; } 
+        public DateTime IssueDate { get; set; }
+        public string? CertificateURL { get; set; } 
+        public Guid CandidateId { get; set; } 
+        public virtual CandidateViewModel? Candidate { get; set; }
     }
 }

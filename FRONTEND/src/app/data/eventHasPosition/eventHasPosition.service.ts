@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { API } from '../api.service';
 import { Observable } from 'rxjs';
+import { EventHasPosition } from './eventHasPosition.model';
 // import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,6 +13,10 @@ export class EventHasPositionService {
 	constructor(
 		private api: API
 	) { }
+
+	public getAll(): Observable<EventHasPosition[]> {
+		return this.api.GET('/api/EventHasPosition/');
+	}
 
 	public delete(id?: string): Observable<any> {
 		return this.api.DELETE('/api/EventHasPosition/' + id);

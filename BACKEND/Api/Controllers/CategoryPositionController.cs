@@ -1,7 +1,9 @@
 ﻿using Api.ViewModels.CategoryPosition;
+using Api.ViewModels.Skill;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -42,6 +44,15 @@ namespace Api.Controllers
                 return Ok(_mapper.Map<CategoryPositionViewModel>(response));
             }
             return BadRequest();
+        }
+
+        [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateCategoryPosition(CategoryPositionUpdateModel categoryPositionUpdateModel, Guid id)
+        {
+            var model = _mapper.Map<CategoryPositionModel>(categoryPositionUpdateModel);
+            var isSuccess = await _categoryPositionService.UpdateCategoryPosition(model, id);
+            return Ok(isSuccess);
         }
     }
 }

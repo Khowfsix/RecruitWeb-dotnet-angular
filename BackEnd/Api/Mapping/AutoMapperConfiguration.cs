@@ -1,5 +1,6 @@
 ﻿using Api.ViewModels;
 using Api.ViewModels.Application;
+using Api.ViewModels.AdminAward;
 using Api.ViewModels.BlackList;
 using Api.ViewModels.Candidate;
 using Api.ViewModels.CandidateHasSkill;
@@ -24,6 +25,7 @@ using Api.ViewModels.Recruiter;
 using Api.ViewModels.Report;
 using Api.ViewModels.Requirement;
 using Api.ViewModels.Result;
+using Api.ViewModels.Role;
 using Api.ViewModels.Room;
 using Api.ViewModels.Round;
 using Api.ViewModels.SecurityAnswer;
@@ -31,13 +33,20 @@ using Api.ViewModels.SecurityQuestion;
 using Api.ViewModels.Shift;
 using Api.ViewModels.Skill;
 using Api.ViewModels.SuccessfulCadidate;
+using Api.ViewModels.User;
+using Api.ViewModels.UserRole;
 using AutoMapper;
 using Data.CustomModel.Application;
 using Data.CustomModel.Event;
 using Data.CustomModel.Interviewer;
 using Data.CustomModel.Position;
 using Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Service.Models;
+using Api.ViewModels.AdminEducation;
+using Api.ViewModels.AdminPersonalProject;
+using Api.ViewModels.AdminQuestionLanguage;
+using Api.ViewModels.AdminWorkExperience;
 
 namespace Data.Mapping
 {
@@ -45,6 +54,49 @@ namespace Data.Mapping
     {
         public AutoMapperConfiguration()
         {
+            #region WorkExperience
+            CreateMap<WorkExperienceViewModel, WorkExperienceModel>().ReverseMap();
+            CreateMap<WorkExperienceModel, WorkExperience>().ReverseMap();
+            #endregion WorkExperience
+
+            #region QuestionLanguage
+            CreateMap<QuestionLanguageViewModel, QuestionLanguageModel>().ReverseMap();
+            CreateMap<QuestionLanguageModel, QuestionLanguage>().ReverseMap();
+            #endregion QuestionLanguage
+
+            #region PersonalProject
+            CreateMap<PersonalProjectViewModel, PersonalProjectModel>().ReverseMap();
+            CreateMap<PersonalProjectModel, PersonalProject>().ReverseMap();
+            #endregion PersonalProject
+
+            #region Education
+            CreateMap<EducationViewModel, EducationModel>().ReverseMap();
+            CreateMap<EducationModel, Education>().ReverseMap();
+            #endregion Education
+
+            #region Award
+            CreateMap<AwardViewModel, AwardModel>().ReverseMap();
+            CreateMap<AwardModel, Award>().ReverseMap();
+            #endregion Award
+
+            #region User
+            CreateMap<AdminUserViewModel, UserModel>().ReverseMap();
+            #endregion User
+
+            #region UserRole
+            CreateMap<UserRoleViewModel, UserRoleModel>().ReverseMap();
+            CreateMap<UserRoleDeleteModel, UserRoleModel>().ReverseMap();
+            CreateMap<UserRoleAddModel, UserRoleModel>().ReverseMap();
+            CreateMap<UserRoleModel, IdentityUserRole<string>>().ReverseMap();
+            #endregion UserRole
+
+            #region Role
+            CreateMap<RoleUpdateModel, RoleModel>().ReverseMap();
+            CreateMap<RoleViewModel, RoleModel>().ReverseMap();
+            CreateMap<RoleAddModel, RoleModel>().ReverseMap();
+            CreateMap<RoleModel, IdentityRole>().ReverseMap();
+            #endregion Role
+
             #region EventHasPosition
 
             CreateMap<EventHasPosition, EventHasPositionModel>().ReverseMap();
@@ -283,6 +335,7 @@ namespace Data.Mapping
             CreateMap<CertificateModel, CertificateAddModel>().ReverseMap();
             CreateMap<CertificateModel, CertificateUpdateModel>().ReverseMap();
             CreateMap<CertificateModel, CertificateViewModel>().ReverseMap();
+            CreateMap<Certificate, CertificateViewModel>().ReverseMap();
 
             #endregion Certificate
 

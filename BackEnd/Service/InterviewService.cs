@@ -109,11 +109,16 @@ public class InterviewService : IInterviewService
         var data = await _interviewRepository.GetAllInterview();
         if (!data.IsNullOrEmpty())
         {
-            var filteredDatas = data.Where(i => (
-                i.Company_Status! == status ||
-                i.Candidate_Status! == status
-            ));
-            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
+            var result = _mapper.Map<List<InterviewModel>>(data);
+
+            if (status.HasValue)
+            {
+                var filteredDatas = result.Where(i => (
+                   i.Company_Status! == status ||
+                   i.Candidate_Status! == status
+                ));
+               return filteredDatas;
+            }
             return result;
         }
         return null!;

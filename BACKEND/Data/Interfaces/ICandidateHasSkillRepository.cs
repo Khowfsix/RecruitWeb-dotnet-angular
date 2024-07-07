@@ -5,5 +5,6 @@ namespace Data.Interfaces
     public interface ICandidateHasSkillrepository
     {
         Task<IEnumerable<CandidateHasSkill>> GetAllByCandidateId(Guid? candidateId);
+        Task<IEnumerable<CandidateHasSkill>> GetAll();
     }
 }

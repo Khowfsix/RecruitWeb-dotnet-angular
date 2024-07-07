@@ -29,6 +29,11 @@ export class EventService {
 		return this.api.POST('/api/Event', data, options);
 	}
 
+	public getAll(): Observable<Event[]> {
+		const url = '/api/Event';
+		return this.api.GET(url);
+	}
+
 	public getAllByRecruiterId(recruiterId: string, eventFilter?: EventFilter, sortString?: string): Observable<Event[]> {
 		let url = '/api/Event?recruiterId=' + recruiterId + '&';
 

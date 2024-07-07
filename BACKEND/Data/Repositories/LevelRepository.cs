@@ -94,10 +94,34 @@ namespace Data.Repositories
             if (await Entities.AnyAsync(l => l.LevelId.Equals(levelId)) is false)
                 return await Task.FromResult(false);
 
+            level.LevelId = levelId;
             Entities.Update(level);
             _unitOfWork.SaveChanges();
 
             return await Task.FromResult(true);
+        }
+        public async Task<bool> RemoveLevel(Guid id)
+        {
+            try
+            {
+                /*------------------------------*/
+                // Finds asynchronously and removes entity with matched id in db.
+                var level = await Entities.FindAsync(id);
+                /*------------------------------*/
+
+                if (level == null)
+                    return await Task.FromResult(false);
+
+                level.IsDeleted = true;
+                Entities.Update(level);
+
+                _unitOfWork.SaveChanges();
+                return await Task.FromResult(true);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

@@ -6,3 +6,9 @@ export class BlackList {
 	status?: number;
 	isDeleted?: boolean;
 }
+export class BlackListAddModel {
+	candidateId?: string;
+	reason?: string;
+	dateTime?: Date;
+	isDeleted?: boolean;
+}

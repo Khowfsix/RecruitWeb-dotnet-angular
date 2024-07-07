@@ -11,6 +11,7 @@ namespace Data.Interfaces
         Task<Level> AddLevel(Level level);
 
         Task<bool> UpdateLevel(Level level, Guid levelId);
+        Task<bool> RemoveLevel(Guid id);
 
         //Task<bool> RemoveLevel(Guid levelId);
     }

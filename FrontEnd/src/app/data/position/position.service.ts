@@ -10,6 +10,11 @@ import { API } from '../api.service';
 export class PositionService {
 	constructor(private api: API) { }
 
+	public getAll(): Observable<any> {
+		const url = '/api/Position';
+		return this.api.GET(url);
+	}
+
 	public getAllPositions(
 		positionFilterModel?: PositionFilterModel,
 		sortString?: string,

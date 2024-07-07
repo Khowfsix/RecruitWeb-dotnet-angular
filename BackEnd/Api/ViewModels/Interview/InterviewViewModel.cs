@@ -9,24 +9,14 @@ namespace Api.ViewModels.Interview
     public class InterviewViewModel
     {
         public Guid InterviewId { get; set; }
-
         public Guid InterviewerId { get; set; }
-
         public Guid RecruiterId { get; set; }
-
         public Guid ApplicationId { get; set; }
-
         public int? Company_Status { get; set; }
-
         public int? Candidate_Status { get; set; }
-
         public string? Notes { get; set; } = null!;
-
         public int? Priority { get; set; } = null!;
-
         public bool? IsDeleted { get; set; } = false;
-
-        public Guid? ResultId { get; set; }
         public string? AddressOrStartURL { get; set; }
         public string? DetailLocationOrJoinURL { get; set; }
         public DateTime? MeetingDate { get; set; }
