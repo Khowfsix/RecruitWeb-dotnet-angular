@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 // import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { nameTypeInToken } from '../constants/token.constants';
+import { CookieService } from 'ngx-cookie-service';
 // import { BehaviorSubject } from 'rxjs';
 // import { Role } from '../../data/authen/role.model';
 
@@ -9,7 +10,9 @@ import { nameTypeInToken } from '../constants/token.constants';
 	providedIn: 'root',
 })
 export class PermissionService {
-	constructor() { }
+	constructor(
+		private cookieService: CookieService
+	) { }
 
 	// private roles = new BehaviorSubject<string[]>(this.getUserRoles());
 
@@ -61,7 +64,8 @@ export class PermissionService {
 	// 	return this.hasRole(requiredRole, currentUserRole);
 	// }
 
-	getRoleOfUser(jwt: string | null) {
+	getRoleOfUser(jwt: string) {
+		// const jwt = this.cookieService.get('jwt');
 		if (jwt) {
 			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(jwt as string)));
 			const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];

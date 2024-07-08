@@ -51,7 +51,7 @@ public class InterviewService : IInterviewService
 
         var foundInterviews = await this.GetInterviewsByInterviewer(interviewData.InterviewerId);
         if (foundInterviews != null && foundInterviews
-            .Any(e => 
+            .Any(e =>
                 interviewData.MeetingDate == e.MeetingDate
                 && !(interviewData.EndTime < e.StartTime || interviewData.StartTime > e.EndTime)
             )
@@ -113,12 +113,18 @@ public class InterviewService : IInterviewService
         var data = await _interviewRepository.GetAllInterview();
         if (!data.IsNullOrEmpty())
         {
+            if (status == null)
+            {
+                List<InterviewModel> result1 = _mapper.Map<List<InterviewModel>>(data);
+                return result1!;
+            }
+
             var filteredDatas = data.Where(i => (
                 i.Company_Status! == status ||
                 i.Candidate_Status! == status
             ));
-            List<InterviewModel> result = _mapper.Map<List<InterviewModel>>(filteredDatas);
-            return result;
+            List<InterviewModel> result2 = _mapper.Map<List<InterviewModel>>(filteredDatas);
+            return result2!;
         }
         return null!;
     }

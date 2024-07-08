@@ -12,20 +12,22 @@
 	<form [formGroup]="applyForm">
 		<mat-accordion>
 			<mat-radio-group aria-label="Select a CV">
+				@if (this.defaultCv) {
 				<mat-expansion-panel
 					(afterExpand)="onChangeOptionCv('default')"
 					(afterCollapse)="onChangeOptionCv('default')"
 					class="py-3">
 					<mat-expansion-panel-header>
-						<mat-panel-title> Most recently applied CV: {{ defaultCv?.cvName }}</mat-panel-title>
+						<mat-panel-title> Most recently applied CV: {{ defaultCv!.cvName }}</mat-panel-title>
 						<mat-panel-description class="d-flex justify-content-end">
-							<a href="{{ defaultCv?.cvPdf }}" target="_blank"> View CV </a>
+							<a href="{{ defaultCv!.cvPdf }}" target="_blank"> View CV </a>
 						</mat-panel-description>
 					</mat-expansion-panel-header>
 					<div>First and last name: {{ candidate?.user?.fullName }}</div>
 					<div>Email: {{ candidate?.user?.email }}</div>
 					<div>Phone number: {{ candidate?.user?.phoneNumber }}</div>
 				</mat-expansion-panel>
+				}
 				<mat-expansion-panel
 					(afterExpand)="onChangeOptionCv('orther')"
 					(afterCollapse)="onChangeOptionCv('default')"
@@ -50,6 +52,16 @@
 						</div>
 						<!-- </div> -->
 					</mat-radio-group>
+					<div>
+						<button
+							mat-raised-button
+							mat-dialog-close
+							(click)="onclickUploadNewCv()"
+							color="primary"
+							class="w-100 py-1">
+							Upload your CV
+						</button>
+					</div>
 				</mat-expansion-panel>
 			</mat-radio-group>
 		</mat-accordion>

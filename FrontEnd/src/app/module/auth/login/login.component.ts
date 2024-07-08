@@ -101,6 +101,7 @@ export class LoginComponent implements OnInit {
 										});
 								}
 							});
+						this.navigate_before();
 					}
 				},
 				error: (error) => {

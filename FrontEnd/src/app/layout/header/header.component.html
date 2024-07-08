@@ -34,7 +34,7 @@
 					y-position="below"
 					[overlapTrigger]="false">
 					@for (category of listCategoryJobs; track $index) {
-					<button mat-menu-item (click)="handleRouteToJobsWithCategory(category.categoryPositionName!)">
+					<button mat-menu-item (click)="handleRouteToJobsOfCategory(category.categoryPositionId!)">
 						{{ category.categoryPositionName }}
 					</button>
 					}

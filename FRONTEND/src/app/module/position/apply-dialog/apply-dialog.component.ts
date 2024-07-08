@@ -3,18 +3,20 @@ import { Component, Inject, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { Router } from '@angular/router';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
+import { ToastrService } from 'ngx-toastr';
 import { ApplicationAddModel, ApplyDialogDataInput } from '../../../data/application/application.model';
 import { ApplicationService } from '../../../data/application/application.service';
 import { Candidate } from '../../../data/candidate/candidate.model';
 import { CandidateService } from '../../../data/candidate/candidate.service';
 import { CV } from '../../../data/cv/cv.model';
 import { CvService } from '../../../data/cv/cv.service';
-import { MatDividerModule } from '@angular/material/divider';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
@@ -61,6 +63,8 @@ export class ApplyDialogComponent {
 		private _cvService: CvService,
 		private _applyService: ApplicationService,
 		private formBuilder: FormBuilder,
+		private _router: Router,
+		private _toastService: ToastrService
 
 	) {
 		this._candidateService.getById(data?.candidateId as string).subscribe(
@@ -115,17 +119,30 @@ export class ApplyDialogComponent {
 			cvid: this.optionCv === "default" ? this.defaultCv?.cvid : this.applyForm.value.selectedCv
 		}
 		console.log(this.newApplication);
+		if (this.newApplication.cvid === undefined ||
+			this.newApplication.cvid === null ||
+			(this.optionCv == "orther" && this.applyForm.value.selectedCv === undefined)) {
+			this._toastService.error("Please choose your CV", "CV is required");
+			return;
+		}
 		this.callApiAplly();
 	}
+
+
 
 	callApiAplly() {
 		this._applyService.postNewApplication(this.newApplication!).subscribe(
 			(response) => {
 				console.log(response);
+				this._toastService.success("Apply successfully", "Apply");
 			},
 			(error) => {
 				console.error(error);
 			}
 		);
+	}
+
+	onclickUploadNewCv() {
+		this._router.navigate(['/cv-manage'])
 	}
 }

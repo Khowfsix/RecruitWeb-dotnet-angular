@@ -1,64 +1,107 @@
-<div class="d-flex p-5">
-	<div class="col-8">
-		<table class="table table-striped table-inverse table-responsive">
-			<mat-table [dataSource]="dataSource" matSort>
-				<ng-container matColumnDef="id">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header>Interview Id</th>
-					<td mat-cell *matCellDef="let interview">{{ interview.id }}</td>
-				</ng-container>
-				<ng-container matColumnDef="position">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header>Positontion name</th>
-					<td mat-cell *matCellDef="let interview">{{ interview.position }}</td>
-				</ng-container>
-				<ng-container matColumnDef="date">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
-					<td mat-cell *matCellDef="let interview">{{ interview.date }}</td>
-				</ng-container>
-				<ng-container matColumnDef="status">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-					<td
-						mat-cell
-						*matCellDef="let interview"
-						[ngClass]="{
-							'table-success': interview.status === 'Pass',
-							'table-danger': interview.status === 'Fail',
-							'table-warning': interview.status === 'Pending'
-						}">
-						{{ interview.status }}
-					</td>
-				</ng-container>
-				<ng-container matColumnDef="action">
-					<th mat-header-cell *matHeaderCellDef>Action</th>
-					<td mat-cell *matCellDef="let interview">
-						<button mat-raised-button color="primary" (click)="joinInterview(interview)">Join</button>
-						<button mat-raised-button color="accent" (click)="editInterview(interview)">Edit</button>
-					</td>
-				</ng-container>
-				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-				<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-			</mat-table>
-			<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-			<mat-form-field>
-				<input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
-			</mat-form-field>
+<!-- page-company-interview.component.html -->
 
-			<thead class="thead-inverse">
-				<tr>
-					<th>Interview Id</th>
-					<th>Positontion name</th>
-					<th>Time</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td scope="row">11</td>
-					<td>Something</td>
-					<td>1/1/1/</td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="col p-3"></div>
+<div class="container mt-4">
+	<mat-card>
+		<mat-card-content>
+			<div class="row mb-5">
+				<div class="col-12">
+					<h1 class="display-4 font-weight-bold text-dark">Interview</h1>
+				</div>
+
+				<ng-container *ngIf="role !== null">
+					<div class="col-12">
+						<div class="row">
+							<ng-container *ngIf="role !== 'interviewer'">
+								<div class="col-12 col-md-3 mb-3">
+									<mat-form-field appearance="fill" class="w-100">
+										<mat-label>Company...</mat-label>
+										<mat-select
+											[(ngModel)]="companyChoose"
+											(selectionChange)="handleChooseCompany($event.value)">
+											<mat-option *ngFor="let company of companies" [value]="company">
+												{{ company.companyName }}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+
+								<div *ngIf="companyChoose" class="col-12 col-md-5 mb-3">
+									<mat-form-field appearance="fill" class="w-100">
+										<mat-label>Position...</mat-label>
+										<mat-select
+											[(ngModel)]="positionChoose"
+											(selectionChange)="handleChoosePosition($event.value)">
+											<mat-option *ngFor="let pos of positions" [value]="pos">
+												{{ pos.positionId!.slice(0, 6) + '...' + ' - ' + pos.positionName }}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+							</ng-container>
+
+							<div class="col-6 col-md-2 mb-3">
+								<mat-form-field appearance="fill" class="w-100">
+									<mat-label>Status...</mat-label>
+									<mat-select
+										[(ngModel)]="statusChoose"
+										(selectionChange)="handleChooseStatus($event.value)">
+										<mat-option [value]="'Not start'">
+											<mat-icon>event_note</mat-icon> Not start
+										</mat-option>
+										<mat-option [value]="'Finished'">
+											<mat-icon>sports_score</mat-icon> Finished
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+
+							<div *ngIf="statusChoose === 'Finished'" class="col-6 col-md-2 mb-3">
+								<mat-form-field appearance="fill" class="w-100">
+									<mat-label>Result...</mat-label>
+									<mat-select
+										[(ngModel)]="priorityChoose"
+										(selectionChange)="handleChooseResult($event.value)">
+										<mat-option [value]="'Pending'">
+											<mat-icon>more_horiz</mat-icon> Pending
+										</mat-option>
+										<mat-option [value]="'Passed'"> <mat-icon>done</mat-icon> Passed </mat-option>
+										<mat-option [value]="'Failed'"> <mat-icon>close</mat-icon> Failed </mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+
+			<ng-container *ngIf="dataSource && role !== null">
+				<table mat-table [dataSource]="dataSource" class="w-100">
+					<ng-container matColumnDef="InterviewId">
+						<th mat-header-cell *matHeaderCellDef>ID</th>
+						<td mat-cell *matCellDef="let interview">
+							<a [routerLink]="['./', interview.InterviewId]">
+								{{ interview.InterviewId.slice(0, 6) + '...' }}
+							</a>
+						</td>
+					</ng-container>
+
+					<!-- Add other column definitions here -->
+
+					<ng-container matColumnDef="actions">
+						<th mat-header-cell *matHeaderCellDef>Actions</th>
+						<td mat-cell *matCellDef="let interview">
+							<button mat-icon-button color="primary" (click)="handleDetailClick(interview.InterviewId)">
+								<mat-icon>info</mat-icon>
+							</button>
+						</td>
+					</ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+					<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+				</table>
+
+				<mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+			</ng-container>
+		</mat-card-content>
+	</mat-card>
 </div>

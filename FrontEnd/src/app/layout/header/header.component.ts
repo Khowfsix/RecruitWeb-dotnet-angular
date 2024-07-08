@@ -84,11 +84,15 @@ export class HeaderComponent {
 		}
 	}
 
+	handleRouteToJobsOfCategory(category: string) {
+		this._router.navigate(['/positions'], { queryParams: { category: category } });
+	}
+
 	subscribeToLoginStatus() {
 		this._authService.isLoggedIn.subscribe((loggedIn) => {
 			if (loggedIn) {
 				this.updateHeaderForLoggedInUser();
-				if (this._permService.getRoleOfUser(this._user).includes('Admin')) {
+				if (this._permService.getRoleOfUser(this._user!).includes('Admin')) {
 					this.updateHeaderForAdmin();
 				}
 				// this.updateHeaderForAdmin();
@@ -127,11 +131,6 @@ export class HeaderComponent {
 
 	handleRouteToAdminConsole() {
 		this._router.navigate(['/admin'])
-	}
-
-
-	handleRouteToJobsWithCategory(category: string) {
-		console.log(category);
 	}
 
 	openMenu() {

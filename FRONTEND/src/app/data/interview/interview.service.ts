@@ -75,4 +75,9 @@ export class InterviewService {
 		const url = '/api/Interview/GetInterviewsByInterviewer/' + interviewerId;
 		return this.api.GET(url);
 	}
+
+	getAllInterview(): Observable<Interview[]> {
+		const url = '/api/Interview';
+		return this.api.GET(url);
+	}
 }

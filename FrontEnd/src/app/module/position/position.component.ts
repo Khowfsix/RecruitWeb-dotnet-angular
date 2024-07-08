@@ -68,7 +68,14 @@ export class PositionComponent implements OnInit {
 		private positionService: PositionService,
 		private customDateTimeService: CustomDateTimeService,
 		private authService: AuthService,
-	) { }
+	) {
+		const urlParams = new URLSearchParams(window.location.search);
+		const categoryId = urlParams.get('category');
+		if (categoryId) {
+			// this.filterForm.get('stringOfCategoryPositionIds')?.setValue(parseInt(categoryId));
+			console.log(categoryId);
+		}
+	}
 	public fetchedPositions?: Position[];
 	public currentUser?: WebUser = this.authService.getLocalCurrentUser();
 	public curentUserRoles: string[] | null = null;
