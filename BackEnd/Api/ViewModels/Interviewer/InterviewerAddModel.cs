@@ -6,6 +6,6 @@ namespace Api.ViewModels.Interviewer
 
         public Guid CompanyId { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
+        public bool? IsDeleted { get; set; } = false;
     }
 }

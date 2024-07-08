@@ -28,11 +28,10 @@ public class InterviewService : IInterviewService
     }
     public async Task<InterviewModel> GetLastInterviewByInterviewerId(Guid interviewerId)
     {
-        var data = await this.GetInterviewsByInterviewer(interviewerId);
-        if (data == null || data.Count() == 0)
+        var data = await _interviewRepository.GetLastInterviewOfInterviewer(interviewerId);
+        if (data == null)
             return null;
-        data.OrderByDescending(o => o.MeetingDate);
-        var result = _mapper.Map<InterviewModel>(data.First());
+        var result = _mapper.Map<InterviewModel>(data);
         return result;
     }
 

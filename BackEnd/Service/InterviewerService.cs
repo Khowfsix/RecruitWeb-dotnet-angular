@@ -2,7 +2,10 @@ using AutoMapper;
 using Data.CustomModel.Interviewer;
 using Data.Entities;
 using Data.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Service.Interfaces;
 using Service.Models;
 
@@ -10,11 +13,15 @@ namespace Service;
 
 public class InterviewerService : IInterviewerService
 {
+    private readonly UserManager<WebUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IInterviewerRepository _interviewerRepository;
     private readonly IMapper _mapper;
 
-    public InterviewerService(IInterviewerRepository interviewerRepository, IMapper mapper)
+    public InterviewerService(IInterviewerRepository interviewerRepository, IMapper mapper, UserManager<WebUser> userManager, RoleManager<IdentityRole> roleManager)
     {
+        _userManager = userManager;
+        _roleManager = roleManager; 
         _interviewerRepository = interviewerRepository;
         _mapper = mapper;
     }
@@ -23,13 +30,50 @@ public class InterviewerService : IInterviewerService
     {
         var data = _mapper.Map<Interviewer>(addModel);
         var response = await _interviewerRepository.SaveInterviewer(data);
+        string role = "Interviewer";
+        var userExist = await _userManager.FindByIdAsync(addModel.UserId);
+        if (userExist == null)
+        {
+            return null;
+        }
+        if (await _roleManager.RoleExistsAsync(role))
+        {
+            await _userManager.AddToRoleAsync(userExist, role);
+        }
+        else
+        {
+            return null;
+        }
         return _mapper.Map<InterviewerModel>(response);
     }
 
     public async Task<bool> DeleteInterviewer(Guid interviewerModelId)
     {
-        return await _interviewerRepository.DeleteInterviewer(interviewerModelId);
-    }
+        if (!await _interviewerRepository.DeleteInterviewer(interviewerModelId))
+        {
+            return await Task.FromResult(false);
+        }
+        var foundInterviewer = await _interviewerRepository.GetInterviewerById(interviewerModelId);
+        if (foundInterviewer == null)
+        {
+            return await Task.FromResult(false);
+        }
+        string role = "Interviewer";
+        var userExist = await _userManager.FindByIdAsync(foundInterviewer.UserId);
+        if (userExist == null)
+        {
+            return await Task.FromResult(false);
+        }
+        if (await _roleManager.RoleExistsAsync(role))
+        {
+            await _userManager.RemoveFromRoleAsync(userExist, role);
+            return await Task.FromResult(true);
+        }
+        else
+        {
+            return await Task.FromResult(false);
+        }
+        }
 
     public async Task<IEnumerable<InterviewerModel>> GetAllInterviewer()
     {

@@ -29,6 +29,7 @@ public class InterviewerController : BaseAPIController
         Guid? companyId,
         string? sortString = "FullName_ASC")
     {
+        var isAdmin = HttpContext.User.IsInRole("Admin");
         if (id != null)
         {
             var data = await _interviewerService.GetInterviewerById((Guid)id);
@@ -54,6 +55,11 @@ public class InterviewerController : BaseAPIController
                 TimeSpan date = (TimeSpan)(lastInterview.MeetingDate - DateTime.Now);
                 interviewer.daysToLastInterview = date.Days;
             }
+            
+            if (!isAdmin)
+            {
+                response = response.Where(e => !e.IsDeleted).ToList();
+            }
 
             return response != null ? Ok(response) : Ok();
         }
@@ -63,11 +69,11 @@ public class InterviewerController : BaseAPIController
         {
             return StatusCode(StatusCodes.Status400BadRequest);
         }
-        return Ok(reportList);
+        return isAdmin ? Ok(reportList) : Ok(reportList.Where(e => !e.IsDeleted).ToList());
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Recruiter")]
     public async Task<IActionResult> SaveInterviewer(InterviewerAddModel request)
     {
         var modelData = _mapper.Map<InterviewerModel>(request);
@@ -88,7 +94,7 @@ public class InterviewerController : BaseAPIController
     }
 
     [HttpDelete("{id:guid}")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Recruiter")]
     public async Task<IActionResult> DeleteInterviewer(Guid id)
     {
         return await _interviewerService.DeleteInterviewer(id) ? Ok(true) : NotFound();

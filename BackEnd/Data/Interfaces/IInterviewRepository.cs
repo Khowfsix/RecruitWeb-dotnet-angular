@@ -14,6 +14,7 @@ public interface IInterviewRepository : IRepository<Interview>
     Task<Interview?> GetInterviewById_NoInclude(Guid id);
 
     Task<IEnumerable<Interview>> GetInterviewOfInterviewer(Guid id);
+    Task<Interview?> GetLastInterviewOfInterviewer(Guid id);
 
     Task<Interview?> SaveInterview(Interview request);
 

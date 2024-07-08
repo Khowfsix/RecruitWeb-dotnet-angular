@@ -169,6 +169,7 @@ namespace Data.Mapping
 
             #region Question
 
+            CreateMap<Question, QuestionViewModel>().ReverseMap();
             CreateMap<Question, QuestionModel>().ReverseMap();
             CreateMap<QuestionModel, QuestionAddModel>().ReverseMap();
             CreateMap<QuestionModel, QuestionUpdateModel>().ReverseMap();
@@ -234,6 +235,7 @@ namespace Data.Mapping
             #region Round
 
             CreateMap<Round, RoundModel>().ReverseMap();
+            CreateMap<Round, RoundViewModel>().ReverseMap();
             CreateMap<RoundModel, RoundAddModel>().ReverseMap();
             CreateMap<RoundModel, RoundUpdateModel>().ReverseMap();
             CreateMap<RoundModel, RoundViewModel>().ReverseMap();
