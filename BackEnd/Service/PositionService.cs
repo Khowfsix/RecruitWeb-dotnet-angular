@@ -71,14 +71,30 @@ namespace Service
             return resultList;
         }
 
-        public async Task<bool> RemovePosition(Guid position)
+        public async Task<bool> RemovePosition(Guid positionId)
         {
-            return await _positionRepository.RemovePosition(position);
+            var foundPosition = await this.GetPositionById(positionId);
+
+            if (foundPosition == null)
+            {
+                return await Task.FromResult(false);
+            }
+
+            if (foundPosition.StartDate <= DateTime.Today && DateTime.Today <= foundPosition.EndDate)
+            {
+                return await Task.FromResult(false);
+            }
+            return await _positionRepository.RemovePosition(positionId);
         }
 
         public async Task<bool> UpdatePosition(PositionModel positionModel, Guid positionId)
         {
             var foundPosition = await this.GetPositionById(positionId);
+
+            if (foundPosition == null)
+            {
+                return await Task.FromResult(false);
+            }
 
             if (foundPosition.StartDate <= DateTime.Today && DateTime.Today <= foundPosition.EndDate) {
                 return await Task.FromResult(false);

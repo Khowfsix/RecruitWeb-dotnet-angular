@@ -77,6 +77,18 @@ public class InterviewService : IInterviewService
             return await Task.FromResult(false);
         if (foundInterview!.Company_Status != (int?)EInterviewCompanyStatus.PENDING)
             return await Task.FromResult(false);
+
+        var foundInterviews = await this.GetInterviewsByInterviewer(interviewModel.InterviewerId);
+        if (foundInterviews != null && foundInterviews
+            .Any(e =>
+                interviewModel.MeetingDate == e.MeetingDate
+                && !(interviewModel.EndTime < e.StartTime || interviewModel.StartTime > e.EndTime)
+            )
+        )
+        {
+            return await Task.FromResult(false);
+        }
+
         var data = _mapper.Map<Interview>(interviewModel);
         return await _interviewRepository.UpdateInterview(data, interviewModelId);
     }
