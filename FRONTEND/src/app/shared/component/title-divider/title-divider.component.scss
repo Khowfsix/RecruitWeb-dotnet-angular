@@ -1,0 +1,22 @@
+.custom-divider {
+	&::before,
+	&::after {
+		border-color: black;
+		border-width: 1px;
+	}
+}
+
+.custom-button {
+	background-color: black;
+	color: white;
+	border-radius: 100px;
+	font-size: 15px;
+
+	@media (min-width: 768px) {
+		font-size: 25px;
+	}
+
+	&:hover {
+		background-color: black;
+	}
+}

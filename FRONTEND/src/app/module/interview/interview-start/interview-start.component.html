@@ -1,1 +1,66 @@
-<p>interview-start works!</p>
+<div *ngIf="allQuestion && user && role === 'interviewer' && interviewStart" class="container-fluid">
+	<app-interview-id></app-interview-id>
+
+	<mat-divider class="my-4">Score Interview</mat-divider>
+
+	<div class="row">
+		<div class="col-12 mb-4">
+			<mat-card>
+				<mat-card-header>
+					<mat-icon mat-card-avatar>question_mark</mat-icon>
+					<mat-card-title>Questions</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<mat-tab-group [(selectedIndex)]="currentCateTab">
+						<mat-tab label="Soft Skill">
+							<app-question-transfer
+								[leftTable]="leftSoft"
+								[rightTable]="rightSoft"
+								[cate]="0"></app-question-transfer>
+						</mat-tab>
+						<mat-tab label="Language Skill">
+							<app-question-transfer
+								[leftTable]="leftLang"
+								[rightTable]="rightLang"
+								[cate]="1"></app-question-transfer>
+						</mat-tab>
+						<mat-tab label="Technology Skill">
+							<app-question-transfer
+								[leftTable]="leftTech"
+								[rightTable]="rightTech"
+								[cate]="2"></app-question-transfer>
+						</mat-tab>
+					</mat-tab-group>
+				</mat-card-content>
+			</mat-card>
+		</div>
+
+		<div class="col-md-6 mb-4">
+			<mat-card>
+				<mat-card-header>
+					<mat-icon mat-card-avatar>edit_note</mat-icon>
+					<mat-card-title>Note</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<quill-editor [(ngModel)]="note"></quill-editor>
+				</mat-card-content>
+			</mat-card>
+		</div>
+
+		<div class="col-md-6 mb-4">
+			<mat-card>
+				<mat-card-header>
+					<mat-icon mat-card-avatar>sports_score</mat-icon>
+					<mat-card-title>Final Score</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<app-score-table [allResult]="allQuestion.right"></app-score-table>
+				</mat-card-content>
+			</mat-card>
+		</div>
+	</div>
+
+	<div class="d-flex justify-content-end mt-4">
+		<button mat-raised-button color="primary" (click)="preprocessing()">Save record</button>
+	</div>
+</div>

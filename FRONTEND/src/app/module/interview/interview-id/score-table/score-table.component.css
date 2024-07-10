@@ -1,0 +1,18 @@
+.table-responsive {
+	overflow-x: auto;
+}
+table {
+	width: 100%;
+}
+.mat-mdc-header-row {
+	background-color: #343a40;
+}
+.mat-mdc-header-cell {
+	color: white;
+}
+.mat-mdc-row:nth-child(even) {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+.mat-mdc-row:last-child {
+	background-color: #e0e0e0;
+}

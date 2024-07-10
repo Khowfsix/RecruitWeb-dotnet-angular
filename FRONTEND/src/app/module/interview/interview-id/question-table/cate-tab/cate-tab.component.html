@@ -1,0 +1,38 @@
+<div class="d-flex gap-2 mb-2">
+	<button
+		mat-button
+		[color]="'secondary'"
+		[ngClass]="{
+			'mat-raised-button': currentCateTab === 0,
+			'mat-stroked-button': currentCateTab !== 0
+		}"
+		(click)="setCurrentCateTab.emit(0)">
+		<mat-icon>handshake</mat-icon>
+		<span class="d-none d-sm-inline">Soft Skill</span>
+		<span class="d-inline d-sm-none">Soft</span>
+	</button>
+	<button
+		mat-button
+		[color]="'primary'"
+		[ngClass]="{
+			'mat-raised-button': currentCateTab === 1,
+			'mat-stroked-button': currentCateTab !== 1
+		}"
+		(click)="setCurrentCateTab.emit(1)">
+		<mat-icon>language</mat-icon>
+		<span class="d-none d-sm-inline">Language</span>
+		<span class="d-inline d-sm-none">Lang</span>
+	</button>
+	<button
+		mat-button
+		[color]="'warn'"
+		[ngClass]="{
+			'mat-raised-button': currentCateTab === 2,
+			'mat-stroked-button': currentCateTab !== 2
+		}"
+		(click)="setCurrentCateTab.emit(2)">
+		<mat-icon>tungsten</mat-icon>
+		<span class="d-none d-sm-inline">Technology</span>
+		<span class="d-inline d-sm-none">Tech</span>
+	</button>
+</div>

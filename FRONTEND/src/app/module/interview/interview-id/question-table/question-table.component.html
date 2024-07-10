@@ -1,0 +1,30 @@
+<app-cate-tab [currentCateTab]="currentCateTab"></app-cate-tab>
+
+<ng-container [ngSwitch]="currentCateTab">
+	<!-- Soft Skill -->
+	<app-right-table
+		*ngSwitchCase="0"
+		[rightTable]="rightSoft"
+		[cate]="0"
+		[currentSubTab]="0"
+		(currentSubTabChange)="setCurrentSubTab($event)">
+	</app-right-table>
+
+	<!-- Language Skill -->
+	<app-right-table
+		*ngSwitchCase="1"
+		[rightTable]="rightLang"
+		[cate]="1"
+		[currentSubTab]="0"
+		(currentSubTabChange)="setCurrentSubTab($event)">
+	</app-right-table>
+
+	<!-- Technical Questions -->
+	<app-right-table
+		*ngSwitchCase="2"
+		[rightTable]="rightTech"
+		[cate]="2"
+		[currentSubTab]="currentSubTab"
+		(currentSubTabChange)="setCurrentSubTab($event)">
+	</app-right-table>
+</ng-container>

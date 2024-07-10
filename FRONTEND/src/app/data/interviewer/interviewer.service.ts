@@ -50,4 +50,8 @@ export class InterviewerService {
 		}
 		return this.api.GET(url);
 	}
+
+	getInterviewerById(id: string): Observable<Interviewer> {
+		return this.api.GET('/api/Interviewer?id=' + id);
+	}
 }

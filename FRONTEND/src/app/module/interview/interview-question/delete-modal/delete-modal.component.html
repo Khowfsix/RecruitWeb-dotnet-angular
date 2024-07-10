@@ -1,0 +1,50 @@
+<!-- delete-alert-modal.component.html -->
+
+<div
+	class="modal"
+	[class.show]="deleteModalStatus"
+	tabindex="-1"
+	role="dialog"
+	[style.display]="deleteModalStatus ? 'block' : 'none'">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-body text-center">
+				<mat-icon class="warning-icon">warning_amber</mat-icon>
+				<h2 class="mt-3">Delete Question</h2>
+				<p class="mb-4">
+					Are you sure to delete the question with ID <span class="small">{{ value.QuestionId }}</span
+					>?
+				</p>
+				<div class="row">
+					<div class="col-6">
+						<button
+							mat-stroked-button
+							class="w-100"
+							(click)="handleDeleteModalClose.emit()"
+							[disabled]="status.status === 'loading'">
+							Cancel
+						</button>
+					</div>
+					<div class="col-6">
+						<button
+							*ngIf="status.status !== 'loading'"
+							mat-raised-button
+							color="primary"
+							class="w-100"
+							(click)="onDeleteClick()">
+							Delete
+						</button>
+						<button
+							*ngIf="status.status === 'loading'"
+							mat-raised-button
+							color="primary"
+							class="w-100"
+							disabled>
+							<mat-spinner diameter="20"></mat-spinner>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

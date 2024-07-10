@@ -1,1 +1,91 @@
-<p>interview-id works!</p>
+<div *ngIf="interview && role" class="container-fluid">
+	<app-interview-id></app-interview-id>
+
+	<div *ngIf="role === 'interviewer' && interview.candidate_Status === 'Not start'">
+		<div *ngIf="user?.interviewerId === interview.interviewerid" class="d-flex justify-content-end my-4">
+			<button
+				mat-raised-button
+				color="primary"
+				(click)="openAlertDialog('Are you sure you want to start this interview?', handleStart)">
+				Start
+			</button>
+		</div>
+	</div>
+
+	<div *ngIf="interview.candidate_Status === 'Finished'">
+		<mat-divider class="my-4">RESULT OF THE INTERVIEW</mat-divider>
+
+		<div class="row">
+			<div class="col-md-6 mb-4">
+				<mat-card>
+					<mat-card-header>
+						<mat-icon mat-card-avatar>edit_note</mat-icon>
+						<mat-card-title>Note</mat-card-title>
+					</mat-card-header>
+					<mat-card-content>
+						<mat-divider></mat-divider>
+						<app-note-field [note]="interview.note"></app-note-field>
+						<mat-divider></mat-divider>
+					</mat-card-content>
+				</mat-card>
+			</div>
+
+			<div class="col-md-6 mb-4">
+				<mat-card>
+					<mat-card-header>
+						<mat-icon mat-card-avatar>question_mark</mat-icon>
+						<mat-card-title>Questions</mat-card-title>
+					</mat-card-header>
+					<mat-card-content>
+						<app-question-table [round]="interview.round"></app-question-table>
+					</mat-card-content>
+				</mat-card>
+			</div>
+
+			<div class="col-12 mb-4">
+				<mat-card>
+					<div class="row">
+						<div class="col-md-6">
+							<mat-card-header>
+								<mat-icon mat-card-avatar>troubleshoot</mat-icon>
+								<mat-card-title>Analysis</mat-card-title>
+							</mat-card-header>
+							<mat-card-content class="d-flex justify-content-center align-items-center">
+								<app-radar-plot [allResult]="interview.round"></app-radar-plot>
+							</mat-card-content>
+						</div>
+						<div class="col-md-6">
+							<mat-card-header>
+								<mat-icon mat-card-avatar>sports_score</mat-icon>
+								<mat-card-title>Final Score</mat-card-title>
+							</mat-card-header>
+							<mat-card-content class="d-flex justify-content-center align-items-center">
+								<app-score-table [allResult]="interview.round"></app-score-table>
+							</mat-card-content>
+						</div>
+					</div>
+				</mat-card>
+			</div>
+
+			<div *ngIf="role === 'admin'" class="col-12 d-flex justify-content-end">
+				<ng-container *ngIf="interview.company_Status === 'Pending'">
+					<button
+						mat-raised-button
+						color="warn"
+						class="me-3"
+						(click)="openAlertDialog('Are you sure you want to reject this candidate?', handleReject)">
+						<mat-icon>close</mat-icon> Reject
+					</button>
+					<button
+						mat-raised-button
+						color="primary"
+						(click)="openAlertDialog('Are you sure you want to accept this candidate?', handleAccept)">
+						<mat-icon>check</mat-icon> Accept
+					</button>
+				</ng-container>
+				<app-pass *ngIf="interview.company_Status === 'Passed'"></app-pass>
+				<app-fail *ngIf="interview.company_Status === 'Failed'"></app-fail>
+			</div>
+		</div>
+	</div>
+</div>

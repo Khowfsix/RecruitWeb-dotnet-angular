@@ -1,7 +1,6 @@
 using Api.ViewModels.Interviewer;
 using AutoMapper;
 using Data.CustomModel.Interviewer;
-using Data.CustomModel.Position;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;

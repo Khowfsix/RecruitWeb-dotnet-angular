@@ -1,0 +1,26 @@
+<div class="container">
+	<div class="row">
+		<div class="col-12 col-md-5">
+			<app-left-table
+				[leftTable]="leftTable"
+				[cate]="cate"
+				[currentQues]="currentQues"
+				(currentQuesChange)="setCurrentQues($event)"
+				[currentSubTab]="currentSubTab"
+				(currentSubTabChange)="setCurrentSubTab($event)">
+			</app-left-table>
+		</div>
+		<div class="col-12 col-md-2 d-flex flex-column align-items-center justify-content-center">
+			<app-button-transfer [currentChosen]="currentQues" (transfer)="handleTransfer()"> </app-button-transfer>
+		</div>
+		<div class="col-12 col-md-5">
+			<app-right-table
+				[rightTable]="rightTable"
+				[cate]="cate"
+				[currentSubTab]="currentSubTab"
+				(currentSubTabChange)="setCurrentSubTab($event)"
+				(currentQuesChange)="setCurrentQues($event)">
+			</app-right-table>
+		</div>
+	</div>
+</div>

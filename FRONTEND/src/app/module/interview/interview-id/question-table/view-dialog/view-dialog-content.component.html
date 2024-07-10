@@ -1,0 +1,66 @@
+<h2 mat-dialog-title class="bg-dark text-white p-3">QUESTION</h2>
+<mat-dialog-content>
+	<div class="container-fluid mt-3">
+		<div class="row mb-3">
+			<div class="col-md-5 col-sm-3 d-flex align-items-center">
+				<mat-icon>grid_3x3</mat-icon>
+				<h3 class="mb-0 ms-2">ID</h3>
+			</div>
+			<div class="col-1 d-flex align-items-center">:</div>
+			<div class="col-md-6 col-sm-8">
+				<p class="mb-0">{{ data.params.row.questionid }}</p>
+			</div>
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-md-5 col-sm-3 d-flex align-items-start">
+				<mat-icon>source</mat-icon>
+				<h3 class="mb-0 ms-2">Content</h3>
+			</div>
+			<div class="col-1 d-flex align-items-start">:</div>
+			<div class="col-md-6 col-sm-8">
+				<mat-form-field class="w-100">
+					<textarea matInput [value]="data.params.row.questionstring" readonly rows="4"></textarea>
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-md-5 col-sm-3 d-flex align-items-center">
+				<mat-icon>category</mat-icon>
+				<h3 class="mb-0 ms-2">Category</h3>
+			</div>
+			<div class="col-1 d-flex align-items-center">:</div>
+			<div class="col-md-6 col-sm-8">
+				<mat-chip [color]="chipColor" selected>
+					<mat-icon>{{ categoryIcon }}</mat-icon>
+					{{ categoryName }}
+				</mat-chip>
+			</div>
+		</div>
+
+		@if (data.skillname) {
+		<div class="row mb-3">
+			<div class="col-md-5 col-sm-3 d-flex align-items-center">
+				<mat-icon>psychology</mat-icon>
+				<h3 class="mb-0 ms-2">Skill</h3>
+			</div>
+			<div class="col-1 d-flex align-items-center">:</div>
+			<div class="col-md-6 col-sm-8">
+				<p class="mb-0">{{ data.skillname }}</p>
+			</div>
+		</div>
+		} @if (data.languagename) {
+		<div class="row mb-3">
+			<div class="col-md-5 col-sm-3 d-flex align-items-center">
+				<mat-icon>public</mat-icon>
+				<h3 class="mb-0 ms-2">Language</h3>
+			</div>
+			<div class="col-1 d-flex align-items-center">:</div>
+			<div class="col-md-6 col-sm-8">
+				<p class="mb-0">{{ data.languagename }}</p>
+			</div>
+		</div>
+		}
+	</div>
+</mat-dialog-content>

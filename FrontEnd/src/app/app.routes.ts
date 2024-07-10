@@ -17,6 +17,7 @@ import { InterviewComponent } from './module/reccer/interview/interview.componen
 import { InterviewerComponent } from './module/reccer/interviewer/interviewer.component';
 import { CallBackComponent } from './shared/component/gg-meet/call-back/call-back.component';
 import { LoginMeetComponent } from './shared/component/gg-meet/login-meet/login-meet.component';
+import { InterviewIdComponent } from './module/interview/interview-id/interview-id.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -83,6 +84,11 @@ export const routes: Routes = [
 		role.INTERVIEWER,
 		role.ADMIN
 	], 'List Interviews'),
+	createRouteWithRoles('list-interviews/:interviewId', InterviewIdComponent, [
+		role.INTERVIEWER,
+		role.CANDIDATE,
+		role.RECRUITER
+	], `Interview/`),
 
 	createRouteWithRoles('candidate-infomation', InfoCandidateComponent, [
 		role.INTERVIEWER,

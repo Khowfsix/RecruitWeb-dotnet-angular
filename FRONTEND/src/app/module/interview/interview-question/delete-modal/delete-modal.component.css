@@ -1,0 +1,29 @@
+/* delete-alert-modal.component.css */
+
+.warning-icon {
+	font-size: 100px;
+	height: 100px;
+	width: 100px;
+	color: black;
+}
+
+.modal-content {
+	border-radius: 1rem;
+}
+
+.mat-mdc-raised-button.mat-primary {
+	background-color: black;
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+	background-color: #333;
+}
+
+.mat-mdc-stroked-button {
+	border-color: black;
+	color: black;
+}
+
+.mat-mdc-stroked-button:hover {
+	background-color: #f8f9fa;
+}
