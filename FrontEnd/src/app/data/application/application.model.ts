@@ -11,6 +11,12 @@ export class Application {
 	candidate_Status?: number;
 	priority?: string;
 	interviews?: Interview[];
+	isDeleted?: boolean;
+}
+
+export class ApplicationAddModel {
+	cvId?: string;
+	positionId?: string;
 }
 
 export class ApplicationAddModel {

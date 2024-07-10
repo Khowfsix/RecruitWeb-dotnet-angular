@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { API } from '../api.service';
 import { Observable } from 'rxjs';
+import { Requirements } from './requirements.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -9,6 +10,10 @@ import { Observable } from 'rxjs';
 export class RequirementsService {
 
 	constructor(private api: API) { }
+
+	public getAllRequirements(): Observable<Requirements[]> {
+		return this.api.GET('/api/Requirement');
+	}
 
 	save(data?: any): Observable<any> {
 		return this.api.POST('/api/Requirement', data);

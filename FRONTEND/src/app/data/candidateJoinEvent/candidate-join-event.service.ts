@@ -11,6 +11,10 @@ export class CandidateJoinEventService {
 
 	constructor(private api: API) { }
 
+	public getAll(): Observable<CandidateJoinEvent[]> {
+		return this.api.GET('/api/CandidateJoinEvent');
+	}
+
 	public getAllByCandidateId(candidateId?: string): Observable<CandidateJoinEvent[]> {
 		return this.api.GET('/api/CandidateJoinEvent?candidateId=' + candidateId);
 	}

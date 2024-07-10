@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { InterviewerService } from '../../../data/interviewer/interviewer.service';
-import { RecruiterService } from '../../../data/recruiter/recruiter.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Interviewer } from '../../../data/interviewer/interviewer.model';
 import { Recruiter } from '../../../data/recruiter/recruiter.model';
@@ -23,8 +22,11 @@ import { CustomDateTimeService } from '../../../shared/service/custom-datetime.s
 import { MatDialog } from '@angular/material/dialog';
 import { InterviewHistoryComponent } from './interview-history/interview-history.component';
 import { InterviewService } from '../../../data/interview/interview.service';
-import { AddFormComponent } from '../interview/add-form/add-form.component';
+import { AddFormComponent as InterviewerAddFormComponent } from '../interviewer/add-form/add-form.component';
+import { AddFormComponent as InterviewAddFormComponent } from '../interview/add-form/add-form.component';
+
 import { GGMeetService } from '../../../shared/service/ggmeet.service';
+import { DeleteDialogComponent } from '../../../shared/component/dialog/delete-dialog/delete-dialog.component';
 export const MY_FORMATS = {
 	parse: {
 		dateInput: 'DD/MM/YYYY',
@@ -71,7 +73,6 @@ export class InterviewerComponent implements OnInit {
 		private interviewerService: InterviewerService,
 		private interviewService: InterviewService,
 		private authService: AuthService,
-		private recruiterService: RecruiterService,
 	) { }
 
 	public filterForm: FormGroup = this.formBuilder.group({
@@ -85,9 +86,52 @@ export class InterviewerComponent implements OnInit {
 		toDate: [null, []],
 	});
 
-	public recruiter?: Recruiter;
+	public recruiter?: Recruiter = this.authService.getLocalCurrentUser().recruiters?.pop();
 	public fetchedInterviewers?: Interviewer[];
 	private filterSubject = new Subject<any>();
+
+	public openDeleteFormDialog(interviewer: Interviewer, enterAnimationDuration: string,
+		exitAnimationDuration: string) {
+		const editFormDialog = this.dialog.open(DeleteDialogComponent, {
+			viewContainerRef: this.viewContainerRef,
+			data: {
+				objectLabel: 'Interviewer',
+				objectName: interviewer.user?.fullName,
+				deleteApiServiceObservable: this.interviewerService.delete(interviewer.interviewerId ?? '')
+			},
+			width: '400px',
+			height: '230px',
+			enterAnimationDuration,
+			exitAnimationDuration,
+		});
+
+		editFormDialog.afterClosed().subscribe(() => {
+			const formValue = this.filterForm.value;
+			formValue.fromDate = this.customDateService.sameValueToUTC(formValue.fromDate, true);
+			formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
+			this.fetchInterviewers(this.recruiter?.companyId, formValue);
+		})
+	}
+
+	public openAddForm = (): void => {
+		const addFormDialog = this.dialog.open(InterviewerAddFormComponent, {
+			width: '500px',
+			height: '350px',
+			viewContainerRef: this.viewContainerRef,
+			data: {
+				companyId: this.recruiter?.companyId,
+			},
+			enterAnimationDuration: '100ms',
+			exitAnimationDuration: '0ms',
+		});
+
+		addFormDialog.afterClosed().subscribe(() => {
+			const formValue = this.filterForm.value;
+			formValue.fromDate = this.customDateService.sameValueToUTC(formValue.fromDate, true);
+			formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
+			this.fetchInterviewers(this.recruiter?.companyId, formValue);
+		})
+	}
 
 	private fetchInterviewers(companyId: string | undefined, interviewFilterModel?: any) {
 		if (companyId) {
@@ -105,7 +149,7 @@ export class InterviewerComponent implements OnInit {
 		exitAnimationDuration: string,
 	): void {
 		if (interviewerId) {
-			const dialogRef = this.dialog.open(AddFormComponent, {
+			const dialogRef = this.dialog.open(InterviewAddFormComponent, {
 				viewContainerRef: this.viewContainerRef,
 				data: {
 					recruiter: this.recruiter,
@@ -150,15 +194,9 @@ export class InterviewerComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		const currentUserId = this.authService.getLocalCurrentUser().id;
 		// console.log('authService', this.authService.getLocalCurrentUser().id)
-		if (currentUserId) {
-			this.recruiterService.getRecruiterByUserId(currentUserId)
-				.subscribe((recruiter) => {
-					this.recruiter = recruiter;
-					console.log('recruiter', recruiter)
-					this.fetchInterviewers(recruiter.companyId);
-				})
+		if (this.recruiter) {
+			this.fetchInterviewers(this.recruiter.companyId);
 		}
 
 

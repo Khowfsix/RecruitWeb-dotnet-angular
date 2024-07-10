@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Language } from './language.model';
+import { Language, LanguageAddModel, LanguageUpdateModel } from './language.model';
 import { API } from '../api.service';
 
 @Injectable({
@@ -12,5 +12,16 @@ export class LanguageService {
 
 	getAllLanguagues(): Observable<Language[]> {
 		return this.api.GET('/api/Language');
+	}
+
+	deleteLanguage(id?: string): Observable<boolean> {
+		return this.api.DELETE('/api/Language/' + id);
+	}
+
+	createLanguage(newLanguage: LanguageAddModel): Observable<Language> {
+		return this.api.POST('/api/Language/', newLanguage);
+	}
+	updateLanguage(LanguageId: string, newLanguage: LanguageUpdateModel): Observable<Language> {
+		return this.api.PUT('/api/Language/' + LanguageId, newLanguage);
 	}
 }

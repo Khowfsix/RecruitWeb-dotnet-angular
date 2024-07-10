@@ -302,7 +302,6 @@ export class AddFormComponent implements OnInit {
 		fieldValue.recruiterId = this.recruiter.recruiterId;
 		fieldValue.meetingDate = this.customDateTimeService.sameValueToUTC(fieldValue.meetingDate, true);
 		if (fieldValue.onlineMeeting === true) {
-
 			delete fieldValue.onlineMeeting;
 			this.interviewService.save(fieldValue).subscribe({
 				next: () => {

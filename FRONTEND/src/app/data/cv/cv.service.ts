@@ -21,6 +21,12 @@ export class CvService {
 		return this.api.GET(`/api/Cv/GetCandidateCvs/${candidateId}`);
 	}
 
+
+	getAllCVs(): Observable<CV[]> {
+		return this.api.GET(`/api/Cv`);
+	}
+
+
 	updateCvOfCandidate() {
 
 	}

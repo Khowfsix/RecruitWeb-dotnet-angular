@@ -22,7 +22,7 @@ namespace Api.Controllers
 
         // GET: api/<SecurityQuestionController>
         [HttpGet]
-        public async Task<IActionResult> GetAllSecurityAnswers(string req)
+        public async Task<IActionResult> GetAllSecurityAnswers()
         {
             var reportList = await _securityAnswerService.GetAllSecurityAnswers();
             var result = new List<SecurityAnswerViewModel>();

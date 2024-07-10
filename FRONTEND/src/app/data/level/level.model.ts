@@ -3,3 +3,11 @@ export class Level {
 	levelName?: string;
 	isDeleted?: boolean;
 }
+export class LevelAddModel {
+	levelName?: string;
+	isDeleted?: boolean;
+}
+export class LevelUpdateModel {
+	levelName?: string;
+	isDeleted?: boolean;
+}

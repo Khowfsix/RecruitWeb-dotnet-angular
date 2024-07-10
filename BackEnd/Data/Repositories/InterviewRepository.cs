@@ -230,6 +230,15 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
             throw new Exception(ex.Message);
         }
     }
+    public async Task<Interview?> GetLastInterviewOfInterviewer(Guid id)
+    {
+        var listDatas = await Entities.Where(i => i.InterviewerId.Equals(id))
+            .OrderByDescending(e => e.MeetingDate)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+
+        return listDatas;
+    }
 
     public async Task<IEnumerable<Interview>> GetInterviewOfInterviewer(Guid id)
     {

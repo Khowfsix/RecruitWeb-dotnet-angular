@@ -15,6 +15,15 @@ export class ApplicationService {
 		return this.api.GET('/api/Application');
 	}
 
+	deleteApplication(id?: string): Observable<boolean> {
+		console.log(`start`);
+		return this.api.DELETE('/api/Application/' + id);
+	}
+
+	createApplication(newApplication: ApplicationAddModel): Observable<Application> {
+		return this.api.POST('/api/Application/', newApplication);
+	}
+
 	updateStatusApplication(applicationId: string, companyStatus?: number, candidateStatus?: number): Observable<any> {
 		let url = '/api/Application/UpdateStatusApplication/' + applicationId + '?';
 		if (companyStatus) {

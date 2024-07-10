@@ -16,6 +16,19 @@ public class EventHasPositionRepository : Repository<EventHasPosition>, IEventHa
     {
         _uow = uow;
     }
+
+    public async Task<IEnumerable<EventHasPosition>> GetAllEventHasPositions()
+    {
+        /*------------------------------*/
+        // Finds all of level entities asynchronously in db.
+        // Returns a list of it with the related entities.
+        /*------------------------------*/
+        var entities = await Entities
+            .ToListAsync();
+
+        return entities;
+    }
+    
     public async Task<EventHasPosition> SaveEventHasPosition(EventHasPosition request)
     {
         request.EventHasPositionId = Guid.NewGuid();

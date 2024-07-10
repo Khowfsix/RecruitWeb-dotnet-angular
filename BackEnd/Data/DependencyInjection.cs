@@ -44,6 +44,13 @@ namespace Data
             service.AddTransient(typeof(ICandidateHasSkillrepository), typeof(CandidateHasSkillRepository));
             service.AddTransient(typeof(IEventHasPositionRepository), typeof(EventHasPositionRepository));
             service.AddTransient(typeof(ILevelRepository), typeof(LevelRepository));
+            service.AddTransient(typeof(IRoleRepository), typeof(RoleRepository));
+            service.AddTransient(typeof(IUserRoleRepository), typeof(UserRoleRepository));
+            service.AddTransient(typeof(IAwardRepository), typeof(AwardRepository));
+            service.AddTransient(typeof(IEducationRepository), typeof(EducationRepository));
+            service.AddTransient(typeof(IPersonalProjectRepository), typeof(PersonalProjectRepository));
+            service.AddTransient(typeof(IQuestionLanguageRepository), typeof(QuestionLanguageRepository));
+            service.AddTransient(typeof(IWorkExperienceRepository), typeof(WorkExperienceRepository));
             return service;
         }
     }

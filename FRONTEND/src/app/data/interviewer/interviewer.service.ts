@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../api.service';
-import { Interviewer, InterviewerFilterModel } from './interviewer.model';
+import { Interviewer, InterviewerAddModel, InterviewerFilterModel } from './interviewer.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -51,7 +51,10 @@ export class InterviewerService {
 		return this.api.GET(url);
 	}
 
-	getInterviewerById(id: string): Observable<Interviewer> {
-		return this.api.GET('/api/Interviewer?id=' + id);
+	public createInterviewer(addModel: InterviewerAddModel, options?: any) {
+		return this.api.POST('/api/Interviewer', addModel, options);
+	}
+	public delete(id?: string) {
+		return this.api.DELETE('/api/Interviewer/' + id);
 	}
 }

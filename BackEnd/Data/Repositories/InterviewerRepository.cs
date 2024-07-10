@@ -109,12 +109,16 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
     public async Task<Interviewer?> GetInterviewerById(Guid id)
     {
         var item = await Entities.Include(x => x.User).Where(x => x.InterviewerId == id).FirstOrDefaultAsync();
-        if (item is null or { IsDeleted: true }) return null;
         return item;
     }
 
     public async Task<Interviewer> SaveInterviewer(Interviewer request)
     {
+        var foundInterviewer = Entities.Where(e => e.UserId == request.UserId && !e.IsDeleted).FirstOrDefault();
+        if (foundInterviewer != null)
+        {
+            return null;
+        }
         request.InterviewerId = Guid.NewGuid();
 
         Entities.Add(request);

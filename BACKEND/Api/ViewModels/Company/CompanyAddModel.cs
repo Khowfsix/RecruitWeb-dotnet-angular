@@ -17,5 +17,7 @@ namespace Api.ViewModels.Company
 
         [DataType(DataType.Url)]
         public string? Website { get; set; }
+
+        public string? Logo { get; set; }
     }
 }

@@ -28,5 +28,16 @@ namespace Service
             }
             return null!;
         }
+
+        public async Task<IEnumerable<CandidateHasSkillModel>> GetAll()
+        {
+            var data = await _candidateHasSkillrepository.GetAll();
+            if (!data.IsNullOrEmpty())
+            {
+                List<CandidateHasSkillModel> candidateHasSkillModels = _mapper.Map<List<CandidateHasSkillModel>>(data);
+                return candidateHasSkillModels;
+            }
+            return null!;
+        }
     }
 }

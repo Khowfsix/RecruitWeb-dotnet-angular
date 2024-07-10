@@ -11,6 +11,11 @@ export class InterviewService {
 
 	constructor(private api: API) { }
 
+	public getAll(): Observable<Interview[]> {
+		const url = '/api/Interview';
+		return this.api.GET(url);
+	}
+
 	public updateStatus(interviewId: string, company_Status?: number, candidate_Status?: number) {
 		let url = `/api/Interview/UpdateStatusInterview/${interviewId}?`;
 		if (company_Status)
@@ -28,7 +33,7 @@ export class InterviewService {
 		return this.api.POST('/api/Interview', data, options);
 	}
 
-	getInterviewsByCompanyId(companyId: string, interviewFilterModel?: any, sortString?: string): Observable<Interview[]> {
+	public getInterviewsByCompanyId(companyId: string, interviewFilterModel?: any, sortString?: string): Observable<Interview[]> {
 		let url = '/api/Interview/GetInterviewsByCompany/' + companyId + '?';
 		if (sortString) {
 			url += 'sortString=' + sortString;

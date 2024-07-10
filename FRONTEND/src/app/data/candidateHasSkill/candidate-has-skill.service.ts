@@ -11,7 +11,10 @@ export class CandidateHasSkillService {
 
 	constructor(private api: API) { }
 
-	getAllByCandidateId(candidateId?: string): Observable<CandidateHasSkill[]> {
+	public getAllByCandidateId(candidateId?: string): Observable<CandidateHasSkill[]> {
 		return this.api.GET('/api/CandidateHasSkill?candidateId=' + candidateId);
+	}
+	public getAll(): Observable<CandidateHasSkill[]> {
+		return this.api.GET('/api/CandidateHasSkill');
 	}
 }

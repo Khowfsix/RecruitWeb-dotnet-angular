@@ -15,6 +15,7 @@ export class Position {
 	maxHiringQty?: number;
 	startDate?: Date;
 	endDate?: Date;
+	companyId?: string;
 	company?: Company;
 	language?: Language;
 	recruiterId?: string;

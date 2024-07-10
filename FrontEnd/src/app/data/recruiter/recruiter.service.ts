@@ -10,7 +10,11 @@ export class RecruiterService {
 
 	constructor(private api: API) { }
 
-	getRecruiterByUserId(userId: string): Observable<Recruiter> {
+	public getAll(): Observable<Recruiter[]> {
+		return this.api.GET('/api/Recruiter/GetAllRecruiter');
+	}
+
+	public getRecruiterByUserId(userId: string): Observable<Recruiter> {
 		return this.api.GET('/api/Recruiter/GetRecruiterByUserId/' + userId);
 	}
 }

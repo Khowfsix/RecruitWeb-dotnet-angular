@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 using Service.Interfaces;
 using Service.Models;
 
@@ -34,6 +35,12 @@ namespace Service
             var data = _mapper.Map<CategoryPosition>(request);
             var response = await _categoryPositionRepository.AddCategoryPosition(data);
             return _mapper.Map<CategoryPositionModel>(response);
+        }
+
+        public async Task<bool> UpdateCategoryPosition(CategoryPositionModel request, Guid id)
+        {
+            var entity = _mapper.Map<CategoryPosition>(request);
+            return await _categoryPositionRepository.UpdateCategoryPosition(entity, id);
         }
     }
 }

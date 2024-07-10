@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 using Service.Interfaces;
 using Service.Models;
 
@@ -34,6 +35,15 @@ namespace Service
             var data = _mapper.Map<Level>(request);
             var response = await _levelRepository.AddLevel(data);
             return _mapper.Map<LevelModel>(response);
+        }
+        public async Task<bool> UpdateLevel(LevelModel levelModel, Guid id)
+        {
+            var data = _mapper.Map<Level>(levelModel);
+            return await _levelRepository.UpdateLevel(data, id);
+        }
+        public async Task<bool> RemoveLevel(Guid id)
+        {
+            return await _levelRepository.RemoveLevel(id);
         }
     }
 }

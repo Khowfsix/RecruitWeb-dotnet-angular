@@ -1,9 +1,11 @@
-﻿using Api.ViewModels.Report;
+﻿using Api.ViewModels.AdminAward;
+using Api.ViewModels.Report;
 using AutoMapper;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 
 namespace Api.Controllers
@@ -90,6 +92,14 @@ namespace Api.Controllers
                 viewModels.Add(_mapper.Map<InterviewReportViewModel>(report));
             }
             return Ok(viewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllReports()
+        {
+            var listModelDatas = await _reportService.GetAllReport();
+            var response = _mapper.Map<List<ReportViewModel>>(listModelDatas);
+            return Ok(response);
         }
     }
 }

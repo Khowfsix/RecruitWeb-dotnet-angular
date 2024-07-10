@@ -9,3 +9,8 @@ export class SkillAddModel {
 	skillName: string = "";
 	description?: string;
 }
+
+export class SkillUpdateModel {
+	skillName: string = "";
+	description?: string;
+}

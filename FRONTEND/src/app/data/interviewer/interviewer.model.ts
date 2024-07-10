@@ -9,6 +9,12 @@ export class Interviewer {
 	daysToLastInterview?: number;
 }
 
+
+export class InterviewerAddModel {
+	userId?: string;
+	companyId?: string;
+}
+
 export class InterviewerFilterModel {
 	search?: string;
 	isFreeTime?: boolean;

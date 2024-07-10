@@ -27,7 +27,9 @@ namespace Api.Controllers
                 return (models != null) ? Ok(_mapper.Map<List<CandidateHasSkillViewModel>>(models)) : NotFound();
             }
 
-            return NotFound();
+            var candidateHasSkillModels = await _candidateHasSkillService.GetAll();
+            return (candidateHasSkillModels != null) ? Ok(_mapper.Map<List<CandidateHasSkillViewModel>>(candidateHasSkillModels)) : Ok("Not found");
+
         }
     }
 }

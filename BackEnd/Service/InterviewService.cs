@@ -28,11 +28,10 @@ public class InterviewService : IInterviewService
     }
     public async Task<InterviewModel> GetLastInterviewByInterviewerId(Guid interviewerId)
     {
-        var data = await this.GetInterviewsByInterviewer(interviewerId);
-        if (data == null || data.Count() == 0)
-            return null!;
-        data.OrderByDescending(o => o.MeetingDate);
-        var result = _mapper.Map<InterviewModel>(data.First());
+        var data = await _interviewRepository.GetLastInterviewOfInterviewer(interviewerId);
+        if (data == null)
+            return null;
+        var result = _mapper.Map<InterviewModel>(data);
         return result;
     }
 
@@ -78,6 +77,18 @@ public class InterviewService : IInterviewService
             return await Task.FromResult(false);
         if (foundInterview!.Company_Status != (int?)EInterviewCompanyStatus.PENDING)
             return await Task.FromResult(false);
+
+        var foundInterviews = await this.GetInterviewsByInterviewer(interviewModel.InterviewerId);
+        if (foundInterviews != null && foundInterviews
+            .Any(e =>
+                interviewModel.MeetingDate == e.MeetingDate
+                && !(interviewModel.EndTime < e.StartTime || interviewModel.StartTime > e.EndTime)
+            )
+        )
+        {
+            return await Task.FromResult(false);
+        }
+
         var data = _mapper.Map<Interview>(interviewModel);
         return await _interviewRepository.UpdateInterview(data, interviewModelId);
     }
@@ -113,18 +124,17 @@ public class InterviewService : IInterviewService
         var data = await _interviewRepository.GetAllInterview();
         if (!data.IsNullOrEmpty())
         {
-            if (status == null)
-            {
-                List<InterviewModel> result1 = _mapper.Map<List<InterviewModel>>(data);
-                return result1!;
-            }
+            var result = _mapper.Map<List<InterviewModel>>(data);
 
-            var filteredDatas = data.Where(i => (
-                i.Company_Status! == status ||
-                i.Candidate_Status! == status
-            ));
-            List<InterviewModel> result2 = _mapper.Map<List<InterviewModel>>(filteredDatas);
-            return result2!;
+            if (status.HasValue)
+            {
+                var filteredDatas = result.Where(i => (
+                   i.Company_Status! == status ||
+                   i.Candidate_Status! == status
+                ));
+               return filteredDatas;
+            }
+            return result;
         }
         return null!;
     }

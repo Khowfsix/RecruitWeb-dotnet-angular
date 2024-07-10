@@ -24,7 +24,7 @@ export class API {
 		return this.http.put(baseUrl + path, data);
 	}
 
-	public DELETE(path: string): Observable<any> {
-		return this.http.delete(baseUrl + path);
+	public DELETE(path: string, body?: any): Observable<any> {
+		return this.http.delete(baseUrl + path, { body: body });
 	}
 }
