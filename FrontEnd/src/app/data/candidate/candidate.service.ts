@@ -21,5 +21,7 @@ export class CandidateService {
 		return this.api.PUT('/api/Candidate/UpdateCandidateProfile/' + userId, data);
 	}
 
-
+	getAllCandidates(): Observable<Candidate[]> {
+		return this.api.GET('/api/Candidate');
+	}
 }

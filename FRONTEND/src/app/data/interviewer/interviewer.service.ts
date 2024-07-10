@@ -57,4 +57,8 @@ export class InterviewerService {
 	public delete(id?: string) {
 		return this.api.DELETE('/api/Interviewer/' + id);
 	}
+
+	public getInterviewerById(id: string): Observable<Interviewer> {
+		return this.api.GET('/api/Interviewer?id=' + id);
+	}
 }
