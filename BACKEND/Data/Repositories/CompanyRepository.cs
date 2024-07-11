@@ -59,6 +59,19 @@ namespace Data.Repositories
             }
         }
 
+        public async Task<Company> GetCompanyById(Guid companyId)
+        {
+            try
+            {
+                var foundCompany = await Entities.Where(e => e.CompanyId.Equals(companyId)).FirstAsync();
+                return foundCompany;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<Company> SaveCompany(Company request)
         {
             try
@@ -83,6 +96,27 @@ namespace Data.Repositories
                 request.CompanyId = requestId;
 
                 Entities.Update(request);
+                _uow.SaveChanges();
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
+        }
+
+        public async Task<bool> UpdateStatus(bool isActived, bool isDeleted, Guid requestId)
+        {
+            try
+            {
+                var foundCompany = await Entities.Where(e => e.CompanyId.Equals(requestId)).FirstAsync();
+                if (foundCompany == null) {
+                    return await Task.FromResult(false);
+                }
+                foundCompany.IsActived = isActived;
+                foundCompany.IsDeleted = isDeleted; 
+
+                Entities.Update(foundCompany);
                 _uow.SaveChanges();
                 return await Task.FromResult(true);
             }

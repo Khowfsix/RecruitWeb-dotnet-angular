@@ -4,6 +4,8 @@ namespace Data.Interfaces;
 
 public interface IRecruiterRepository : IRepository<Recruiter>
 {
+
+    Task<bool> UpdateStatus(bool isActived, bool isDeleted, Guid requestId);
     Task<IEnumerable<Recruiter>> GetAllRecruiter();
 
     Task<Recruiter?> GetRecruiterById(Guid id);
@@ -15,4 +17,5 @@ public interface IRecruiterRepository : IRepository<Recruiter>
     Task<bool> DeleteRecruiter(Guid requestId);
 
     Task<Recruiter> GetRecruiterByUserId(string userId);
+    Task<Recruiter> GetNotDeletedRecruiterByUserId(string userId);
 }

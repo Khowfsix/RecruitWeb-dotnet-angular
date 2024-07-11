@@ -61,7 +61,16 @@
 				<button mat-icon-button color="warn" (click)="delete(row)">
 					<mat-icon>delete</mat-icon>
 				</button>}
+				@if (this.actions.includes('accept')) {
+				<button mat-icon-button color="warn" (click)="accept(row)">
+					<mat-icon style="color: green;">done</mat-icon>
+				</button>}
+				@if (this.actions.includes('deny')) {
+				<button mat-icon-button color="warn" (click)="deny(row)">
+					<mat-icon style="color: red;">close</mat-icon>
+				</button>}
 				}
+
 			</td>
 		</ng-container>
 

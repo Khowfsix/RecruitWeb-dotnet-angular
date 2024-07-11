@@ -28,6 +28,7 @@ public partial class Company
     public string? Website { get; set; }
 
     public bool IsDeleted { get; set; }
+    public bool IsActived { get; set; }
 
     public virtual ICollection<Interviewer> Interviewers { get; set; } = new List<Interviewer>();
     public virtual ICollection<Position> Positions { get; set; } = new List<Position>();

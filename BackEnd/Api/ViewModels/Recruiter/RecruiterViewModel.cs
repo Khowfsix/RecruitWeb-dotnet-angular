@@ -10,5 +10,6 @@ namespace Api.ViewModels.Recruiter
         public virtual CompanyViewModel? Company { get; set; }
         public virtual WebUserViewModel? User { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public bool? IsActived { get; set; } = false;
     }
 }

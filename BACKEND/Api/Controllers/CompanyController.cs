@@ -37,7 +37,7 @@ namespace Api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> SaveCompany([FromForm] CompanyAddModel companyInfo, IFormFile? logo)
         {
             var modelData = _mapper.Map<CompanyModel>(companyInfo);
@@ -58,13 +58,33 @@ namespace Api.Controllers
 
         [HttpPut("{requestId:guid}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateCompany(CompanyUpdateModel request, Guid requestId)
+        public async Task<IActionResult> UpdateCompany(CompanyUpdateModel request, Guid requestId, bool? isActived, bool? isDeleted)
         {
             try
             {
+                if (isActived.HasValue && isDeleted.HasValue)
+                {
+                    var updatedCompany = await _companyService.UpdateStatus(isActived.Value, isDeleted.Value, requestId);
+                    return Ok(updatedCompany);
+                }
                 var modelData = _mapper.Map<CompanyModel>(request);
                 var companyList = await _companyService.UpdateCompany(modelData, requestId);
                 return Ok(companyList);
+            }
+            catch (Exception)
+            {
+                return Ok("Not found");
+            }
+        }
+
+        [HttpPut("[action]/{requestId:guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateStatus(Guid requestId, bool isActived, bool isDeleted)
+        {
+            try
+            {
+                var updatedCompany = await _companyService.UpdateStatus(isActived, isDeleted, requestId);
+                return Ok(updatedCompany);
             }
             catch (Exception)
             {

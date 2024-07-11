@@ -17,6 +17,7 @@ import { EventComponent } from './module/reccer/event/event.component';
 import { EventDetailComponent } from './module/event-detail/event-detail.component';
 import { CallBackComponent } from './shared/component/gg-meet/call-back/call-back.component';
 import { LoginMeetComponent } from './shared/component/gg-meet/login-meet/login-meet.component';
+import { RecruiterRegisterComponent } from './module/recruiter-register/recruiter-register.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
 
 const enum role {
@@ -47,6 +48,10 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 		data: { roles: [] },
 	},
+
+	createRouteWithRoles('recruiter/register', RecruiterRegisterComponent, [
+		role.CANDIDATE
+	]),
 
 	{ path: 'events/detail/:eventId', component: EventDetailComponent },
 

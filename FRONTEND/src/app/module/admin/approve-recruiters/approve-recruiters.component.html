@@ -1,0 +1,15 @@
+<div class="container">
+	<diV class="fs-4 w-100 text-center">INACTIVED COMPANY</diV>
+	<div class="mb-5">
+		<app-generic-table [dataInput]="listCompanies" [displayedColumns]="displayColumnCompanies"
+			[listProps]="listPropsCompanies" [actions]="actionsCompanies"
+			[detailDisplayedColumns]="detailDisplayColumnCompanies" [detailListProps]="detailListPropsCompanies"
+			[acceptData]="acceptDataCompany" [denyData]="denyDataCompany"></app-generic-table>
+	</div>
+
+
+	<diV class="fs-4 w-100 text-center mt-5">INACTIVED RECRUITER</diV>
+	<app-generic-table [dataInput]="listRecruiters" [displayedColumns]="displayColumnRecruiters"
+		[listProps]="listPropsRecruiters" [actions]="actionsRecruiters" [acceptData]="acceptDataRecruiter"
+		[denyData]="denyDataRecruiter"></app-generic-table>
+</div>

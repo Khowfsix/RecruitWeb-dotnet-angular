@@ -19,5 +19,6 @@ namespace Api.ViewModels.Company
         public string? Website { get; set; }
 
         public string? Logo { get; set; }
+        public bool? IsActived { get; set; } = false;
     }
 }

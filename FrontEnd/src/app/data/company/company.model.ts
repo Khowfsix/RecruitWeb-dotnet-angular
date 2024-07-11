@@ -6,6 +6,7 @@ export class Company {
 	phone?: string;
 	website?: string;
 	isDeleted?: boolean;
+	isActived?: boolean;
 	logo?: string;
 }
 
@@ -16,5 +17,6 @@ export class CompanyAddModel {
 	phone?: string;
 	website?: string;
 	isDeleted?: boolean;
+	isActived?: boolean;
 	logo?: string;
 }

@@ -29,7 +29,7 @@ namespace Service
             if (!data.IsNullOrEmpty())
             {
                 List<CompanyModel> result = _mapper.Map<List<CompanyModel>>(data);
-                return !isAdmin ? result.Where(o => !o.IsDeleted).ToList() : result;
+                return !isAdmin ? result.Where(o => !o.IsDeleted && o.IsActived).ToList() : result;
             }
             return null!;
         }
@@ -45,6 +45,10 @@ namespace Service
         {
             var data = _mapper.Map<Company>(request);
             return await _companyRepository.UpdateCompany(data, requestId);
+        }
+        public async Task<bool> UpdateStatus(bool isActived, bool isDeleted, Guid requestId)
+        {
+            return await _companyRepository.UpdateStatus(isActived, isDeleted, requestId);
         }
     }
 }

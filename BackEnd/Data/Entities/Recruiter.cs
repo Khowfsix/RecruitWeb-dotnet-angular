@@ -11,6 +11,8 @@ public partial class Recruiter
     [Column("CompanyId")]
     public Guid CompanyId { get; set; }
 
+    public bool IsActived { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public virtual Company Company { get; set; } 

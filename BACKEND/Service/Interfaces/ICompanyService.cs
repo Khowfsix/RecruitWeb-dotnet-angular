@@ -9,6 +9,7 @@ namespace Service.Interfaces
         Task<CompanyModel> SaveCompany(CompanyModel request);
 
         Task<bool> UpdateCompany(CompanyModel request, Guid requestId);
+        Task<bool> UpdateStatus(bool isActived, bool isDeleted, Guid requestId);
 
         Task<bool> DeleteCompany(Guid requestId);
     }

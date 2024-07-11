@@ -28,6 +28,7 @@ export class AdminComponent {
 				'Reports',
 				'Analytics',
 				'Exports',
+				'Approve-Recruiters',
 			]
 		},
 		{

@@ -1,0 +1,101 @@
+<div class="container" style="height: 100vh;">
+	@if (this.alreadyRegister){
+	<div class="w-100 py-4">
+		<div class="fs-3 my-4">PLEASE WAIT FOR ADMIN APPROVAL</div>
+		<div class="my-4 p-2 rounded-3 border border-secondary" style="width: fit-content;">
+			@if (this.fetchedRecruiter?.isActived) {
+			<span style="color: green;">Actived. Try login again</span>
+			}
+			@else {
+			<span style="color: red;">Not Actived</span>
+			}
+		</div>
+	</div>
+	}
+	@else {
+	<div class="row w-100 g-0" style="height: 100vh;">
+		<div class="col-5 d-flex flex-column justify-content-center align-items-center">
+			<img height="400px" width="400px" src="../../../assets/recruiter_register.jpg" />
+		</div>
+		<div class="col-7 h-100 d-flex flex-column justify-content-center px-4">
+			<section class="w-100 my-2">
+				<mat-checkbox [formControl]="alreadyHasCompany"><span class="fw-bold fs-2">Already Have
+						Company In This Web?</span></mat-checkbox>
+			</section>
+
+			@if (this.alreadyHasCompany.value === true){
+			<app-autocomplete [formField]="'companyId'" [valueField]="'companyId'" [labelField]="'companyName'"
+				[label]="'Company'" [placeholder]="''" [observableOptions]="this.observableCompanies"
+				[formGroup]="this.recruiterFormGroup"></app-autocomplete>
+			<div class="w-100 d-flex flex-column align-items-center">
+				<button [disabled]="!this.recruiterFormGroup.valid" mat-raised-button color="primary" class="w-50"
+					mat-raised-button (click)="saveRecruiter()">
+					<span style="font-size: 16px;">Submit</span>
+				</button>
+			</div>
+			}
+			@else {
+			<form class="d-flex flex-column" [formGroup]="companyFormGroup">
+				<mat-form-field>
+					<mat-label>Company Name</mat-label>
+					<input matInput type="text" value="" formControlName="companyName">
+					@if(companyFormGroup.get('companyName')?.invalid){
+					@if(companyFormGroup.get('companyName')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Address</mat-label>
+					<input matInput type="text" value="" formControlName="address">
+					@if(companyFormGroup.get('address')?.invalid){
+					@if(companyFormGroup.get('address')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Email</mat-label>
+					<input type="email" matInput value="" formControlName="email">
+					@if(companyFormGroup.get('email')?.invalid){
+					@if(companyFormGroup.get('email')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Phone</mat-label>
+					<input type="number" matInput value="" formControlName="phone">
+					@if(companyFormGroup.get('phone')?.invalid){
+					@if(companyFormGroup.get('phone')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Website</mat-label>
+					<input matInput type="text" value="" formControlName="website">
+					@if(companyFormGroup.get('website')?.invalid){
+					@if(companyFormGroup.get('website')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<div class="w-100 d-flex flex-column align-items-center">
+					<button [disabled]="!this.companyFormGroup.valid" mat-raised-button color="primary" class="w-50"
+						mat-raised-button (click)="saveCompanyThenRecruiter()">
+						<span style="font-size: 16px;">Submit</span>
+					</button>
+				</div>
+			</form>
+			}
+
+		</div>
+	</div>
+	}
+</div>

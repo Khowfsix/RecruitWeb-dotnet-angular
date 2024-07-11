@@ -117,4 +117,8 @@ export class HeaderComponent {
 	handleRouteToAdminConsole() {
 		this._router.navigate(['/admin'])
 	}
+
+	handleRouteToRecruiterRegisterConsole() {
+		this._router.navigate(['/recruiter/register'])
+	}
 }
