@@ -3,9 +3,9 @@
     public class ReportAddModel
     {
         public string? ReportName { get; set; }
-
-        public Guid RecruiterId { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
+        public string UserId { get; set; }
+        public int ReportType { get; set; }
+        public string FileURL { get; set; }
+        public bool? IsDeleted { get; set; } = false;
     }
 }

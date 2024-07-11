@@ -1,6 +1,7 @@
 <div class="pb-3">
-	<button mat-raised-button color="primary" (click)="createData()"
-		[disabled]="this.actions !== undefined && !this.actions.includes('create')" class="w-100">Create</button>
+	@if (this.actions !== undefined && this.actions.includes('create')){
+	<button mat-raised-button color="primary" (click)="createData()" class="w-100">Create</button>
+	}
 </div>
 
 <mat-form-field>

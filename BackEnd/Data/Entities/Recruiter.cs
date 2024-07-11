@@ -21,7 +21,5 @@ public partial class Recruiter
 
     public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
 
-    public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
-
     public virtual WebUser User { get; set; } 
 }

@@ -17,8 +17,8 @@
         public string CompanyName { get; set; }
         public string LanguageName { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
-        public string Candidate_Status { get; set; } = "Pending";
-        public string Company_Status { get; set; } = "Pending";
+        public int? Candidate_Status { get; set; }
+        public int? Company_Status { get; set; }
         public int? Priority { get; set; }
         public bool IsDeleted { get; set; } = false;
     }

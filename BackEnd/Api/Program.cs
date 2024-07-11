@@ -51,7 +51,8 @@ try
                     .SetIsOriginAllowed(origin => true)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowCredentials();
+                    .AllowCredentials()
+                    .WithExposedHeaders("Content-Disposition");
                 //.AllowAnyOrigin();
             }
         );

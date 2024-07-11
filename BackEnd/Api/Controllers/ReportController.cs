@@ -1,5 +1,7 @@
 ﻿using Api.ViewModels.AdminAward;
 using Api.ViewModels.Report;
+using Api.ViewModels.Report;
+using Api.ViewModels.Report;
 using AutoMapper;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Interfaces;
+using Service.Models;
 
 namespace Api.Controllers
 {
@@ -86,10 +89,10 @@ namespace Api.Controllers
         public async Task<IActionResult> ApplicationReport(DateTime fromDate, DateTime toDate)
         {
             var reportList = await _reportService.ApplicationReport(fromDate, toDate);
-            List<InterviewReportViewModel> viewModels = new List<InterviewReportViewModel>();
+            var viewModels = new List<ApplicationReportViewModel>();
             foreach (var report in reportList)
             {
-                viewModels.Add(_mapper.Map<InterviewReportViewModel>(report));
+                viewModels.Add(_mapper.Map<ApplicationReportViewModel>(report));
             }
             return Ok(viewModels);
         }
@@ -100,6 +103,43 @@ namespace Api.Controllers
             var listModelDatas = await _reportService.GetAllReport();
             var response = _mapper.Map<List<ReportViewModel>>(listModelDatas);
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveReport(ReportAddModel request)
+        {
+            if (request == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+            var modelData = _mapper.Map<ReportModel>(request);
+            var response = await _reportService.SaveReport(modelData);
+            return Ok(response);
+        }
+
+        [HttpPut("{requestId:guid}")]
+        public async Task<IActionResult> UpdateReport(ReportUpdateModel request, Guid requestId)
+        {
+            if (request == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+            var modelData = _mapper.Map<ReportModel>(request);
+            var response = await _reportService.UpdateReport(modelData, requestId);
+            return Ok(response);
+        }
+
+
+        [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Recruiter,Admin")]
+        public async Task<IActionResult> DeleteReport(Guid id)
+        {
+            if (id != null)
+            {
+                var reportList = await _reportService.DeleteReport(id);
+                return Ok(reportList);
+            }
+            return StatusCode(StatusCodes.Status400BadRequest);
         }
     }
 }

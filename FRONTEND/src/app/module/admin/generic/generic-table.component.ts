@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeDetectorRef, Component, Inject, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -79,6 +79,12 @@ export class GenericTableComponent {
 		private _intl: MatPaginatorIntl,
 		private _changeDetectorRef: ChangeDetectorRef
 	) { }
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['displayedColumns']) {
+			this.columnsToDisplayWithExpand = [...changes['displayedColumns'].currentValue, 'action']
+		}
+	}
 
 	ngOnInit() {
 		this.columnsToDisplayWithExpand = [...this.displayedColumns, 'action'];

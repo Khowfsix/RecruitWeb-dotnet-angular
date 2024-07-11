@@ -197,15 +197,28 @@ namespace Data.Repositories
 
         public async Task<IEnumerable<Application>> ApplicationReport(DateTime fromDate, DateTime toDate)
         {
-            var data = await Entities
+            if (fromDate != DateTime.MinValue && toDate != DateTime.MinValue)
+            {
+                var data = await Entities
+                    .AsNoTracking()
+                    .Where(x => fromDate.Date <= x.CreatedTime.Date && x.CreatedTime.Date <= toDate.Date)
+                    .Include(x => x.Cv).ThenInclude(x => x.Candidate).ThenInclude(x => x.User)
+                    .Include(x => x.Position).ThenInclude(x => x.Company)
+                    .Include(x => x.Position).ThenInclude(x => x.Language)
+                    .ToListAsync();
+
+                return data;
+
+            }
+
+            var result = await Entities
                 .AsNoTracking()
-                .Where(x => fromDate <= x.CreatedTime && x.CreatedTime <= toDate)
                 .Include(x => x.Cv).ThenInclude(x => x.Candidate).ThenInclude(x => x.User)
                 .Include(x => x.Position).ThenInclude(x => x.Company)
                 .Include(x => x.Position).ThenInclude(x => x.Language)
                 .ToListAsync();
 
-            return data;
-        }
+            return result;
+            }
     }
 }
