@@ -39,7 +39,7 @@ namespace Api.Controllers
             string[] columns = { "BlacklistId", "CandidateId", "Reason", "DateTime", "Status", "IsDeleted" };
             byte[] filecontent = ExportExcelHelper.ExportExcel(data.ToList(), $"{nameof(BlackList)} Report", true, columns);
             var responseFile = File(filecontent, ExportExcelHelper.ExcelContentType, $"{nameof(BlackList)}_{DateTime.Today.ToString()}.xlsx");
-            return Ok(responseFile);
+            return responseFile;
          }
 
         [HttpPost("[action]")]
@@ -51,7 +51,7 @@ namespace Api.Controllers
             byte[] filecontent = ExportExcelHelper.ExportExcel(data.ToList(), $"{nameof(Certificate)} Report", true, columns);
             var responseFile = File(filecontent, ExportExcelHelper.ExcelContentType, $"{nameof(Certificate)}_{DateTime.Today.ToString()}.xlsx");
 
-            return Ok(responseFile);
+            return responseFile;
             }
 
         [HttpPost("[action]")]
@@ -63,7 +63,7 @@ namespace Api.Controllers
             string[] columns = { "SkillId", "SkillName", "Description", "IsDeleted" };
             byte[] filecontent = ExportExcelHelper.ExportExcel(data.ToList(), $"{nameof(Skill)} Report", true, columns);
             var responseFile = File(filecontent, ExportExcelHelper.ExcelContentType, $"{nameof(Skill)}_{DateTime.Today}.xlsx");
-            return Ok(responseFile);
+            return responseFile;
         }
 
         [HttpPost("[action]")]

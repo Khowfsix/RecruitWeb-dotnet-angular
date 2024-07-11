@@ -38,6 +38,7 @@ import { SecurityAnswerComponent } from './security-answer/security-answer.compo
 import { SecurityQuestionComponent } from './security-question/security-question.component';
 import { SuccessfulCandidateComponent } from './successful-candidate/successful-candidate.component';
 import { WorkExperienceComponent } from './work-experience/work-experience.component';
+import { ExportComponent } from './export/export.component';
 
 const routes: Routes = [
 	{
@@ -60,6 +61,10 @@ const routes: Routes = [
 			{
 				path: 'analytics',
 				component: AnalysisComponent
+			},
+			{
+				path: 'exports',
+				component: ExportComponent
 			},
 
 			//Table console

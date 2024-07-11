@@ -10,6 +10,21 @@ export class ExportService {
 
 	constructor(private api: API) { }
 
+	public ExportBlacklist(): Observable<any> {
+		const url = '/api/Export/ExportBlacklist';
+		return this.api.POST(url, {}, { responseType: 'blob', observe: 'response' })
+	}
+
+	public ExportCertificate(): Observable<any> {
+		const url = '/api/Export/ExportCertificate';
+		return this.api.POST(url, {}, { responseType: 'blob', observe: 'response' })
+	}
+
+	public ExportSkill(): Observable<any> {
+		const url = '/api/Export/ExportSkill';
+		return this.api.POST(url, {}, { responseType: 'blob', observe: 'response' })
+	}
+
 	public ExportInterviewReport(fromDate: Date, toDate: Date): Observable<any> {
 		let url = '/api/Export/ExportInterviewReport?';
 		if (fromDate)

@@ -24,7 +24,10 @@ export class AdminComponent {
 		{
 			title: 'Dashboard',
 			children: [
-				'Overview', 'Reports', 'Analytics'
+				'Overview',
+				'Reports',
+				'Analytics',
+				'Exports',
 			]
 		},
 		{

@@ -1,0 +1,12 @@
+<div class="container">
+	<div class="w-100 flex-wrap">
+		<button class="m-2" (click)="export(this._exportService.ExportBlacklist())" mat-raised-button
+			color="primary">Export All
+			Blacklist</button>
+		<button class="m-2" (click)="export(this._exportService.ExportCertificate())" mat-raised-button
+			color="primary">Export All Certificate</button>
+		<button class="m-2" (click)="export(this._exportService.ExportSkill())" mat-raised-button color="primary">Export
+			All
+			Skill</button>
+	</div>
+</div>
