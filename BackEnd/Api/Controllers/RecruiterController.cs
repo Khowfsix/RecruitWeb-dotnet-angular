@@ -1,7 +1,9 @@
+using Api.ViewModels.Position;
 using Api.ViewModels.Recruiter;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 using Service.Interfaces;
 using Service.Models;
 
@@ -18,6 +20,21 @@ public class RecruiterController : BaseAPIController
     {
         _recruiterService = recruiterService;
         _mapper = mapper;
+    }
+
+    [HttpPut("[action]/{requestId:guid}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateStatus(Guid requestId, bool isActived, bool isDeleted)
+    {
+        try
+        {
+            var result = await _recruiterService.UpdateStatus(isActived, isDeleted, requestId);
+            return Ok(result);
+        }
+        catch (Exception)
+        {
+            return Ok("Not found");
+        }
     }
 
     [HttpGet("[action]")]
@@ -43,7 +60,7 @@ public class RecruiterController : BaseAPIController
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public async Task<IActionResult> SaveRecruiter(RecruiterAddModel request)
     {
         var model = _mapper.Map<RecruiterModel>(request);
@@ -52,7 +69,7 @@ public class RecruiterController : BaseAPIController
         {
             return Ok(response);
         }
-        return Ok("Can not create recruiter");
+        return BadRequest(request);
     }
 
     [HttpPut("[action]/{id:guid}")]
@@ -71,9 +88,16 @@ public class RecruiterController : BaseAPIController
     }
 
     [HttpGet("[action]/{userId}")]
-    [Authorize(Roles = "Admin,Recruiter")]
-    public async Task<IActionResult> GetRecruiterByUserId(string userId)
+    [Authorize(Roles = "Admin,Recruiter,Candidate")]
+    public async Task<IActionResult> GetRecruiterByUserId(string userId, bool? isDeleted)
     {
+        if (isDeleted == false)
+        {
+            var model1 = await _recruiterService.GetNotDeletedRecruiterByUserId(userId);
+            var response1 = _mapper.Map<RecruiterViewModel>(model1);
+            return Ok(response1);
+        }
+
         var model = await _recruiterService.GetRecruiterByUserId(userId);
         var response = _mapper.Map<RecruiterViewModel>(model);
         return Ok(response);

@@ -17,5 +17,6 @@
         public string? Logo { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+        public bool IsActived { get; set; }
     }
 }

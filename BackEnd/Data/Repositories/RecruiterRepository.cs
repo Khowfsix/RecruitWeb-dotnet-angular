@@ -15,6 +15,28 @@ public class RecruiterRepository : Repository<Recruiter>, IRecruiterRepository
         _uow = uow;
     }
 
+    public async Task<bool> UpdateStatus(bool isActived, bool isDeleted, Guid requestId)
+    {
+        try
+        {
+            var foundCompany = await Entities.Where(e => e.RecruiterId.Equals(requestId)).FirstAsync();
+            if (foundCompany == null)
+            {
+                return await Task.FromResult(false);
+            }
+            foundCompany.IsActived = isActived;
+            foundCompany.IsDeleted = isDeleted;
+
+            Entities.Update(foundCompany);
+            _uow.SaveChanges();
+            return await Task.FromResult(true);
+        }
+        catch (Exception)
+        {
+            return await Task.FromResult(false);
+        }
+    }
+
     public async Task<IEnumerable<Recruiter>> GetAllRecruiter()
     {
         var listData = await Entities.Include(x => x.User).Include(x => x.Company).ToListAsync();
@@ -34,14 +56,31 @@ public class RecruiterRepository : Repository<Recruiter>, IRecruiterRepository
         var item = await Entities
             .Include(r => r.User)
             .Include(r => r.Company)
-            .Where(r => r.UserId.Equals(id))
+            .Where(r => r.UserId.Equals(id) && r.IsActived && !r.IsDeleted)
             .FirstOrDefaultAsync();
 
         return item!;
     }
 
+    public async Task<Recruiter> GetNotDeletedRecruiterByUserId(string id)
+    {
+        var item = await Entities
+            .Include(r => r.User)
+            .Include(r => r.Company)
+            .Where(r => r.UserId.Equals(id) && !r.IsDeleted)
+            .FirstOrDefaultAsync();
+
+        return item!;
+    }
+
+
     public async Task<Recruiter?> SaveRecruiter(Recruiter entity)
     {
+        var foundRecruiter = await Entities.Where(e => e.UserId == entity.UserId && !e.IsDeleted).FirstOrDefaultAsync();
+        if (foundRecruiter != null) {
+            return null;
+        }
+
         entity.RecruiterId = Guid.NewGuid();
 
         Entities.Add(entity);

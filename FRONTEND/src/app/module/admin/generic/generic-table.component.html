@@ -1,12 +1,7 @@
 <div class="pb-3">
-	<button
-		mat-raised-button
-		color="primary"
-		(click)="createData()"
-		[disabled]="this.actions !== undefined && !this.actions.includes('create')"
-		class="w-100">
-		Create
-	</button>
+	@if (this.actions !== undefined && this.actions.includes('create')){
+	<button mat-raised-button color="primary" (click)="createData()" class="w-100">Create</button>
+	}
 </div>
 
 <mat-form-field>
@@ -14,7 +9,7 @@
 	<input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input />
 </mat-form-field>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8" style="overflow-x: scroll;">
 	<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 		@for (col of listProps; track $index) {
 		<ng-container matColumnDef="{{ displayedColumns[$index] }}">
@@ -64,8 +59,18 @@
 				</button>
 				} @if (this.actions.includes('delete')) {
 				<button mat-icon-button color="warn" (click)="delete(row)">
-					<mat-icon>delete</mat-icon></button
-				>} }
+					<mat-icon>delete</mat-icon>
+				</button>}
+				@if (this.actions.includes('accept')) {
+				<button mat-icon-button color="warn" (click)="accept(row)">
+					<mat-icon style="color: green;">done</mat-icon>
+				</button>}
+				@if (this.actions.includes('deny')) {
+				<button mat-icon-button color="warn" (click)="deny(row)">
+					<mat-icon style="color: red;">close</mat-icon>
+				</button>}
+				}
+
 			</td>
 		</ng-container>
 

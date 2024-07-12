@@ -17,6 +17,7 @@ import { InterviewComponent } from './module/reccer/interview/interview.componen
 import { InterviewerComponent } from './module/reccer/interviewer/interviewer.component';
 import { CallBackComponent } from './shared/component/gg-meet/call-back/call-back.component';
 import { LoginMeetComponent } from './shared/component/gg-meet/login-meet/login-meet.component';
+import { RecruiterRegisterComponent } from './module/recruiter-register/recruiter-register.component';
 import { InterviewIdComponent } from './module/interview/interview-id/interview-id.component';
 import { InterviewStartComponent } from './module/interview/interview-start/interview-start.component';
 // import { UrlNotFoundComponent } from './shared/url-not-found/url-not-found.component';
@@ -59,6 +60,24 @@ export const routes: Routes = [
 		component: PositionComponent,
 		data: { breadcrumb: 'Positions' },
 	},
+
+	createRouteWithRoles('recruiter/register', RecruiterRegisterComponent, [
+		role.CANDIDATE
+	]),
+
+	createRouteWithRoles('events/detail/:eventId', EventDetailComponent, [
+		role.CANDIDATE,
+		role.INTERVIEWER,
+		role.ADMIN,
+		role.RECRUITER
+	]),
+
+	// { path: 'events/detail/:eventId', component: EventDetailComponent },
+
+	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
+
+	{ path: 'positions', component: PositionComponent },
+
 	{ path: 'meet/login/callback', component: CallBackComponent },
 	//#endregion
 
@@ -91,13 +110,11 @@ export const routes: Routes = [
 		'Interview Management',
 	),
 
-	createRouteWithRoles(
-		'companies',
-		CompanyComponent,
-		[role.RECRUITER, role.ADMIN, role.CANDIDATE, role.INTERVIEWER],
-		'Company ',
-	),
-	//#endregion
+	// // url for recruiter
+	createRouteWithRoles('company', CompanyComponent, [
+		role.RECRUITER,
+		role.ADMIN,
+	]),
 
 	//#region url for interviewer
 	createRouteWithRoles(

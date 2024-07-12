@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeDetectorRef, Component, Inject, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 
-export type ActionType = 'create' | 'read' | 'update' | 'delete';
+export type ActionType = 'create' | 'read' | 'update' | 'delete' | 'accept' | 'deny';
 
 
 @Component({
@@ -66,6 +66,8 @@ export class GenericTableComponent {
 	@Input() createData: () => void = () => { };
 	@Input() editData: (data: any) => void = (data: any) => { };
 	@Input() deleteData: (data: any) => void = (data: any) => { };
+	@Input() acceptData: (data: any) => void = (data: any) => { };
+	@Input() denyData: (data: any) => void = (data: any) => { };
 
 	public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 	private dataInputSubscription: Subscription = new Subscription();
@@ -79,6 +81,12 @@ export class GenericTableComponent {
 		private _intl: MatPaginatorIntl,
 		private _changeDetectorRef: ChangeDetectorRef
 	) { }
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['displayedColumns']) {
+			this.columnsToDisplayWithExpand = [...changes['displayedColumns'].currentValue, 'action']
+		}
+	}
 
 	ngOnInit() {
 		this.columnsToDisplayWithExpand = [...this.displayedColumns, 'action'];
@@ -125,6 +133,30 @@ export class GenericTableComponent {
 				// Ví dụ: gọi service để xóa entity từ database
 				// console.log(data);
 				this.deleteData?.(data);
+			}
+		});
+	}
+
+	accept(data: any): void {
+		const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+			data: { title: 'Accept', message: `Are you sure you want to accept this record?` }
+		});
+
+		confirmDialogRef.afterClosed().subscribe(result => {
+			if (result === true) {
+				this.acceptData?.(data);
+			}
+		});
+	}
+
+	deny(data: any): void {
+		const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+			data: { title: 'Deny', message: `Are you sure you want to deny this record?` }
+		});
+
+		confirmDialogRef.afterClosed().subscribe(result => {
+			if (result === true) {
+				this.denyData?.(data);
 			}
 		});
 	}

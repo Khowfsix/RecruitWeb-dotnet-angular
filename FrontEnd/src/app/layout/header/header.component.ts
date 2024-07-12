@@ -75,7 +75,7 @@ export class HeaderComponent {
 	}
 
 	handleRouteToCompanies() {
-		this._router.navigate(['/companies']);
+		this._router.navigate(['/company']);
 	}
 
 	handleRouteToJobs(option?: string) {
@@ -147,5 +147,7 @@ export class HeaderComponent {
 				this.menuTrigger!.closeMenu();
 			}, 300);
 		}
+	handleRouteToRecruiterRegisterConsole() {
+		this._router.navigate(['/recruiter/register'])
 	}
 }

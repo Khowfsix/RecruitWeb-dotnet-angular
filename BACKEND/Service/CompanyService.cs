@@ -23,13 +23,29 @@ namespace Service
             return await _companyRepository.DeleteCompany(requestId);
         }
 
+
+        public async Task<CompanyModel> GetCompanyById(bool isAdmin, Guid companyId)
+        {
+            var data = await _companyRepository.GetCompanyById(companyId);
+            if (data != null)
+            {
+                var result = _mapper.Map<CompanyModel>(data);
+                if (!isAdmin && (result.IsDeleted || !result.IsActived))
+                {
+                    return null;
+                }
+                return result;
+            }
+            return null!;
+        }
+
         public async Task<IEnumerable<CompanyModel>> GetAllCompany(bool isAdmin, string? request)
         {
             var data = await _companyRepository.GetAllCompany(request);
             if (!data.IsNullOrEmpty())
             {
                 List<CompanyModel> result = _mapper.Map<List<CompanyModel>>(data);
-                return !isAdmin ? result.Where(o => !o.IsDeleted).ToList() : result;
+                return !isAdmin ? result.Where(o => !o.IsDeleted && o.IsActived).ToList() : result;
             }
             return null!;
         }
@@ -45,6 +61,10 @@ namespace Service
         {
             var data = _mapper.Map<Company>(request);
             return await _companyRepository.UpdateCompany(data, requestId);
+        }
+        public async Task<bool> UpdateStatus(bool isActived, bool isDeleted, Guid requestId)
+        {
+            return await _companyRepository.UpdateStatus(isActived, isDeleted, requestId);
         }
     }
 }

@@ -7,6 +7,7 @@
         public Guid RecruiterId { get; set; }
 
         public string? Description { get; set; }
+        public int? ApplyPriority { get; set; }
 
         public string Place { get; set; }
 

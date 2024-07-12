@@ -198,7 +198,10 @@ namespace Data.Mapping
 
             #region Report
 
+            CreateMap<ApplicationReportModel, ApplicationReportViewModel>().ReverseMap();
+            CreateMap<InterviewReportModel, InterviewReportViewModel>().ReverseMap();
             CreateMap<Report, ReportModel>().ReverseMap();
+            CreateMap<Report, ReportViewModel>().ReverseMap();
             CreateMap<ReportModel, ReportAddModel>().ReverseMap();
             CreateMap<ReportModel, ReportUpdateModel>().ReverseMap();
             CreateMap<ReportModel, ReportViewModel>().ReverseMap();
@@ -414,7 +417,6 @@ namespace Data.Mapping
             CreateMap<InterviewModel, InterviewUpdateModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewAddModel>().ReverseMap();
             CreateMap<InterviewModel, InterviewViewModel>().ReverseMap();
-
             #endregion Interview
 
             #region Interviewer

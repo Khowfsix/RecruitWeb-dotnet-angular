@@ -11,6 +11,8 @@ public partial class Recruiter
     [Column("CompanyId")]
     public Guid CompanyId { get; set; }
 
+    public bool IsActived { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public virtual Company Company { get; set; } 
@@ -20,8 +22,6 @@ public partial class Recruiter
     public virtual ICollection<Interview> Interviews { get; set; } = new List<Interview>();
 
     public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
-
-    public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
 
     public virtual WebUser User { get; set; } 
 }

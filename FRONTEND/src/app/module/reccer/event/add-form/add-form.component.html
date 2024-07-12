@@ -103,7 +103,7 @@
 				<mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
 				<mat-datepicker #endDatePicker></mat-datepicker>
 			</mat-form-field>
-			<div class="d-flex flex-row col-lg-9">
+			<div class="d-flex flex-row col-lg-3">
 				<mat-form-field class="w-100">
 					<mat-label>End time</mat-label>
 					<input matInput type="time" placeholder="Endtime" formControlName="endTime">
@@ -149,6 +149,23 @@
 			@if(addForm.get('imageName')?.invalid){
 			@if(addForm.get('imageName')?.hasError('required')){
 			<div style="color: red;">Required.</div>
+			}
+			}
+		</mat-form-field>
+
+		<mat-form-field class="w-100">
+			<mat-label>Apply Priority</mat-label>
+			<input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'')" matInput
+				placeholder="Apply Priority" formControlName="applyPriority">
+			@if(addForm.get('applyPriority')?.invalid){
+			@if(addForm.get('applyPriority')?.hasError('required')){
+			<div style="color: red;">Required.</div>
+			}
+			@if(addForm.get('applyPriority')?.hasError('min')){
+			<div style="color: red;">Min is 1</div>
+			}
+			@if(addForm.get('applyPriority')?.hasError('max')){
+			<div style="color: red;">Max is 4 digits</div>
 			}
 			}
 		</mat-form-field>

@@ -540,10 +540,10 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
-            entity.HasOne(d => d.Recruiter).WithMany(p => p.Reports)
-                .HasForeignKey(d => d.RecruiterId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ReccerCreateReport");
+            entity.HasOne(d => d.User).WithMany(p => p.Reports)
+               .HasForeignKey(d => d.UserId)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("Fk_ReportOfUser");
         });
 
         modelBuilder.Entity<Requirement>(entity =>

@@ -50,11 +50,7 @@
 
 		<div class="d-none d-lg-inline col-lg-3 col-xl-4">
 			<div class="input-group">
-				<input
-					type="search"
-					class="form-control rounded"
-					placeholder="Search"
-					aria-label="Search"
+				<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
 					aria-describedby="search-addon" />
 				<button type="button" class="btn btn-outline-primary text-white">search</button>
 			</div>
@@ -77,11 +73,7 @@
 		</div>
 		<div class="d-none d-sm-inline d-lg-none col-md-12">
 			<div class="input-group">
-				<input
-					type="search"
-					class="form-control rounded"
-					placeholder="Search"
-					aria-label="Search"
+				<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
 					aria-describedby="search-addon" />
 				<button type="button" class="btn btn-outline-primary text-white">search</button>
 			</div>
@@ -90,11 +82,7 @@
 
 	<mat-toolbar-row class="d-sm-none">
 		<div class="input-group">
-			<input
-				type="search"
-				class="form-control rounded"
-				placeholder="Search"
-				aria-label="Search"
+			<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
 				aria-describedby="search-addon" />
 			<button type="button" class="btn btn-outline-primary text-white">search</button>
 		</div>
@@ -109,6 +97,18 @@
 			<i class="fa-solid fa-file"></i>
 			<span class="mx-5 align-right">CV manage</span>
 		</button>
+		}
+
+
+		<button mat-menu-item (click)="handleRouteToCompanies()">
+			<i class="bi bi-building-fill fs-5"></i>
+			<span class="mx-5 align-right">Company</span>
+		</button>
+
+		<button mat-menu-item (click)="handleRouteToRecruiterRegisterConsole()">
+			<i class="bi bi-person-fill-up fs-5"></i>
+			<span class="mx-5 align-right">Be A Recruiter</span>
+		</button>
 
 		@if(_isAdmin===true){
 		<button mat-menu-item (click)="handleRouteToAdminConsole()">
@@ -117,10 +117,12 @@
 		</button>
 		}
 
+		@if (_user){
 		<button mat-menu-item>
 			<i class="fa-solid fa-gear"></i>
 			<span class="mx-5 align-right">Settings</span>
 		</button>
+		}
 
 		@if (_user != null) {
 		<button mat-menu-item (click)="handleClick_Logout()">

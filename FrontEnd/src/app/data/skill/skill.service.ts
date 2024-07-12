@@ -21,7 +21,6 @@ export class SkillService {
 	}
 
 	public deleteSkill(id?: string): Observable<boolean> {
-		console.log(`start`);
 		return this.api.DELETE('/api/Skill/' + id);
 	}
 

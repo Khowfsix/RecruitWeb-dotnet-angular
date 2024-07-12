@@ -38,6 +38,8 @@ import { SuccessfulCandidateComponent } from './successful-candidate/successful-
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserComponent } from './user/user.component';
 import { WorkExperienceComponent } from './work-experience/work-experience.component';
+import { ExportComponent } from './export/export.component';
+import { ApproveRecruitersComponent } from './approve-recruiters/approve-recruiters.component';
 import { UserManageComponent } from './user-manage/user-manage.component';
 
 const routes: Routes = [
@@ -72,6 +74,14 @@ const routes: Routes = [
 				path: 'user-manage',
 				component: UserManageComponent,
 				data: { breadcrumb: 'User manage' }
+			},
+			{
+				path: 'exports',
+				component: ExportComponent
+			},
+			{
+				path: 'approve-recruiters',
+				component: ApproveRecruitersComponent
 			},
 
 			//Table console

@@ -108,6 +108,7 @@ public class EventRepository : Repository<Event>, IEventRepository
 
             entity.EventName = request.EventName;
             entity.ImageURL = request.ImageURL;
+            entity.ApplyPriority = request.ApplyPriority;
             entity.RecruiterId = request.RecruiterId;
             entity.Description = request.Description;
             entity.Place = request.Place;

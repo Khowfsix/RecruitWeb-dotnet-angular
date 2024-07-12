@@ -108,6 +108,7 @@ export class AddFormComponent implements OnInit {
 		imageName: [this.foundEvent ? this.foundEvent.imageURL : '', []],
 		imageFile: [this.foundEvent ? this.foundEvent.imageURL : null, []],
 		description: [this.foundEvent ? this.foundEvent.description : '', []],
+		applyPriority: [this.foundEvent ? this.foundEvent.applyPriority : '', []],
 		place: [this.foundEvent ? this.foundEvent.place : '', [Validators.required]],
 		startTime: [this.foundEvent ? this.foundEvent.startDateTime?.toString().slice(11, 19) : '', [Validators.required]],
 		endTime: [this.foundEvent ? this.foundEvent.endDateTime?.toString().slice(11, 19) : '', [Validators.required]],

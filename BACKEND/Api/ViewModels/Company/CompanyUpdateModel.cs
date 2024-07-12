@@ -22,6 +22,8 @@ namespace Api.ViewModels.Company
 
         public string? Logo { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
+        public bool? IsDeleted { get; set; } = false;
+
+        public bool? IsActived { get; set; } = false;
     }
 }

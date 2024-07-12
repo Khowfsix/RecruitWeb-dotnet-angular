@@ -261,16 +261,29 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
 
     public async Task<IEnumerable<Interview>> InterviewReport(DateTime fromDate, DateTime toDate)
     {
-        var interview = await Entities
-            .Include(x => x.Application)
-                .ThenInclude(x => x.Cv)
-                .ThenInclude(x => x.Candidate)
-            .Include(x => x.Recruiter)
-            .Include(x => x.Interviewer)
-            .Include(x => x.Rounds)
-            .Where(x => fromDate <= x.Application.CreatedTime && x.Application.CreatedTime <= toDate)
-            .ToListAsync();
+        if (fromDate != DateTime.MinValue && toDate != DateTime.MinValue)
+        {
+            var interview = await Entities
+           .Include(x => x.Application)
+               .ThenInclude(x => x.Cv)
+               .ThenInclude(x => x.Candidate)
+           .Include(x => x.Recruiter)
+           .Include(x => x.Interviewer)
+           .Include(x => x.Rounds)
+           .Where(x => fromDate.Date <= x.MeetingDate.Value.Date && x.MeetingDate.Value.Date <= toDate.Date)
+           .ToListAsync();
+            return interview;
+        }
 
-        return interview;
+        var result = await Entities
+       .Include(x => x.Application)
+           .ThenInclude(x => x.Cv)
+           .ThenInclude(x => x.Candidate)
+       .Include(x => x.Recruiter)
+       .Include(x => x.Interviewer)
+       .Include(x => x.Rounds)
+       .ToListAsync();
+        return result;
+
     }
 }

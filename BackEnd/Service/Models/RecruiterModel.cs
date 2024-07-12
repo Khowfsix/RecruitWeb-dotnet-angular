@@ -10,4 +10,5 @@ public partial class RecruiterModel
     public Guid CompanyId { get; set; }
     public virtual CompanyModel Company { get; set; }
     public bool IsDeleted { get; set; } = false;
+    public bool IsActived { get; set; } = false;
 }

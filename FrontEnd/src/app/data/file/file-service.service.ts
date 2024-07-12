@@ -23,7 +23,7 @@ export class FileService {
 		return this.api.PUT('/api/File/UpdateFile', data);
 	}
 
-	public deleteFile(url: string): Observable<any> {
+	public deleteFile(url?: string): Observable<any> {
 		return this.api.DELETE('/api/File/DeleteFile?url=' + url);
 	}
 }

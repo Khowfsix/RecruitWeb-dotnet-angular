@@ -69,7 +69,8 @@ export class AuthService {
 	getRecruiterId_OfUser(): string | undefined {
 		const user = this.getLocalCurrentUser();
 		if (user?.recruiters != undefined) {
-			return user.recruiters[0].recruiterId;
+			if (user.recruiters[0] != undefined)
+				return user.recruiters[0].recruiterId;
 		}
 		return undefined;
 	}
