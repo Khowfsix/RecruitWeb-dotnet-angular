@@ -15,18 +15,14 @@ import { Application } from '../../../data/application/application.model';
 import { PermissionService } from '../../../core/services/permission.service';
 import { CookieService } from 'ngx-cookie-service';
 
-export type isAvalable = "available" | "full" | "outOfDate" | "reapply";
+export type isAvalable = 'available' | 'full' | 'outOfDate' | 'reapply';
 
 @Component({
 	selector: 'app-position-detail',
 	standalone: true,
-	imports: [
-		CommonModule,
-		MatTabsModule,
-		MatButtonModule
-	],
+	imports: [CommonModule, MatTabsModule, MatButtonModule],
 	templateUrl: './position-detail.component.html',
-	styleUrl: './position-detail.component.css'
+	styleUrl: './position-detail.component.css',
 })
 export class PositionDetailComponent implements OnInit {
 	constructor(
@@ -41,9 +37,11 @@ export class PositionDetailComponent implements OnInit {
 		private applicationService: ApplicationService,
 
 		public dialog: MatDialog,
-		private _location: Location
+		private _location: Location,
 	) {
-		this.curentUserRoles = _permissionService.getRoleOfUser(_cookieService.get("jwt")) as string[];
+		this.curentUserRoles = _permissionService.getRoleOfUser(
+			_cookieService.get('jwt'),
+		) as string[];
 		console.log(this.curentUserRoles);
 	}
 
@@ -55,39 +53,38 @@ export class PositionDetailComponent implements OnInit {
 	isAvailable: isAvalable = 'available';
 
 	public callApiGetPositionById() {
-		this.positionService.getById(this.paramPositionId ?? '')
-			.subscribe(
-				{
-					next: (data) => {
-						this.fetchPosition = data;
+		this.positionService.getById(this.paramPositionId ?? '').subscribe({
+			next: (data) => {
+				this.fetchPosition = data;
 
-						const endDate: Date = new Date(this.fetchPosition!.endDate!);
-						if (endDate.getTime() < new Date().getTime()) {
-							this.isAvailable = "outOfDate";
-						}
-
-						this.fetchPosition.requirements?.forEach(x => {
-							this.skillService.getSkillById(x.skillId).subscribe({
-								next: (response: any) => {
-									x.skill = response;
-								}
-							})
-						});
-
-						this.fetchPosition.requirements = this.fetchPosition.requirements?.filter(e => e.isDeleted === false);
-					},
-					error: () => {
-						this.router.navigate(['/home']);
-					}
+				const endDate: Date = new Date(this.fetchPosition!.endDate!);
+				if (endDate.getTime() < new Date().getTime()) {
+					this.isAvailable = 'outOfDate';
 				}
-			);
+
+				this.fetchPosition.requirements?.forEach((x) => {
+					this.skillService.getSkillById(x.skillId).subscribe({
+						next: (response: any) => {
+							x.skill = response;
+						},
+					});
+				});
+
+				this.fetchPosition.requirements =
+					this.fetchPosition.requirements?.filter(
+						(e) => e.isDeleted === false,
+					);
+			},
+			error: () => {
+				this.router.navigate(['/home']);
+			},
+		});
 	}
 
 	public handleClickApply() {
 		if (this._authService.checkLoginStatus()) {
 			this.openDialog();
-		}
-		else {
+		} else {
 			this.router.navigate(['/auth/login'], {
 				queryParams: { returnUrl: this._location.path() },
 			});
@@ -99,19 +96,18 @@ export class PositionDetailComponent implements OnInit {
 			width: '600px',
 			data: {
 				position: this.fetchPosition,
-				candidateId: this._authService.getCandidateId_OfUser()
-			}
+				candidateId: this._authService.getCandidateId_OfUser(),
+			},
 		});
 
-		dialogRef.afterClosed().subscribe(
-			(result) => {
-				console.log(result);
-			}
-		);
+		dialogRef.afterClosed().subscribe((result) => {
+			console.log(result);
+		});
 	}
 
 	ngOnInit(): void {
-		this.paramPositionId = this.route.snapshot.paramMap.get('positionId') ?? ''
+		this.paramPositionId =
+			this.route.snapshot.paramMap.get('positionId') ?? '';
 		this.callApiGetPositionById();
 		this.isLoggedIn = this._authService.checkLoginStatus();
 		if (this.isLoggedIn) {
@@ -119,22 +115,26 @@ export class PositionDetailComponent implements OnInit {
 		}
 	}
 
-
 	checkIfCandidateAppliedToThisPosition() {
 		const candidateId = this._authService.getCandidateId_OfUser();
 		const positionId = this.paramPositionId;
 
-		this.applicationService.getApplicationsOfCandidate(candidateId!)
+		this.applicationService
+			.getApplicationsOfCandidate(candidateId!)
 			.subscribe({
 				next: (data: Application[]) => {
-					if (data.filter(x => x.position?.positionId === positionId).length > 0) {
-						this.isAvailable = "reapply";
+					if (
+						data.filter(
+							(x) => x.position?.positionId === positionId,
+						).length > 0
+					) {
+						this.isAvailable = 'reapply';
 					}
 					return false;
 				},
 				error: () => {
 					return true;
-				}
+				},
 			});
 		return true;
 	}

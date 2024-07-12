@@ -14,6 +14,7 @@ import { first } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { JWT } from '../../../data/authen/jwt.model';
 import { Login } from '../../../data/authen/login.model';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-login',
@@ -35,12 +36,13 @@ export class LoginComponent implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private CookieService: CookieService,
-		private toasts: ToastrService
+		private toasts: ToastrService,
+
+		private location: Location,
 	) {
 		if (authService.checkLoginStatus()) {
 			this.navigate_before();
 		}
-
 
 		this.loginForm = this.fb.group({
 			username: ['', [Validators.required]],
@@ -58,62 +60,84 @@ export class LoginComponent implements OnInit {
 			.pipe(first())
 			.subscribe({
 				next: (data: any) => {
-					if ('status' in data && data['status'] === 'Email need confirmed') {
-						this.toasts.error(data.message, "Logged in failed",
-							{
-								timeOut: 3000,
-								closeButton: true,
-								toastClass: 'my-custom-toast ngx-toastr',
-								progressBar: true
-							});
+					if (
+						'status' in data &&
+						data['status'] === 'Email need confirmed'
+					) {
+						this.toasts.error(data.message, 'Logged in failed', {
+							timeOut: 3000,
+							closeButton: true,
+							toastClass: 'my-custom-toast ngx-toastr',
+							progressBar: true,
+						});
 						this.router.navigate(['/auth/confirm-email']);
 						return;
-					}
-					else if ('accessToken' in data) {
+					} else if ('accessToken' in data) {
 						const jwtData: JWT = data as JWT;
 						const expTime = new Date().getDate() + 30;
-						this.CookieService.set('jwt', jwtData.accessToken, expTime, '/'); // save accesstoken
-						this.CookieService.set('refreshToken', jwtData.refreshToken, expTime, '/') // save refreshtoken
-						localStorage.setItem('expirationDate', jwtData.expirationDate); // save expirationDate
+						this.CookieService.set(
+							'jwt',
+							jwtData.accessToken,
+							expTime,
+							'/',
+						); // save accesstoken
+						this.CookieService.set(
+							'refreshToken',
+							jwtData.refreshToken,
+							expTime,
+							'/',
+						); // save refreshtoken
+						localStorage.setItem(
+							'expirationDate',
+							jwtData.expirationDate,
+						); // save expirationDate
 
-						this.authService.getCurrentUser().subscribe(
-							(data) => {
-								console.log(`get current user`);
-								if (data !== null) {
-									localStorage.setItem('currentUser', JSON.stringify(data));
-									this.toasts.success("Logged in successfully", "Success",
-										{
-											timeOut: 3000,
-											closeButton: true,
-											progressBar: true,
-											toastClass: ' my-custom-toast ngx-toastr',
-										});
-									this.navigate_before();
-									this.authService.loginStatus.next(true);
-								} else {
-									this.authService.logout();
-									this.toasts.warning("Cann't get user information", "Warning!!!",
-										{
-											timeOut: 3000,
-											closeButton: true,
-											progressBar: true,
-											toastClass: ' my-custom-toast ngx-toastr',
-										});
-								}
-							});
+						this.authService.getCurrentUser().subscribe((data) => {
+							console.log(`get current user`);
+							if (data !== null) {
+								localStorage.setItem(
+									'currentUser',
+									JSON.stringify(data),
+								);
+								this.toasts.success(
+									'Logged in successfully',
+									'Success',
+									{
+										timeOut: 3000,
+										closeButton: true,
+										progressBar: true,
+										toastClass:
+											' my-custom-toast ngx-toastr',
+									},
+								);
+								this.navigate_before();
+								this.authService.loginStatus.next(true);
+							} else {
+								this.authService.logout();
+								this.toasts.warning(
+									"Cann't get user information",
+									'Warning!!!',
+									{
+										timeOut: 3000,
+										closeButton: true,
+										progressBar: true,
+										toastClass:
+											' my-custom-toast ngx-toastr',
+									},
+								);
+							}
+						});
 						this.navigate_before();
 					}
 				},
 				error: (error) => {
 					if (error.status === '401') {
-						this.toasts.error(error.message, "Logged in failed",
-							{
-								timeOut: 3000,
-								closeButton: true,
-								progressBar: true,
-								toastClass: ' my-custom-toast ngx-toastr',
-							}
-						);
+						this.toasts.error(error.message, 'Logged in failed', {
+							timeOut: 3000,
+							closeButton: true,
+							progressBar: true,
+							toastClass: ' my-custom-toast ngx-toastr',
+						});
 						// this.authService.logout();
 					}
 				},
@@ -125,10 +149,12 @@ export class LoginComponent implements OnInit {
 			this.router.navigate(['/']);
 			return;
 		}
-		this.route.queryParams.subscribe(params => {
-			const returnUrl = params['returnUrl'] || '/';
-			console.log(returnUrl);
-			this.router.navigateByUrl(decodeURIComponent(returnUrl));
-		});
+		// this.route.queryParams.subscribe((params) => {
+		// 	const returnUrl = params['returnUrl'] || '/';
+		// 	console.log(returnUrl);
+		// 	this.router.navigateByUrl(decodeURIComponent(returnUrl));
+		// });
+
+		this.location.back();
 	}
 }

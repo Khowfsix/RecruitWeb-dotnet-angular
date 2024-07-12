@@ -62,19 +62,22 @@ export const routes: Routes = [
 	},
 
 	createRouteWithRoles('recruiter/register', RecruiterRegisterComponent, [
-		role.CANDIDATE
+		role.CANDIDATE,
 	]),
 
 	createRouteWithRoles('events/detail/:eventId', EventDetailComponent, [
 		role.CANDIDATE,
 		role.INTERVIEWER,
 		role.ADMIN,
-		role.RECRUITER
+		role.RECRUITER,
 	]),
 
 	// { path: 'events/detail/:eventId', component: EventDetailComponent },
 
-	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
+	{
+		path: 'positions/detail/:positionId',
+		component: PositionDetailComponent,
+	},
 
 	{ path: 'positions', component: PositionComponent },
 
@@ -150,8 +153,8 @@ export const routes: Routes = [
 	createRouteWithRoles(
 		'profile',
 		CandidateProfileComponent,
-		[role.CANDIDATE],
-		'Candidate Profile',
+		[role.CANDIDATE, role.RECRUITER, role.INTERVIEWER],
+		'Profile',
 	),
 	createRouteWithRoles(
 		'cv-manage',

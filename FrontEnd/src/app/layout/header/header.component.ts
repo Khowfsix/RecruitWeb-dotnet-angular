@@ -171,4 +171,17 @@ export class HeaderComponent {
 	handleRouteToRecruiterRegisterConsole() {
 		this._router.navigate(['/recruiter/register']);
 	}
+
+	handleClick_Interview() {
+		this._router.navigate(['/interviews']);
+	}
+	handleClick_Interviewer() {
+		this._router.navigate(['/interviewers']);
+	}
+	handleClick_Events() {
+		this._router.navigate(['/events']);
+	}
+	handleClick_Positions() {
+		this._router.navigate(['/positions']);
+	}
 }

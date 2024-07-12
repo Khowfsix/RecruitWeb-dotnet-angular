@@ -1,6 +1,6 @@
-import { CV } from "../cv/cv.model";
-import { Interview } from "../interview/interview.model";
-import { Position } from "../position/position.model";
+import { CV } from '../cv/cv.model';
+import { Interview } from '../interview/interview.model';
+import { Position } from '../position/position.model';
 
 export class Application {
 	applicationId?: string;
@@ -9,19 +9,20 @@ export class Application {
 	createdTime?: Date;
 	company_Status?: number;
 	candidate_Status?: number;
-	priority?: string;
+	priority?: number;
 	interviews?: Interview[];
 	isDeleted?: boolean;
 }
 
 export class ApplicationAddModel {
 	cvid?: string;
-	positionId?: string
+	positionId?: string;
 	introduce?: string;
+	priority?: number;
 }
-
 
 export class ApplyDialogDataInput {
 	position?: Position;
 	candidateId?: string;
+	priority?: number;
 }

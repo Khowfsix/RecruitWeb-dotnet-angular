@@ -5,5 +5,6 @@
         public Guid Cvid { get; set; }
         public Guid PositionId { get; set; }
         public string Introduce { get; set; }
+        public int? Priority { get; set; }
     }
 }

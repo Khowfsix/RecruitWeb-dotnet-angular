@@ -3,8 +3,8 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { EventService } from '../../data/event/event.service';
 import { Event } from '../../data/event/event.model';
-import { CommonModule } from '@angular/common';
-import { ExpandbuttonComponent } from "../../shared/component/expandbutton/expandbutton.component";
+import { CommonModule, Location } from '@angular/common';
+import { ExpandbuttonComponent } from '../../shared/component/expandbutton/expandbutton.component';
 import { MatDialog } from '@angular/material/dialog';
 import { QrcodeDialogComponent } from '../../shared/component/dialog/qrcode-dialog/qrcode-dialog.component';
 import { baseUrl } from '../../data/api.service';
@@ -16,16 +16,14 @@ import { ToastrService } from 'ngx-toastr';
 import { CandidateJoinEvent } from '../../data/candidateJoinEvent/candidate-join-event.model';
 import { CandidateListDialogComponent } from '../reccer/event/candidate-list-dialog/candidate-list-dialog.component';
 import { Router } from '@angular/router';
+import { Position } from '../../data/position/position.model';
+import { ApplyDialogComponent } from '../position/apply-dialog/apply-dialog.component';
 @Component({
 	selector: 'app-event-detail',
 	standalone: true,
 	templateUrl: './event-detail.component.html',
 	styleUrl: './event-detail.component.css',
-	imports: [
-		RouterModule,
-		CommonModule,
-		ExpandbuttonComponent
-	]
+	imports: [RouterModule, CommonModule, ExpandbuttonComponent],
 })
 export class EventDetailComponent implements OnInit {
 	constructor(
@@ -37,8 +35,8 @@ export class EventDetailComponent implements OnInit {
 		private authService: AuthService,
 		private eventService: EventService,
 		private toastr: ToastrService,
-	) {
-	}
+		private _location: Location,
+	) {}
 
 	public paramEventId: string = '';
 	public fetchedEvent?: Event;
@@ -49,21 +47,22 @@ export class EventDetailComponent implements OnInit {
 	private callApiGetEventById() {
 		this.eventService.getById(this.paramEventId).subscribe((data) => {
 			this.fetchedEvent = data;
-		})
+		});
 	}
 
 	ngOnInit(): void {
 		const token = this.authService.getAuthenticationToken() ?? '';
 		if (token !== '') {
-			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(token)));
-			this.curentUserRoles = authenPayload[nameTypeInToken.roles]
-		}
-		else {
-			this.curentUserRoles = null
+			const authenPayload = JSON.parse(
+				JSON.stringify(jwtDecode<JwtPayload>(token)),
+			);
+			this.curentUserRoles = authenPayload[nameTypeInToken.roles];
+		} else {
+			this.curentUserRoles = null;
 		}
 
 		if (this.curentUserRoles?.includes('Candidate'))
-			this.callApiGetAllCandidateJoinEventByCandidateId()
+			this.callApiGetAllCandidateJoinEventByCandidateId();
 
 		// console.log('curentUserRoles', this.curentUserRoles)
 		this.paramEventId = this.route.snapshot.paramMap.get('eventId') ?? '';
@@ -71,48 +70,68 @@ export class EventDetailComponent implements OnInit {
 	}
 
 	private callApiGetAllCandidateJoinEventByCandidateId() {
-		this.candidateJoinEventService.getAllByCandidateId(this.authService.getCandidateId_OfUser() ?? '').subscribe((resp) => {
-			this.fetchedCandidateJoinEvents = resp;
-			// console.log('resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId)', resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId ?? ''))
-			if (resp.map(e => e.eventId).includes(this.paramEventId ?? '')) {
-				this.alreadyJoinedEvent = true;
-			}
-		})
+		this.candidateJoinEventService
+			.getAllByCandidateId(this.authService.getCandidateId_OfUser() ?? '')
+			.subscribe((resp) => {
+				this.fetchedCandidateJoinEvents = resp;
+				// console.log('resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId)', resp.map(e => e.eventId).includes(this.fetchedEvent?.eventId ?? ''))
+				if (
+					resp.map((e) => e.eventId).includes(this.paramEventId ?? '')
+				) {
+					this.alreadyJoinedEvent = true;
+				}
+			});
 	}
-
 
 	public callApiDeleteCandidateJoinEvent() {
-		const foundCandidateJoinEvent = this.fetchedCandidateJoinEvents?.find(e => e.eventId === this.paramEventId);
-		this.candidateJoinEventService.delete(foundCandidateJoinEvent?.candidateJoinEventId ?? '').subscribe({
-			next: (response: any) => {
-				if (response === true) {
-					this.toastr.success('Left this event', 'Success', {
-						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
-					});
-					this.alreadyJoinedEvent = false;
-					this.callApiGetAllCandidateJoinEventByCandidateId();
+		const foundCandidateJoinEvent = this.fetchedCandidateJoinEvents?.find(
+			(e) => e.eventId === this.paramEventId,
+		);
+		this.candidateJoinEventService
+			.delete(foundCandidateJoinEvent?.candidateJoinEventId ?? '')
+			.subscribe({
+				next: (response: any) => {
+					if (response === true) {
+						this.toastr.success('Left this event', 'Success', {
+							toastClass: ' my-custom-toast ngx-toastr',
+							timeOut: 3000,
+						});
+						this.alreadyJoinedEvent = false;
+						this.callApiGetAllCandidateJoinEventByCandidateId();
+						return;
+					}
+					this.toastr.error(
+						'Left failed. Something wrong',
+						'Error!',
+						{
+							toastClass: ' my-custom-toast ngx-toastr',
+							timeOut: 3000,
+						},
+					);
 					return;
-				}
-				this.toastr.error('Left failed. Something wrong', 'Error!', {
-					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
-				});
-				return;
-			},
-			error: () => {
-				this.toastr.error('Left failed. Something wrong', 'Error!', {
-					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
-				});
-				return;
-			},
-		})
+				},
+				error: () => {
+					this.toastr.error(
+						'Left failed. Something wrong',
+						'Error!',
+						{
+							toastClass: ' my-custom-toast ngx-toastr',
+							timeOut: 3000,
+						},
+					);
+					return;
+				},
+			});
 	}
 
-	public openCandidateListDialog(enterAnimationDuration: string,
-		exitAnimationDuration: string) {
+	public openCandidateListDialog(
+		enterAnimationDuration: string,
+		exitAnimationDuration: string,
+	) {
 		this.dialog.open(CandidateListDialogComponent, {
 			viewContainerRef: this.viewContainerRef,
 			data: {
-				eventId: this.paramEventId
+				eventId: this.paramEventId,
 			},
 			width: '700px',
 			height: '600px',
@@ -129,34 +148,40 @@ export class EventDetailComponent implements OnInit {
 		const data = {
 			candidateId: this.authService.getCandidateId_OfUser() ?? null,
 			eventId: this.fetchedEvent?.eventId,
-		}
+		};
 
 		this.candidateJoinEventService.save(data).subscribe({
 			next: (response: any) => {
 				if (response.candidateJoinEventId) {
 					this.toastr.success('Joined this event', 'Success', {
-						toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+						toastClass: ' my-custom-toast ngx-toastr',
+						timeOut: 3000,
 					});
 					this.alreadyJoinedEvent = true;
 					this.callApiGetAllCandidateJoinEventByCandidateId();
 					return;
 				}
 				this.toastr.error('Joined failed. Something wrong', 'Error!', {
-					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr',
+					timeOut: 3000,
 				});
 				return;
 			},
 			error: () => {
 				this.toastr.error('Joined failed. Something wrong', 'Error!', {
-					toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+					toastClass: ' my-custom-toast ngx-toastr',
+					timeOut: 3000,
 				});
 				return;
 			},
-		})
+		});
 	}
 
-	public openQRCodeDialog(event: Event, enterAnimationDuration: string,
-		exitAnimationDuration: string) {
+	public openQRCodeDialog(
+		event: Event,
+		enterAnimationDuration: string,
+		exitAnimationDuration: string,
+	) {
 		this.dialog.open(QrcodeDialogComponent, {
 			viewContainerRef: this.viewContainerRef,
 			data: {
@@ -167,5 +192,26 @@ export class EventDetailComponent implements OnInit {
 			enterAnimationDuration,
 			exitAnimationDuration,
 		});
+	}
+
+	openApplyDialog(position: Position) {
+		if (this.authService.checkLoginStatus()) {
+			const dialogRef = this.dialog.open(ApplyDialogComponent, {
+				width: '600px',
+				data: {
+					position: position,
+					candidateId: this.authService.getCandidateId_OfUser(),
+					priority: this.fetchedEvent?.applyPriority,
+				},
+			});
+
+			dialogRef.afterClosed().subscribe((result) => {
+				console.log(result);
+			});
+		} else {
+			this.router.navigate(['/auth/login'], {
+				queryParams: { returnUrl: this._location.path() },
+			});
+		}
 	}
 }

@@ -11,14 +11,11 @@
 
 			<div class="d-none d-md-inline">
 				<!-- <button mat-button (click)="handleRouteToJobs()">All Jobs</button> -->
-				<button
-					mat-button
-					[matMenuTriggerFor]="menuJobs"
-					(mouseenter)="openMenu()">
+				<button mat-button (click)="handleRouteToJobs()">
 					Jobs
 					<mat-icon class="mat-18">cases</mat-icon>
 				</button>
-				<mat-menu
+				<!-- <mat-menu
 					#menuJobs="matMenu"
 					xPosition="before"
 					yPosition="below">
@@ -38,7 +35,7 @@
 						Jobs applied
 						<mat-icon class="mat-18">mail</mat-icon>
 					</button>
-				</mat-menu>
+				</mat-menu> -->
 
 				<mat-menu
 					#menuJobsWithCategory="matMenu"
@@ -165,21 +162,39 @@
 			<i class="fa-solid fa-toolbox"></i>
 			<span class="mx-5 align-right">Admin console</span>
 		</button>
-		} @if (_user){
+		}
+		<!-- @if (_user){
 		<button mat-menu-item>
 			<i class="fa-solid fa-gear"></i>
 			<span class="mx-5 align-right">Settings</span>
 		</button>
-		} @if (_user != null) {
+		} -->
+		@if (_user != null) {
+
+		<button mat-menu-item (click)="handleClick_Interview()">
+			<span class="mx-5 align-right">Interviews</span>
+		</button>
+		<button mat-menu-item (click)="handleClick_Interviewer()">
+			<span class="mx-5 align-right">Interviewers</span>
+		</button>
+		<button mat-menu-item (click)="handleClick_Events()">
+			<span class="mx-5 align-right">Events</span>
+		</button>
+		<button mat-menu-item (click)="handleClick_Positions()">
+			<span class="mx-5 align-right">Positions</span>
+		</button>
+
 		<button mat-menu-item (click)="handleClick_Logout()">
 			<i class="fa-solid fa-right-from-bracket"></i>
 			<span class="mx-5 align-right">Logout</span>
 		</button>
+
 		} @else {
 		<button mat-menu-item (click)="handleClick_Login()">
 			<i class="fa-solid fa-right-to-bracket"></i>
 			<span class="mx-5 align-right">Login</span>
 		</button>
+
 		}
 	</mat-menu>
 </mat-toolbar>
