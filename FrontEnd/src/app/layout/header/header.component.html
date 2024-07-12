@@ -67,11 +67,10 @@
 		}
 
 
-		@if(_user && _isNotRecruiter===true){
 		<button mat-menu-item (click)="handleRouteToRecruiterRegisterConsole()">
 			<i class="bi bi-person-fill-up fs-5"></i>
 			<span class="mx-5 align-right">Be A Recruiter</span>
-		</button>}
+		</button>
 
 		@if(_isAdmin===true){
 		<button mat-menu-item (click)="handleRouteToAdminConsole()">

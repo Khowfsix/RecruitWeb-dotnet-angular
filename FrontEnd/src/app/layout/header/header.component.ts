@@ -28,7 +28,6 @@ import { nameTypeInToken } from '../../core/constants/token.constants';
 export class HeaderComponent {
 	_user: string | null = this._cookieService.get('jwt');
 	_isAdmin: boolean = false;
-	_isNotRecruiter: boolean = this._authService.getRecruiterId_OfUser() !== undefined && this._authService.getCandidateId_OfUser() !== null ? false : true
 
 	@Input() deviceXs: boolean | null = null;
 
