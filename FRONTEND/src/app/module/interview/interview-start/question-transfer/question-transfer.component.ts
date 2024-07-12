@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { BehaviorSubject } from 'rxjs';
 import { QuestionService } from '../../../../data/question/question.service';
 import { RightTableComponent } from '../../interview-id/question-table/right-table/right-table.component';
-import { ButtonTransferComponent } from '../button-transfer/button-transfer.component';
 import { LeftTableComponent } from '../left-table/left-table.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Question } from '../../../../data/question/question.model';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
 	selector: 'app-question-transfer',
@@ -22,6 +21,8 @@ import { MatTableDataSource } from '@angular/material/table';
 		MatFormFieldModule,
 		MatSelectModule,
 		MatIconModule,
+		MatInputModule,
+		MatButtonModule,
 
 		FormsModule,
 		ReactiveFormsModule,
@@ -163,48 +164,44 @@ export class QuestionTransferComponent {
 		// 	);
 	}
 
-	questionForm?: FormGroup;
-	categories: string[] = [
-		'Category 1',
-		'Category 2',
-		'Category 3',
-		'Category 4',
-	];
-	questions: Question[] = [];
-	displayedColumns: string[] = [
-		'questionText',
-		'category',
-		'points',
-		'actions',
-	];
-	dataSource?: MatTableDataSource<Question>;
-
-	onSubmit() {
-		if (this.questionForm!.valid) {
-			const newQuestion: Question = this.questionForm!.value;
-			this.questions.push(newQuestion);
-			this.dataSource!.data = this.questions;
-			this.questionForm!.reset({ category: '', points: null });
-		}
-	}
-
-	updatePoints(question: Question, event: Event) {
-		// const input = event.target as HTMLInputElement;
-		// question.points = input.value ? Number(input.value) : null;
-	}
-
-	deleteQuestion(question: Question) {
-		const index = this.questions.indexOf(question);
-		if (index > -1) {
-			this.questions.splice(index, 1);
-			// this.dataSource.data = this.questions;
-		}
-	}
-
 	private getSubSet(table: any): any {
 		if (this.cate === 0) return table;
 		if (this.cate === 1) return table.languages[this.currentSubTab];
 		if (this.cate === 2) return table.skills[this.currentSubTab];
 		return null;
 	}
+
+	///======================================
+
+	newQuestion: string = '';
+	public questions: newQues[] = [];
+
+	addQuestion() {
+		if (this.newQuestion.trim()) {
+			this.questions.push({
+				text: this.newQuestion,
+				score: 0,
+				cate: this.cate!,
+			});
+			this.newQuestion = '';
+			this.questionsChange.emit(this.questions);
+		}
+	}
+
+	deleteQuestion(index: number) {
+		this.questions.splice(index, 1);
+		this.questionsChange.emit(this.questions);
+	}
+
+	onScoreChange() {
+		this.questionsChange.emit(this.questions);
+	}
+
+	@Output() questionsChange = new EventEmitter<newQues[]>();
+}
+
+export interface newQues {
+	text: string;
+	score: number;
+	cate: number;
 }

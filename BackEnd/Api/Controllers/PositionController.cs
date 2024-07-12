@@ -84,8 +84,8 @@ namespace Api.Controllers
             var response = _mapper.Map<PositionViewModel>(modelData);
             var isAdmin = HttpContext.User.IsInRole("Admin");
 
-            return response is not null 
-                ? (response.IsDeleted && !isAdmin ? NotFound(positionId) : Ok(response)) 
+            return response is not null
+                ? (response.IsDeleted && !isAdmin ? NotFound(positionId) : Ok(response))
                 : NotFound(positionId);
         }
 

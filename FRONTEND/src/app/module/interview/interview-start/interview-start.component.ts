@@ -21,7 +21,10 @@ import { AlertDialogService } from '../../../shared/component/alert-dialog/alert
 import { InterviewIdComponent } from '../interview-id/interview-id.component';
 import { CateTabComponent } from '../interview-id/question-table/cate-tab/cate-tab.component';
 import { ScoreTableComponent } from '../interview-id/score-table/score-table.component';
-import { QuestionTransferComponent } from './question-transfer/question-transfer.component';
+import {
+	newQues,
+	QuestionTransferComponent,
+} from './question-transfer/question-transfer.component';
 import { TitleDividerComponent } from '../../../shared/component/title-divider/title-divider.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TwoTableComponent } from '../../../shared/components/two-table/two-table.component';
@@ -125,9 +128,10 @@ export class InterviewStartComponent {
 					this.leftSoft = this.allQuestion.interviewQuestions[0];
 					this.leftLang = this.allQuestion.interviewQuestions[1];
 					this.leftTech = this.allQuestion.interviewQuestions[2];
-					this.rightSoft = [];
-					this.rightLang = [];
-					this.rightTech = [];
+
+					// this.rightSoft = [];
+					// this.rightLang = [];
+					// this.rightTech = [];
 				},
 				// (error: any) => {
 				// 	console.error('Error fetching questions', error);
@@ -177,5 +181,20 @@ export class InterviewStartComponent {
 					});
 				},
 			);
+	}
+
+	newSoftQues?: newQues[];
+	newLangQues?: newQues[];
+	newExpertQues?: newQues[];
+	onQuestionsChange(questions: newQues[]) {
+		// logic để xử lý giá trị trả về từ component con
+		console.log(questions);
+		if (this.currentCateTab === 0) {
+			this.newSoftQues = questions;
+		} else if (this.currentCateTab === 1) {
+			this.newLangQues = questions;
+		} else if (this.currentCateTab === 2) {
+			this.newExpertQues = questions;
+		}
 	}
 }
