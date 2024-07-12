@@ -2,25 +2,151 @@
 	<div class="row">
 		<div class="col-12 col-md-5">
 			<app-left-table
-				[leftTable]="leftTable"
+				[leftTable]="leftData$"
 				[cate]="cate"
 				[currentQues]="currentQues"
-				(currentQuesChange)="setCurrentQues($event)"
-				[currentSubTab]="currentSubTab"
-				(currentSubTabChange)="setCurrentSubTab($event)">
+				(questionSelected)="onQuestionSelected($event)">
 			</app-left-table>
 		</div>
-		<div class="col-12 col-md-2 d-flex flex-column align-items-center justify-content-center">
-			<app-button-transfer [currentChosen]="currentQues" (transfer)="handleTransfer()"> </app-button-transfer>
-		</div>
+		<!-- <div
+			class="col-12 col-md-2 d-flex flex-column align-items-center justify-content-center">
+			<app-button-transfer
+				[currentChosen]="selectedQuestion ? [selectedQuestion] : []"
+				(transfer)="handleTransfer()">
+			</app-button-transfer>
+		</div> -->
 		<div class="col-12 col-md-5">
-			<app-right-table
-				[rightTable]="rightTable"
+			<!-- <app-right-table
+				[rightTable]="rightData$"
 				[cate]="cate"
 				[currentSubTab]="currentSubTab"
 				(currentSubTabChange)="setCurrentSubTab($event)"
-				(currentQuesChange)="setCurrentQues($event)">
-			</app-right-table>
+				(currentQuesChange)="setCurrentQuesFromEvent($event)">
+			</app-right-table> -->
+
+			<div class="container mt-4">
+				<form
+					[formGroup]="questionForm!"
+					(ngSubmit)="onSubmit()"
+					class="row g-3">
+					<div class="col-12">
+						<mat-form-field appearance="fill" class="w-100">
+							<mat-label>Question</mat-label>
+							<textarea
+								matInput
+								formControlName="questionText"
+								rows="3"></textarea>
+							<mat-error
+								*ngIf="
+									questionForm!
+										.get('questionText')
+										?.hasError('required')
+								">
+								Please enter a question
+							</mat-error>
+						</mat-form-field>
+					</div>
+
+					<div class="col-md-6">
+						<mat-form-field appearance="fill" class="w-100">
+							<mat-label>Question type</mat-label>
+							<mat-select formControlName="category">
+								<mat-option
+									*ngFor="let category of categories"
+									[value]="category">
+									{{ category }}
+								</mat-option>
+							</mat-select>
+							<mat-error
+								*ngIf="
+									questionForm!
+										.get('category')
+										?.hasError('required')
+								">
+								Vui lòng chọn loại câu hỏi
+							</mat-error>
+						</mat-form-field>
+					</div>
+
+					<div class="col-md-6">
+						<mat-form-field appearance="fill" class="w-100">
+							<mat-label>Score</mat-label>
+							<input
+								matInput
+								type="number"
+								formControlName="points"
+								min="0"
+								max="100" />
+						</mat-form-field>
+					</div>
+
+					<div class="col-12">
+						<button
+							mat-raised-button
+							color="primary"
+							type="submit"
+							[disabled]="!questionForm!.valid">
+							Thêm câu hỏi
+						</button>
+					</div>
+				</form>
+
+				<div class="mt-4">
+					<table
+						mat-table
+						[dataSource]="dataSource!"
+						class="mat-elevation-z8 w-100">
+						<ng-container matColumnDef="questionText">
+							<th mat-header-cell *matHeaderCellDef>Câu hỏi</th>
+							<td mat-cell *matCellDef="let element">
+								{{ element.questionText }}
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="category">
+							<th mat-header-cell *matHeaderCellDef>Loại</th>
+							<td mat-cell *matCellDef="let element">
+								{{ element.category }}
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="points">
+							<th mat-header-cell *matHeaderCellDef>Điểm</th>
+							<td mat-cell *matCellDef="let element">
+								<input
+									matInput
+									type="number"
+									[value]="element.points"
+									(change)="updatePoints(element, $event)"
+									min="0"
+									max="100" />
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="actions">
+							<th mat-header-cell *matHeaderCellDef>Actions</th>
+							<td mat-cell *matCellDef="let element">
+								<button
+									mat-icon-button
+									color="warn"
+									(click)="deleteQuestion(element)">
+									<mat-icon>delete</mat-icon>
+								</button>
+							</td>
+						</ng-container>
+
+						<tr
+							mat-header-row
+							*matHeaderRowDef="displayedColumns"></tr>
+						<tr
+							mat-row
+							*matRowDef="
+								let row;
+								columns: displayedColumns
+							"></tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

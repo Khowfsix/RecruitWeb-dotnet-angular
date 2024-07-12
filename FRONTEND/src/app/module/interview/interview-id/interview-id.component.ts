@@ -15,31 +15,40 @@ import { PermissionService } from '../../../core/services/permission.service';
 import { InterviewService } from '../../../data/interview/interview.service';
 import { NoteFieldComponent } from './note-field/note-field.component';
 import { QuestionTableComponent } from './question-table/question-table.component';
-import { RadarPlotComponent } from './radar-plot/radar-plot.component';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { MatButtonModule } from '@angular/material/button';
+import { WebUser } from '../../../data/authentication/web-user.model';
+import { Interview } from '../../../data/interview/interview.model';
+import { AlertDialogService } from '../../../shared/component/alert-dialog/alert-dialog.component';
+import {
+	Interview_CandidateStatus,
+	Interview_CompanyStatus,
+} from '../../../shared/enums/EInterview.model';
 import { ScoreTableComponent } from './score-table/score-table.component';
+import { RadarPlotComponent } from './radar-plot/radar-plot.component';
 
 @Component({
 	selector: 'app-pass',
 	standalone: true,
-	imports: [
-		MatChipsModule,
-		MatIconModule
-	],
+	imports: [MatChipsModule, MatIconModule],
 	template: `
-    <mat-chip-listbox>
-		<mat-chip color="accent" selected>
-			<mat-icon>done</mat-icon>
-			Passed
-		</mat-chip>
-	</mat-chip-listbox>
+		<mat-chip-listbox>
+			<mat-chip color="accent" selected>
+				<mat-icon>done</mat-icon>
+				Passed
+			</mat-chip>
+		</mat-chip-listbox>
 	`,
-	styles: [`
-    mat-chip {
-		background-color: #4caf50;
-		color: white;
-    }`]
+	styles: [
+		`
+			mat-chip {
+				background-color: #4caf50;
+				color: white;
+			}
+		`,
+	],
 })
-export class PassComponent { }
+export class PassComponent {}
 
 @Component({
 	selector: 'app-fail',
@@ -62,7 +71,7 @@ export class PassComponent { }
 		`,
 	],
 })
-export class FailComponent { }
+export class FailComponent {}
 
 @Component({
 	selector: 'app-interview-id',
@@ -73,7 +82,7 @@ export class FailComponent { }
 
 		NoteFieldComponent,
 		QuestionTableComponent,
-		RadarPlotComponent,
+		// RadarPlotComponent,
 		ScoreTableComponent,
 		PassComponent,
 		FailComponent,
@@ -83,46 +92,71 @@ export class FailComponent { }
 		MatDividerModule,
 		MatGridListModule,
 		MatChipsModule,
+		MatButtonModule,
 	],
 	templateUrl: './interview-id.component.html',
 })
 export class InterviewIdComponent {
 	interviewId?: string;
-	interview: any;
+	interview?: Interview;
 	role?: string;
-	user: any;
+	user?: WebUser;
 
 	constructor(
 		private router: Router,
 		private route: ActivatedRoute,
 		private dialog: MatDialog,
+
 		private interviewService: InterviewService,
+		private dialogService: AlertDialogService,
 
 		private authService: AuthService,
 		private permissionService: PermissionService,
-		private cookieService: CookieService
-	) { }
+		private cookieService: CookieService,
+	) {}
+
+	public get getCompanyStatus() {
+		return Interview_CompanyStatus;
+	}
+
+	public get getCandidateStatus() {
+		return Interview_CandidateStatus;
+	}
 
 	ngOnInit() {
-		this.interviewId = this.route.snapshot.paramMap.get('interviewid')!;
-		this.user = this.authService.getCurrentUser();
-		this.role = this.permissionService.getRoleOfUser(this.cookieService.get('jwt'))[0];
+		this.interviewId = this.route.snapshot.paramMap.get('interviewId')!;
+		this.user = this.authService.getLocalCurrentUser();
+
+		const roleFromJWT = this.permissionService.getRoleOfUser(
+			this.cookieService.get('jwt'),
+		);
+		if (typeof roleFromJWT === 'string') {
+			this.role = roleFromJWT;
+		} else {
+			this.role = roleFromJWT[0];
+		}
+
 		this.getInterviewResult();
 	}
 
 	getInterviewResult() {
-		// this.interviewService.getInterviewResult(this.interviewId, this.user.token).subscribe(
-		// 	(result) => {
-		// 		this.interview = result;
-		// 	},
-		// 	(error) => {
-		// 		console.error('Error fetching interview result', error);
-		// 	}
-		// );
+		this.interviewService
+			.getInterviewById(this.interviewId!)
+			.subscribe((interview) => {
+				this.interview = interview;
+			});
 	}
 
 	handleStart() {
-		this.router.navigate([`/company/interview/${this.interviewId}/start`]);
+		this.dialogService
+			.openDialog("'Are you sure you want to start this interview?'")
+			.subscribe((result) => {
+				if (result) {
+					this.router.navigate([
+						`/interview/${this.interviewId}/start`,
+					]);
+				}
+			});
 	}
 
 	handleAccept() {
@@ -150,15 +184,10 @@ export class InterviewIdComponent {
 	}
 
 	openAlertDialog(message: string, action: () => void) {
-		console.log(message, action);
-		// const dialogRef = this.dialog.open(AlertDialogComponent, {
-		// 	data: { message: message }
-		// });
-
-		// dialogRef.afterClosed().subscribe(result => {
-		// 	if (result) {
-		// 		action();
-		// 	}
-		// });
+		this.dialogService.openDialog(message).subscribe((result) => {
+			if (result) {
+				action();
+			}
+		});
 	}
 }

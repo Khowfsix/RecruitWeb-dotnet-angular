@@ -8,7 +8,7 @@ import { Component, Input, AfterViewInit, ElementRef, ViewChild } from '@angular
 	standalone: true
 })
 export class NoteFieldComponent implements AfterViewInit {
-	@Input() note: string = '';
+	@Input() note?: string = '';
 	@ViewChild('noteContainer') noteContainer!: ElementRef;
 
 	ngAfterViewInit() {

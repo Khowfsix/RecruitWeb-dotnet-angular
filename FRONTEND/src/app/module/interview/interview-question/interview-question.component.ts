@@ -29,7 +29,6 @@ import { QuestionDataGridComponent } from './question-data-grid/question-data-gr
 		QuestionDataGridComponent,
 	],
 	templateUrl: './interview-question.component.html',
-	styleUrl: './interview-question.component.css'
 })
 export class InterviewQuestionComponent {
 	rows: any[] = [];
@@ -43,8 +42,8 @@ export class InterviewQuestionComponent {
 		private dialog: MatDialog,
 		private questionService: QuestionService,
 		private skillService: SkillService,
-		private languageService: LanguageService
-	) { }
+		private languageService: LanguageService,
+	) {}
 
 	ngOnInit() {
 		this.getAllQuestions();
@@ -73,7 +72,7 @@ export class InterviewQuestionComponent {
 			},
 			(error) => {
 				console.error('Error fetching skills:', error);
-			}
+			},
 		);
 	}
 
@@ -84,7 +83,7 @@ export class InterviewQuestionComponent {
 			},
 			(error) => {
 				console.error('Error fetching languages:', error);
-			}
+			},
 		);
 	}
 
@@ -112,7 +111,7 @@ export class InterviewQuestionComponent {
 			skillName: this.skillChoose?.skillName,
 			languageId: this.languageChoose?.languageId,
 			languageName: this.languageChoose?.languageName,
-			softskill: this.valueChoose === 'Soft Skills'
+			softskill: this.valueChoose === 'Soft Skills',
 		};
 
 		// this.questionService.getQuestionListWithFilter(params).subscribe(
@@ -130,7 +129,6 @@ export class InterviewQuestionComponent {
 		// 	width: '500px',
 		// 	data: { skills: this.skills, languages: this.languages }
 		// });
-
 		// dialogRef.afterClosed().subscribe(result => {
 		// 	if (result) {
 		// 		this.questionService.postQuestion(result).subscribe(
@@ -152,7 +150,6 @@ export class InterviewQuestionComponent {
 		// 	width: '500px',
 		// 	data: { question: value, type, skills: this.skills, languages: this.languages }
 		// });
-
 		// dialogRef.afterClosed().subscribe(result => {
 		// 	if (result) {
 		// 		this.questionService.putQuestion(result).subscribe(
@@ -174,7 +171,6 @@ export class InterviewQuestionComponent {
 		// 	width: '400px',
 		// 	data: { question: value }
 		// });
-
 		// dialogRef.afterClosed().subscribe(result => {
 		// 	if (result) {
 		// 		this.questionService.deleteQuestion(value.QuestionId).subscribe(

@@ -67,7 +67,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllSoftSkillQuestions()
         {
             var listQuestion = await _questionService.GetAllSoftSkillQuestions();
-            List<QuestionViewModel> viewModels = new List<QuestionViewModel>();
+            List<QuestionViewModel> viewModels = new();
             foreach (var models in listQuestion)
             {
                 viewModels.Add(_mapper.Map<QuestionViewModel>(models));
@@ -79,7 +79,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllTechnologyQuestions()
         {
             var listQuestion = await _questionService.GetAllTechnologyQuestions();
-            List<QuestionViewModel> viewModels = new List<QuestionViewModel>();
+            List<QuestionViewModel> viewModels = new();
             foreach (var models in listQuestion)
             {
                 viewModels.Add(_mapper.Map<QuestionViewModel>(models));

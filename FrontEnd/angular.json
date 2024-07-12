@@ -33,6 +33,8 @@
 							"node_modules/bootstrap/dist/css/bootstrap.min.css",
 							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
 							"node_modules/katex/dist/katex.min.css",
+							"node_modules/quill/dist/quill.core.css",
+							"node_modules/quill/dist/quill.snow.css",
 							"src/styles.css"
 						],
 						"scripts": [

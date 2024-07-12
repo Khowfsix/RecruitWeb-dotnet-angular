@@ -1,4 +1,6 @@
-<div *ngIf="allQuestion && user && role === 'interviewer' && interviewStart" class="container-fluid">
+<div
+	*ngIf="allQuestion && user && role === 'Interviewer'"
+	class="container-fluid">
 	<app-interview-id></app-interview-id>
 
 	<mat-divider class="my-4">Score Interview</mat-divider>
@@ -12,19 +14,26 @@
 				</mat-card-header>
 				<mat-card-content>
 					<mat-tab-group [(selectedIndex)]="currentCateTab">
-						<mat-tab label="Soft Skill">
+						<mat-tab
+							label="Soft Skill"
+							*ngIf="leftSoft && rightSoft">
 							<app-question-transfer
 								[leftTable]="leftSoft"
 								[rightTable]="rightSoft"
-								[cate]="0"></app-question-transfer>
+								[cate]="0">
+							</app-question-transfer>
 						</mat-tab>
-						<mat-tab label="Language Skill">
+						<mat-tab
+							label="Language Skill"
+							*ngIf="leftLang && rightLang">
 							<app-question-transfer
 								[leftTable]="leftLang"
 								[rightTable]="rightLang"
 								[cate]="1"></app-question-transfer>
 						</mat-tab>
-						<mat-tab label="Technology Skill">
+						<mat-tab
+							label="Expertise"
+							*ngIf="leftTech && rightTech">
 							<app-question-transfer
 								[leftTable]="leftTech"
 								[rightTable]="rightTech"
@@ -42,7 +51,7 @@
 					<mat-card-title>Note</mat-card-title>
 				</mat-card-header>
 				<mat-card-content>
-					<quill-editor [(ngModel)]="note"></quill-editor>
+					<quill-editor [(ngModel)]="notes"></quill-editor>
 				</mat-card-content>
 			</mat-card>
 		</div>
@@ -54,13 +63,16 @@
 					<mat-card-title>Final Score</mat-card-title>
 				</mat-card-header>
 				<mat-card-content>
-					<app-score-table [allResult]="allQuestion.right"></app-score-table>
+					<app-score-table
+						[allResult]="allQuestion.right"></app-score-table>
 				</mat-card-content>
 			</mat-card>
 		</div>
 	</div>
 
 	<div class="d-flex justify-content-end mt-4">
-		<button mat-raised-button color="primary" (click)="preprocessing()">Save record</button>
+		<button mat-raised-button color="primary" (click)="preprocessing()">
+			Save record
+		</button>
 	</div>
 </div>

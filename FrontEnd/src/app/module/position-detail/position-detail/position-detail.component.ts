@@ -43,7 +43,7 @@ export class PositionDetailComponent implements OnInit {
 		public dialog: MatDialog,
 		private _location: Location
 	) {
-		this.curentUserRoles = _permissionService.getRoleOfUser(_cookieService.get("jwt"));
+		this.curentUserRoles = _permissionService.getRoleOfUser(_cookieService.get("jwt")) as string[];
 		console.log(this.curentUserRoles);
 	}
 

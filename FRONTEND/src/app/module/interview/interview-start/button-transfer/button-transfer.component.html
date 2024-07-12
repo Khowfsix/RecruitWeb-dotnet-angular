@@ -1,4 +1,8 @@
-<button mat-icon-button [disabled]="currentChosen.length === 0" (click)="onTransfer()" class="btn-transfer">
-	<mat-icon class="large-icon d-none d-md-block"> keyboard_double_arrow_right </mat-icon>
-	<mat-icon class="large-icon d-md-none"> keyboard_double_arrow_down </mat-icon>
+<button
+	mat-icon-button
+	[disabled]="currentChosen.length === 0"
+	(click)="onTransfer()"
+	class="btn-transfer">
+	<mat-icon class="d-none d-md-block"> keyboard_double_arrow_right </mat-icon>
+	<mat-icon class="d-md-none"> keyboard_double_arrow_down </mat-icon>
 </button>

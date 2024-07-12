@@ -1,5 +1,4 @@
 using AutoMapper;
-using Data.Entities;
 using Data.Interfaces;
 using Service.Interfaces;
 using Service.Models;
@@ -24,5 +23,7 @@ namespace Service
 
             return modelDatas;
         }
+
+        //public async Task<IEnumerable>
     }
 }

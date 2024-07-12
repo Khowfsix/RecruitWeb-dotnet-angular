@@ -26,5 +26,15 @@ namespace Data.Repositories
 
             return entities;
         }
+
+        public async Task<QuestionLanguage> AddQuestionLanguage(QuestionLanguage data)
+        {
+            data.QuestionLanguageId = Guid.NewGuid();
+
+            Entities.Add(data);
+            _unitOfWork.SaveChanges();
+
+            return await Task.FromResult(data);
+        }
     }
 }

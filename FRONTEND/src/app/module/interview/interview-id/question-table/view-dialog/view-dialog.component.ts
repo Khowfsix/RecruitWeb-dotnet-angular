@@ -4,21 +4,24 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { ThemePalette } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+	MAT_DIALOG_DATA,
+	MatDialog,
+	MatDialogModule,
+	MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-view-dialog',
 	standalone: true,
-	imports: [
-		MatIconModule
-	],
+	imports: [MatIconModule, MatDialogModule],
 	template: `
 		<button mat-icon-button (click)="openDialog()">
 			<mat-icon>visibility</mat-icon>
 		</button>
-	`
+	`,
 })
 export class ViewDialogComponent {
 	@Input() params: any;
@@ -26,7 +29,7 @@ export class ViewDialogComponent {
 	@Input() skillname?: string;
 	@Input() languagename?: string;
 
-	constructor(public dialog: MatDialog) { }
+	constructor(public dialog: MatDialog) {}
 
 	openDialog(): void {
 		this.dialog.open(ViewDialogContentComponent, {
@@ -34,8 +37,13 @@ export class ViewDialogComponent {
 				params: this.params,
 				cate: this.cate,
 				skillname: this.skillname,
-				languagename: this.languagename
-			}
+				languagename: this.languagename,
+
+				width: '800px',
+				maxWidth: '90vw',
+				height: '600px',
+				maxHeight: '90vh',
+			},
 		});
 	}
 }
@@ -52,8 +60,8 @@ export class ViewDialogComponent {
 
 		FormsModule,
 		ReactiveFormsModule,
-		CommonModule
-	]
+		CommonModule,
+	],
 })
 export class ViewDialogContentComponent implements OnInit {
 	categoryName?: string;
@@ -62,8 +70,8 @@ export class ViewDialogContentComponent implements OnInit {
 
 	constructor(
 		public dialogRef: MatDialogRef<ViewDialogContentComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: any
-	) { }
+		@Inject(MAT_DIALOG_DATA) public data: any,
+	) {}
 
 	ngOnInit(): void {
 		this.setCategoryInfo();
@@ -71,15 +79,15 @@ export class ViewDialogContentComponent implements OnInit {
 
 	setCategoryInfo(): void {
 		if (this.data.cate === 0) {
-			this.categoryName = 'Soft Skills';
+			this.categoryName = 'Soft skill';
 			this.categoryIcon = 'handshake';
 			this.chipColor = 'accent';
 		} else if (this.data.cate === 1) {
-			this.categoryName = 'Language';
+			this.categoryName = 'Language skill';
 			this.categoryIcon = 'language';
 			this.chipColor = 'primary';
 		} else if (this.data.cate === 2) {
-			this.categoryName = 'Technology';
+			this.categoryName = 'Expertise ';
 			this.categoryIcon = 'tungsten';
 			this.chipColor = 'warn';
 		}

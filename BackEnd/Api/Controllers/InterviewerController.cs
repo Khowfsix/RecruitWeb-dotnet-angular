@@ -54,7 +54,7 @@ public class InterviewerController : BaseAPIController
                 TimeSpan date = (TimeSpan)(lastInterview.MeetingDate! - DateTime.Now);
                 interviewer.daysToLastInterview = date.Days;
             }
-            
+
             if (!isAdmin)
             {
                 response = response.Where(e => !e.IsDeleted).ToList();

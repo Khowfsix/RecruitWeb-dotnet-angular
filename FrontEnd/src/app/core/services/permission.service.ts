@@ -64,12 +64,11 @@ export class PermissionService {
 	// 	return this.hasRole(requiredRole, currentUserRole);
 	// }
 
-	getRoleOfUser(jwt: string) {
+	getRoleOfUser(jwt: string): string | string[] {
 		// const jwt = this.cookieService.get('jwt');
 		if (jwt) {
 			const authenPayload = JSON.parse(JSON.stringify(jwtDecode<JwtPayload>(jwt as string)));
-			const currentUserRole: string[] = authenPayload[nameTypeInToken.roles];
-			// console.log(currentUserRole);
+			const currentUserRole: string = authenPayload[nameTypeInToken.roles];
 			return currentUserRole;
 		}
 		return [];

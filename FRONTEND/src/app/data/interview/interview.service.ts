@@ -1,27 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import { API } from '../api.service';
 import { Interview, InterviewFilterModel } from './interview.model';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class InterviewService {
-
-	constructor(private api: API) { }
+	constructor(private api: API) {}
 
 	public getAll(): Observable<Interview[]> {
 		const url = '/api/Interview';
 		return this.api.GET(url);
 	}
 
-	public updateStatus(interviewId: string, company_Status?: number, candidate_Status?: number) {
+	public updateStatus(
+		interviewId: string,
+		company_Status?: number,
+		candidate_Status?: number,
+	) {
 		let url = `/api/Interview/UpdateStatusInterview/${interviewId}?`;
-		if (company_Status)
-			url += `Company_Status=${company_Status}&`;
-		if (candidate_Status)
-			url += `Candidate_Status=${candidate_Status}&`;
+		if (company_Status) url += `Company_Status=${company_Status}&`;
+		if (candidate_Status) url += `Candidate_Status=${candidate_Status}&`;
 		return this.api.PUT(url);
 	}
 
@@ -33,7 +34,11 @@ export class InterviewService {
 		return this.api.POST('/api/Interview', data, options);
 	}
 
-	public getInterviewsByCompanyId(companyId: string, interviewFilterModel?: any, sortString?: string): Observable<Interview[]> {
+	public getInterviewsByCompanyId(
+		companyId: string,
+		interviewFilterModel?: any,
+		sortString?: string,
+	): Observable<Interview[]> {
 		let url = '/api/Interview/GetInterviewsByCompany/' + companyId + '?';
 		if (sortString) {
 			url += 'sortString=' + sortString;
@@ -44,7 +49,9 @@ export class InterviewService {
 		return this.api.GET(url);
 	}
 
-	private buildQueryParams(interviewFilterModel: InterviewFilterModel): string {
+	private buildQueryParams(
+		interviewFilterModel: InterviewFilterModel,
+	): string {
 		let params = '';
 		if (interviewFilterModel.positionId) {
 			params += `&positionId=${interviewFilterModel.positionId}`;
@@ -77,12 +84,46 @@ export class InterviewService {
 	}
 
 	getAllByInterviewerId(interviewerId: string): Observable<Interview[]> {
-		const url = '/api/Interview/GetInterviewsByInterviewer/' + interviewerId;
+		const url =
+			'/api/Interview/GetInterviewsByInterviewer/' + interviewerId;
 		return this.api.GET(url);
 	}
 
 	getAllInterview(): Observable<Interview[]> {
 		const url = '/api/Interview';
 		return this.api.GET(url);
+	}
+
+	getInterviewById(interviewerId: string): Observable<Interview> {
+		const url = `/api/Interview?id=${interviewerId}`;
+		return this.api.GET(url);
+	}
+
+	public scoreInterview(interviewId: string, result: any): Observable<any> {
+		console.log('input: ', JSON.stringify({ interviewId, result }));
+
+		return this.api
+			.POST(
+				`/Interview/PostQuestionInterviewResult/${interviewId}`,
+				result,
+			)
+			.pipe(
+				switchMap(() =>
+					this.api.PUT(
+						`/Interview/UpdateStatusInterview/${interviewId}?Candidate_Status=Finished&Company_Status=Pending`,
+						null,
+					),
+				),
+				switchMap(() =>
+					of({ status: 'success', message: interviewId }),
+				),
+				catchError((error) => {
+					console.log('err: ', error);
+					return throwError({
+						status: 'error',
+						message: 'Cannot end interview',
+					});
+				}),
+			);
 	}
 }

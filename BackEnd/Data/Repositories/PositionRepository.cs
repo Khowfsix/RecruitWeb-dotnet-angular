@@ -10,7 +10,7 @@ namespace Data.Repositories
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public PositionRepository(RecruitmentWebContext context, IUnitOfWork unitOfWork) : base(context) 
+        public PositionRepository(RecruitmentWebContext context, IUnitOfWork unitOfWork) : base(context)
         {
             _unitOfWork = unitOfWork;
         }
@@ -84,24 +84,24 @@ namespace Data.Repositories
 
             if (positionFilter.FromSalary.HasValue && positionFilter.ToSalary.HasValue)
             {
-               
-                    //query = query.Where(e => 
-                    //(e.MinSalary == null && e.MaxSalary!.Value >= positionFilter.FromSalary.Value) || 
-                    //(e.MaxSalary == null && positionFilter.ToSalary.Value >= e.MinSalary!.Value) || 
-                    //(e.MinSalary == null && e.MaxSalary == null) ||
-                    //(positionFilter.FromSalary.Value <= e.MinSalary!.Value && e.MaxSalary!.Value <= positionFilter.ToSalary.Value)
-                    //)
+
+                //query = query.Where(e => 
+                //(e.MinSalary == null && e.MaxSalary!.Value >= positionFilter.FromSalary.Value) || 
+                //(e.MaxSalary == null && positionFilter.ToSalary.Value >= e.MinSalary!.Value) || 
+                //(e.MinSalary == null && e.MaxSalary == null) ||
+                //(positionFilter.FromSalary.Value <= e.MinSalary!.Value && e.MaxSalary!.Value <= positionFilter.ToSalary.Value)
+                //)
 
                 query = query.Where(e =>
                     (e.MinSalary == null && e.MaxSalary == null)
                     || (positionFilter.FromSalary <= e.MaxSalary && e.MaxSalary <= positionFilter.ToSalary)
                     || (positionFilter.FromSalary <= e.MinSalary && e.MinSalary <= positionFilter.ToSalary)
-                    //|| (positionFilter.FromSalary <= e.MinSalary && e.MaxSalary <= positionFilter.ToSalary)
-                    //|| (positionFilter.FromSalary >= e.MinSalary && e.MaxSalary >= positionFilter.ToSalary)
+                //|| (positionFilter.FromSalary <= e.MinSalary && e.MaxSalary <= positionFilter.ToSalary)
+                //|| (positionFilter.FromSalary >= e.MinSalary && e.MaxSalary >= positionFilter.ToSalary)
                 );
                 if (!positionFilter.NegotiatedSalary)
                 {
-                    query = query.Where(e => e.MinSalary != null && e.MaxSalary != null 
+                    query = query.Where(e => e.MinSalary != null && e.MaxSalary != null
                     );
                 }
             }

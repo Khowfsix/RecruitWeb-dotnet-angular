@@ -195,7 +195,8 @@ export class ListInterviewComponent {
 	}
 
 	handleDetailClick(interviewId: string) {
-		this.router.navigate(['./', interviewId]);
+		console.log();
+		this.router.navigate(['interview/', interviewId]);
 	}
 
 	handleProfileDetailClick(userId: string) {

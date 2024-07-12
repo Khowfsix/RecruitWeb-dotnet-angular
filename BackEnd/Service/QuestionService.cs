@@ -41,10 +41,10 @@ namespace Service
         {
             try
             {
-                string cateQuestion = "Language";
+                string cateQuestion = "Language skill";
                 Guid id = await _categoryQuestionRepository.GetIdCategoryQuestion(cateQuestion);
                 var entityDatas = await _questionRepository.GetListQuestions(id);
-                List<QuestionModel> models = new List<QuestionModel>();
+                List<QuestionModel> models = new();
                 foreach (var item in entityDatas)
                 {
                     models.Add(_mapper.Map<QuestionModel>(item));
@@ -61,10 +61,10 @@ namespace Service
         {
             try
             {
-                String cateQuestion = "SoftSkill";
+                String cateQuestion = "Soft skill";
                 Guid id = await _categoryQuestionRepository.GetIdCategoryQuestion(cateQuestion);
                 var entities = await _questionRepository.GetListQuestions(id);
-                List<QuestionModel> models = new List<QuestionModel>();
+                List<QuestionModel> models = new();
                 foreach (var item in entities)
                 {
                     models.Add(_mapper.Map<QuestionModel>(item));
@@ -81,10 +81,10 @@ namespace Service
         {
             try
             {
-                String cateQuestion = "Technology";
+                String cateQuestion = "Expertise";
                 Guid id = await _categoryQuestionRepository.GetIdCategoryQuestion(cateQuestion);
                 var entities = await _questionRepository.GetListQuestions(id);
-                List<QuestionModel> models = new List<QuestionModel>();
+                List<QuestionModel> models = new();
                 foreach (var item in entities)
                 {
                     models.Add(_mapper.Map<QuestionModel>(item));

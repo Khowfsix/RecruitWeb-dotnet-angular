@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+	FormBuilder,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
 import { QuestionService } from '../../../../data/question/question.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,10 +25,9 @@ import { MatButtonModule } from '@angular/material/button';
 		MatFormFieldModule,
 		MatOptionModule,
 		MatInputModule,
-		MatButtonModule
+		MatButtonModule,
 	],
 	templateUrl: './question-modal.component.html',
-	styleUrl: './question-modal.component.css'
 })
 export class QuestionModalComponent {
 	@Input() modalStatus: boolean = false;
@@ -39,7 +44,7 @@ export class QuestionModalComponent {
 
 	constructor(
 		private fb: FormBuilder,
-		private questionService: QuestionService
+		private questionService: QuestionService,
 	) {
 		this.questionForm = this.fb.group({
 			question: ['', Validators.required],
@@ -65,8 +70,20 @@ export class QuestionModalComponent {
 	initForm() {
 		this.questionForm.patchValue({
 			question: this.value.QuestionName,
-			skillChoose: this.value.TypeId && this.value.TypeName ? { skillId: this.value.TypeId, skillName: this.value.TypeName } : null,
-			languageChoose: this.value.TypeId && this.value.TypeName ? { languageId: this.value.TypeId, languageName: this.value.TypeName } : null,
+			skillChoose:
+				this.value.TypeId && this.value.TypeName
+					? {
+							skillId: this.value.TypeId,
+							skillName: this.value.TypeName,
+					  }
+					: null,
+			languageChoose:
+				this.value.TypeId && this.value.TypeName
+					? {
+							languageId: this.value.TypeId,
+							languageName: this.value.TypeName,
+					  }
+					: null,
 		});
 		this.category = this.value.CategoryName;
 	}

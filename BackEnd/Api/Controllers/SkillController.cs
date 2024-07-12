@@ -31,6 +31,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllSkill(string? query)
         {
             var isAdmin = HttpContext.User.IsInRole("Admin");

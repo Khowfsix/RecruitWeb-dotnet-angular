@@ -7,13 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
 	selector: 'app-button-transfer',
 	standalone: true,
-	imports: [
-		CommonModule,
-		MatIconModule,
-		MatButtonModule
-	],
+	imports: [CommonModule, MatIconModule, MatButtonModule],
 	templateUrl: './button-transfer.component.html',
-	styleUrl: './button-transfer.component.css'
+	styleUrl: './button-transfer.component.css',
 })
 export class ButtonTransferComponent {
 	@Input() currentChosen: any[] = [];
@@ -21,5 +17,9 @@ export class ButtonTransferComponent {
 
 	onTransfer() {
 		this.transfer.emit();
+	}
+
+	isDisabled(): boolean {
+		return this.currentChosen.length === 0;
 	}
 }

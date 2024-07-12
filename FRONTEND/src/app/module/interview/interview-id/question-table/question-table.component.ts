@@ -8,11 +8,7 @@ import { Round } from '../../../../data/round/round.module';
 	selector: 'app-question-table',
 	templateUrl: './question-table.component.html',
 	standalone: true,
-	imports: [
-		CateTabComponent,
-		RightTableComponent,
-		NgSwitch,
-		NgSwitchCase]
+	imports: [CateTabComponent, RightTableComponent, NgSwitch, NgSwitchCase],
 })
 export class QuestionTableComponent {
 	@Input() round?: Round[];
@@ -20,9 +16,15 @@ export class QuestionTableComponent {
 	currentCateTab = 0;
 	currentSubTab = 0;
 
-	get rightSoft() { return this.round![0]; }
-	get rightLang() { return this.round![1]; }
-	get rightTech() { return this.round![2]; }
+	get rightSoft() {
+		return this.round![0];
+	}
+	get rightLang() {
+		return this.round![1];
+	}
+	get rightTech() {
+		return this.round![2];
+	}
 
 	setCurrentSubTab(value: number) {
 		this.currentSubTab = value;

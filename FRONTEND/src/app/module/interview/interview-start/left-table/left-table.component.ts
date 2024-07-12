@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ViewDialogComponent } from '../../interview-id/question-table/view-dialog/view-dialog.component';
-import { MatTableModule } from '@angular/material/table';
 
 @Component({
 	selector: 'app-left-table',
@@ -17,24 +18,32 @@ import { MatTableModule } from '@angular/material/table';
 
 		MatTabsModule,
 		MatTableModule,
+		MatRadioModule,
 	],
 	templateUrl: './left-table.component.html',
-	styleUrl: './left-table.component.css'
+	styleUrl: './left-table.component.scss',
 })
 export class LeftTableComponent {
 	@Input() leftTable: any;
 	@Input() cate?: number;
 	@Input() currentQues?: number[];
-	@Output() currentQuesChange = new EventEmitter<number[]>();
-	@Input() currentSubTab?: number;
-	@Output() currentSubTabChange = new EventEmitter<number>();
+	// @Output() currentQuesChange = new EventEmitter<number[]>();
+	// @Input() currentSubTab?: number;
+	// @Output() currentSubTabChange = new EventEmitter<number>();
+
+	// @Output() questionSelected = new EventEmitter<any>();
+	selectedQuestion: any = null;
 
 	superSet?: any[];
 	columns = [
 		{ field: 'questionid', header: 'ID' },
-		{ field: 'questionstring', header: 'String' },
-		{ field: 'action', header: 'View' }
+		{ field: 'questionstring', header: 'Suggest question' },
+		// { field: 'action', header: 'View' },
 	];
+
+	public getFields() {
+		return this.columns.map((c) => c.field);
+	}
 
 	ngOnInit() {
 		this.initializeSuperSet();
@@ -42,22 +51,25 @@ export class LeftTableComponent {
 
 	initializeSuperSet() {
 		if (this.cate === 0) {
-			this.superSet = [this.leftTable];
+			this.superSet = this.leftTable ? [this.leftTable] : [];
 		} else if (this.cate === 1) {
-			this.superSet = this.leftTable.languages;
+			this.superSet = this.leftTable!.languages
+				? this.leftTable!.languages
+				: [];
 		} else if (this.cate === 2) {
-			this.superSet = this.leftTable.skills;
+			this.superSet = this.leftTable.skills ? this.leftTable.skills : [];
 		}
 	}
 
-	onTabChange(index: number) {
-		this.currentQuesChange.emit([]);
-		this.currentSubTabChange.emit(index);
-	}
+	// onTabChange(index: number) {
+	// 	this.currentQuesChange.emit([]);
+	// 	this.currentSubTabChange.emit(index);
+	// }
 
-	onSelectionChange(event: any) {
-		this.currentQuesChange.emit(event);
-	}
+	chosenQues: any;
+	// onSelectionChange(event: any) {
+	// 	this.currentQuesChange.emit(event);
+	// }
 
 	getTabLabel(sub: any): string {
 		if (this.cate === 0) return 'SOFT SKILL';
@@ -65,4 +77,14 @@ export class LeftTableComponent {
 		if (this.cate === 2) return sub.skillname;
 		return '';
 	}
+
+	// onRowClick(question: any) {
+	// 	this.selectedQuestion = question;
+	// 	console.log(this.selectedQuestion);
+	// 	this.questionSelected.emit(question);
+	// }
+
+	// isSelected(question: any): boolean {
+	// 	return this.selectedQuestion === question;
+	// }
 }
