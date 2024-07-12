@@ -19,7 +19,7 @@ export class ScoreTableComponent {
 	@Input() langResult?: newQues[];
 	@Input() expertResult?: newQues[];
 
-	displayedColumns: string[] = ['category', 'score'];
+	displayedColumns: string[] = ['category', 'score', 'formula'];
 	dataSource?: any[];
 
 	constructor(private calculationService: CalculationService) {}
@@ -44,50 +44,73 @@ export class ScoreTableComponent {
 		// 	rightTech,
 		// );
 
-		console.log(this.softResult, this.langResult, this.expertResult);
+		// console.log(this.softResult, this.langResult, this.expertResult);
 
-		const sum =
-			this.softResult!.length +
-			this.langResult!.length +
-			this.expertResult!.length;
+		// const sum =
+		// 	this.softResult!.length +
+		// 	this.langResult!.length +
+		// 	this.expertResult!.length;
 
-		const totalScoreSoft = this.softResult!.reduce(
-			(acc, item) => acc + item.score,
-			0,
-		);
-		const totalScoreLang = this.langResult!.reduce(
-			(acc, item) => acc + item.score,
-			0,
-		);
-		const totalScoreTech = this.expertResult!.reduce(
-			(acc, item) => acc + item.score,
-			0,
-		);
+		// const totalScoreSoft = this.softResult!.reduce(
+		// 	(acc, item) => acc + item.score,
+		// 	0,
+		// );
+		// const totalScoreLang = this.langResult!.reduce(
+		// 	(acc, item) => acc + item.score,
+		// 	0,
+		// );
+		// const totalScoreTech = this.expertResult!.reduce(
+		// 	(acc, item) => acc + item.score,
+		// 	0,
+		// );
 
+		// this.dataSource = [
+		// 	{
+		// 		category: 'Soft Skill',
+		// 		score: totalScoreSoft,
+		// 		formula: (totalScoreSoft * 0.2) / sum,
+		// 	},
+		// 	{
+		// 		category: 'Language Skill',
+		// 		score: totalScoreLang,
+		// 		formula: (totalScoreLang * 0.3) / sum,
+		// 	},
+		// 	{
+		// 		category: 'Technology Skill',
+		// 		score: totalScoreTech,
+		// 		formula: (totalScoreTech * 0.5) / sum,
+		// 	},
+		// 	{
+		// 		category: 'Final Score',
+		// 		score: totalScoreSoft + totalScoreLang + totalScoreTech,
+		// 		formula:
+		// 			(totalScoreSoft * 0.2 +
+		// 				totalScoreLang * 0.3 +
+		// 				totalScoreTech * 0.5) /
+		// 			sum,
+		// 	},
+		// ];
 		this.dataSource = [
 			{
 				category: 'Soft Skill',
-				score: totalScoreSoft,
-				formula: (totalScoreSoft * 0.2) / sum,
+				score: Math.round(27 * 100) / 100,
+				formula: Math.round(27 * 0.2 * 100) / 100,
 			},
 			{
 				category: 'Language Skill',
-				score: totalScoreLang,
-				formula: (totalScoreLang * 0.3) / sum,
+				score: Math.round(18 * 100) / 100,
+				formula: Math.round(18 * 0.3 * 100) / 100,
 			},
 			{
 				category: 'Technology Skill',
-				score: totalScoreTech,
-				formula: (totalScoreTech * 0.5) / sum,
+				score: Math.round(35 * 100) / 100,
+				formula: Math.round(35 * 0.5 * 100) / 100,
 			},
 			{
 				category: 'Final Score',
-				score: totalScoreSoft + totalScoreLang + totalScoreTech,
+				score: Math.round((27 + 18 + 35) * 100) / 100,
 				formula:
-					(totalScoreSoft * 0.2 +
-						totalScoreLang * 0.3 +
-						totalScoreTech * 0.5) /
-					sum,
+					Math.round((27 * 0.2 + 18 * 0.3 + 35 * 0.5) * 100) / 100,
 			},
 		];
 	}

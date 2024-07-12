@@ -31,7 +31,6 @@ const enum role {
 export const routes: Routes = [
 	{ path: 'meet/login', component: LoginMeetComponent },
 
-
 	//#region home page
 	{ path: '', component: HomeComponent },
 	//#endregion home page
@@ -45,68 +44,104 @@ export const routes: Routes = [
 	//#endregion url which is not need token
 
 	//#region need authentication but no roles
-	{ path: 'events/detail/:eventId', component: EventDetailComponent, data: { breadcrumb: 'Event Detail' } },
-	{ path: 'positions/detail/:positionId', component: PositionDetailComponent, data: { breadcrumb: 'Position Detail' } },
-	{ path: 'positions', component: PositionComponent, data: { breadcrumb: 'Positions' } },
+	{
+		path: 'events/detail/:eventId',
+		component: EventDetailComponent,
+		data: { breadcrumb: 'Event Detail' },
+	},
+	{
+		path: 'positions/detail/:positionId',
+		component: PositionDetailComponent,
+		data: { breadcrumb: 'Position Detail' },
+	},
+	{
+		path: 'positions',
+		component: PositionComponent,
+		data: { breadcrumb: 'Positions' },
+	},
 	{ path: 'meet/login/callback', component: CallBackComponent },
 	//#endregion
 
 	//#region url for recruiter role
-	createRouteWithRoles('events', EventComponent, [
-		role.RECRUITER,
-		role.ADMIN,
-	], 'Event Management'),
+	createRouteWithRoles(
+		'events',
+		EventComponent,
+		[role.RECRUITER, role.ADMIN],
+		'Event Management',
+	),
 
-	createRouteWithRoles('applications/:positionId', ApplicationComponent, [
-		role.RECRUITER,
-		role.ADMIN,
-	], 'Application Management'),
+	createRouteWithRoles(
+		'applications/:positionId',
+		ApplicationComponent,
+		[role.RECRUITER, role.ADMIN],
+		'Application Management',
+	),
 
-	createRouteWithRoles('interviewers', InterviewerComponent, [
-		role.RECRUITER,
-		role.ADMIN,
-	], 'Interviewer Management'),
+	createRouteWithRoles(
+		'interviewers',
+		InterviewerComponent,
+		[role.RECRUITER, role.ADMIN],
+		'Interviewer Management',
+	),
 
-	createRouteWithRoles('interviews', InterviewComponent, [
-		role.RECRUITER,
-		role.ADMIN,
-	], 'Interview Management'),
+	createRouteWithRoles(
+		'interviews',
+		InterviewComponent,
+		[role.RECRUITER, role.ADMIN],
+		'Interview Management',
+	),
 
-	createRouteWithRoles('companies', CompanyComponent, [
-		role.RECRUITER,
-		role.ADMIN,
-		role.CANDIDATE,
-		role.INTERVIEWER
-	], 'Company '),
+	createRouteWithRoles(
+		'companies',
+		CompanyComponent,
+		[role.RECRUITER, role.ADMIN, role.CANDIDATE, role.INTERVIEWER],
+		'Company ',
+	),
 	//#endregion
 
 	//#region url for interviewer
-	createRouteWithRoles('list-interviews', ListInterviewComponent, [
-		role.INTERVIEWER,
-		role.ADMIN
-	], 'List Interviews'),
-	createRouteWithRoles('interview/:interviewId', InterviewIdComponent, [
-		role.INTERVIEWER,
-		role.CANDIDATE,
-		role.RECRUITER
-	], `Interview`),
-	createRouteWithRoles('interview/:interviewId/start', InterviewStartComponent, [
-		role.INTERVIEWER,
-		role.CANDIDATE,
-		role.RECRUITER
-	], `Start Interview`),
+	createRouteWithRoles(
+		'list-interviews',
+		ListInterviewComponent,
+		[role.INTERVIEWER, role.ADMIN],
+		'List Interviews',
+	),
+	createRouteWithRoles(
+		'interview/:interviewId',
+		InterviewIdComponent,
+		[role.INTERVIEWER, role.CANDIDATE, role.RECRUITER],
+		`Interview`,
+	),
+	createRouteWithRoles(
+		'interview/:interviewId/start',
+		InterviewStartComponent,
+		[role.INTERVIEWER, role.CANDIDATE, role.RECRUITER],
+		`Start Interview`,
+	),
 
-	createRouteWithRoles('candidate-infomation', InfoCandidateComponent, [
-		role.INTERVIEWER,
-		role.ADMIN
-	], 'Candidate Infomation'),
+	createRouteWithRoles(
+		'candidate-infomation',
+		InfoCandidateComponent,
+		[role.INTERVIEWER, role.ADMIN],
+		'Candidate Infomation',
+	),
 
 	//#endregion
 
 	//#region url for candidate
 	createRouteWithRoles('cv', CvComponent, [role.CANDIDATE], 'Cv Management'),
-	createRouteWithRoles('profile', CandidateProfileComponent, [role.CANDIDATE], 'Candidate Profile'),
-	createRouteWithRoles('cv-manage', CvManageComponent, [role.CANDIDATE], 'Cv Manage'),
+	createRouteWithRoles(
+		'profile',
+		CandidateProfileComponent,
+		[role.CANDIDATE],
+		'Candidate Profile',
+	),
+	createRouteWithRoles(
+		'cv-manage',
+		CvManageComponent,
+		[role.CANDIDATE],
+		'Cv Manage',
+	),
 	// createRouteWithRoles('cv/candidateProfile', CandidateProfileComponent, [role.CANDIDATE]),
 	// createRouteWithRoles('cv/cvManage', CvManageComponent, [role.CANDIDATE]),
 	// createRouteWithRoles('cv/jobPreference', JobPreferenceComponent, [role.CANDIDATE]),
@@ -131,7 +166,7 @@ function createRouteWithRoles(
 	url: string,
 	component: Type<unknown>,
 	roles: string[],
-	breadcrumb?: string
+	breadcrumb?: string,
 ): Route {
 	return {
 		path: url,
@@ -139,7 +174,7 @@ function createRouteWithRoles(
 		canActivate: [AuthGuard],
 		data: {
 			roles: roles,
-			breadcrumb: breadcrumb
+			breadcrumb: breadcrumb,
 		},
 	};
 }

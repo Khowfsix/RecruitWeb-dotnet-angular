@@ -5,34 +5,66 @@
 		<mat-card-content>
 			<div class="row mb-5">
 				<div class="col-12">
-					<h1 class="display-4 font-weight-bold text-dark">Interview</h1>
+					<h1 class="display-4 font-weight-bold text-dark">
+						Interview
+					</h1>
 				</div>
 
 				<ng-container *ngIf="role !== null">
 					<div class="col-12">
 						<div class="row">
-							<ng-container *ngIf="role !== 'interviewer'">
-								<div class="col-12 col-md-3 mb-3">
-									<mat-form-field appearance="fill" class="w-100">
+							<ng-container>
+								<div
+									class="col-12 col-md-3 mb-3"
+									*ngIf="role && role !== 'Interviewer'">
+									<mat-form-field
+										appearance="fill"
+										class="w-100">
 										<mat-label>Company...</mat-label>
 										<mat-select
 											[(ngModel)]="companyChoose"
-											(selectionChange)="handleChooseCompany($event.value)">
-											<mat-option *ngFor="let company of companies" [value]="company">
+											(selectionChange)="
+												handleChooseCompany(
+													$event.value
+												)
+											">
+											<mat-option
+												*ngFor="
+													let company of companies
+												"
+												[value]="company">
 												{{ company.companyName }}
 											</mat-option>
 										</mat-select>
 									</mat-form-field>
 								</div>
 
-								<div *ngIf="companyChoose" class="col-12 col-md-5 mb-3">
-									<mat-form-field appearance="fill" class="w-100">
+								<div
+									*ngIf="companyChoose"
+									class="col-12 col-md-5 mb-3">
+									<mat-form-field
+										appearance="fill"
+										class="w-100">
 										<mat-label>Position...</mat-label>
 										<mat-select
 											[(ngModel)]="positionChoose"
-											(selectionChange)="handleChoosePosition($event.value)">
-											<mat-option *ngFor="let pos of positions" [value]="pos">
-												{{ pos.positionId!.slice(0, 6) + '...' + ' - ' + pos.positionName }}
+											(selectionChange)="
+												handleChoosePosition(
+													$event.value
+												)
+											">
+											<mat-option
+												*ngFor="let pos of positions"
+												[value]="pos">
+												{{
+													pos.positionId!.slice(
+														0,
+														6
+													) +
+														'...' +
+														' - ' +
+														pos.positionName
+												}}
 											</mat-option>
 										</mat-select>
 									</mat-form-field>
@@ -44,34 +76,55 @@
 									<mat-label>Status...</mat-label>
 									<mat-select
 										[(ngModel)]="statusChoose"
-										(selectionChange)="handleChooseStatus($event.value)">
-										<mat-option [value]="getStatusValue.PENDING">
-											<mat-icon>access_time</mat-icon> Pending
+										(selectionChange)="
+											handleChooseStatus($event.value)
+										">
+										<mat-option
+											[value]="getStatusValue.PENDING">
+											<mat-icon>access_time</mat-icon>
+											Pending
 										</mat-option>
-										<mat-option [value]="getStatusValue.PASSED">
-											<mat-icon>check_circle</mat-icon> Passed
+										<mat-option
+											[value]="getStatusValue.PASSED">
+											<mat-icon>check_circle</mat-icon>
+											Passed
 										</mat-option>
-										<mat-option [value]="getStatusValue.PASSED_N_MAILED">
-											<mat-icon>local_shipping</mat-icon> Passed and mailed
+										<mat-option
+											[value]="
+												getStatusValue.PASSED_N_MAILED
+											">
+											<mat-icon>local_shipping</mat-icon>
+											Passed and mailed
 										</mat-option>
-										<mat-option [value]="getStatusValue.FAILED">
+										<mat-option
+											[value]="getStatusValue.FAILED">
 											<mat-icon>error</mat-icon> Failed
 										</mat-option>
 									</mat-select>
 								</mat-form-field>
 							</div>
 
-							<div *ngIf="statusChoose" class="col-6 col-md-2 mb-3">
+							<div
+								*ngIf="statusChoose"
+								class="col-6 col-md-2 mb-3">
 								<mat-form-field appearance="fill" class="w-100">
 									<mat-label>Type...</mat-label>
 									<mat-select
 										[(ngModel)]="typeChoose"
-										(selectionChange)="handleChooseType($event.value)">
-										<mat-option [value]="getTypeValue.FACE2FACE">
-											<mat-icon>face_unlock</mat-icon> Face to Face
+										(selectionChange)="
+											handleChooseType($event.value)
+										">
+										<mat-option
+											[value]="getTypeValue.FACE2FACE">
+											<mat-icon>face_unlock</mat-icon>
+											Face to Face
 										</mat-option>
-										<mat-option [value]="getTypeValue.ONLINE_GG_MEET">
-											<mat-icon>smartphone</mat-icon> Online (Google Meet)
+										<mat-option
+											[value]="
+												getTypeValue.ONLINE_GG_MEET
+											">
+											<mat-icon>smartphone</mat-icon>
+											Online (Google Meet)
 										</mat-option>
 									</mat-select>
 								</mat-form-field>
@@ -92,10 +145,21 @@
 						</td>
 					</ng-container>
 					<ng-container matColumnDef="CandidateName">
-						<th mat-header-cell *matHeaderCellDef>Candidate name</th>
+						<th mat-header-cell *matHeaderCellDef>
+							Candidate name
+						</th>
 						<td mat-cell *matCellDef="let interview">
-							<a (click)="handleProfileDetailClick(interview.application!.cv!.candidate!.candidateId!)">
-								{{ interview.application!.cv!.candidate!.user!.fullName }}
+							<a
+								(click)="
+									handleProfileDetailClick(
+										interview.application!.cv!.candidate!
+											.candidateId!
+									)
+								">
+								{{
+									interview.application!.cv!.candidate!.user!
+										.fullName
+								}}
 							</a>
 						</td>
 					</ng-container>
@@ -123,12 +187,20 @@
 							<span
 								class="p-2 rounded text-white"
 								[ngClass]="{
-									'bg-danger ': interview.interviewType !== getTypeValue.FACE2FACE,
-									'bg-primary': interview.interviewType === getTypeValue.FACE2FACE,
-									'bg-warning': interview.interviewType === getTypeValue.ONLINE_GG_MEET
+									'bg-danger ':
+										interview.interviewType !==
+										getTypeValue.FACE2FACE,
+									'bg-primary':
+										interview.interviewType ===
+										getTypeValue.FACE2FACE,
+									'bg-warning':
+										interview.interviewType ===
+										getTypeValue.ONLINE_GG_MEET
 								}">
 								{{
-									interview.notes === getTypeValue.FACE2FACE ? 'Face to Face' : 'Online (Google Meet)'
+									interview.notes === getTypeValue.FACE2FACE
+										? 'Face to Face'
+										: 'Online (Google Meet)'
 								}}
 							</span>
 						</td>
@@ -139,17 +211,27 @@
 							<span
 								class="p-2 rounded text-white"
 								[ngClass]="{
-									'bg-danger': interview.status !== getStatusValue.PASSED,
-									'bg-warning': interview.status === getStatusValue.PASSED,
-									'bg-primary': interview.status === getStatusValue.PASSED_N_MAILED,
-									'text-dark bg-white': interview.status === getStatusValue.FAILED
+									'bg-danger':
+										interview.status !==
+										getStatusValue.PASSED,
+									'bg-warning':
+										interview.status ===
+										getStatusValue.PASSED,
+									'bg-primary':
+										interview.status ===
+										getStatusValue.PASSED_N_MAILED,
+									'text-dark bg-white':
+										interview.status ===
+										getStatusValue.FAILED
 								}">
 								{{
 									interview.status === getStatusValue.PASSED
 										? 'Passed'
-										: interview.status === getStatusValue.PASSED_N_MAILED
+										: interview.status ===
+										  getStatusValue.PASSED_N_MAILED
 										? 'Passed and mailed'
-										: interview.status === getStatusValue.FAILED
+										: interview.status ===
+										  getStatusValue.FAILED
 										? 'Failed'
 										: 'Pending'
 								}}
@@ -169,17 +251,26 @@
 					<ng-container matColumnDef="actions">
 						<th mat-header-cell *matHeaderCellDef>Actions</th>
 						<td mat-cell *matCellDef="let interview">
-							<button mat-icon-button color="primary" (click)="handleDetailClick(interview.interviewId)">
+							<button
+								mat-icon-button
+								color="primary"
+								(click)="
+									handleDetailClick(interview.interviewId)
+								">
 								<mat-icon>info</mat-icon>
 							</button>
 						</td>
 					</ng-container>
 
 					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-					<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+					<tr
+						mat-row
+						*matRowDef="let row; columns: displayedColumns"></tr>
 				</table>
 
-				<mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+				<mat-paginator
+					[pageSizeOptions]="[5, 10, 25, 50, 100]"
+					showFirstLastButtons></mat-paginator>
 			</ng-container>
 		</mat-card-content>
 	</mat-card>

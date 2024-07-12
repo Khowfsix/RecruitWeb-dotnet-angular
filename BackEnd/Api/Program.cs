@@ -123,6 +123,7 @@ try
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
+
     builder.Services
         .AddIdentity<WebUser, IdentityRole>()
         .AddEntityFrameworkStores<RecruitmentWebContext>()

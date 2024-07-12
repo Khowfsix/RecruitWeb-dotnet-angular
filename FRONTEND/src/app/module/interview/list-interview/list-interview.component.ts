@@ -8,7 +8,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import {
+	MatPaginator,
+	MatPaginatorIntl,
+	MatPaginatorModule,
+} from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterModule } from '@angular/router';
@@ -21,9 +25,15 @@ import { InterviewFilterModel } from '../../../data/interview/interview.model';
 import { InterviewService } from '../../../data/interview/interview.service';
 import { Interviewer } from '../../../data/interviewer/interviewer.model';
 import { InterviewerService } from '../../../data/interviewer/interviewer.service';
-import { Position, PositionFilterModel } from '../../../data/position/position.model';
+import {
+	Position,
+	PositionFilterModel,
+} from '../../../data/position/position.model';
 import { PositionService } from '../../../data/position/position.service';
-import { Interview_CompanyStatus, Interview_Type } from '../../../shared/enums/EInterview.model';
+import {
+	Interview_CompanyStatus,
+	Interview_Type,
+} from '../../../shared/enums/EInterview.model';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
@@ -42,12 +52,22 @@ import { MatSort } from '@angular/material/sort';
 		MatPaginatorModule,
 		MatDatepickerModule,
 		MatSelectModule,
-		MatIconModule
+		MatIconModule,
 	],
 	templateUrl: './list-interview.component.html',
 })
 export class ListInterviewComponent {
-	displayedColumns: string[] = ['InterviewId', 'CandidateName', 'MeetingDate', 'StartTime', 'Location', 'Type', 'Status', 'Priority', 'actions'];
+	displayedColumns: string[] = [
+		'InterviewId',
+		'CandidateName',
+		'MeetingDate',
+		'StartTime',
+		'Location',
+		'Type',
+		'Status',
+		'Priority',
+		'actions',
+	];
 	dataSource?: MatTableDataSource<any>;
 
 	positions: Position[] = [];
@@ -72,7 +92,10 @@ export class ListInterviewComponent {
 	interviewerId?: string;
 	interviewer?: Interviewer;
 
-	@ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator(this._intl, this._changeDetectorRef);
+	@ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator(
+		this._intl,
+		this._changeDetectorRef,
+	);
 	@ViewChild(MatSort) sort: MatSort = new MatSort();
 
 	constructor(
@@ -94,34 +117,41 @@ export class ListInterviewComponent {
 	}
 
 	ngOnInit() {
-		this.role = this.permissionService.getRoleOfUser(this._cookieService.get('jwt'))[0];
+		this.role = this.permissionService.getRoleOfUser(
+			this._cookieService.get('jwt'),
+		)[0];
 		if (this.role === 'Interviewer') {
 			this.interviewerId = this.authService.getInterviewerId_OfUser();
-			this.interviewerService.getInterviewerById(this.interviewerId!).subscribe(
-				interviewer => this.interviewer = interviewer
-			)
+			this.interviewerService
+				.getInterviewerById(this.interviewerId!)
+				.subscribe((interviewer) => (this.interviewer = interviewer));
 		}
 		this.loadInitialData();
 	}
 
 	loadInitialData() {
-		this.companyService.getAll().subscribe(
-			resp => {
-				this.companies = resp;
-				this.companyChoose = this.companies[0];
-				this.loadPositions();
-
-				this.interviewService.getInterviewsByCompanyId(this.companyChoose!.companyId!).subscribe(
-					interviews => {
-						if (interviews) {
-							this.dataSource = new MatTableDataSource(interviews);
-							this.dataSource.paginator = this.paginator!;
-							this.dataSource.sort = this.sort!;
-						}
-					}
+		this.companyService.getAll().subscribe((resp) => {
+			this.companies = resp;
+			if (this.role === 'Interviewer') {
+				this.companyChoose = this.companies.find(
+					(company) =>
+						company.companyId === this.interviewer?.companyId,
 				);
+			} else {
+				this.companyChoose = this.companies[0];
 			}
-		)
+			this.loadPositions();
+
+			this.interviewService
+				.getInterviewsByCompanyId(this.companyChoose!.companyId!)
+				.subscribe((interviews) => {
+					if (interviews) {
+						this.dataSource = new MatTableDataSource(interviews);
+						this.dataSource.paginator = this.paginator!;
+						this.dataSource.sort = this.sort!;
+					}
+				});
+		});
 	}
 
 	handleChooseCompany(value: any) {
@@ -158,14 +188,21 @@ export class ListInterviewComponent {
 			filter.companyStatus = this.statusChoose;
 		}
 
-		this.interviewService.getInterviewsByCompanyId(this.companyChoose!.companyId!, filter).subscribe(
-			interviews => {
+		this.interviewService
+			.getInterviewsByCompanyId(this.companyChoose!.companyId!, filter)
+			.subscribe((interviews) => {
 				if (interviews) {
 					if (this.role === 'Interviewer') {
-						interviews = interviews.filter(interview => interview.interviewerId === this.interviewerId);
+						interviews = interviews.filter(
+							(interview) =>
+								interview.interviewerId === this.interviewerId,
+						);
 					}
 					if (this.typeChoose) {
-						interviews = interviews.filter(interview => interview.interviewType === this.typeChoose);
+						interviews = interviews.filter(
+							(interview) =>
+								interview.interviewType === this.typeChoose,
+						);
 					}
 
 					this.dataSource!.data = interviews;
@@ -177,21 +214,17 @@ export class ListInterviewComponent {
 					return;
 				}
 				this.dataSource!.data = interviews;
-			}
-		);
-
+			});
 	}
 
 	loadPositions() {
 		const filterPosition = new PositionFilterModel();
 		filterPosition.stringOfCompanyIds = this.companyChoose?.companyId;
-		this.positionService.getAllPositions(
-			filterPosition
-		).subscribe(
-			resp => {
+		this.positionService
+			.getAllPositions(filterPosition)
+			.subscribe((resp) => {
 				this.positions = resp.items;
-			}
-		);
+			});
 	}
 
 	handleDetailClick(interviewId: string) {
