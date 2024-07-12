@@ -53,7 +53,14 @@ export const routes: Routes = [
 		role.CANDIDATE
 	]),
 
-	{ path: 'events/detail/:eventId', component: EventDetailComponent },
+	createRouteWithRoles('events/detail/:eventId', EventDetailComponent, [
+		role.CANDIDATE,
+		role.INTERVIEWER,
+		role.ADMIN,
+		role.RECRUITER
+	]),
+
+	// { path: 'events/detail/:eventId', component: EventDetailComponent },
 
 	{ path: 'positions/detail/:positionId', component: PositionDetailComponent },
 
