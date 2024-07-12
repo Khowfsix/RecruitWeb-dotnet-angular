@@ -59,7 +59,7 @@ export class CompanyComponent implements OnInit {
 
 		if (this.company?.logo !== formValue.logoName) {
 			const file: File = this.companyFormGroup.get('logoFile')?.value;
-			if (file) {
+			if (file && this.company?.logo) {
 				const formData = new FormData();
 				formData.append('newImage', file, file.name);
 				formData.append('oldImageUrl', this.company?.logo ?? '');
@@ -77,9 +77,39 @@ export class CompanyComponent implements OnInit {
 						return;
 					},
 				});
+			} else if (file && this.company?.logo === null) {
+				const formData = new FormData();
+				formData.append('formFile', file, file.name);
+				this._fileService.uploadFile(formData).subscribe({
+					next: (response: any) => {
+						formValue.logo = response.url;
+						this.callApiUpdate(formValue);
+						return;
+					},
+					error: () => {
+						this._toastr.error('File upload failed.', 'Error!', {
+							toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+						});
+						return;
+					},
+				});
+			} else {
+				this._fileService.deleteFile(this.company?.logo).subscribe({
+					next: () => {
+						this.callApiUpdate(formValue);
+						return;
+					},
+					error: () => {
+						this._toastr.error('File upload failed.', 'Error!', {
+							toastClass: ' my-custom-toast ngx-toastr', timeOut: 3000,
+						});
+						return;
+					},
+				});
 			}
 		}
 		else {
+			formValue.logo = this.company?.logo
 			this.callApiUpdate(formValue);
 		}
 	}
@@ -99,6 +129,7 @@ export class CompanyComponent implements OnInit {
 					this._toastr.success('Company Updated...', 'Successfully!', {
 						toastClass: ' my-custom-toast ngx-toastr', timeOut: 2000,
 					});
+					window.location.reload();
 				}
 			},
 			error: () => {
