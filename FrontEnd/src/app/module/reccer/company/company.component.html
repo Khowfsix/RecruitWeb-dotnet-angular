@@ -1,8 +1,90 @@
-<div class="container py-3">
-	<p class="h1 text-center">List Companies</p>
-	@for (company of companies; track $index) {
-	<p>
-		{{ company.companyName }}
-	</p>
+<div class="container">
+	@if (this.company) {
+	<div class="row w-100 g-0">
+		<div class="col-5 d-flex flex-column justify-content-center align-items-center">
+			<img height="400px" width="400px" src="../../../assets/company.jpg" />
+		</div>
+		<div class="col-7 h-100 d-flex flex-column justify-content-center px-4">
+			<div class="w-100 d-flex justify-content-center">
+				<img class="m-4" [src]="this.company.logo" height="200px" width="200px" alt="Company Logo">
+			</div>
+			<form class="d-flex flex-column" [formGroup]="companyFormGroup">
+				<mat-form-field>
+					<mat-label>Company Name</mat-label>
+					<input matInput type="text" value="" formControlName="companyName">
+					@if(companyFormGroup.get('companyName')?.invalid){
+					@if(companyFormGroup.get('companyName')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Address</mat-label>
+					<input matInput type="text" value="" formControlName="address">
+					@if(companyFormGroup.get('address')?.invalid){
+					@if(companyFormGroup.get('address')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Email</mat-label>
+					<input type="email" matInput value="" formControlName="email">
+					@if(companyFormGroup.get('email')?.invalid){
+					@if(companyFormGroup.get('email')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Phone</mat-label>
+					<input type="number" matInput value="" formControlName="phone">
+					@if(companyFormGroup.get('phone')?.invalid){
+					@if(companyFormGroup.get('phone')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Website</mat-label>
+					<input matInput type="text" value="" formControlName="website">
+					@if(companyFormGroup.get('website')?.invalid){
+					@if(companyFormGroup.get('website')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Logo</mat-label>
+					<div class="file-upload d-flex">
+						<input matInput readonly="true" formControlName="logoName" placeholder="logo">
+						<button mat-mini-fab color="primary" class="upload-btn ms-auto" (click)="fileUpload.click()">
+							<mat-icon>attach_file</mat-icon>
+						</button>
+
+					</div>
+					@if(companyFormGroup.get('logoName')?.invalid){
+					@if(companyFormGroup.get('logoName')?.hasError('required')){
+					<div style="color: red;">Required.</div>
+					}
+					}
+				</mat-form-field>
+
+				<div class="w-100 d-flex flex-column align-items-center">
+					<button [disabled]="!this.companyFormGroup.valid" mat-raised-button color="primary" class="w-50"
+						mat-raised-button (click)="updateCompany()">
+						<span style="font-size: 16px;">Submit</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
 	}
+	<input type="file" (change)="onFileSelected($event)" hidden accept=".jpg, .jpeg, .png" #fileUpload>
+
 </div>

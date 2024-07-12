@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { API } from '../api.service';
 import { Observable } from 'rxjs';
-import { Company } from './company.model';
+import { Company, CompanyUpdateModel } from './company.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,6 +12,15 @@ export class CompanyService {
 
 	getAll(): Observable<Company[]> {
 		return this.api.GET('/api/Company');
+	}
+
+	getById(companyId?: string): Observable<Company> {
+		return this.api.GET('/api/Company/' + companyId);
+	}
+
+	update(companyId?: string, addModel?: CompanyUpdateModel) {
+		const url = `/api/Company/${companyId}`
+		return this.api.PUT(url, addModel);
 	}
 
 	UpdateStatus(companyId?: string, isActived?: boolean, isDeleted?: boolean) {

@@ -35,6 +35,22 @@ namespace Api.Controllers
             return Ok(companyList);
         }
 
+        [HttpGet("{requestId:guid}")]
+        [Authorize(Roles = "Admin,Recruiter")]
+        public async Task<IActionResult> GetCompanyById(Guid requestId)
+        {
+            try
+            {
+                var isAdmin = HttpContext.User.IsInRole("Admin");
+                var company = await _companyService.GetCompanyById(isAdmin, requestId);
+                return Ok(_mapper.Map<CompanyViewModel>(company));
+            }
+            catch (Exception)
+            {
+                return Ok("Not found");
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [Authorize]
@@ -57,16 +73,11 @@ namespace Api.Controllers
         }
 
         [HttpPut("{requestId:guid}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateCompany(CompanyUpdateModel request, Guid requestId, bool? isActived, bool? isDeleted)
+        [Authorize(Roles = "Admin,Recruiter")]
+        public async Task<IActionResult> UpdateCompany(CompanyUpdateModel request, Guid requestId)
         {
             try
             {
-                if (isActived.HasValue && isDeleted.HasValue)
-                {
-                    var updatedCompany = await _companyService.UpdateStatus(isActived.Value, isDeleted.Value, requestId);
-                    return Ok(updatedCompany);
-                }
                 var modelData = _mapper.Map<CompanyModel>(request);
                 var companyList = await _companyService.UpdateCompany(modelData, requestId);
                 return Ok(companyList);

@@ -60,7 +60,7 @@ export class HeaderComponent {
 	}
 
 	handleRouteToCompanies() {
-		this._router.navigate(['/companies']);
+		this._router.navigate(['/company']);
 	}
 
 	handleRouteToJobs() {

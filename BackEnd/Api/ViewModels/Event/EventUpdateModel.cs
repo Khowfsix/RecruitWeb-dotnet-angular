@@ -6,6 +6,7 @@
         public string EventName { get; set; } 
 
         public Guid RecruiterId { get; set; }
+        public int? ApplyPriority { get; set; }
 
         public string? Description { get; set; }
 

@@ -9,8 +9,8 @@
 
 			<div class="d-none d-md-inline">
 				<button mat-button (click)="handleRouteToJobs()">All Jobs</button>
-				<button mat-button (click)="handleRouteToCompanies()">Companies</button>
-				<button mat-button>Events</button>
+				<!-- <button mat-button (click)="handleRouteToCompanies()">Companies</button>
+				<button mat-button>Events</button> -->
 			</div>
 		</div>
 
@@ -66,6 +66,11 @@
 		</button>
 		}
 
+
+		<button mat-menu-item (click)="handleRouteToCompanies()">
+			<i class="bi bi-building-fill fs-5"></i>
+			<span class="mx-5 align-right">Company</span>
+		</button>
 
 		<button mat-menu-item (click)="handleRouteToRecruiterRegisterConsole()">
 			<i class="bi bi-person-fill-up fs-5"></i>

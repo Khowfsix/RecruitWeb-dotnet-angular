@@ -82,7 +82,7 @@ export const routes: Routes = [
 	]),
 
 	// // url for recruiter
-	createRouteWithRoles('companies', CompanyComponent, [
+	createRouteWithRoles('company', CompanyComponent, [
 		role.RECRUITER,
 		role.ADMIN,
 	]),

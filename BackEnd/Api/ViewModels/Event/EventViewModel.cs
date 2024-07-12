@@ -9,6 +9,7 @@ namespace Api.ViewModels.Event
         public string EventName { get; set; } 
 
         public Guid RecruiterId { get; set; }
+        public int? ApplyPriority { get; set; }
 
         public RecruiterViewModel Recruiter { get; set; }   
 

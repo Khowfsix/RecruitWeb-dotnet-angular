@@ -4,6 +4,7 @@ namespace Service.Interfaces
 {
     public interface ICompanyService
     {
+        Task<CompanyModel> GetCompanyById(bool isAdmin, Guid companyId);
         Task<IEnumerable<CompanyModel>> GetAllCompany(bool isAdmin, string? request);
 
         Task<CompanyModel> SaveCompany(CompanyModel request);

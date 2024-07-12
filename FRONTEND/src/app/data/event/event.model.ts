@@ -8,6 +8,7 @@ export class Event {
 	recruiter?: Recruiter;
 	description?: string;
 	imageURL?: string;
+	applyPriority?: number;
 	place?: string;
 	startDateTime?: Date;
 	endDateTime?: Date;
