@@ -6,30 +6,23 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
 	selector: 'app-admin',
 	standalone: true,
-	imports: [
-		RouterOutlet,
-		NgbAccordionModule,
-		MatButtonModule,
-		CommonModule,
-	],
+	imports: [RouterOutlet, NgbAccordionModule, MatButtonModule, CommonModule],
 	templateUrl: './admin.component.html',
 	styleUrl: './admin.component.css',
 })
 export class AdminComponent {
-	constructor(
-		private router: Router,
-	) { }
+	constructor(private router: Router) {}
 
 	listConsole = [
 		{
 			title: 'Dashboard',
 			children: [
-				'Overview',
+				// 'Overview',
 				'Reports',
-				'Analytics',
+				// 'Analytics',
 				'Exports',
 				'Approve-Recruiters',
-			]
+			],
 		},
 		{
 			title: 'Table console',
@@ -69,11 +62,11 @@ export class AdminComponent {
 				'Skills',
 				'Successful-Candidates',
 				'Work-Experiences',
-			]
-		}
+			],
+		},
 	];
 
 	handleClickRoute(name: string) {
-		this.router.navigate([`admin/${name.toLowerCase().replace(" ", "-")}`]);
+		this.router.navigate([`admin/${name.toLowerCase().replace(' ', '-')}`]);
 	}
 }

@@ -4,25 +4,37 @@
 			<button mat-button (click)="handleRouteToHomepage()">
 				<!-- <i class="fa-solid fa-house"></i> -->
 				<mat-icon class="mat-18">home</mat-icon>
-				<span class="font-monospace fs-5" mat-button>Recruitment Website</span>
+				<span class="font-monospace fs-5" mat-button
+					>Recruitment Website</span
+				>
 			</button>
 
 			<div class="d-none d-md-inline">
 				<!-- <button mat-button (click)="handleRouteToJobs()">All Jobs</button> -->
-				<button mat-button [matMenuTriggerFor]="menuJobs" (mouseenter)="openMenu()">
+				<button
+					mat-button
+					[matMenuTriggerFor]="menuJobs"
+					(mouseenter)="openMenu()">
 					Jobs
 					<mat-icon class="mat-18">cases</mat-icon>
 				</button>
-				<mat-menu #menuJobs="matMenu" xPosition="before" yPosition="below">
+				<mat-menu
+					#menuJobs="matMenu"
+					xPosition="before"
+					yPosition="below">
 					<button mat-menu-item (click)="handleRouteToJobs()">
 						<mat-icon class="mat-18">search</mat-icon>
 						All Jobs
 					</button>
-					<button mat-menu-item [matMenuTriggerFor]="menuJobsWithCategory">
+					<button
+						mat-menu-item
+						[matMenuTriggerFor]="menuJobsWithCategory">
 						<mat-icon class="mat-18">category</mat-icon>
 						Jobs with category
 					</button>
-					<button mat-menu-item (click)="handleRouteToJobs('applied jobs')">
+					<button
+						mat-menu-item
+						(click)="handleRouteToJobs('applied jobs')">
 						Jobs applied
 						<mat-icon class="mat-18">mail</mat-icon>
 					</button>
@@ -34,29 +46,50 @@
 					y-position="below"
 					[overlapTrigger]="false">
 					@for (category of listCategoryJobs; track $index) {
-					<button mat-menu-item (click)="handleRouteToJobsOfCategory(category.categoryPositionId!)">
+					<button
+						mat-menu-item
+						(click)="
+							handleRouteToJobsOfCategory(
+								category.categoryPositionId!
+							)
+						">
 						{{ category.categoryPositionName }}
 					</button>
 					}
 				</mat-menu>
 
-				<button mat-button (click)="handleRouteToCompanies()">
+				<!-- <button mat-button (click)="handleRouteToCompanies()">
 					Companies
 					<mat-icon class="mat-18">business</mat-icon>
 				</button>
-				<button mat-button>Events</button>
+				<button mat-button>Events</button> -->
 			</div>
 		</div>
 
 		<div class="d-none d-lg-inline col-lg-3 col-xl-4">
-			<div class="input-group">
-				<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+			<!-- <div class="input-group">
+				<input
+					type="search"
+					class="form-control rounded"
+					placeholder="Search"
+					aria-label="Search"
 					aria-describedby="search-addon" />
-				<button type="button" class="btn btn-outline-primary text-white">search</button>
-			</div>
+				<button
+					type="button"
+					class="btn btn-outline-primary text-white">
+					search
+				</button>
+			</div> -->
 		</div>
 
 		<div>
+			@if (user) {
+			<span class="px-3">{{ user?.fullName }}</span>
+
+			<span class="px-3"
+				><i>{{ role?.toString() }}</i></span
+			>
+			}
 			<button mat-button [mat-menu-trigger-for]="menu">
 				<!-- @if(deviceXs){ -->
 				<mat-icon class="mat-18">more_vert</mat-icon>
@@ -65,27 +98,46 @@
 		</div>
 	</mat-toolbar-row>
 
-	<mat-toolbar-row class="d-lg-none" fxLayout="row" fxLayoutAlign="space-between center">
+	<mat-toolbar-row
+		class="d-lg-none"
+		fxLayout="row"
+		fxLayoutAlign="space-between center">
 		<div class="d-inline d-md-none">
 			<button mat-button (click)="handleRouteToJobs()">All Jobs</button>
-			<button mat-button (click)="handleRouteToCompanies()">Companies</button>
-			<button mat-button>Events</button>
+			<!-- <button mat-button (click)="handleRouteToCompanies()">
+				Companies
+			</button>
+			<button mat-button>Events</button> -->
 		</div>
 		<div class="d-none d-sm-inline d-lg-none col-md-12">
-			<div class="input-group">
-				<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+			<!-- <div class="input-group">
+				<input
+					type="search"
+					class="form-control rounded"
+					placeholder="Search"
+					aria-label="Search"
 					aria-describedby="search-addon" />
-				<button type="button" class="btn btn-outline-primary text-white">search</button>
-			</div>
+				<button
+					type="button"
+					class="btn btn-outline-primary text-white">
+					search
+				</button>
+			</div> -->
 		</div>
 	</mat-toolbar-row>
 
 	<mat-toolbar-row class="d-sm-none">
-		<div class="input-group">
-			<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+		<!-- <div class="input-group">
+			<input
+				type="search"
+				class="form-control rounded"
+				placeholder="Search"
+				aria-label="Search"
 				aria-describedby="search-addon" />
-			<button type="button" class="btn btn-outline-primary text-white">search</button>
-		</div>
+			<button type="button" class="btn btn-outline-primary text-white">
+				search
+			</button>
+		</div> -->
 	</mat-toolbar-row>
 
 	<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
@@ -97,8 +149,6 @@
 			<i class="fa-solid fa-file"></i>
 			<span class="mx-5 align-right">CV manage</span>
 		</button>
-		}
-
 
 		<button mat-menu-item (click)="handleRouteToCompanies()">
 			<i class="bi bi-building-fill fs-5"></i>
@@ -115,16 +165,12 @@
 			<i class="fa-solid fa-toolbox"></i>
 			<span class="mx-5 align-right">Admin console</span>
 		</button>
-		}
-
-		@if (_user){
+		} @if (_user){
 		<button mat-menu-item>
 			<i class="fa-solid fa-gear"></i>
 			<span class="mx-5 align-right">Settings</span>
 		</button>
-		}
-
-		@if (_user != null) {
+		} @if (_user != null) {
 		<button mat-menu-item (click)="handleClick_Logout()">
 			<i class="fa-solid fa-right-from-bracket"></i>
 			<span class="mx-5 align-right">Logout</span>

@@ -14,6 +14,7 @@ import { LogoutDialogComponent } from '../../module/auth/logout-dialog/logout-di
 import { PermissionService } from '../../core/services/permission.service';
 import { CategoryPosition } from '../../data/categoryPosition/category-position.model';
 import { CategoryPositionService } from '../../data/categoryPosition/category-position.service';
+import { WebUser } from '../../data/authentication/web-user.model';
 
 @Component({
 	selector: 'app-header',
@@ -23,7 +24,7 @@ import { CategoryPositionService } from '../../data/categoryPosition/category-po
 		MatToolbarModule,
 		MatButtonModule,
 		MatIconModule,
-		FlexLayoutModule
+		FlexLayoutModule,
 	],
 	templateUrl: './header.component.html',
 	styleUrl: './header.component.css',
@@ -33,10 +34,11 @@ export class HeaderComponent {
 	_isAdmin: boolean = false;
 	isMenuOpen = false;
 	listCategoryJobs: CategoryPosition[] = [];
+	user?: WebUser;
+	role?: string[];
 
 	@Input() deviceXs: boolean | null = null;
 	@ViewChild(MatMenuTrigger) menuTrigger?: MatMenuTrigger;
-
 
 	constructor(
 		public _authService: AuthService,
@@ -45,16 +47,27 @@ export class HeaderComponent {
 		private _permService: PermissionService,
 		private _router: Router,
 		private _cookieService: CookieService,
-		public _matdialog: MatDialog) {
-
+		public _matdialog: MatDialog,
+	) {
 		this.subscribeToLoginStatus();
-		this._categoryPositionService.getAllCategoryPositions().subscribe(
-			(data) => {
-				this.listCategoryJobs = data;
-			}
+		this._authService.getCurrentUser().subscribe((data) => {
+			this.user = data!;
+		});
+		const roles = this._permService.getRoleOfUser(
+			_authService.getAuthenticationToken()!,
 		);
-	}
+		if (typeof roles !== 'string') {
+			this.role = roles;
+		} else {
+			this.role = [roles];
+		}
 
+		this._categoryPositionService
+			.getAllCategoryPositions()
+			.subscribe((data) => {
+				this.listCategoryJobs = data;
+			});
+	}
 
 	handleClick_Logout(): void {
 		const dialogRef = this._matdialog.open(LogoutDialogComponent);
@@ -85,14 +98,20 @@ export class HeaderComponent {
 	}
 
 	handleRouteToJobsOfCategory(category: string) {
-		this._router.navigate(['/positions'], { queryParams: { category: category } });
+		this._router.navigate(['/positions'], {
+			queryParams: { category: category },
+		});
 	}
 
 	subscribeToLoginStatus() {
 		this._authService.isLoggedIn.subscribe((loggedIn) => {
 			if (loggedIn) {
 				this.updateHeaderForLoggedInUser();
-				if (this._permService.getRoleOfUser(this._user!).includes('Admin')) {
+				if (
+					this._permService
+						.getRoleOfUser(this._user!)
+						.includes('Admin')
+				) {
 					this.updateHeaderForAdmin();
 				}
 				// this.updateHeaderForAdmin();
@@ -122,15 +141,15 @@ export class HeaderComponent {
 	}
 
 	handleRouteToCVManage() {
-		this._router.navigate(['/cv-manage'])
+		this._router.navigate(['/cv-manage']);
 	}
 
 	handleRouteToProfile() {
-		this._router.navigate(['/profile'])
+		this._router.navigate(['/profile']);
 	}
 
 	handleRouteToAdminConsole() {
-		this._router.navigate(['/admin'])
+		this._router.navigate(['/admin']);
 	}
 
 	openMenu() {
@@ -147,7 +166,9 @@ export class HeaderComponent {
 				this.menuTrigger!.closeMenu();
 			}, 300);
 		}
+	}
+
 	handleRouteToRecruiterRegisterConsole() {
-		this._router.navigate(['/recruiter/register'])
+		this._router.navigate(['/recruiter/register']);
 	}
 }

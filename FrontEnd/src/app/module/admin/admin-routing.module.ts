@@ -48,86 +48,90 @@ const routes: Routes = [
 		component: AdminComponent,
 		children: [
 			//Dashboards
+			// {
+			// 	path: '',
+			// 	component: DashboardComponent,
+			// 	data: { breadcrumb: 'Overview' }
+
+			// },
 			{
 				path: '',
-				component: DashboardComponent,
-				data: { breadcrumb: 'Overview' }
-
+				component: ReportComponent,
+				data: { breadcrumb: 'Report' },
 			},
 			{
 				path: 'overview',
 				component: DashboardComponent,
-				data: { breadcrumb: 'Overview' }
-
+				data: { breadcrumb: 'Overview' },
 			},
 			{
 				path: 'reports',
 				component: ReportComponent,
-				data: { breadcrumb: 'Reports' }
+				data: { breadcrumb: 'Reports' },
 			},
 			{
 				path: 'analytics',
 				component: AnalysisComponent,
-				data: { breadcrumb: 'Analytics' }
+				data: { breadcrumb: 'Analytics' },
 			},
 			{
 				path: 'user-manage',
 				component: UserManageComponent,
-				data: { breadcrumb: 'User manage' }
+				data: { breadcrumb: 'User manage' },
 			},
 			{
 				path: 'exports',
-				component: ExportComponent
+				component: ExportComponent,
 			},
 			{
 				path: 'approve-recruiters',
-				component: ApproveRecruitersComponent
+				component: ApproveRecruitersComponent,
 			},
 
 			//Table console
 			{
 				path: 'applications',
-				component: ApplicationComponent
+				component: ApplicationComponent,
 			},
 			{
 				path: 'roles',
-				component: RoleComponent
+				component: RoleComponent,
 			},
 			{
 				path: 'user-roles',
-				component: UserRoleComponent
+				component: UserRoleComponent,
 			},
 			{
 				path: 'users',
-				component: UserComponent
+				component: UserComponent,
 			},
 			{
 				path: 'awards',
-				component: AwardComponent
+				component: AwardComponent,
 			},
 			{
 				path: 'blacklists',
-				component: BlackListComponent
+				component: BlackListComponent,
 			},
 			{
 				path: 'candidates',
-				component: CandidateComponent
+				component: CandidateComponent,
 			},
 			{
 				path: 'candidate-has-skills',
-				component: CandidateHasSkillComponent
+				component: CandidateHasSkillComponent,
 			},
 			{
 				path: 'candidate-join-events',
-				component: CandidateJoinEventComponent
+				component: CandidateJoinEventComponent,
 			},
 			{
 				path: 'category-positions',
-				component: CategoryPositionComponent
+				component: CategoryPositionComponent,
 			},
 			{
 				path: 'category-questions',
-				component: CategoryQuestionComponent
+				component: CategoryQuestionComponent,
 			},
 			{
 				path: 'certificates',
@@ -135,7 +139,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'companies',
-				component: CompanyComponent
+				component: CompanyComponent,
 			},
 			{
 				path: 'cvs',
@@ -155,81 +159,81 @@ const routes: Routes = [
 			},
 			{
 				path: 'interviews',
-				component: InterviewComponent
+				component: InterviewComponent,
 			},
 			{
 				path: 'interviewers',
-				component: InterviewerComponent
+				component: InterviewerComponent,
 			},
 			{
 				path: 'languages',
 				component: LanguageComponent,
-				data: { breadcrumb: 'Languages manage' }
+				data: { breadcrumb: 'Languages manage' },
 			},
 			{
 				path: 'levels',
-				component: LevelComponent
+				component: LevelComponent,
 			},
 			{
 				path: 'personal-projects',
-				component: PersonalProjectComponent
+				component: PersonalProjectComponent,
 			},
 			{
 				path: 'positions',
-				component: PositionComponent
+				component: PositionComponent,
 			},
 			{
 				path: 'questions',
-				component: QuestionComponent
+				component: QuestionComponent,
 			},
 			{
 				path: 'question-languages',
-				component: QuestionLanguageComponent
+				component: QuestionLanguageComponent,
 			},
 			{
 				path: 'question-skills',
-				component: QuestionSkillComponent
+				component: QuestionSkillComponent,
 			},
 			{
 				path: 'recruiters',
-				component: RecruiterComponent
+				component: RecruiterComponent,
 			},
 			{
 				path: 'requirements',
-				component: RequirementComponent
+				component: RequirementComponent,
 			},
 			{
 				path: 'rounds',
-				component: RoundComponent
+				component: RoundComponent,
 			},
 			{
 				path: 'security-answers',
-				component: SecurityAnswerComponent
+				component: SecurityAnswerComponent,
 			},
 			{
 				path: 'security-questions',
-				component: SecurityQuestionComponent
+				component: SecurityQuestionComponent,
 			},
 			{
 				path: 'skills',
-				component: SkillComponent
+				component: SkillComponent,
 			},
 			{
 				path: 'successful-candidates',
-				component: SuccessfulCandidateComponent
+				component: SuccessfulCandidateComponent,
 			},
 			{
 				path: 'work-experiences',
-				component: WorkExperienceComponent
+				component: WorkExperienceComponent,
 			},
 			// otherwise
 			{ path: '**', redirectTo: '' },
-		]
-	}
+		],
+	},
 ];
 
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

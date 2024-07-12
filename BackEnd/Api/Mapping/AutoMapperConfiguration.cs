@@ -1,6 +1,10 @@
 ﻿using Api.ViewModels;
-using Api.ViewModels.Application;
 using Api.ViewModels.AdminAward;
+using Api.ViewModels.AdminEducation;
+using Api.ViewModels.AdminPersonalProject;
+using Api.ViewModels.AdminQuestionLanguage;
+using Api.ViewModels.AdminWorkExperience;
+using Api.ViewModels.Application;
 using Api.ViewModels.BlackList;
 using Api.ViewModels.Candidate;
 using Api.ViewModels.CandidateHasSkill;
@@ -43,10 +47,6 @@ using Data.CustomModel.Position;
 using Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Service.Models;
-using Api.ViewModels.AdminEducation;
-using Api.ViewModels.AdminPersonalProject;
-using Api.ViewModels.AdminQuestionLanguage;
-using Api.ViewModels.AdminWorkExperience;
 
 namespace Data.Mapping
 {
@@ -81,6 +81,7 @@ namespace Data.Mapping
 
             #region User
             CreateMap<AdminUserViewModel, UserModel>().ReverseMap();
+            CreateMap<WebUser, UserModel>().ReverseMap();
             #endregion User
 
             #region UserRole
