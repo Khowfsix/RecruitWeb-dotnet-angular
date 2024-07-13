@@ -3,10 +3,10 @@
 	<div class="card shadow-sm">
 		<div class="card-body">
 			<div class="h4">
-				{{ candidate?.user?.fullName }}
+				{{ user?.fullName }}
 			</div>
-			<h4>{{ candidate?.user?.title }}</h4>
-			<p><b>UserId:</b> {{ candidate?.user?.id }}</p>
+			<h4>{{ user?.title }}</h4>
+			<p><b>UserId:</b> {{ user?.id }}</p>
 			<div class="container">
 				<div class="row">
 					<div class="col">
@@ -18,8 +18,8 @@
 							<a
 								class="text-decoration-none text-primary"
 								target="_blank"
-								href="mailto:{{ candidate?.user?.email }}"
-								>{{ candidate?.user?.email }}</a
+								href="mailto:{{ user?.email }}"
+								>{{ user?.email }}</a
 							></span
 						>
 					</div>
@@ -30,8 +30,8 @@
 							<a
 								target="_blank"
 								class="text-decoration-none text-primary"
-								href="tel:+{{ candidate?.user?.phoneNumber }}"
-								>{{ candidate?.user?.phoneNumber }}</a
+								href="tel:+{{ user?.phoneNumber }}"
+								>{{ user?.phoneNumber }}</a
 							></span
 						>
 					</div>
@@ -43,17 +43,13 @@
 							aria-hidden="true"></i>
 						<span
 							><b>Birthday</b>:
-							{{
-								candidate?.user?.dateOfBirth
-									| date : 'dd/MM/yyyy'
-							}}
+							{{ user?.dateOfBirth | date : 'dd/MM/yyyy' }}
 						</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-venus p-2" aria-hidden="true"></i>
 						<span
-							><b>Gender</b>:
-							{{ candidate?.user?.gender | uppercase }}</span
+							><b>Gender</b>: {{ user?.gender | uppercase }}</span
 						>
 					</div>
 				</div>
@@ -62,9 +58,7 @@
 						<i
 							class="fa fa-address-book p-2"
 							aria-hidden="true"></i>
-						<span
-							><b>Addres</b>: {{ candidate?.user?.address }}</span
-						>
+						<span><b>Addres</b>: {{ user?.address }}</span>
 					</div>
 					<div class="col">
 						<i class="fa fa-globe p-2" aria-hidden="true"></i>
@@ -73,8 +67,8 @@
 							<a
 								class="text-primary text-decoration-none"
 								target="_blank"
-								href="{{ candidate?.user?.personalLink }}">
-								{{ candidate?.user?.personalLink }}
+								href="{{ user?.personalLink }}">
+								{{ user?.personalLink }}
 							</a>
 						</span>
 					</div>

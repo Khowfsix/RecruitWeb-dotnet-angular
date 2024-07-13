@@ -547,8 +547,8 @@ namespace Api.Controllers
 
             var user = await _userManager.Users.Where(u => u.UserName == userName)
                 .Include(_ => _.Candidates)
-                .Include(_ => _.Interviewers)
-                .Include(_ => _.Recruiters)
+                .Include(_ => _.Interviewers).ThenInclude(i => i.Company)
+                .Include(_ => _.Recruiters).ThenInclude(i => i.Company)
                 .FirstOrDefaultAsync();
 
             if (user != null)

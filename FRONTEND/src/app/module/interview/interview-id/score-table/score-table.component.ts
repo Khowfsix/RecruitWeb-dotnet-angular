@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, Input } from '@angular/core';
-import { CalculationService } from '../../../../shared/service/calculate.service';
 import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import katex from 'katex';
+import { BehaviorSubject } from 'rxjs';
+import { CategoryQuestionService } from '../../../../data/categoryQuestion/category-question.service';
+import { CategoryQuestion } from '../../../../data/categoryQuestion/categoryQuestion.model';
+import { CalculationService } from '../../../../shared/service/calculate.service';
 import { newQues } from '../../interview-start/question-transfer/question-transfer.component';
 
 @Component({
@@ -15,102 +18,121 @@ import { newQues } from '../../interview-start/question-transfer/question-transf
 })
 export class ScoreTableComponent {
 	@Input() allResult?: any[];
-	@Input() softResult?: newQues[];
-	@Input() langResult?: newQues[];
-	@Input() expertResult?: newQues[];
+
+	@Input() softResult$ = new BehaviorSubject<any>([]);
+	softResult?: newQues[];
+
+	@Input() langResult$ = new BehaviorSubject<any>([]);
+	langResult?: newQues[];
+
+	@Input() expertResult$ = new BehaviorSubject<any>([]);
+	expertResult?: newQues[];
 
 	displayedColumns: string[] = ['category', 'score', 'formula'];
 	dataSource?: any[];
 
-	constructor(private calculationService: CalculationService) {}
+	categoryQuestion: CategoryQuestion[] = [];
+
+	constructor(
+		private calculationService: CalculationService,
+		private _categoryQuesService: CategoryQuestionService,
+	) {
+		_categoryQuesService.getAllCategoryQuestions().subscribe((data) => {
+			this.categoryQuestion = data;
+		});
+	}
+
+	// ngOnChanges(changes: SimpleChanges) {
+	// 	if (changes['softResult']) {
+	// 		console.log(...changes['softResult'].currentValue);
+	// 		this.updateTable();
+
+	// 		// this.columnsToDisplayWithExpand = [
+	// 		// 	...changes['displayedColumns'].currentValue,
+	// 		// 	'action',
+	// 		// ];
+	// 	}
+	// 	if (changes['langResult']) {
+	// 		console.log(this.langResult);
+	// 		// this.colum,nsToDisplayWithExpand = [
+	// 		// 	...changes['displayedColumns'].currentValue,
+	// 		// 	'action',
+	// 		// ];
+	// 	}
+	// 	if (changes['expertResults']) {
+	// 		console.log(this.expertResult);
+	// 		// this.columnsToDisplayWithExpand = [
+	// 		// 	...changes['displayedColumns'].currentValue,
+	// 		// 	'action',
+	// 		// ];
+	// 	}
+	// }
 
 	ngOnInit() {
-		// const rightSoft = this.allResult![0];
-		// const rightLang = this.allResult![1];
-		// const rightTech = this.allResult![2];
+		// console.log('soft', this.softResult);
+		// console.log('lang', this.langResult);
+		// console.log('expr', this.expertResult);
 
-		// const {
-		// 	softResult,
-		// 	softMath,
-		// 	langResult,
-		// 	langMath,
-		// 	techResult,
-		// 	techMath,
-		// 	finalResult,
-		// 	finalMath,
-		// } = this.calculationService.calculateScore(
-		// 	rightSoft,
-		// 	rightLang,
-		// 	rightTech,
-		// );
+		this.softResult$.subscribe((data) => {
+			this.softResult = data;
+			this.updateTable();
+		});
+		this.langResult$.subscribe((data) => {
+			this.langResult = data;
+			this.updateTable();
+		});
+		this.expertResult$.subscribe((data) => {
+			this.expertResult = data;
+			this.updateTable();
+		});
+	}
 
-		// console.log(this.softResult, this.langResult, this.expertResult);
+	updateTable() {
+		let totalScoreSoft = 0;
+		let totalScoreLang = 0;
+		let totalScoreTech = 0;
+		if (this.softResult) {
+			totalScoreSoft = this.softResult!.reduce(
+				(acc, item) => acc + item.score,
+				0,
+			);
+		}
+		if (this.langResult) {
+			totalScoreLang = this.langResult!.reduce(
+				(acc, item) => acc + item.score,
+				0,
+			);
+		}
+		if (this.expertResult) {
+			totalScoreTech = this.expertResult!.reduce(
+				(acc, item) => acc + item.score,
+				0,
+			);
+		}
 
-		// const sum =
-		// 	this.softResult!.length +
-		// 	this.langResult!.length +
-		// 	this.expertResult!.length;
-
-		// const totalScoreSoft = this.softResult!.reduce(
-		// 	(acc, item) => acc + item.score,
-		// 	0,
-		// );
-		// const totalScoreLang = this.langResult!.reduce(
-		// 	(acc, item) => acc + item.score,
-		// 	0,
-		// );
-		// const totalScoreTech = this.expertResult!.reduce(
-		// 	(acc, item) => acc + item.score,
-		// 	0,
-		// );
-
-		// this.dataSource = [
-		// 	{
-		// 		category: 'Soft Skill',
-		// 		score: totalScoreSoft,
-		// 		formula: (totalScoreSoft * 0.2) / sum,
-		// 	},
-		// 	{
-		// 		category: 'Language Skill',
-		// 		score: totalScoreLang,
-		// 		formula: (totalScoreLang * 0.3) / sum,
-		// 	},
-		// 	{
-		// 		category: 'Technology Skill',
-		// 		score: totalScoreTech,
-		// 		formula: (totalScoreTech * 0.5) / sum,
-		// 	},
-		// 	{
-		// 		category: 'Final Score',
-		// 		score: totalScoreSoft + totalScoreLang + totalScoreTech,
-		// 		formula:
-		// 			(totalScoreSoft * 0.2 +
-		// 				totalScoreLang * 0.3 +
-		// 				totalScoreTech * 0.5) /
-		// 			sum,
-		// 	},
-		// ];
 		this.dataSource = [
 			{
-				category: 'Soft Skill',
-				score: Math.round(27 * 100) / 100,
-				formula: Math.round(27 * 0.2 * 100) / 100,
+				category: this.categoryQuestion[1].categoryQuestionName!,
+				score: totalScoreSoft,
+				formula: totalScoreSoft * this.categoryQuestion[1].weight!,
 			},
 			{
-				category: 'Language Skill',
-				score: Math.round(18 * 100) / 100,
-				formula: Math.round(18 * 0.3 * 100) / 100,
+				category: this.categoryQuestion[0].categoryQuestionName!,
+				score: totalScoreLang,
+				formula: totalScoreLang * this.categoryQuestion[0].weight!,
 			},
 			{
-				category: 'Technology Skill',
-				score: Math.round(35 * 100) / 100,
-				formula: Math.round(35 * 0.5 * 100) / 100,
+				category: this.categoryQuestion[2].categoryQuestionName!,
+				score: totalScoreTech,
+				formula: totalScoreTech * this.categoryQuestion[2].weight!,
 			},
 			{
 				category: 'Final Score',
-				score: Math.round((27 + 18 + 35) * 100) / 100,
+				score: totalScoreSoft + totalScoreLang + totalScoreTech,
 				formula:
-					Math.round((27 * 0.2 + 18 * 0.3 + 35 * 0.5) * 100) / 100,
+					totalScoreSoft * 0.2 +
+					totalScoreLang * 0.3 +
+					totalScoreTech * 0.5,
 			},
 		];
 	}

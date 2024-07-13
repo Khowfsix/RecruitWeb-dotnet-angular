@@ -14,7 +14,11 @@
 				</mat-card-header>
 				<mat-card-content>
 					<mat-tab-group [(selectedIndex)]="currentCateTab">
-						<mat-tab label="Soft Skill" *ngIf="leftSoft">
+						<mat-tab
+							label="{{
+								this.categoryQuestion[1]!.categoryQuestionName!
+							}}"
+							*ngIf="leftSoft">
 							<app-question-transfer
 								(questionsChange)="onQuestionsChange($event)"
 								[leftTable]="leftSoft"
@@ -22,14 +26,22 @@
 								[cate]="0">
 							</app-question-transfer>
 						</mat-tab>
-						<mat-tab label="Language Skill" *ngIf="leftLang">
+						<mat-tab
+							label="{{
+								this.categoryQuestion[0]!.categoryQuestionName!
+							}}"
+							*ngIf="leftLang">
 							<app-question-transfer
 								(questionsChange)="onQuestionsChange($event)"
 								[leftTable]="leftLang"
 								[rightTable]="rightLang"
 								[cate]="1"></app-question-transfer>
 						</mat-tab>
-						<mat-tab label="Expertise" *ngIf="leftTech">
+						<mat-tab
+							label="{{
+								this.categoryQuestion[2]!.categoryQuestionName!
+							}}"
+							*ngIf="leftTech">
 							<app-question-transfer
 								(questionsChange)="onQuestionsChange($event)"
 								[leftTable]="leftTech"
@@ -62,9 +74,9 @@
 				<mat-card-content>
 					<app-score-table
 						[allResult]="allQuestion.right"
-						[softResult]="newSoftQues!"
-						[langResult]="newLangQues!"
-						[expertResult]="newExpertQues!"></app-score-table>
+						[softResult$]="newSoftQues$!"
+						[langResult$]="newLangQues$!"
+						[expertResult$]="newExpertQues$!"></app-score-table>
 				</mat-card-content>
 			</mat-card>
 		</div>

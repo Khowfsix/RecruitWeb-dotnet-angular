@@ -184,4 +184,7 @@ export class HeaderComponent {
 	handleClick_Positions() {
 		this._router.navigate(['/positions']);
 	}
+	handleClick_Interviewer_interview() {
+		this._router.navigate(['/list-interviews']);
+	}
 }

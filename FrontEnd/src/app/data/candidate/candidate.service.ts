@@ -7,18 +7,23 @@ import { PersonalDetail } from './personalDetail';
 import { WebUser } from '../authentication/web-user.model';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class CandidateService {
-
-	constructor(private api: API) { }
+	constructor(private api: API) {}
 
 	getById(candidateId: string): Observable<Candidate> {
 		return this.api.GET('/api/Candidate/' + candidateId);
 	}
 
-	updatePersonalDetail(userId: string, data: PersonalDetail): Observable<WebUser> {
-		return this.api.PUT('/api/Candidate/UpdateCandidateProfile/' + userId, data);
+	updatePersonalDetail(
+		userId: string,
+		data: PersonalDetail,
+	): Observable<WebUser> {
+		return this.api.PUT(
+			'/api/Candidate/UpdateCandidateProfile/' + userId,
+			data,
+		);
 	}
 
 	getAllCandidates(): Observable<Candidate[]> {

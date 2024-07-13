@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
@@ -34,7 +35,7 @@ import {
 	Interview_CompanyStatus,
 	Interview_Type,
 } from '../../../shared/enums/EInterview.model';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 @Component({
 	selector: 'app-list-interview',
@@ -53,6 +54,8 @@ import { MatSort } from '@angular/material/sort';
 		MatDatepickerModule,
 		MatSelectModule,
 		MatIconModule,
+
+		MatSortModule,
 	],
 	templateUrl: './list-interview.component.html',
 })
@@ -73,7 +76,7 @@ export class ListInterviewComponent {
 	positions: Position[] = [];
 	companies: Company[] = [];
 
-	companyChoose?: Company | null;
+	// companyChoose?: Company | null;
 	positionChoose?: Position | null;
 	statusChoose?: Interview_CompanyStatus;
 	typeChoose?: Interview_Type;
@@ -120,43 +123,46 @@ export class ListInterviewComponent {
 		this.role = this.permissionService.getRoleOfUser(
 			this._cookieService.get('jwt'),
 		)[0];
-		if (this.role === 'Interviewer') {
-			this.interviewerId = this.authService.getInterviewerId_OfUser();
-			this.interviewerService
-				.getInterviewerById(this.interviewerId!)
-				.subscribe((interviewer) => (this.interviewer = interviewer));
-		}
-		this.loadInitialData();
+		// if (this.role === 'Interviewer') {
+		this.interviewerId = this.authService.getInterviewerId_OfUser();
+		this.interviewerService
+			.getInterviewerById(this.interviewerId!)
+			.subscribe((interviewer) => {
+				this.interviewer = interviewer;
+
+				this.loadInitialData();
+			});
+		// }
+		// this.companyChoose = this.interviewer?.company;
+		// this.loadInitialData();
 	}
 
 	loadInitialData() {
-		this.companyService.getAll().subscribe((resp) => {
-			this.companies = resp;
-			if (this.role === 'Interviewer') {
-				this.companyChoose = this.companies.find(
-					(company) =>
-						company.companyId === this.interviewer?.companyId,
-				);
-			} else {
-				this.companyChoose = this.companies[0];
-			}
-			this.loadPositions();
+		// if (this.role === 'Interviewer') {
+		// 	this.companyChoose = this.companies.find(
+		// 		(company) =>
+		// 			company.companyId === this.interviewer?.companyId,
+		// 	);
+		// } else {
+		// 	this.companyChoose = this.companies[0];
+		// }
 
-			this.interviewService
-				.getInterviewsByCompanyId(this.companyChoose!.companyId!)
-				.subscribe((interviews) => {
-					if (interviews) {
-						this.dataSource = new MatTableDataSource(interviews);
-						this.dataSource.paginator = this.paginator!;
-						this.dataSource.sort = this.sort!;
-					}
-				});
-		});
+		this.loadPositions();
+
+		this.interviewService
+			.getInterviewsByCompanyId(this.interviewer!.companyId!)
+			.subscribe((interviews) => {
+				if (interviews) {
+					this.dataSource = new MatTableDataSource(interviews);
+					this.dataSource.paginator = this.paginator!;
+					this.dataSource.sort = this.sort!;
+				}
+			});
 	}
 
 	handleChooseCompany(value: any) {
 		this.positionChoose = null;
-		this.companyChoose = value;
+		// this.companyChoose = value;
 		this.loadPositions();
 		this.applyFilters();
 	}
@@ -189,7 +195,7 @@ export class ListInterviewComponent {
 		}
 
 		this.interviewService
-			.getInterviewsByCompanyId(this.companyChoose!.companyId!, filter)
+			.getInterviewsByCompanyId(this.interviewer!.companyId!, filter)
 			.subscribe((interviews) => {
 				if (interviews) {
 					if (this.role === 'Interviewer') {
@@ -204,8 +210,13 @@ export class ListInterviewComponent {
 								interview.interviewType === this.typeChoose,
 						);
 					}
+					console.log(interviews);
 
-					this.dataSource!.data = interviews;
+					this.dataSource!.data = interviews.filter(
+						(data) =>
+							data.isDeleted === false &&
+							data.interviewerId == this.interviewerId,
+					);
 
 					if (this.dataSource!.paginator && this.dataSource) {
 						this.dataSource!.paginator.firstPage();
@@ -218,8 +229,9 @@ export class ListInterviewComponent {
 	}
 
 	loadPositions() {
+		console.log('Loading positions...');
 		const filterPosition = new PositionFilterModel();
-		filterPosition.stringOfCompanyIds = this.companyChoose?.companyId;
+		filterPosition.stringOfCompanyIds = this.interviewer!.companyId!;
 		this.positionService
 			.getAllPositions(filterPosition)
 			.subscribe((resp) => {

@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	Inject,
+	Input,
+	OnDestroy,
+	OnInit,
+	Output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
@@ -9,6 +17,7 @@ import { Candidate } from '../../../../data/candidate/candidate.model';
 import { CandidateService } from '../../../../data/candidate/candidate.service';
 import { PersonalDetail } from '../../../../data/candidate/personalDetail';
 import { PDEditDialogComponent } from './pd-edit-dialog/pd-edit-dialog.component';
+import { WebUser } from '../../../../data/authentication/web-user.model';
 
 @Component({
 	selector: 'app-personal-detail',
@@ -18,42 +27,40 @@ import { PDEditDialogComponent } from './pd-edit-dialog/pd-edit-dialog.component
 
 		MatDividerModule,
 		MatButtonModule,
-		NgbTooltipModule
+		NgbTooltipModule,
 	],
 	templateUrl: './personal-detail.component.html',
 	styleUrl: './personal-detail.component.css',
 })
 export class PersonalDetailComponent implements OnInit, OnDestroy {
 	@Input() candidate?: Candidate;
+	@Input() user?: WebUser;
 	@Output() refresh = new EventEmitter<void>();
 
-	ngOnInit(): void { }
+	ngOnInit(): void {}
 
-	ngOnDestroy(): void { }
+	ngOnDestroy(): void {}
 
 	constructor(
 		@Inject(MatDialog) public dialog: MatDialog,
 		private _candidateService: CandidateService,
-		private _authService: AuthService
-	) {
-	}
+		private _authService: AuthService,
+	) {}
 
 	openDialog(): void {
 		const dialogRef = this.dialog.open(PDEditDialogComponent, {
-			data: this.candidate
+			data: this.candidate,
 		});
-		dialogRef.afterClosed().subscribe(
-			(result: PersonalDetail) => {
-				if (result) {
-					const userId = this._authService.getLocalCurrentUser().id;
-					this._candidateService.updatePersonalDetail(userId as string, result).subscribe(
-						() => {
-							this._authService.updateUserLogin();
-							this.refresh.emit();
-						}
-					);
-				}
+		dialogRef.afterClosed().subscribe((result: PersonalDetail) => {
+			if (result) {
+				const userId = this._authService.getLocalCurrentUser().id;
+				this._candidateService
+					.updatePersonalDetail(userId as string, result)
+					.subscribe(() => {
+						this._authService.updateUserLogin();
+						this.refresh.emit();
+					});
 			}
-		);
+		});
 	}
 }

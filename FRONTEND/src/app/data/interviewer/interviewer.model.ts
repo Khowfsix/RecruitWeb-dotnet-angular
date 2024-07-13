@@ -1,14 +1,15 @@
-import { WebUser } from "../authentication/web-user.model"
+import { WebUser } from '../authentication/web-user.model';
+import { Company } from '../company/company.model';
 
 export class Interviewer {
 	interviewerId?: string;
 	userId?: string;
 	companyId?: string;
+	company?: Company;
 	user?: WebUser;
 	isDeleted?: boolean;
 	daysToLastInterview?: number;
 }
-
 
 export class InterviewerAddModel {
 	userId?: string;
@@ -24,4 +25,3 @@ export class InterviewerFilterModel {
 	fromDate?: Date;
 	toDate?: Date;
 }
-

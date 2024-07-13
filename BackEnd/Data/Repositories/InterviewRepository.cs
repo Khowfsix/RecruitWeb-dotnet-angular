@@ -21,7 +21,7 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
     public async Task<IEnumerable<Interview>> GetInterviewsByCompanyId(Guid companyId, InterviewFilter interviewFilter, string sortString)
     {
         var query = Entities
-            .Where(e => e.Application.Position.CompanyId.Equals(companyId))
+            .Where(e => e.Application.Position.CompanyId.Equals(companyId) && !e.IsDeleted)
             .Include(i => i.Recruiter)
                 .ThenInclude(e => e.User)
             .Include(i => i.Interviewer)
@@ -69,16 +69,16 @@ public class InterviewRepository : Repository<Interview>, IInterviewRepository
 
         if (interviewFilter.PositionId.HasValue)
         {
-            query = query.Where(e => e.Application.PositionId ==  interviewFilter.PositionId);
+            query = query.Where(e => e.Application.PositionId == interviewFilter.PositionId);
         }
-      
+
 
         if (!string.IsNullOrEmpty(interviewFilter.Search))
         {
             query = query
                 .Where(e =>
                 e.Recruiter.User.UserName.ToLower().Contains(interviewFilter.Search.ToLower())
-                || e.Interviewer.User.UserName.ToLower().Contains(interviewFilter.Search.ToLower()) 
+                || e.Interviewer.User.UserName.ToLower().Contains(interviewFilter.Search.ToLower())
                 || e.Application.Cv.Candidate.User!.UserName.ToLower().Contains(interviewFilter.Search.ToLower())
                 );
         }

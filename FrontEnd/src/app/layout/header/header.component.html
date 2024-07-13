@@ -15,6 +15,12 @@
 					Jobs
 					<mat-icon class="mat-18">cases</mat-icon>
 				</button>
+				@if (this.role?.includes('Recruiter')) {
+				<button mat-button (click)="handleClick_Events()">
+					Events
+					<mat-icon class="mat-18">event</mat-icon>
+				</button>
+				}
 				<!-- <mat-menu
 					#menuJobs="matMenu"
 					xPosition="before"
@@ -81,7 +87,7 @@
 
 		<div>
 			@if (user) {
-			<span class="px-3">{{ user?.fullName }}</span>
+			<span class="px-3">{{ user!.fullName }}</span>
 
 			<span class="px-3"
 				><i>{{ role?.toString() }}</i></span
@@ -177,8 +183,8 @@
 		<button mat-menu-item (click)="handleClick_Interviewer()">
 			<span class="mx-5 align-right">Interviewers</span>
 		</button>
-		<button mat-menu-item (click)="handleClick_Events()">
-			<span class="mx-5 align-right">Events</span>
+		<button mat-menu-item (click)="handleClick_Interviewer_interview()">
+			<span class="mx-5 align-right">List interviewes</span>
 		</button>
 		<button mat-menu-item (click)="handleClick_Positions()">
 			<span class="mx-5 align-right">Positions</span>

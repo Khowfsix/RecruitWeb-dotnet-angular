@@ -11,6 +11,7 @@ namespace Service.Models
         public virtual WebUser User { get; set; }
 
         public Guid CompanyId { get; set; }
+        public virtual CompanyModel Company { get; set; }
 
         public bool IsDeleted { get; set; } = false;
     }

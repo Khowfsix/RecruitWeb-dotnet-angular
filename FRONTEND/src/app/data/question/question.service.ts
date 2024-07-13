@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { API } from '../api.service';
 import { Interview } from '../interview/interview.model';
+import { Question } from './question.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -185,6 +186,10 @@ export class QuestionService {
 			prefixMap[languageName as keyof typeof prefixMap];
 		return languagePrefix || '';
 	}
+
+	public postQuestion(req: QuestionAddModel): Observable<Question> {
+		return this.api.POST('/api/Question', req);
+	}
 }
 
 export interface NewQuestion {
@@ -192,4 +197,9 @@ export interface NewQuestion {
 	subOrder: number;
 	chosenQuestionId: number;
 	newScore?: number;
+}
+
+export interface QuestionAddModel {
+	questionString: string;
+	categoryQuestionId: string;
 }

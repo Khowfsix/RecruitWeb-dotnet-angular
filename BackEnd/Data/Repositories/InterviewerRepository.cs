@@ -1,8 +1,6 @@
 using Data.CustomModel.Interviewer;
-using Data.CustomModel.Position;
 using Data.Entities;
 using Data.Interfaces;
-using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories;
@@ -61,7 +59,7 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
 
             }
 
-            
+
             if (interviewerFilter.FromTime != null && interviewerFilter.ToTime != null)
             {
 
@@ -86,7 +84,7 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
                 }
             }
 
-            if (!interviewerFilter.FromDate.HasValue && !interviewerFilter.ToDate.HasValue 
+            if (!interviewerFilter.FromDate.HasValue && !interviewerFilter.ToDate.HasValue
                 && interviewerFilter.FromTime == null && interviewerFilter.ToTime == null)
             {
                 if (interviewerFilter.IsFreeTime.Value)
@@ -95,7 +93,7 @@ public class InterviewerRepository : Repository<Interviewer>, IInterviewerReposi
                     query = query.Include(e => e.Interviews).Where(o => o.Interviews.Count() != 0);
             }
         }
-        var result = await query
+        var result = await query.Include(x => x.Company)
                 .ToListAsync();
         return result;
     }

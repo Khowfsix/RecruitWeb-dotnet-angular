@@ -1,3 +1,5 @@
+using Api.ViewModels.Company;
+
 namespace Api.ViewModels.Interviewer
 {
     public class InterviewerViewModel
@@ -7,6 +9,7 @@ namespace Api.ViewModels.Interviewer
         public string UserId { get; set; }
 
         public Guid CompanyId { get; set; }
+        public virtual CompanyViewModel Company { get; set; }
 
         public WebUserViewModel User { get; set; }
 

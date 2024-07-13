@@ -54,6 +54,7 @@ namespace Data.Mapping
     {
         public AutoMapperConfiguration()
         {
+            CreateMap<InterviewResultQuestion_ViewModel, InterviewResultQuestion_Model>().ReverseMap();
             #region WorkExperience
             CreateMap<WorkExperienceViewModel, WorkExperienceModel>().ReverseMap();
             CreateMap<WorkExperienceModel, WorkExperience>().ReverseMap();

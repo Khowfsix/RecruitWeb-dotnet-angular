@@ -123,6 +123,7 @@ export class PositionDetailComponent implements OnInit {
 			.getApplicationsOfCandidate(candidateId!)
 			.subscribe({
 				next: (data: Application[]) => {
+					console.log(data);
 					if (
 						data.filter(
 							(x) => x.position?.positionId === positionId,
@@ -130,12 +131,9 @@ export class PositionDetailComponent implements OnInit {
 					) {
 						this.isAvailable = 'reapply';
 					}
-					return false;
-				},
-				error: () => {
-					return true;
+					// return false;
 				},
 			});
-		return true;
+		// return true;
 	}
 }

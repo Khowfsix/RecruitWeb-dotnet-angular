@@ -14,13 +14,16 @@ namespace Api.Controllers
         private readonly IApplicationService _applicationService;
         private readonly IPositionService _positionService;
         private readonly IRecruiterService _recruiterService;
+        private readonly ICvService _cvService;
         private readonly IMapper _mapper;
 
-        public ApplicationController(IApplicationService applicationService, IPositionService positionService, IRecruiterService recruiterService, IMapper mapper)
+
+        public ApplicationController(ICvService cvService, IApplicationService applicationService, IPositionService positionService, IRecruiterService recruiterService, IMapper mapper)
         {
             _applicationService = applicationService;
             _positionService = positionService;
             _recruiterService = recruiterService;
+            _cvService = cvService;
             _mapper = mapper;
         }
 
@@ -92,6 +95,17 @@ namespace Api.Controllers
             if (request == null)
                 return StatusCode(StatusCodes.Status400BadRequest);
             var modelData = _mapper.Map<ApplicationModel>(request);
+            var cv = await this._cvService.GetCvById(request.Cvid);
+            if (cv == null)
+            {
+                return BadRequest();
+            }
+            var getA = await _applicationService.GetApplicationOfCandidate(cv.CandidateId);
+            var checkIsExist = getA.Where(e => !e.IsDeleted && e.PositionId == modelData.PositionId).FirstOrDefault();
+            if (checkIsExist != null)
+            {
+                var del = await _applicationService.DeleteApplication(checkIsExist.ApplicationId);
+            }
             var response = await _applicationService.SaveApplication(modelData);
             return Ok(_mapper.Map<ApplicationModel>(response));
         }

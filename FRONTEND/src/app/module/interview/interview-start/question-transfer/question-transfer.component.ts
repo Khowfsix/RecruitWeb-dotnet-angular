@@ -11,6 +11,8 @@ import { BehaviorSubject } from 'rxjs';
 import { QuestionService } from '../../../../data/question/question.service';
 import { RightTableComponent } from '../../interview-id/question-table/right-table/right-table.component';
 import { LeftTableComponent } from '../left-table/left-table.component';
+import { CategoryQuestionService } from '../../../../data/categoryQuestion/category-question.service';
+import { CategoryQuestion } from '../../../../data/categoryQuestion/categoryQuestion.model';
 
 @Component({
 	selector: 'app-question-transfer',
@@ -49,7 +51,15 @@ export class QuestionTransferComponent {
 	currentSubTab = 0;
 	currentQues: number[] = [];
 
-	constructor(private questionService: QuestionService) {}
+	categoryQuestion: CategoryQuestion[] = [];
+	constructor(
+		private questionService: QuestionService,
+		private _categoryQuesService: CategoryQuestionService,
+	) {
+		_categoryQuesService.getAllCategoryQuestions().subscribe((data) => {
+			this.categoryQuestion = data;
+		});
+	}
 
 	ngOnInit() {
 		this.refreshTable();
@@ -182,6 +192,8 @@ export class QuestionTransferComponent {
 				text: this.newQuestion,
 				score: 0,
 				cate: this.cate!,
+				categoryId:
+					this.categoryQuestion[this.cate!].categoryQuestionId!,
 			});
 			this.newQuestion = '';
 			this.questionsChange.emit(this.questions);
@@ -204,4 +216,5 @@ export interface newQues {
 	text: string;
 	score: number;
 	cate: number;
+	categoryId: string;
 }

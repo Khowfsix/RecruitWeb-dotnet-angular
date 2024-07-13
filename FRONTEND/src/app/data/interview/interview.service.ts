@@ -126,4 +126,20 @@ export class InterviewService {
 				}),
 			);
 	}
+
+	public postQuestionInterviewResult(
+		interviewId: string,
+		data: postInterviewResult,
+	): Observable<any> {
+		return this.api.POST(
+			`/api/Interview/PostQuestionInterviewResult/${interviewId}`,
+			data,
+		);
+	}
+}
+
+export interface postInterviewResult {
+	interviewId: string;
+	notes: string;
+	rounds: { questionId: string; score: number }[];
 }

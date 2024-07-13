@@ -1,22 +1,39 @@
 <div style="background-color: rgb(236, 236, 236); padding-bottom: 80px">
 	<div style="background-color: rgb(236, 236, 236)">
 		<div style="width: 100%; height: 200px">
-			<img src="{{ fetchPosition?.imageURL }}" class="w-100 h-100" alt="logo" />
+			<img
+				src="{{ fetchPosition?.imageURL }}"
+				class="w-100 h-100"
+				alt="logo" />
 		</div>
 		<div class="shadow">
-			<div class="translate-middle" style="margin-left: 14%; margin-right: 14%; background-color: white">
+			<div
+				class="translate-middle"
+				style="
+					margin-left: 14%;
+					margin-right: 14%;
+					background-color: white;
+				">
 				<div
 					class="rounded-3 position-absolute top-50 start-50 background-image d-flex flex-column justify-content-center">
 					<div
 						class="d-flex flex-row rounded-2"
-						style="background-color: rgb(255, 255, 255); padding: 30px 30px 30px 30px">
-						<div class="d-flex flex-row rounded-4 hover-overlay" style="width: 100%">
+						style="
+							background-color: rgb(255, 255, 255);
+							padding: 30px 30px 30px 30px;
+						">
+						<div
+							class="d-flex flex-row rounded-4 hover-overlay"
+							style="width: 100%">
 							<div class="" style="width: 170px; height: 170px">
 								<img
 									src="{{ fetchPosition?.company?.logo }}"
 									class="rounded-4"
 									style="width: 100%; height: 100%"
-									alt="{{ fetchPosition?.company?.companyName + ' logo' }}" />
+									alt="{{
+										fetchPosition?.company?.companyName +
+											' logo'
+									}}" />
 							</div>
 							<div style="width: 40%; margin-left: 4%">
 								<div
@@ -27,7 +44,9 @@
 										margin-bottom: 15px;
 										word-break: break-all;
 									">
-									{{ fetchPosition?.positionName | uppercase }}
+									{{
+										fetchPosition?.positionName | uppercase
+									}}
 								</div>
 								<!-- <div
 									class="custom-row rounded-2"
@@ -39,45 +58,92 @@
 									">
 									{{ fetchPosition?.level?.levelName }}
 								</div> -->
-								<div class="custom-row" style="color: blue; word-break: break-all">
+								<div
+									class="custom-row"
+									style="color: blue; word-break: break-all">
 									<div
 										class="custom-row rounded-2"
 										style="
 											padding: 3px 2px 2px 2px;
-											background-color: rgb(253, 255, 198);
+											background-color: rgb(
+												253,
+												255,
+												198
+											);
 											width: fit-content;
 										">
 										{{ fetchPosition?.level?.levelName }}
 									</div>
 									<div class="custom-row" style="color: blue">
-										{{ fetchPosition?.company?.companyName }}
+										{{
+											fetchPosition?.company?.companyName
+										}}
 									</div>
-									<div class="custom-row" style="color: rgb(251, 115, 74); word-break: break-all">
-										@if (fetchPosition?.minSalary && fetchPosition?.maxSalary) {
-										{{ fetchPosition?.minSalary + '-' + fetchPosition?.maxSalary }}
+									<div
+										class="custom-row"
+										style="
+											color: rgb(251, 115, 74);
+											word-break: break-all;
+										">
+										@if (fetchPosition?.minSalary &&
+										fetchPosition?.maxSalary) {
+										{{
+											fetchPosition?.minSalary +
+												'-' +
+												fetchPosition?.maxSalary
+										}}
 										} @else if (fetchPosition?.minSalary) {
-										{{ 'Above ' + fetchPosition?.minSalary }}
+										{{
+											'Above ' + fetchPosition?.minSalary
+										}}
 										} @else if (fetchPosition?.maxSalary) {
-										{{ 'Up to ' + fetchPosition?.maxSalary }}
+										{{
+											'Up to ' + fetchPosition?.maxSalary
+										}}
 										} @else { Negotiable }
 									</div>
-									<div class="custom-row" style="color: black; word-break: break-all">
-										Hiring quantity: {{ fetchPosition?.maxHiringQty }}
+									<div
+										class="custom-row"
+										style="
+											color: black;
+											word-break: break-all;
+										">
+										Hiring quantity:
+										{{ fetchPosition?.maxHiringQty }}
 									</div>
-									<div class="custom-row" style="color: rgb(100, 100, 100); word-break: break-all">
+									<div
+										class="custom-row"
+										style="
+											color: rgb(100, 100, 100);
+											word-break: break-all;
+										">
 										<i class="bi bi-calendar3"></i>
-										{{ fetchPosition?.startDate | date : 'dd/MM/yyyy' }} -
-										{{ fetchPosition?.endDate | date : 'dd/MM/yyyy' }}
+										{{
+											fetchPosition?.startDate
+												| date : 'dd/MM/yyyy'
+										}}
+										-
+										{{
+											fetchPosition?.endDate
+												| date : 'dd/MM/yyyy'
+										}}
 									</div>
 									<div
 										class="custom-row rounded-2"
 										style="
 											padding: 2px 2px 2px 2px;
-											background-color: rgb(224, 224, 224);
+											background-color: rgb(
+												224,
+												224,
+												224
+											);
 											width: fit-content;
 											word-break: break-all;
 										">
-										{{ fetchPosition?.language?.languageName }}
+										{{
+											fetchPosition?.language
+												?.languageName
+										}}
 									</div>
 								</div>
 							</div>
@@ -86,24 +152,39 @@
 				</div>
 			</div>
 		</div>
-		<div class="" style="margin-left: 14%; margin-right: 14%; margin-top: 160px">
-			<div class="pt-2" style="margin-left: 14%; margin-right: 14%; margin-top: 110px">
+		<div
+			class=""
+			style="margin-left: 14%; margin-right: 14%; margin-top: 160px">
+			<div
+				class="pt-2"
+				style="margin-left: 14%; margin-right: 14%; margin-top: 110px">
 				<div>
-					@if (this.curentUserRoles?.length == 0 || this.curentUserRoles?.includes('Candidate')) {
+					@if (this.curentUserRoles?.length == 0 ||
+					this.curentUserRoles?.includes('Candidate')) {
 					@if(this.isAvailable == "outOfDate"){
-					<button mat-raised-button color="primary" class="w-100 py-3" disabled>
+					<button
+						mat-raised-button
+						color="primary"
+						class="w-100 py-3"
+						disabled>
 						<i class="fa-regular fa-paper-plane px-3"></i>
 						Apply now
 					</button>
 					} @else {
-					<button mat-raised-button color="primary" class="w-100 py-3" (click)="handleClickApply()">
+					<button
+						mat-raised-button
+						color="primary"
+						class="w-100 py-3"
+						(click)="handleClickApply()">
 						<i class="fa-regular fa-paper-plane px-3"></i>
-						@if (this.isAvailable === "available") {Apply now} @else if (this.isAvailable === "reapply")
-						{Reapply}
+						@if (this.isAvailable === "available") {Apply now}
+						@else{ @if (this.isAvailable === "reapply") {Reapply} }
 					</button>
 					} }
 				</div>
-				<div class="fs-5 d-flex flex-column" style="background-color: rgb(236, 236, 236); height: 100%">
+				<div
+					class="fs-5 d-flex flex-column"
+					style="background-color: rgb(236, 236, 236); height: 100%">
 					<mat-tab-group
 						dynamicHeight
 						mat-stretch-tabs="false"
@@ -111,19 +192,43 @@
 						animationDuration="0ms">
 						<mat-tab>
 							<ng-template mat-tab-label>
-								<span style="font-weight: 600; font-size: 18px">Information</span>
+								<span style="font-weight: 600; font-size: 18px"
+									>Information</span
+								>
 							</ng-template>
-							<div class="rounded-3 p-4" style="background-color: rgb(255, 255, 255)">
-								<div style="font-size: 24px; margin-top: 10px">Description</div>
-								<div class="mt-3" style="line-height: 1.5; font-size: 16px">
+							<div
+								class="rounded-3 p-4"
+								style="background-color: rgb(255, 255, 255)">
+								<div style="font-size: 24px; margin-top: 10px">
+									Description
+								</div>
+								<div
+									class="mt-3"
+									style="line-height: 1.5; font-size: 16px">
 									{{ fetchPosition?.description }}
 								</div>
-								<div style="font-size: 24px; margin-top: 30px" class="mb-3">Requirements</div>
-								@for (item of this.fetchPosition?.requirements; track item) {
-								<li style="line-height: 1.5; font-size: 16px; margin-top: 8px">
-									{{ item.skill?.skillName }} - {{ item.skill?.description }}:
+								<div
+									style="font-size: 24px; margin-top: 30px"
+									class="mb-3">
+									Requirements
+								</div>
+								@for (item of this.fetchPosition?.requirements;
+								track item) {
+								<li
+									style="
+										line-height: 1.5;
+										font-size: 16px;
+										margin-top: 8px;
+									">
+									{{ item.skill?.skillName }} -
+									{{ item.skill?.description }}:
 								</li>
-								<div style="font-size: 16px; margin-left: 60px; line-height: 1.5">
+								<div
+									style="
+										font-size: 16px;
+										margin-left: 60px;
+										line-height: 1.5;
+									">
 									<div>
 										{{ item.experience }}
 									</div>
@@ -136,10 +241,20 @@
 						</mat-tab>
 						<mat-tab>
 							<ng-template mat-tab-label>
-								<span style="font-weight: 600; font-size: 18px">About Company</span>
+								<span style="font-weight: 600; font-size: 18px"
+									>About Company</span
+								>
 							</ng-template>
-							<div class="rounded-3 p-4 d-flex flex-row" style="background-color: rgb(255, 255, 255)">
-								<div class="me-3" style="border: 1px solid #1c395f; width: 60%; border-radius: 10px">
+							<div
+								class="rounded-3 p-4 d-flex flex-row"
+								style="background-color: rgb(255, 255, 255)">
+								<div
+									class="me-3"
+									style="
+										border: 1px solid #1c395f;
+										width: 60%;
+										border-radius: 10px;
+									">
 									<div
 										class="p-3"
 										style="
@@ -153,26 +268,57 @@
 										Company Introduction
 									</div>
 									<div class="p-3">
-										<div style="margin-top: 20px; font-size: 24px; margin-bottom: 40px">
-											{{ fetchPosition?.company?.companyName }}
+										<div
+											style="
+												margin-top: 20px;
+												font-size: 24px;
+												margin-bottom: 40px;
+											">
+											{{
+												fetchPosition?.company
+													?.companyName
+											}}
 										</div>
-										<div style="font-size: 18px; margin-top: 10px">
+										<div
+											style="
+												font-size: 18px;
+												margin-top: 10px;
+											">
 											Company description:
-											<span class="mt-3" style="line-height: 1.5; font-size: 16px">
+											<span
+												class="mt-3"
+												style="
+													line-height: 1.5;
+													font-size: 16px;
+												">
 												Company description
 											</span>
 										</div>
-										<div style="font-size: 18px; margin-top: 10px">
+										<div
+											style="
+												font-size: 18px;
+												margin-top: 10px;
+											">
 											Website:
 											<a
-												href="{{ fetchPosition?.company?.website }}"
+												href="{{
+													fetchPosition?.company
+														?.website
+												}}"
 												class="mt-3"
-												style="line-height: 1.5; font-size: 16px; word-break: break-all">
+												style="
+													line-height: 1.5;
+													font-size: 16px;
+													word-break: break-all;
+												">
 												<!-- <a
 										href="{{ fetchPosition?.company?.website }}"
 										class="mt-3"
 										style="line-height: 1.5; font-size: 16px"> -->
-												{{ fetchPosition?.company?.website }}
+												{{
+													fetchPosition?.company
+														?.website
+												}}
 											</a>
 										</div>
 									</div>
@@ -198,29 +344,64 @@
 									</div>
 									<div class="p-3">
 										<div style="font-size: 18px">
-											<i class="bi bi-house-door-fill"></i>
-											<span class="mt-3 ms-2" style="line-height: 1.5; font-size: 16px">
-												{{ fetchPosition?.company?.address }}
+											<i
+												class="bi bi-house-door-fill"></i>
+											<span
+												class="mt-3 ms-2"
+												style="
+													line-height: 1.5;
+													font-size: 16px;
+												">
+												{{
+													fetchPosition?.company
+														?.address
+												}}
 											</span>
 										</div>
-										<div style="font-size: 18px; margin-top: 10px">
+										<div
+											style="
+												font-size: 18px;
+												margin-top: 10px;
+											">
 											<i class="bi bi-envelope-fill"></i>
 											<a
 												href="https://mail.google.com/mail/?view=cm&fs=1&to={{
-													fetchPosition?.company?.email
+													fetchPosition?.company
+														?.email
 												}}"
 												class="mt-3 ms-2"
-												style="line-height: 1.5; font-size: 16px; word-break: break-all"
-												>{{ fetchPosition?.company?.email }}
+												style="
+													line-height: 1.5;
+													font-size: 16px;
+													word-break: break-all;
+												"
+												>{{
+													fetchPosition?.company
+														?.email
+												}}
 											</a>
 										</div>
-										<div style="font-size: 18px; margin-top: 10px">
+										<div
+											style="
+												font-size: 18px;
+												margin-top: 10px;
+											">
 											<i class="bi bi-telephone-fill"></i>
 											<a
-												href="tel:{{ fetchPosition?.company?.phone }}"
+												href="tel:{{
+													fetchPosition?.company
+														?.phone
+												}}"
 												class="mt-3 ms-2"
-												style="line-height: 1.5; font-size: 16px; word-break: break-all"
-												>{{ fetchPosition?.company?.phone }}
+												style="
+													line-height: 1.5;
+													font-size: 16px;
+													word-break: break-all;
+												"
+												>{{
+													fetchPosition?.company
+														?.phone
+												}}
 												<!-- <a
 										href="tel:{{ fetchPosition?.company?.phone }}"
 										class="mt-3 ms-2"
@@ -234,10 +415,18 @@
 						</mat-tab>
 						<mat-tab disabled>
 							<ng-template mat-tab-label>
-								<span style="font-weight: 500; font-size: 18px">Jobs from company</span>
+								<span style="font-weight: 500; font-size: 18px"
+									>Jobs from company</span
+								>
 							</ng-template>
-							<div class="rounded-3 p-4" style="background-color: rgb(255, 255, 255)">
-								<div class="mt-3" style="line-height: 1.5; font-size: 16px">Jobs from company</div>
+							<div
+								class="rounded-3 p-4"
+								style="background-color: rgb(255, 255, 255)">
+								<div
+									class="mt-3"
+									style="line-height: 1.5; font-size: 16px">
+									Jobs from company
+								</div>
 							</div>
 						</mat-tab>
 					</mat-tab-group>
