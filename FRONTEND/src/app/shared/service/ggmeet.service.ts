@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { WINDOW } from './window.token';
+import { EventAddModel } from './ggmeet.model';
 // import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 
 @Injectable({
@@ -11,7 +13,8 @@ export class GGMeetService {
 	private authConfig: AuthConfig = {
 		issuer: 'https://accounts.google.com',
 		redirectUri: `${this._window.location.origin}/meet/login/callback/`,
-		clientId: '402442749760-23gqfj74lcb44tt794kskrud80389vgm.apps.googleusercontent.com',
+		clientId:
+			'402442749760-23gqfj74lcb44tt794kskrud80389vgm.apps.googleusercontent.com',
 		scope: 'openid profile email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.events.readonly',
 		strictDiscoveryDocumentValidation: false,
 		showDebugInformation: true,
@@ -36,7 +39,7 @@ export class GGMeetService {
 		private oauthService: OAuthService,
 		private ngZone: NgZone,
 		private http: HttpClient,
-		@Inject(WINDOW) private _window: Window
+		@Inject(WINDOW) private _window: Window,
 	) {
 		this.configure();
 	}
@@ -48,16 +51,17 @@ export class GGMeetService {
 		this.oauthService.setupAutomaticSilentRefresh();
 	}
 
-
 	public getAllMyCalendars() {
 		// DEVELOPMENT
 		// const url = '/proxy-server/https://www.googleapis.com/calendar/v3/users/me/calendarList'
 
 		// DEPLOYMENT
-		const url = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
+
+		const url =
+			'https://www.googleapis.com/calendar/v3/users/me/calendarList';
 		const headers = new HttpHeaders({
 			Authorization: 'Bearer ' + this.oauthService.getAccessToken(),
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
 		});
 		return this.http.get(url, { headers: headers });
 	}
@@ -71,8 +75,8 @@ export class GGMeetService {
 	public async loginWithPopup(callbackURL: string) {
 		const width = 500;
 		const height = 600;
-		const left = (this._window.screen.width / 2) - (width / 2);
-		const top = (this._window.screen.height / 2) - (height / 2);
+		const left = this._window.screen.width / 2 - width / 2;
+		const top = this._window.screen.height / 2 - height / 2;
 
 		try {
 			const loginUrl = `${this._window.origin}/meet/login`;
@@ -80,7 +84,7 @@ export class GGMeetService {
 			const popup = this._window.open(
 				loginUrl,
 				'Login with Google',
-				`width = ${width}, height = ${height}, top = ${top}, left = ${left} `
+				`width = ${width}, height = ${height}, top = ${top}, left = ${left} `,
 			);
 
 			const interval = setInterval(() => {
@@ -109,39 +113,58 @@ export class GGMeetService {
 
 	private handlePopupMessage(callbackURL: string) {
 		let receivedData = false;
-		this._window.addEventListener('message', (event: MessageEvent) => {
-			if (event.origin !== this._window.location.origin) {
-				return;
-			}
+		this._window.addEventListener(
+			'message',
+			(event: MessageEvent) => {
+				if (event.origin !== this._window.location.origin) {
+					return;
+				}
 
-			const data = event.data;
-			if (data) {
-				receivedData = true;
-				// console.log('Data received from popup:', data);
-				this.ngZone.run(() => {
-
-					history.pushState(null, '', `${callbackURL}#` + data);
-					this.oauthService.tryLogin(
-						{
-							disableOAuth2StateCheck: true,
-							disableNonceCheck: true,
-						}
-					).then(() => {
-						// if (this.oauthService.hasValidAccessToken()) {
-						// 	console.log('Login successful!');
-						// } else {
-						// 	console.log('Login failed');
-						// }
-					})
-					// .catch((error) => {
-					// 	// console.error('Login failed', error);
-					// });
-				});
-			}
-
-
-		}, { once: true });
+				const data = event.data;
+				if (data) {
+					receivedData = true;
+					// console.log('Data received from popup:', data);
+					this.ngZone.run(() => {
+						history.pushState(null, '', `${callbackURL}#` + data);
+						this.oauthService
+							.tryLogin({
+								disableOAuth2StateCheck: true,
+								disableNonceCheck: true,
+							})
+							.then(() => {
+								// if (this.oauthService.hasValidAccessToken()) {
+								// 	console.log('Login successful!');
+								// } else {
+								// 	console.log('Login failed');
+								// }
+							});
+						// .catch((error) => {
+						// 	// console.error('Login failed', error);
+						// });
+					});
+				}
+			},
+			{ once: true },
+		);
 		return receivedData;
+	}
+
+	public createCalendar(summary: string) {
+		const url = 'https://www.googleapis.com/calendar/v3/calendars';
+		const headers = new HttpHeaders({
+			Authorization: 'Bearer ' + this.oauthService.getAccessToken(),
+			'Content-Type': 'application/json',
+		});
+		return this.http.post(url, { summary: summary }, { headers: headers });
+	}
+
+	public createEventAndGGMeet(calendarId: string, body: EventAddModel) {
+		const url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?conferenceDataVersion=1`;
+		const headers = new HttpHeaders({
+			Authorization: 'Bearer ' + this.oauthService.getAccessToken(),
+			'Content-Type': 'application/json',
+		});
+		return this.http.post(url, body, { headers: headers });
 	}
 
 	public logout() {
@@ -151,7 +174,6 @@ export class GGMeetService {
 	public get scope() {
 		return this.oauthService.scope;
 	}
-
 
 	public get accessTokenExpiration() {
 		return this.oauthService.getAccessTokenExpiration();

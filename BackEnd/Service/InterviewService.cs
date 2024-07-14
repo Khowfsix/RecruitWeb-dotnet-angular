@@ -132,7 +132,7 @@ public class InterviewService : IInterviewService
                    i.Company_Status! == status ||
                    i.Candidate_Status! == status
                 ));
-               return filteredDatas;
+                return filteredDatas;
             }
             return result;
         }
@@ -171,6 +171,19 @@ public class InterviewService : IInterviewService
         return await _interviewRepository.UpdateInterview(oldData!, interviewId);
     }
 
+    public async Task<bool> UpdateAddressInterview(Guid interviewId, string address)
+    {
+        if (address is null)
+        {
+            throw new ArgumentNullException(nameof(address));
+        }
+
+        var oldData = await _interviewRepository.GetInterviewById_NoInclude(interviewId);
+        oldData!.AddressOrStartURL = address!;
+
+        return await _interviewRepository.UpdateInterview(oldData!, interviewId);
+    }
+
     public async Task<InterviewModel?> GetInterviewById_noInclude(Guid id)
     {
         var entityData = await _interviewRepository.GetInterviewById_NoInclude(id);
@@ -184,11 +197,13 @@ public class InterviewService : IInterviewService
         if (thisInterview == null) return null!;
 
         thisInterview.Notes = request.Notes;
+        thisInterview.Company_Status = (int)EInterviewCompanyStatus.FINISHED;
         var updateInterview = await _interviewRepository.UpdateInterview(thisInterview, request.InterviewId);
 
         foreach (var item in request.Rounds)
         {
             var newRound = _mapper.Map<Round>(item);
+            newRound.InterviewId = request.InterviewId;
             var respInsertRounds = await _roundRepository.SaveRound(newRound);
 
             if (respInsertRounds == null)

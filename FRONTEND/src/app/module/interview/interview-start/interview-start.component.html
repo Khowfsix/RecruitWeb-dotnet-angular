@@ -16,7 +16,7 @@
 					<mat-tab-group [(selectedIndex)]="currentCateTab">
 						<mat-tab
 							label="{{
-								this.categoryQuestion[1]!.categoryQuestionName!
+								this.categoryQuestion[0]!.categoryQuestionName!
 							}}"
 							*ngIf="leftSoft">
 							<app-question-transfer
@@ -28,7 +28,7 @@
 						</mat-tab>
 						<mat-tab
 							label="{{
-								this.categoryQuestion[0]!.categoryQuestionName!
+								this.categoryQuestion[1]!.categoryQuestionName!
 							}}"
 							*ngIf="leftLang">
 							<app-question-transfer

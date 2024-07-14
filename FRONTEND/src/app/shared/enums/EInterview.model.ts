@@ -5,9 +5,10 @@ export enum Interview_CandidateStatus {
 
 export enum Interview_CompanyStatus {
 	PENDING = 202000,
-	PASSED = 202010,
-	PASSED_N_MAILED = 202011,
-	FAILED = 202020,
+	FINISHED = 202010,
+	PASSED = 202020,
+	PASSED_N_MAILED = 202021,
+	FAILED = 202030,
 }
 
 export enum Interview_Type {

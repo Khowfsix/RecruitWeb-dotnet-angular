@@ -19,7 +19,13 @@ export class AuthService {
 	// clientUserInfo: string | null = window.localStorage.getItem('currentUser') || null;
 
 	private localStorage: Storage | undefined;
-	constructor(private api: API, private cookieService: CookieService, private router: Router, private toast: ToastrService, @Inject(DOCUMENT) private document: Document) {
+	constructor(
+		private api: API,
+		private cookieService: CookieService,
+		private router: Router,
+		private toast: ToastrService,
+		@Inject(DOCUMENT) private document: Document,
+	) {
 		// afterRender(() => {
 		// 	console.log(localStorage);
 		// 	this.clientUserInfo = localStorage.getItem('currentUser') != '' ? localStorage.getItem('currentUser') : null;
@@ -27,27 +33,29 @@ export class AuthService {
 		this.localStorage = document.defaultView?.localStorage;
 	}
 
-
 	// private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 	public loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 
 	checkLoginStatus(): boolean {
 		if (this.cookieService.get('jwt') != '') {
 			return true;
-		} return false;
+		}
+		return false;
 	}
 
 	getLocalCurrentUser(): WebUser {
 		if (localStorage != undefined) {
 			const currentUser = localStorage.getItem('currentUser');
 			// console.log('currentUser', currentUser ? JSON.parse(currentUser) : null)
-			return currentUser ? JSON.parse(currentUser) : null
+			return currentUser ? JSON.parse(currentUser) : null;
 		}
 		return {};
 	}
 
 	public isInGGMeetUrls(url: string): boolean {
-		return GGMeetUrls.some((item) => item.startsWith(url));
+		return GGMeetUrls.some(
+			(item) => item.startsWith(url) || url.startsWith(item),
+		);
 	}
 
 	getCandidateId_OfUser(): string | undefined {
@@ -86,7 +94,9 @@ export class AuthService {
 	}
 
 	isValidUsername(username: string): Observable<boolean> {
-		return this.api.GET(`/api/Authentication/IsValidUserName?username=${username}`);
+		return this.api.GET(
+			`/api/Authentication/IsValidUserName?username=${username}`,
+		);
 	}
 
 	isValidEmail(email: string): Observable<boolean> {
@@ -113,15 +123,13 @@ export class AuthService {
 	// }
 
 	updateUserLogin() {
-		this.getCurrentUser().subscribe(
-			{
-				next: (data) => {
-					if (data !== null) {
-						localStorage.setItem('currentUser', JSON.stringify(data));
-					}
+		this.getCurrentUser().subscribe({
+			next: (data) => {
+				if (data !== null) {
+					localStorage.setItem('currentUser', JSON.stringify(data));
 				}
-			}
-		)
+			},
+		});
 	}
 
 	logout() {
@@ -130,23 +138,25 @@ export class AuthService {
 			this.cookieService.delete('jwt');
 			this.cookieService.delete('refreshToken');
 
-			document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-			document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+			document.cookie =
+				'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+			document.cookie =
+				'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
 			localStorage.removeItem('currentUser');
 			localStorage.removeItem('expirationDate');
 			this.loginStatus.next(false);
 
-			this.toast.success("Log out successfully", "Success", {
+			this.toast.success('Log out successfully', 'Success', {
 				timeOut: 3000,
 				progressBar: true,
-				newestOnTop: false
+				newestOnTop: false,
 			});
 			location.reload();
 			this.router.navigate(['/']);
 		} catch (error) {
 			console.log(error);
-			this.toast.error("Log out failed", "Error", {
+			this.toast.error('Log out failed', 'Error', {
 				timeOut: 3000,
 				progressBar: true,
 			});
@@ -180,7 +190,7 @@ export class AuthService {
 			const user = this.cookieService.get('currentUser');
 			// console.log(this.clientUserInfo !== null);
 			resolve(user !== null);
-		})
+		});
 	}
 
 	async refreshToken(): Promise<boolean> {
@@ -204,11 +214,20 @@ export class AuthService {
 
 		try {
 			const response = await lastValueFrom(
-				this.api.POST(`/api/Authentication/RefreshToken?token=${encodeURIComponent(refreshToken)}`)
+				this.api.POST(
+					`/api/Authentication/RefreshToken?token=${encodeURIComponent(
+						refreshToken,
+					)}`,
+				),
 			);
 			if (typeof response == 'object') {
 				const expTime = new Date().getDate() + 30;
-				this.cookieService.set('jwt', response.newAccessToken, expTime, '/');
+				this.cookieService.set(
+					'jwt',
+					response.newAccessToken,
+					expTime,
+					'/',
+				);
 				console.log('set new jwt');
 				return true;
 			}

@@ -198,7 +198,7 @@ public class InterviewController : BaseAPIController
     }
 
     [HttpPut("[action]/{interviewId:guid}")]
-    [Authorize(Roles = "Recruiter")]
+    [Authorize(Roles = "Recruiter, Interviewer")]
     public async Task<IActionResult> UpdateStatusInterview(
         Guid interviewId,
         int? Candidate_Status,
@@ -219,10 +219,35 @@ public class InterviewController : BaseAPIController
         return Ok(response);
     }
 
+    [HttpPut("[action]/{interviewId:guid}")]
+    [Authorize(Roles = "Recruiter, Interviewer")]
+    public async Task<IActionResult> UpdateAddressOrMeetingURL(
+        Guid interviewId,
+        string? address
+    )
+    {
+        if (address is null)
+        {
+            Ok(false);
+        }
+
+        var interviewNewStatus = await _interviewService.GetInterviewById(interviewId);
+
+        if (interviewNewStatus == null)
+        {
+            return BadRequest();
+        }
+
+        var response = await _interviewService.UpdateAddressInterview(interviewId, address);
+        return Ok(response);
+    }
+
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Recruiter")]
     public async Task<IActionResult> DeleteInterview(Guid id)
     {
         return await _interviewService.DeleteInterview(id) ? Ok(true) : StatusCode(StatusCodes.Status404NotFound); ;
     }
+
+
 }

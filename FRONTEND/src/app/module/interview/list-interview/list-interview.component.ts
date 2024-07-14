@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { v4 as uuid } from 'uuid';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -22,7 +23,10 @@ import { AuthService } from '../../../core/services/auth.service';
 import { PermissionService } from '../../../core/services/permission.service';
 import { Company } from '../../../data/company/company.model';
 import { CompanyService } from '../../../data/company/company.service';
-import { InterviewFilterModel } from '../../../data/interview/interview.model';
+import {
+	Interview,
+	InterviewFilterModel,
+} from '../../../data/interview/interview.model';
 import { InterviewService } from '../../../data/interview/interview.service';
 import { Interviewer } from '../../../data/interviewer/interviewer.model';
 import { InterviewerService } from '../../../data/interviewer/interviewer.service';
@@ -36,6 +40,15 @@ import {
 	Interview_Type,
 } from '../../../shared/enums/EInterview.model';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { GGMeetService } from '../../../shared/service/ggmeet.service';
+import {
+	CALENDAR_NAME,
+	ID,
+	TIMEZONE,
+} from '../../../shared/constant/ggmeet.constant';
+import { EventAddModel } from '../../../shared/service/ggmeet.model';
+import moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-list-interview',
@@ -113,6 +126,9 @@ export class ListInterviewComponent {
 		private _cookieService: CookieService,
 		private permissionService: PermissionService,
 		private authService: AuthService,
+		public _ggmeetService: GGMeetService,
+
+		private _toastService: ToastrService,
 
 		private router: Router,
 	) {
@@ -250,5 +266,114 @@ export class ListInterviewComponent {
 
 	formatDate(date: string): string {
 		return new Date(date).toISOString();
+	}
+
+	createGGmeet(interview: Interview) {
+		console.log('interview', interview);
+		if (this._ggmeetService.isLoggedIn) {
+			console.log(`is loggin`);
+			this._ggmeetService.getAllMyCalendars().subscribe((calendars) => {
+				const res = calendars as any;
+				console.log(res);
+				if (res.items.length > 0) {
+					const foundID = res.items.find(
+						(e: { summary: string }) => e.summary === CALENDAR_NAME,
+					)?.id;
+					// const zone: string;
+					// const summary = `Interview - ${
+					// 	interview?.application?.position?.company!.companyName
+					// } - ${interview?.application?.position?.positionName}`;
+
+					if (foundID) {
+						console.log(`foundID`, foundID);
+						this.CallCreateEventApi(foundID, interview);
+					} else {
+						this._ggmeetService
+							.createCalendar(CALENDAR_NAME)
+							.subscribe((res: any) => {
+								this.CallCreateEventApi(res?.id, interview);
+							});
+					}
+				}
+			});
+		} else {
+			this._ggmeetService.loginWithPopup('/list-interviews');
+		}
+	}
+
+	private CallCreateEventApi(calendarId?: string, inteview?: Interview) {
+		const body: EventAddModel = {
+			summary:
+				'Interview - ' +
+				inteview?.application?.position?.company?.companyName +
+				' - ' +
+				inteview?.application?.position?.positionName,
+			description: inteview?.notes,
+			start: {
+				dateTime: this.createDatetime(
+					inteview?.meetingDate?.toString(),
+					inteview?.startTime,
+				),
+				timeZone: TIMEZONE,
+			},
+			end: {
+				dateTime: this.createDatetime(
+					inteview?.meetingDate?.toString(),
+					inteview?.endTime,
+				),
+				timeZone: TIMEZONE,
+			},
+			conferenceData: {
+				createRequest: {
+					requestId: uuid(),
+					conferenceSolutionKey: {
+						type: 'hangoutsMeet',
+					},
+					status: {
+						statusCode: 'success',
+					},
+				},
+			},
+		};
+		this._ggmeetService
+			.createEventAndGGMeet(calendarId!, body!)
+			.subscribe((res) => {
+				const eventRes = res as any;
+				this.interviewService
+					.updateAddressInterview(
+						inteview!.interviewId,
+						eventRes.hangoutLink,
+					)
+					.subscribe({
+						next: () => {
+							this._toastService.success(
+								'Interview updated...',
+								'Successfully!',
+								{
+									toastClass: ' my-custom-toast ngx-toastr',
+									timeOut: 3000,
+								},
+							);
+						},
+						error: () => {
+							this._toastService.error(
+								'Something wrong...',
+								'Update interview Error!!!',
+								{
+									toastClass: ' my-custom-toast ngx-toastr',
+									timeOut: 3000,
+								},
+							);
+						},
+					});
+			});
+	}
+
+	private createDatetime(date?: string, time?: string) {
+		const convertToMoment = moment(date);
+		convertToMoment.second(0);
+		convertToMoment.hour(Number(time!.slice(0, 2)));
+		convertToMoment.minute(Number(time!.slice(3, 5)));
+		return convertToMoment.format('YYYY-MM-DDTHH:mm:ss');
 	}
 }

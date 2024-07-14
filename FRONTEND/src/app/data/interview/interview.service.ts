@@ -136,6 +136,25 @@ export class InterviewService {
 			data,
 		);
 	}
+
+	public updateStatusInterview(
+		interviewId: string,
+		company_Status?: number,
+		candidate_Status?: number,
+	): Observable<any> {
+		let url = `/api/Interview/UpdateStatusInterview/${interviewId}?`;
+		if (company_Status) url += `Company_Status=${company_Status}&`;
+		if (candidate_Status) url += `Candidate_Status=${candidate_Status}&`;
+		return this.api.PUT(url);
+	}
+	public updateAddressInterview(
+		interviewId?: string,
+		address?: string,
+	): Observable<any> {
+		let url = `/api/Interview/UpdateAddressOrMeetingURL/${interviewId}?`;
+		if (address) url += `address=${address}&`;
+		return this.api.PUT(url);
+	}
 }
 
 export interface postInterviewResult {

@@ -1,6 +1,28 @@
 <!-- page-company-interview.component.html -->
 
 <div class="container mt-4">
+	@if (this._ggmeetService.isLoggedIn) {
+	<div class="row align-items-center">
+		<div class="col-6 fs-5 fw-bold">Current Google Account:</div>
+		<div class="col-6 row">
+			<div class="col-7 d-flex flex-row align-items-center">
+				{{ this._ggmeetService.identityClaims['name'] }}
+				<img
+					width="35px"
+					height="35px"
+					class="ms-2 rounded-5"
+					[src]="this._ggmeetService.identityClaims['picture']" />
+			</div>
+			<button
+				class="col-5 px-3"
+				(click)="this._ggmeetService.logout()"
+				mat-raised-button
+				color="primary">
+				Logout
+			</button>
+		</div>
+	</div>
+	}
 	<mat-card>
 		<mat-card-content>
 			<div class="row mb-5">
@@ -81,6 +103,11 @@
 											[value]="getStatusValue.PENDING">
 											<mat-icon>access_time</mat-icon>
 											Pending
+										</mat-option>
+										<mat-option
+											[value]="getStatusValue.FINISHED">
+											<mat-icon>checked</mat-icon>
+											Finished
 										</mat-option>
 										<mat-option
 											[value]="getStatusValue.PASSED">
@@ -225,27 +252,33 @@
 								class="p-2 rounded text-white"
 								[ngClass]="{
 									'bg-danger':
-										interview.status !==
-										getStatusValue.PASSED,
+										interview.company_Status ===
+										getStatusValue.PENDING,
 									'bg-warning':
-										interview.status ===
+										interview.company_Status ===
 										getStatusValue.PASSED,
 									'bg-primary':
-										interview.status ===
+										interview.company_Status ===
+										getStatusValue.FINISHED,
+									'bg-success':
+										interview.company_Status ===
 										getStatusValue.PASSED_N_MAILED,
 									'text-dark bg-white':
-										interview.status ===
+										interview.company_Status ===
 										getStatusValue.FAILED
 								}">
 								{{
 									interview.status === getStatusValue.PASSED
 										? 'Passed'
-										: interview.status ===
+										: interview.company_Status ===
 										  getStatusValue.PASSED_N_MAILED
 										? 'Passed and mailed'
-										: interview.status ===
+										: interview.company_Status ===
 										  getStatusValue.FAILED
 										? 'Failed'
+										: interview.company_Status ===
+										  getStatusValue.FINISHED
+										? 'Finished'
 										: 'Pending'
 								}}
 							</span>
@@ -264,6 +297,8 @@
 					<ng-container matColumnDef="actions">
 						<th mat-header-cell *matHeaderCellDef>Actions</th>
 						<td mat-cell *matCellDef="let interview">
+							@if (interview.company_Status ===
+							getStatusValue.PENDING){
 							<button
 								mat-icon-button
 								color="primary"
@@ -272,6 +307,16 @@
 								">
 								<mat-icon>info</mat-icon>
 							</button>
+							} @if (interview.interviewType ===
+							getTypeValue.ONLINE_GG_MEET &&
+							interview.addressOrStartURL == null){
+							<button
+								mat-icon-button
+								color="primary"
+								(click)="createGGmeet(interview)">
+								<mat-icon>home</mat-icon>
+							</button>
+							}
 						</td>
 					</ng-container>
 

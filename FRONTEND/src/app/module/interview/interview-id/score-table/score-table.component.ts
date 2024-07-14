@@ -112,14 +112,14 @@ export class ScoreTableComponent {
 
 		this.dataSource = [
 			{
-				category: this.categoryQuestion[1].categoryQuestionName!,
+				category: this.categoryQuestion[0].categoryQuestionName!,
 				score: totalScoreSoft,
-				formula: totalScoreSoft * this.categoryQuestion[1].weight!,
+				formula: totalScoreSoft * this.categoryQuestion[0].weight!,
 			},
 			{
-				category: this.categoryQuestion[0].categoryQuestionName!,
+				category: this.categoryQuestion[1].categoryQuestionName!,
 				score: totalScoreLang,
-				formula: totalScoreLang * this.categoryQuestion[0].weight!,
+				formula: totalScoreLang * this.categoryQuestion[1].weight!,
 			},
 			{
 				category: this.categoryQuestion[2].categoryQuestionName!,

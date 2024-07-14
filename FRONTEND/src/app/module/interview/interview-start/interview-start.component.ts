@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
@@ -31,7 +32,7 @@ import {
 import { TitleDividerComponent } from '../../../shared/component/title-divider/title-divider.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TwoTableComponent } from '../../../shared/components/two-table/two-table.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin, map } from 'rxjs';
 import { CategoryQuestionService } from '../../../data/categoryQuestion/category-question.service';
 import { CategoryQuestion } from '../../../data/categoryQuestion/categoryQuestion.model';
 
@@ -172,71 +173,206 @@ export class InterviewStartComponent {
 	}
 
 	handleSubmit() {
-		const newObj: postInterviewResult = {
-			interviewId: this.interviewId!,
-			notes: this.notes,
-			rounds: [],
-		};
+		// const newObj: postInterviewResult = {
+		// 	interviewId: this.interviewId!,
+		// 	notes: this.notes,
+		// 	rounds: [],
+		// };
 
-		if (this.newSoftQues)
-			this.newSoftQues!.forEach((question) => {
-				this.questionService
-					.postQuestion({
-						questionString: question.text,
-						categoryQuestionId: question.categoryId,
-					})
-					.subscribe((response) => {
-						const questionScorePair = {
-							questionId: response.questionId!,
-							score: question.score,
-						};
-						newObj.rounds.push(questionScorePair);
-					});
-			});
-		if (this.newLangQues) {
-			this.newLangQues!.forEach((question) => {
-				this.questionService
-					.postQuestion({
-						questionString: question.text,
-						categoryQuestionId: question!.categoryId!,
-					})
-					.subscribe((response) => {
-						const questionScorePair = {
-							questionId: response.questionId!,
-							score: question.score,
-						};
-						newObj.rounds.push(questionScorePair);
-					});
-			});
-		}
+		// if (this.newSoftQues)
+		// 	this.newSoftQues!.forEach((question) => {
+		// 		this.questionService
+		// 			.postQuestion({
+		// 				questionString: question.text,
+		// 				categoryQuestionId: question.categoryId,
+		// 			})
+		// 			.subscribe((response) => {
+		// 				const questionScorePair = {
+		// 					questionId: response.questionId!,
+		// 					score: question.score,
+		// 				};
+		// 				console.log(questionScorePair);
+		// 				newObj.rounds.push(questionScorePair);
+		// 			});
+		// 	});
+		// if (this.newLangQues) {
+		// 	this.newLangQues!.forEach((question) => {
+		// 		this.questionService
+		// 			.postQuestion({
+		// 				questionString: question.text,
+		// 				categoryQuestionId: question!.categoryId!,
+		// 			})
+		// 			.subscribe((response) => {
+		// 				const questionScorePair = {
+		// 					questionId: response.questionId!,
+		// 					score: question.score,
+		// 				};
+		// 				newObj.rounds.push(questionScorePair);
+		// 			});
+		// 	});
+		// }
 
-		if (this.newExpertQues)
-			this.newExpertQues!.forEach((question) => {
-				this.questionService
-					.postQuestion({
-						questionString: question.text,
-						categoryQuestionId: question.categoryId!,
-					})
-					.subscribe((response) => {
-						const questionScorePair = {
-							questionId: response.questionId!,
-							score: question.score,
-						};
-						newObj.rounds.push(questionScorePair);
-					});
-			});
+		// if (this.newExpertQues)
+		// 	this.newExpertQues!.forEach((question) => {
+		// 		this.questionService
+		// 			.postQuestion({
+		// 				questionString: question.text,
+		// 				categoryQuestionId: question.categoryId!,
+		// 			})
+		// 			.subscribe((response) => {
+		// 				const questionScorePair = {
+		// 					questionId: response.questionId!,
+		// 					score: question.score,
+		// 				};
+		// 				newObj.rounds.push(questionScorePair);
+		// 			});
+		// 	});
 
 		// Logic to populate newObj.rounds
+		// const observables = [];
+		// if (this.newSoftQues) {
+		// 	observables.push(
+		// 		this.newSoftQues!.map((question) =>
+		// 			this.questionService.postQuestion({
+		// 				questionString: question.text,
+		// 				categoryQuestionId: question.categoryId,
+		// 			}),
+		// 		),
+		// 	);
+		// }
+		// if (this.newLangQues) {
+		// 	observables.push(
+		// 		this.newLangQues!.map((question) =>
+		// 			this.questionService.postQuestion({
+		// 				questionString: question.text,
+		// 				categoryQuestionId: question.categoryId,
+		// 			}),
+		// 		),
+		// 	);
+		// }
+		// if (this.newExpertQues) {
+		// 	observables.push(
+		// 		this.newExpertQues!.map((question) =>
+		// 			this.questionService.postQuestion({
+		// 				questionString: question.text,
+		// 				categoryQuestionId: question.categoryId,
+		// 			}),
+		// 		),
+		// 	);
+		// }
 
-		this.interviewService
-			.postQuestionInterviewResult(this.interviewId!, newObj)
-			.subscribe((data) => {
-				console.log(data);
-				this.snackBar.open('Result saved successfully', 'Close', {
-					duration: 2000,
-				});
-				this.router.navigate([`/interview/${this.interviewId}`]);
-			});
+		// forkJoin(observables).subscribe(() => {
+		// 	// console.log(observables.length);
+		// 	observables.forEach((question) =>{
+		// 		question.subscribe((response) => {
+		// 			const questionScorePair = {
+		// 				questionId: response.questionId!,
+		// 				score: 0,
+		// 			};
+		// 			newObj.rounds.push(questionScorePair);
+		// 		});
+		// 	})
+		// 	this.interviewService
+		// 		.postQuestionInterviewResult(this.interviewId!, newObj)
+		// 		.subscribe((data) => {
+		// 			console.log(data);
+		// 			this.snackBar.open('Result saved successfully', 'Close', {
+		// 				duration: 2000,
+		// 			});
+		// 			this.router.navigate([`/list-interviews`]);
+		// 		});
+		// });
+
+		// this.interviewService
+		// 	.postQuestionInterviewResult(this.interviewId!, newObj)
+		// 	.subscribe((data) => {
+		// 		console.log(data);
+		// 		this.snackBar.open('Result saved successfully', 'Close', {
+		// 			duration: 2000,
+		// 		});
+		// 		this.router.navigate([`/list-interviews`]);
+		// 	});
+
+		const postSoftQues$ = this.newSoftQues
+			? this.newSoftQues.map((question) =>
+					this.questionService
+						.postQuestion({
+							questionString: question.text,
+							categoryQuestionId: question.categoryId,
+						})
+						.pipe(
+							map((response) => ({
+								questionId: response.questionId!,
+								score: question.score,
+							})),
+						),
+			  )
+			: [];
+
+		const postLangQues$ = this.newLangQues
+			? this.newLangQues.map((question) =>
+					this.questionService
+						.postQuestion({
+							questionString: question.text,
+							categoryQuestionId: question.categoryId!,
+						})
+						.pipe(
+							map((response) => ({
+								questionId: response.questionId!,
+								score: question.score,
+							})),
+						),
+			  )
+			: [];
+
+		const postExpertQues$ = this.newExpertQues
+			? this.newExpertQues.map((question) =>
+					this.questionService
+						.postQuestion({
+							questionString: question.text,
+							categoryQuestionId: question.categoryId!,
+						})
+						.pipe(
+							map((response) => ({
+								questionId: response.questionId!,
+								score: question.score,
+							})),
+						),
+			  )
+			: [];
+
+		const allPostQues$ = [
+			...postSoftQues$,
+			...postLangQues$,
+			...postExpertQues$,
+		];
+
+		forkJoin(allPostQues$).subscribe(
+			(results) => {
+				const newObj: postInterviewResult = {
+					interviewId: this.interviewId!,
+					notes: this.notes,
+					rounds: results,
+				};
+
+				this.interviewService
+					.postQuestionInterviewResult(this.interviewId!, newObj)
+					.subscribe((data) => {
+						console.log(data);
+						this.snackBar.open(
+							'Result saved successfully',
+							'Close',
+							{
+								duration: 2000,
+							},
+						);
+						this.router.navigate([`/list-interviews`]);
+					});
+			},
+			(error) => {
+				console.error('An error occurred', error);
+			},
+		);
 	}
 
 	newSoftQues$ = new BehaviorSubject<any>([]);

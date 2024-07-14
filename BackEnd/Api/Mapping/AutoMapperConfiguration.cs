@@ -244,6 +244,7 @@ namespace Data.Mapping
             CreateMap<RoundModel, RoundAddModel>().ReverseMap();
             CreateMap<RoundModel, RoundUpdateModel>().ReverseMap();
             CreateMap<RoundModel, RoundViewModel>().ReverseMap();
+            CreateMap<RoundResultAddModel, RoundModel>().ReverseMap();
 
             #endregion Round
 

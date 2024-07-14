@@ -8,9 +8,10 @@
     public enum EInterviewCompanyStatus
     {
         PENDING = 202000,
-        PASSED = 202010,
-        PASSED_N_MAILED = 102011,
-        FAILED = 202020,
+        FINISHED = 202010,
+        PASSED = 202020,
+        PASSED_N_MAILED = 202021,
+        FAILED = 202030,
     }
     public enum EInterviewType
     {

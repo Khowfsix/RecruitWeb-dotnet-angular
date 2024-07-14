@@ -30,4 +30,5 @@ public interface IInterviewService
     Task<InterviewModel?> PostQuestionIntoInterview(InterviewResultQuestion_Model request);
 
     Task<InterviewModel?> GetInterviewById_noInclude(Guid id);
+    Task<bool> UpdateAddressInterview(Guid interviewId, string address);
 }

@@ -7,15 +7,12 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
 	selector: 'app-interview-update',
 	standalone: true,
-	imports: [
-		CommonModule,
-		MatCardModule,
-	],
+	imports: [CommonModule, MatCardModule],
 	templateUrl: './interview-update.component.html',
-	styleUrl: './interview-update.component.css'
+	styleUrl: './interview-update.component.css',
 })
 export class InterviewUpdateComponent {
-	constructor(private interviewService: InterviewService) { }
+	constructor(private interviewService: InterviewService) {}
 
 	ngOnInit() {
 		// Initialize component, fetch data if needed
@@ -30,7 +27,7 @@ export class InterviewUpdateComponent {
 			(error: any) => {
 				console.error('Error updating interview', error);
 				// Handle error
-			}
+			},
 		);
 	}
 }
