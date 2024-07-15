@@ -1,5 +1,6 @@
 using Data.CustomModel.Position;
 using Data.Entities;
+using Data.Enums;
 using Data.Interfaces;
 using Data.Sorting;
 using Microsoft.EntityFrameworkCore;
@@ -138,6 +139,7 @@ namespace Data.Repositories
             }
 
             query = query
+                .Include(e => e.Applications.Where(e => !e.IsDeleted && e.Candidate_Status.Value == (int)EApplicationCandidateStatus.PENDING))
                 .Include(o => o.Requirements)
                 .Include(o => o.Company)
                 .Include(o => o.Language)

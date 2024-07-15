@@ -17,7 +17,7 @@ import { AddFormComponent } from './add-form/add-form.component';
 	styleUrl: './category-question.component.css',
 })
 export class CategoryQuestionComponent {
-	public actions: ActionType[] = ['create', 'update'];
+	public actions: ActionType[] = ['update'];
 	public listProps: string[] = [
 		"categoryQuestionId",
 		"categoryQuestionName",

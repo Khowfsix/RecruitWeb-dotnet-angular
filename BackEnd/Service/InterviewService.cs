@@ -3,6 +3,7 @@ using Data.CustomModel.Interviewer;
 using Data.Entities;
 using Data.Enums;
 using Data.Interfaces;
+using Data.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 using Service.Models;
@@ -12,16 +13,25 @@ namespace Service;
 public class InterviewService : IInterviewService
 {
     private readonly IInterviewRepository _interviewRepository;
+    private readonly IPositionRepository _positionRepository;
+    private readonly ISuccessfulCadidateRepository _successfulCadidateRepository;
+    private readonly IApplicationRepository _applicationRepository;
     private readonly IItrsinterviewRepository _itrsinterviewRepository;
     private readonly IRoundRepository _roundRepository;
     private readonly IMapper _mapper;
 
     public InterviewService(IInterviewRepository interviewRepository,
+        ISuccessfulCadidateRepository successfulCadidateRepository,
         IRoundRepository roundRepository,
-        IItrsinterviewRepository itrsinterviewRepository,
+        IApplicationRepository applicationRepository,
+    IItrsinterviewRepository itrsinterviewRepository,
+        IPositionRepository positionRepository,
         IMapper mapper)
     {
+        _successfulCadidateRepository = successfulCadidateRepository;
+        _applicationRepository = applicationRepository;
         _interviewRepository = interviewRepository;
+        _positionRepository = positionRepository;
         _itrsinterviewRepository = itrsinterviewRepository;
         _roundRepository = roundRepository;
         _mapper = mapper;
@@ -156,16 +166,44 @@ public class InterviewService : IInterviewService
 
         if (Candidate_Status.HasValue)
         {
-            if (oldData!.Candidate_Status!.Value >= Candidate_Status.Value)
-                return await Task.FromResult(false);
+            //if (oldData!.Candidate_Status!.Value >= Candidate_Status.Value)
+            //    return await Task.FromResult(false);
             oldData!.Candidate_Status = Candidate_Status!;
         }
 
         if (Company_Status.HasValue)
         {
-            if (oldData!.Company_Status!.Value >= Company_Status.Value)
-                return await Task.FromResult(false);
-            oldData!.Company_Status = Company_Status!;
+            //if (oldData!.Company_Status!.Value >= Company_Status.Value)
+            //    return await Task.FromResult(false);
+            var foundApplication = await _applicationRepository.GetApplicationById(oldData.ApplicationId);
+            var foundPosition = await _positionRepository.GetPositionById(foundApplication.PositionId);
+
+            if (oldData.Company_Status.Value != (int)EInterviewCompanyStatus.PASSED 
+                && Company_Status.Value == (int)EInterviewCompanyStatus.PASSED) {
+                foundPosition.MaxHiringQty -= 1;
+                await _positionRepository.UpdatePosition(foundPosition, foundPosition.PositionId);
+            
+            }
+            else if (oldData.Company_Status.Value == (int)EInterviewCompanyStatus.PASSED
+                && Company_Status.Value != (int)EInterviewCompanyStatus.PASSED 
+                && Company_Status.Value != (int)EInterviewCompanyStatus.PASSED_N_MAILED)
+            {
+                foundPosition.MaxHiringQty += 1;
+                await _positionRepository.UpdatePosition(foundPosition, foundPosition.PositionId);
+            }
+            else if (oldData.Company_Status.Value == (int)EInterviewCompanyStatus.PASSED
+                && Company_Status.Value == (int)EInterviewCompanyStatus.PASSED_N_MAILED
+                )
+            {
+                var successfulCandidate = new SuccessfulCadidate();
+                successfulCandidate.PositionId = foundPosition.PositionId;
+                successfulCandidate.CandidateId = foundApplication.Cv.CandidateId;
+                successfulCandidate.DateSuccess = DateTime.Now;
+                successfulCandidate.IsDeleted = false;
+                await _successfulCadidateRepository.SaveSuccessfulCadidate(successfulCandidate);
+            }
+        
+            oldData!.Company_Status = Company_Status!;                
         }
 
         return await _interviewRepository.UpdateInterview(oldData!, interviewId);

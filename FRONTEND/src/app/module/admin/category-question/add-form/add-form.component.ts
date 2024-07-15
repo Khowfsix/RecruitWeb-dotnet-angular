@@ -42,7 +42,6 @@ export class AddFormComponent implements AfterViewInit {
 	public isEditing = false;
 
 	public addForm: FormGroup = this._formBuilder.group({
-		categoryQuestionName: [this.foundCategoryQuestion ? this.foundCategoryQuestion.categoryQuestionName : '', [Validators.required]],
 		weight: [this.foundCategoryQuestion ? this.foundCategoryQuestion.weight : '', [Validators.required]],
 	});
 
@@ -76,7 +75,7 @@ export class AddFormComponent implements AfterViewInit {
 
 	public callApiUpdateCategoryQuestion() {
 		this._categoryquestionService.updateCategoryQuestion(this.foundCategoryQuestion.categoryQuestionId!, {
-			categoryQuestionName: this.addForm.value.categoryQuestionName,
+			categoryQuestionName: this.foundCategoryQuestion.categoryQuestionName,
 			weight: this.addForm.value.weight,
 		}).subscribe({
 			next: () => {

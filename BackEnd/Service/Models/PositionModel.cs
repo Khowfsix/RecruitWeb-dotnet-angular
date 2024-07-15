@@ -35,5 +35,6 @@ public class PositionModel
 
     public bool IsDeleted { get; set; } = false;
 
+    public virtual ICollection<ApplicationModel> Applications { get; set; } = new List<ApplicationModel>();
     public virtual ICollection<RequirementModel> Requirements { get; set; } = new List<RequirementModel>();
 }
