@@ -71,6 +71,7 @@
 								}
 							</div>
 							<div class="custom-row"> Max hiring quantity: {{ position.maxHiringQty }}</div>
+							<div class="custom-row"> Number applying: {{ position.applications?.length }}</div>
 							<div class="custom-row"><i class="bi bi-calendar3"></i> {{ position.startDate |
 								date:'dd/MM/yyyy' }}
 								- {{ position.endDate |

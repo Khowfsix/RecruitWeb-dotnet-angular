@@ -1,3 +1,4 @@
+using Api.ViewModels.Application;
 using Api.ViewModels.CategoryPosition;
 using Api.ViewModels.Company;
 using Api.ViewModels.Language;
@@ -23,7 +24,6 @@ namespace Api.ViewModels.Position
         public decimal? MaxSalary { get; set; }
 
         public int MaxHiringQty { get; set; }
-
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
@@ -45,6 +45,7 @@ namespace Api.ViewModels.Position
 
         public bool IsDeleted { get; set; } = false;
 
+        public virtual ICollection<ApplicationViewModel> Applications { get; set; } = new List<ApplicationViewModel>();
         public virtual ICollection<RequirementViewModel> Requirements { get; set; } = new List<RequirementViewModel>();
     }
 }

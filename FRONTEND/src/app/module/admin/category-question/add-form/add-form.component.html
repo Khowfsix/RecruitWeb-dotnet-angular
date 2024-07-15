@@ -9,15 +9,6 @@
 	<div class="p-2 mt-3 d-flex flex-column align-items-center" style="margin-left: 30px; margin-right: 30px;"
 		[formGroup]="this.addForm">
 		<mat-form-field class=" w-100">
-			<mat-label>Name</mat-label>
-			<input type="text" style="resize: none;" matInput placeholder="Name" formControlName="categoryQuestionName">
-			@if(addForm.get('categoryQuestionName')?.invalid){
-			@if(addForm.get('categoryQuestionName')?.hasError('required')){
-			<div style="color: red;">Required.</div>
-			}
-			}
-		</mat-form-field>
-		<mat-form-field class=" w-100">
 			<mat-label>Weight</mat-label>
 			<input type="number" style="resize: none;" matInput placeholder="Weight" formControlName="weight">
 			@if(addForm.get('weight')?.invalid){

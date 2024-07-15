@@ -1,3 +1,4 @@
+import { Application } from '../application/application.model';
 import { CategoryPosition } from '../categoryPosition/category-position.model';
 import { Company } from '../company/company.model';
 import { Language } from '../language/language.model';
@@ -7,6 +8,7 @@ import { Requirements } from '../requirements/requirements.model';
 
 export class Position {
 	positionId?: string;
+	applications?: Application[];
 	positionName?: string;
 	description?: string;
 	imageURL?: string;

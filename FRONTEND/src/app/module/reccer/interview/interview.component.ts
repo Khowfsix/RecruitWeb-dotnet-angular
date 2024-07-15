@@ -12,7 +12,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialog
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Interview_CandidateStatus, Interview_CompanyStatus, Interview_Type } from '../../../shared/enums/EInterview.model';
 import { InterviewService } from '../../../data/interview/interview.service';
@@ -21,7 +21,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Recruiter } from '../../../data/recruiter/recruiter.model';
 import { Interview } from '../../../data/interview/interview.model';
 import { RouterModule } from '@angular/router';
-import { Subject, debounceTime, startWith } from 'rxjs';
+import { Subject, debounceTime, forkJoin, startWith } from 'rxjs';
 import { CustomDateTimeService } from '../../../shared/service/custom-datetime.service';
 import { ExpandbuttonComponent } from "../../../shared/component/expandbutton/expandbutton.component";
 import { AddFormComponent } from './add-form/add-form.component';
@@ -33,6 +33,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AutocompleteComponent } from '../../../shared/component/inputs/autocomplete/autocomplete.component';
 import { CookieService } from 'ngx-cookie-service';
 import { GGMeetService } from '../../../shared/service/ggmeet.service';
+import { MatExpansionModule } from '@angular/material/expansion';
 @Component({
 	selector: 'app-interview',
 	standalone: true,
@@ -43,6 +44,7 @@ import { GGMeetService } from '../../../shared/service/ggmeet.service';
 	templateUrl: './interview.component.html',
 	styleUrl: './interview.component.css',
 	imports: [
+		MatExpansionModule,
 		AutocompleteComponent,
 		MatMenuModule,
 		RouterModule,
@@ -74,6 +76,7 @@ export class InterviewComponent implements OnInit {
 		// private applicationService: ApplicationService,
 		// private interviewerService: InterviewerService,
 		private customDateService: CustomDateTimeService,
+		private toastr: ToastrService,
 		private positionService: PositionService,
 		private authService: AuthService,
 		private ggmeetService: GGMeetService,
@@ -87,12 +90,68 @@ export class InterviewComponent implements OnInit {
 	public fetchedInterviews?: Interview[];
 	public positionData$ = this.positionService.getAllPositions(undefined, undefined, undefined, undefined, this.authService.getRecruiterId_OfUser())
 
+	public listUpdateInterview: any[] = [];
+
 	public login() {
 		this.ggmeetService.loginWithPopup('/interviews');
 	}
 
 	public log() {
 		console.log('this.ggmeetService.accessTokenExpiration', this.ggmeetService.accessTokenExpiration);
+	}
+
+	checked(companyStatus: any) {
+		return companyStatus === this.interview_CompanyStatus.PASSED || companyStatus === this.interview_CompanyStatus.PASSED_N_MAILED
+	}
+
+	updateListInterviewStatus() {
+		console.log('', this.listUpdateInterview)
+		const request = this.listUpdateInterview.map(e =>
+			this.interviewService.updateStatusInterview(e.interviewId, e.Company_Status, e.Candidate_Status)
+		)
+
+		forkJoin(request).subscribe({
+			next: (responses) => {
+				console.log('All updates completed:', responses);
+				// window.location.reload();
+				const formValue = this.filterForm.value;
+				formValue.fromDate = this.customDateService.sameValueToUTC(formValue.fromDate, true);
+				formValue.toDate = this.customDateService.sameValueToUTC(formValue.toDate, true);
+				this.fetchInterviews(this.recruiter?.companyId, formValue, formValue.sortString);
+			},
+			error: (err) => {
+				console.error('Error occurred during updates:', err);
+				// Handle error appropriately
+			}
+		});
+	}
+
+	onToggleChange(event: MatSlideToggleChange, interview: Interview) {
+		console.log('Toggle changed:', event.checked);
+		console.log('interview:', interview);
+		if (this.listUpdateInterview.filter(e => e.interviewId === interview.interviewId).length == 1) {
+			this.listUpdateInterview = this.listUpdateInterview.filter(e => e.interviewId !== interview.interviewId)
+			return;
+		}
+		if (event.checked) {
+			if (interview.company_Status !== this.interview_CompanyStatus.PASSED) {
+				this.listUpdateInterview.push({
+					interviewId: interview.interviewId,
+					Candidate_Status: this.interview_CandidateStatus.FINISHED,
+					Company_Status: this.interview_CompanyStatus.PASSED,
+				})
+			}
+		}
+		else {
+			if (interview.company_Status === this.interview_CompanyStatus.PASSED) {
+				this.listUpdateInterview.push({
+					interviewId: interview.interviewId,
+					Candidate_Status: this.interview_CandidateStatus.NOT_START,
+					Company_Status: this.interview_CompanyStatus.FINISHED,
+				})
+			}
+		}
+
 	}
 
 	public openEditFormDialog(interview: Interview, enterAnimationDuration: string,
