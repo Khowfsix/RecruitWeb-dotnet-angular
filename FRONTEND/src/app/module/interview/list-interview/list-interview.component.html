@@ -227,7 +227,7 @@
 						<th mat-header-cell *matHeaderCellDef>Type</th>
 						<td mat-cell *matCellDef="let interview">
 							<span
-								class="p-2 rounded text-white"
+								class="p-2 rounded text-white d-inline-block text-nowrap"
 								[ngClass]="{
 									'bg-primary':
 										interview.interviewType ===
@@ -247,7 +247,10 @@
 					</ng-container>
 					<ng-container matColumnDef="Status">
 						<th mat-header-cell *matHeaderCellDef>Status</th>
-						<td mat-cell *matCellDef="let interview">
+						<td
+							mat-cell
+							*matCellDef="let interview"
+							style="white-space: nowrap">
 							<span
 								class="p-2 rounded text-white"
 								[ngClass]="{
