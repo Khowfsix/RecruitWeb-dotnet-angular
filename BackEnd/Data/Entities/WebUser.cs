@@ -14,7 +14,7 @@ public partial class WebUser : IdentityUser
     public string? City { get; set; }
     public string? Address { get; set; }
     public string? ImageURL { get; set; } = null;
-
+    public virtual ICollection<ResetPassword> ResetPasswords { get; set; } = new List<ResetPassword>();
     public virtual ICollection<Candidate> Candidates { get; set; } = new List<Candidate>();
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
     public virtual ICollection<Interviewer> Interviewers { get; set; } = new List<Interviewer>();

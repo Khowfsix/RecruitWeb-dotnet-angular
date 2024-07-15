@@ -11,7 +11,6 @@ namespace Service
     public class CvService : ICvService
     {
         private readonly ICvRepository _cvRepository;
-        private readonly ICvHasSkillrepository _cvHasSkillRepository;
         private readonly ICandidateRepository _candidateRepository;
         private readonly ICertificateRepository _certificateRepository;
         private readonly IMapper _mapper;
@@ -19,13 +18,11 @@ namespace Service
 
         public CvService(
             ICvRepository cvRepository,
-            ICvHasSkillrepository cvHasSkillRepository,
             ICandidateRepository candidateRepository,
             ICertificateRepository certificateRepository,
             IMapper mapper, IFileService uploadFileService)
         {
             _cvRepository = cvRepository;
-            _cvHasSkillRepository = cvHasSkillRepository;
             _candidateRepository = candidateRepository;
             _certificateRepository = certificateRepository;
             _mapper = mapper;

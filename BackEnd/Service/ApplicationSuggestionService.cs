@@ -10,18 +10,15 @@ namespace Service
     {
         private readonly IApplicationRepository _applicationRepository;
         private readonly IRequirementRepository _requirementRepository;
-        private readonly ICvHasSkillrepository _cvHasSkillRepository;
         private readonly IMapper _mapper;
 
         public ApplicationSuggestionService(
             IApplicationRepository applicationRepository,
             IRequirementRepository requirementRepository,
-            ICvHasSkillrepository cvHasSkillRepository,
             IMapper mapper)
         {
             _applicationRepository = applicationRepository;
             _requirementRepository = requirementRepository;
-            _cvHasSkillRepository = cvHasSkillRepository;
             _mapper = mapper;
         }
 
@@ -35,11 +32,8 @@ namespace Service
             var applicationList = await _applicationRepository.GetAllApplications();
             foreach (var application in applicationList)
             {
-                var specificCvSkillList = await _cvHasSkillRepository.GetAllSkillsFromOneCV(application.Cvid);
                 //var specificCvSkillIdList = specificCvSkillList.Select(cvSkill => cvSkill.Cvid).ToList();
                 var numberOfMatchedSkill = (from positionSkill in positionSkillList
-                                            join specificCvSkill in specificCvSkillList
-                                            on positionSkill equals specificCvSkill.SkillId
                                             select positionSkill).Count();
 
                 var modelData = _mapper.Map<ApplicationModel>(application);

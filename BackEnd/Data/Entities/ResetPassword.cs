@@ -9,6 +9,7 @@ namespace Data.Entities
 
         [Required]
         public string UserId { get; set; }
+        public virtual WebUser? User { get; set; }
 
         [Required]
         public string OTP { get; set; }
