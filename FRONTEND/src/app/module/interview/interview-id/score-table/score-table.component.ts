@@ -114,25 +114,26 @@ export class ScoreTableComponent {
 			{
 				category: this.categoryQuestion[0].categoryQuestionName!,
 				score: totalScoreSoft,
-				formula: totalScoreSoft * this.categoryQuestion[0].weight!,
+				formula: totalScoreSoft / this.softResult!.length,
 			},
 			{
 				category: this.categoryQuestion[1].categoryQuestionName!,
 				score: totalScoreLang,
-				formula: totalScoreLang * this.categoryQuestion[1].weight!,
+				formula: totalScoreLang / this.langResult!.length,
 			},
 			{
 				category: this.categoryQuestion[2].categoryQuestionName!,
 				score: totalScoreTech,
-				formula: totalScoreTech * this.categoryQuestion[2].weight!,
+				formula: totalScoreTech / this.expertResult!.length,
 			},
 			{
 				category: 'Final Score',
 				score: totalScoreSoft + totalScoreLang + totalScoreTech,
 				formula:
-					totalScoreSoft * 0.2 +
-					totalScoreLang * 0.3 +
-					totalScoreTech * 0.5,
+					(totalScoreSoft + totalScoreLang + totalScoreTech) /
+					(this.softResult!.length +
+						this.langResult!.length +
+						this.expertResult!.length),
 			},
 		];
 	}
