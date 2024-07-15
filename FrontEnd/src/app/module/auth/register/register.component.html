@@ -5,43 +5,62 @@
 				<div class="card text-black" style="border-radius: 25px">
 					<div class="card-body p-md-5">
 						<div class="row justify-content-center">
-							<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-								<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng ký</p>
-								<form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="mx-1 mx-md-4">
-									<div class="d-flex flex-row align-items-center mb-4">
-										<i class="fas fa-user fa-lg me-3 fa-fw"></i>
-										<div class="form-outline flex-fill mb-0">
-											<mat-label>Tên của bạn</mat-label>
+							<div
+								class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+								<p
+									class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+									Sign Up
+								</p>
+								<form
+									(ngSubmit)="onSubmit()"
+									[formGroup]="registerForm"
+									class="mx-1 mx-md-4">
+									<div
+										class="d-flex flex-row align-items-center mb-4">
+										<i
+											class="fas fa-user fa-lg me-3 fa-fw"></i>
+										<div
+											class="form-outline flex-fill mb-0">
+											<mat-label>Your Name</mat-label>
 											<input
 												type="text"
 												class="form-control"
-												placeholder="Xưng danh đi đại hiệp"
+												placeholder="Nickname"
 												formControlName="fullname"
 												required />
 											<div class="pt-2">
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['fullname'].errors?.['required']">
-													Phải nhập tên
+													Please enter your name
 												</mat-error>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['fullname'].errors?.['minlength']">
-													Tên bạn phải dài hơn 4 ký tự phải không
+													Your name should be longer
+													than 4 characters
 												</mat-error>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['fullname'].errors?.['pattern']">
-													Tên không chứa ký tự đăc biệt
+													Your name should not contain
+													special characters
 												</mat-error>
 											</div>
 										</div>
 									</div>
 
-									<div class="d-flex flex-row align-items-center mb-4">
-										<i class="fas fa-user fa-lg me-3 fa-fw"></i>
-										<div class="form-outline flex-fill mb-0">
-											<label class="form-label" for="form3Example1c">Tên tài khoản của bạn</label>
+									<div
+										class="d-flex flex-row align-items-center mb-4">
+										<i
+											class="fas fa-user fa-lg me-3 fa-fw"></i>
+										<div
+											class="form-outline flex-fill mb-0">
+											<label
+												class="form-label"
+												for="form3Example1c"
+												>Your username</label
+											>
 											<input
 												type="text"
 												id="form3Example1c"
@@ -54,31 +73,43 @@
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['username'].errors?.['required']"
-													>Phải có tên tài khoản</mat-error
+													>You must enter a
+													username</mat-error
+												>
 												>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['username'].errors?.['pattern']">
-													Tên tài khoản không chứa các ký tự đặc biệt
+													Username should not contain
+													special characters
 												</mat-error>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['username'].errors?.['minlength']">
-													Tên tài khoản phải dài hơn 2 ký tự
+													Username should be longer
+													than 2 characters
 												</mat-error>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['username'].errors?.['userNameExist']">
-													Tên tài khoản này đã được đăng ký
+													This username has already
+													been registered
 												</mat-error>
 											</div>
 										</div>
 									</div>
 
-									<div class="d-flex flex-row align-items-center mb-4">
-										<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-										<div class="form-outline flex-fill mb-0">
-											<label class="form-label" for="form3Example3c">Email của bạn</label>
+									<div
+										class="d-flex flex-row align-items-center mb-4">
+										<i
+											class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+										<div
+											class="form-outline flex-fill mb-0">
+											<label
+												class="form-label"
+												for="form3Example3c"
+												>Your email address</label
+											>
 											<input
 												type="email"
 												placeholder="Nhập email"
@@ -90,30 +121,43 @@
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['email'].errors?.['required']"
-													>Phải nhập email</mat-error
+													>Please enter your
+													email</mat-error
 												>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['email'].errors?.['email']">
-													Email không hợp lệ
+													Invalid email address
 												</mat-error>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['email'].errors?.['emailExist']">
-													Email này đã đăng ký tài khoản
+													This email has already been
+													registered
 												</mat-error>
 											</div>
 										</div>
 									</div>
 
-									<div class="d-flex flex-row align-items-center mb-4">
-										<i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-										<div class="form-outline flex-fill mb-0">
-											<label class="form-label" for="form3Example4c">Mật khẩu</label>
+									<div
+										class="d-flex flex-row align-items-center mb-4">
+										<i
+											class="fas fa-lock fa-lg me-3 fa-fw"></i>
+										<div
+											class="form-outline flex-fill mb-0">
+											<label
+												class="form-label"
+												for="form3Example4c"
+												>Password</label
+											>
 											<div class="d-flex">
 												<input
-													[type]="hide1 ? 'password' : 'text'"
-													placeholder="Nhập password"
+													[type]="
+														hide1
+															? 'password'
+															: 'text'
+													"
+													placeholder="Enter password"
 													id="form3Example4c"
 													class="form-control"
 													formControlName="password"
@@ -123,9 +167,15 @@
 													mat-icon-button
 													matSuffix
 													(click)="hide1 = !hide1"
-													[attr.aria-label]="'Hide password'"
+													[attr.aria-label]="
+														'Hide password'
+													"
 													[attr.aria-pressed]="hide1">
-													<mat-icon>{{ hide1 ? 'visibility_off' : 'visibility' }}</mat-icon>
+													<mat-icon>{{
+														hide1
+															? 'visibility_off'
+															: 'visibility'
+													}}</mat-icon>
 												</button>
 											</div>
 
@@ -133,30 +183,46 @@
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['password'].errors?.['required']"
-													>Phải nhập mật khẩu</mat-error
+													>Please enter your
+													password</mat-error
 												>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['password'].errors?.['minlength']">
-													Mật khẩu phải dài có độ dài tối thiểu là 8 ký tự
+													Password must be at least 8
+													characters long
 												</mat-error>
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['password'].errors?.['pattern']">
-													Mật khẩu phải chứa chữ in hoa, in thường, số và ký tự đặc biệt
+													Password must contain
+													uppercase letters, lowercase
+													letters, numbers and special
+													characters
 												</mat-error>
 											</div>
 										</div>
 									</div>
 
-									<div class="d-flex flex-row align-items-center mb-4">
-										<i class="fas fa-key fa-lg me-3 fa-fw"></i>
-										<div class="form-outline flex-fill mb-0">
-											<label class="form-label" for="form3Example4cd">Xác nhận mật khẩu</label>
+									<div
+										class="d-flex flex-row align-items-center mb-4">
+										<i
+											class="fas fa-key fa-lg me-3 fa-fw"></i>
+										<div
+											class="form-outline flex-fill mb-0">
+											<label
+												class="form-label"
+												for="form3Example4cd"
+												>Confirm password</label
+											>
 											<div class="d-flex">
 												<input
-													[type]="hide2 ? 'password' : 'text'"
-													placeholder="Nhập lại password"
+													[type]="
+														hide2
+															? 'password'
+															: 'text'
+													"
+													placeholder="Re-enter password"
 													id="form3Example4cd"
 													class="form-control"
 													formControlName="confirmPassword"
@@ -167,22 +233,29 @@
 													matSuffix
 													class="p-3"
 													(click)="hide2 = !hide2"
-													[attr.aria-label]="'Hide password'"
+													[attr.aria-label]="
+														'Hide password'
+													"
 													[attr.aria-pressed]="hide2">
-													<mat-icon>{{ hide2 ? 'visibility_off' : 'visibility' }}</mat-icon>
+													<mat-icon>{{
+														hide2
+															? 'visibility_off'
+															: 'visibility'
+													}}</mat-icon>
 												</button>
 											</div>
 											<div class="pt-2">
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['confirmPassword'].errors?.['required']"
-													>Phải nhập lại mật khẩu</mat-error
+													>You must re-enter the
+													password</mat-error
 												>
 
 												<mat-error
 													class="text-danger"
 													*ngIf="registerForm.controls['confirmPassword'].errors?.['mustMatch']">
-													Mật khẩu không khớp
+													Passwords do not match
 												</mat-error>
 											</div>
 										</div>
@@ -196,12 +269,18 @@
 										</label>
 									</div> -->
 
-									<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-										<button type="submit" class="btn btn-primary btn-lg">Đăng ký</button>
+									<div
+										class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+										<button
+											type="submit"
+											class="btn btn-primary btn-lg">
+											Sign up
+										</button>
 									</div>
 								</form>
 							</div>
-							<div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+							<div
+								class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 								<img
 									src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
 									class="img-fluid"

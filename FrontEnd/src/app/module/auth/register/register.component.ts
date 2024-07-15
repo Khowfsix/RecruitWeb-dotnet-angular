@@ -32,7 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
 		MatInputModule,
 		MatError,
 		MatIconModule,
-		MatButtonModule
+		MatButtonModule,
 	],
 	templateUrl: './register.component.html',
 	styleUrl: './register.component.scss',
@@ -51,8 +51,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		private authService: AuthService,
 		private _formBuilder: FormBuilder,
 		private toastr: ToastrService,
-
-
 	) {
 		this.registerForm = this._formBuilder.group(
 			{
@@ -70,15 +68,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 						Validators.minLength(2),
 					],
 					asyncValidators: [this.userNameNotExistValidator()],
-					updateOn: 'change'
+					updateOn: 'change',
 				}),
 				email: new FormControl('', {
-					validators: [
-						Validators.required,
-						Validators.email
-					],
+					validators: [Validators.required, Validators.email],
 					asyncValidators: [this.emailNotExistValidator()],
-					updateOn: 'change'
+					updateOn: 'change',
 				}),
 				password: new FormControl('', {
 					validators: [
@@ -90,20 +85,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
 					],
 				}),
 				confirmPassword: new FormControl('', {
-					validators: [
-						Validators.required
-					],
-				})
+					validators: [Validators.required],
+				}),
 			},
 			{ validator: this.MustMatch('password', 'confirmPassword') },
 		);
 	}
 
-	ngOnInit(): void {
-	}
+	ngOnInit(): void {}
 
-	ngOnDestroy(): void {
-	}
+	ngOnDestroy(): void {}
 
 	checkValidUsername(username: string) {
 		return this.authService.isValidUsername(username);
@@ -116,9 +107,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	onSubmit() {
 		if (!this.registerForm.valid) {
 			this.registerForm.markAllAsTouched(); // clear
-			this.toastr.error('Vui lòng điền đầy đủ thông tin', 'Error', {
-				toastClass: ' my-custom-toast ngx-toastr',
-			});
+			this.toastr.error(
+				'Please fill in all the required fields',
+				'Error',
+				{
+					toastClass: ' my-custom-toast ngx-toastr',
+				},
+			);
 			return;
 		}
 
@@ -126,7 +121,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			fullname: this.registerForm.value.fullname,
 			username: this.registerForm.value.username,
 			email: this.registerForm.value.email,
-			password: this.registerForm.value.password
+			password: this.registerForm.value.password,
 		};
 
 		this.authService.register(payload).subscribe({
@@ -137,7 +132,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 				console.log(error);
 			},
 			complete: () => {
-				this.toastr.success('Đăng ký tài khoản thành công', 'Success', {
+				this.toastr.success('Registration successful', 'Success', {
 					toastClass: ' my-custom-toast ngx-toastr',
 				});
 				this.router.navigate(['/auth/confirm-email']);
@@ -156,44 +151,48 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			} else {
 				matchingControl.setErrors(null);
 			}
-		}
+		};
 	}
 
-
 	userNameNotExistValidator(): AsyncValidatorFn {
-		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+		return (
+			control: AbstractControl,
+		): Observable<ValidationErrors | null> => {
 			return timer(300) // Delay 300ms
 				.pipe(
 					switchMap(() => {
 						if (!control.value) {
 							return of(null); // Nếu không có value, không cần kiểm tra
 						}
-						return this.checkValidUsername(control.value)
-							.pipe(
-								map(valid => (!valid ? { userNameExist: true } : null))
-							);
+						return this.checkValidUsername(control.value).pipe(
+							map((valid) =>
+								!valid ? { userNameExist: true } : null,
+							),
+						);
 					}),
-					debounceTime(300) // Debounce thêm để đảm bảo không gửi request nếu giá trị control thay đổi liên tục
+					debounceTime(300), // Debounce thêm để đảm bảo không gửi request nếu giá trị control thay đổi liên tục
 				);
 		};
 	}
 
 	emailNotExistValidator(): AsyncValidatorFn {
-		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+		return (
+			control: AbstractControl,
+		): Observable<ValidationErrors | null> => {
 			return timer(300) // Delay 300ms
 				.pipe(
 					switchMap(() => {
 						if (!control.value) {
 							return of(null); // Nếu không có value, không cần kiểm tra
 						}
-						return this.checkValidEmail(control.value)
-							.pipe(
-								map(valid => (!valid ? { emailExist: true } : null))
-							);
+						return this.checkValidEmail(control.value).pipe(
+							map((valid) =>
+								!valid ? { emailExist: true } : null,
+							),
+						);
 					}),
-					debounceTime(300) // Debounce thêm để đảm bảo không gửi request nếu giá trị control thay đổi liên tục
+					debounceTime(300), // Debounce thêm để đảm bảo không gửi request nếu giá trị control thay đổi liên tục
 				);
 		};
 	}
 }
-
