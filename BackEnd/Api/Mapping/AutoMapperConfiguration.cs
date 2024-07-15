@@ -14,7 +14,6 @@ using Api.ViewModels.CategoryQuestion;
 using Api.ViewModels.Certificate;
 using Api.ViewModels.Company;
 using Api.ViewModels.Cv;
-using Api.ViewModels.CvHasSkill;
 using Api.ViewModels.Event;
 using Api.ViewModels.EventHasPosition;
 using Api.ViewModels.Interview;
@@ -357,15 +356,6 @@ namespace Data.Mapping
             CreateMap<Cv, CvViewModel>().ReverseMap();
 
             #endregion Cv
-
-            #region CvHasSkill
-
-            CreateMap<CvHasSkill, CvHasSkillModel>().ReverseMap();
-            CreateMap<CvHasSkillModel, CvHasSkillAddModel>().ReverseMap();
-            CreateMap<CvHasSkillModel, CvHasSkillUpdateModel>().ReverseMap();
-            CreateMap<CvHasSkillModel, CvHasSkillViewModel>().ReverseMap();
-
-            #endregion CvHasSkill
 
             #region Company
 

@@ -29,7 +29,6 @@ namespace Data
             service.AddTransient(typeof(ICategoryQuestionRepository), typeof(CategoryQuestionRepository));
             service.AddTransient(typeof(ICertificateRepository), typeof(CertificateRepository));
             service.AddTransient(typeof(ICvRepository), typeof(CvRepository));
-            service.AddTransient(typeof(ICvHasSkillrepository), typeof(CvHasSkillRepository));
             service.AddTransient(typeof(ICompanyRepository), typeof(CompanyRepository));
             service.AddTransient(typeof(IEventRepository), typeof(EventRepository));
             service.AddTransient(typeof(IApplicationRepository), typeof(ApplicationRepository));

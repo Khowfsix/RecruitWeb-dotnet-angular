@@ -30,8 +30,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
 
     public virtual DbSet<Cv> Cvs { get; set; }
 
-    public virtual DbSet<CvHasSkill> CvHasSkills { get; set; }
-
     public virtual DbSet<Company> Companies { get; set; }
     public virtual DbSet<EventHasPosition> EventHasPositions { get; set; }
     public virtual DbSet<Event> Events { get; set; }
@@ -171,6 +169,18 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasConstraintName("FK_CandidateUser");
         });
 
+        modelBuilder.Entity<ResetPassword>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ResetPassword__DF539B9C8196430E");
+
+            entity.ToTable("ResetPasswords");
+
+           entity.HasOne(d => d.User).WithMany(p => p.ResetPasswords)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ResetPasswordUser");
+        });
+
         modelBuilder.Entity<CandidateJoinEvent>(entity =>
         {
             entity.HasKey(e => e.CandidateJoinEventId).HasName("PK__Candidat__ECDC0AF2269C389E");
@@ -246,29 +256,6 @@ public partial class RecruitmentWebContext : IdentityDbContext<WebUser>
                 .HasForeignKey(d => d.CandidateId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CreateCV");
-        });
-
-        modelBuilder.Entity<CvHasSkill>(entity =>
-        {
-            entity.HasKey(e => e.CvSkillsId).HasName("PK__CV_has_S__21EE6FE772D382E5");
-
-            entity.ToTable("CV_has_Skills");
-
-            entity.Property(e => e.CvSkillsId)
-                .ValueGeneratedNever()
-                .HasColumnName("CV_SkillsId");
-            entity.Property(e => e.Cvid).HasColumnName("Cvid");
-            entity.Property(e => e.ExperienceYear).HasDefaultValueSql("((0))");
-
-            //entity.HasOne(d => d.Cv).WithMany(p => p.CvHasSkills)
-            //    .HasForeignKey(d => d.Cvid)
-            //    .OnDelete(DeleteBehavior.Cascade)
-            //    .HasConstraintName("FK_ofCV");
-
-            entity.HasOne(d => d.Skill).WithMany(p => p.CvHasSkills)
-                .HasForeignKey(d => d.SkillId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_hasSkill");
         });
 
         modelBuilder.Entity<Company>(entity =>

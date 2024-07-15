@@ -20,6 +20,6 @@ public partial class Cv
     public bool IsDefault { get; set; } = false;
 
     public ICollection<Application> Applications { get; set; } = null!;
-    public ICollection<CvHasSkill> CvHasSkills { get; set; } = null!;
+    //public ICollection<CvHasSkill> CvHasSkills { get; set; } = null!;
     public Candidate Candidate { get; set; } = null!;
 }
