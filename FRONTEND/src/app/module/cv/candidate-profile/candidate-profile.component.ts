@@ -5,18 +5,17 @@ import {
 	NgbProgressbarModule,
 	NgbScrollSpyModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { PersonalDetailComponent } from './personal-detail/personal-detail.component';
-import { CandidateEducationComponent } from './candidate-education/candidate-education.component';
-import { WorkExperienceComponent } from './work-experience/work-experience.component';
-import { CandidateSkillsComponent } from './candidate-skills/candidate-skills.component';
-import { PersonalProjectComponent } from './personal-project/personal-project.component';
-import { CandidateCertificateComponent } from './candidate-certificate/candidate-certificate.component';
-import { CandidateAwardsComponent } from './candidate-awards/candidate-awards.component';
-import { Candidate } from '../../../data/candidate/candidate.model';
-import { CandidateService } from '../../../data/candidate/candidate.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { WebUser } from '../../../data/authentication/web-user.model';
-import { MatGridTileHeaderCssMatStyler } from '@angular/material/grid-list';
+import { Candidate } from '../../../data/candidate/candidate.model';
+import { CandidateService } from '../../../data/candidate/candidate.service';
+import { CandidateAwardsComponent } from './candidate-awards/candidate-awards.component';
+import { CandidateCertificateComponent } from './candidate-certificate/candidate-certificate.component';
+import { CandidateEducationComponent } from './candidate-education/candidate-education.component';
+import { CandidateSkillsComponent } from './candidate-skills/candidate-skills.component';
+import { PersonalDetailComponent } from './personal-detail/personal-detail.component';
+import { PersonalProjectComponent } from './personal-project/personal-project.component';
+import { WorkExperienceComponent } from './work-experience/work-experience.component';
 
 @Component({
 	selector: 'app-candidate-profile',
