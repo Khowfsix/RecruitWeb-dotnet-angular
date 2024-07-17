@@ -25,7 +25,6 @@ import {
 	Interview_CompanyStatus,
 } from '../../../shared/enums/EInterview.model';
 import { ScoreTableComponent } from './score-table/score-table.component';
-import { RadarPlotComponent } from './radar-plot/radar-plot.component';
 
 @Component({
 	selector: 'app-pass',

@@ -73,16 +73,16 @@ export class QuestionModalComponent {
 			skillChoose:
 				this.value.TypeId && this.value.TypeName
 					? {
-							skillId: this.value.TypeId,
-							skillName: this.value.TypeName,
-					  }
+						skillId: this.value.TypeId,
+						skillName: this.value.TypeName,
+					}
 					: null,
 			languageChoose:
 				this.value.TypeId && this.value.TypeName
 					? {
-							languageId: this.value.TypeId,
-							languageName: this.value.TypeName,
-					  }
+						languageId: this.value.TypeId,
+						languageName: this.value.TypeName,
+					}
 					: null,
 		});
 		this.category = this.value.CategoryName;

@@ -2,14 +2,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../api.service';
-import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class FileService {
-
-	constructor(private api: API) { }
+	constructor(private api: API) {}
 
 	public uploadFile(formFile: FormData): Observable<any> {
 		// let headers = new HttpHeaders();
