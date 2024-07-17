@@ -54,15 +54,15 @@ namespace Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Authorize]
-        public async Task<IActionResult> SaveCompany([FromForm] CompanyAddModel companyInfo, IFormFile? logo)
+        public async Task<IActionResult> SaveCompany(CompanyAddModel companyInfo)
         {
             var modelData = _mapper.Map<CompanyModel>(companyInfo);
 
-            if (logo != null)
-            {
-                var RawUploadResult = await _fileService.AddFileAsync(logo);
-                modelData.Logo = RawUploadResult.Url.OriginalString;
-            }
+            //if (logo != null)
+            //{
+            //    var RawUploadResult = await _fileService.AddFileAsync(logo);
+            //    modelData.Logo = RawUploadResult.Url.OriginalString;
+            //}
 
             var companyList = await _companyService.SaveCompany(modelData);
             if (companyList == null)
