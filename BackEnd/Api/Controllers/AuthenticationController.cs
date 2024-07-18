@@ -1,5 +1,4 @@
 ﻿using Api.ViewModels;
-using Api.ViewModels.Admin;
 using Api.ViewModels.Authentication.LogIn;
 using Api.ViewModels.Authentication.SignUp;
 using AutoMapper;
@@ -447,49 +446,49 @@ namespace Api.Controllers
             return Ok(new { Status = "Success", Message = $"Password reset successfully! Your new password: {newPassword}" });
         }
 
-        [Authorize]
-        [HttpPut]
-        [Route("Update-Profile")]
-        public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileModel model, bool twoFa)
-        {
-            // Get the current user
-            var userName = HttpContext.User.Identity!.Name;
-            var userId = await _authenticationService.GetCurrentUserId(userName!);
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                // Handle the case when the user is not found
-                return StatusCode(StatusCodes.Status404NotFound,
-                    new Response { Status = "Error", Message = "User does not exist" });
-            }
+        //[Authorize]
+        //[HttpPut]
+        //[Route("Update-Profile")]
+        //public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileModel model, bool twoFa)
+        //{
+        //    // Get the current user
+        //    var userName = HttpContext.User.Identity!.Name;
+        //    var userId = await _authenticationService.GetCurrentUserId(userName!);
+        //    var user = await _userManager.FindByIdAsync(userId);
+        //    if (user == null)
+        //    {
+        //        // Handle the case when the user is not found
+        //        return StatusCode(StatusCodes.Status404NotFound,
+        //            new Response { Status = "Error", Message = "User does not exist" });
+        //    }
 
-            // Update user's profile properties with the provided values
-            user.PhoneNumber = model.PhoneNumber;
-            user.FullName = model.FullName;
-            user.Address = model.Address;
-            user.DateOfBirth = model.DateOfBirth;
-            user.TwoFactorEnabled = twoFa;
+        //    // Update user's profile properties with the provided values
+        //    user.PhoneNumber = model.PhoneNumber;
+        //    user.FullName = model.FullName;
+        //    user.Address = model.Address;
+        //    user.DateOfBirth = model.DateOfBirth;
+        //    user.TwoFactorEnabled = twoFa;
 
-            var image = await _uploadFileService.AddFileAsync(model.ImageFile!);
+        //    var image = await _uploadFileService.AddFileAsync(model.ImageFile!);
 
-            user.ImageURL = image.Url.ToString();
+        //    user.ImageURL = image.Url.ToString();
 
-            IdentityResult result = await _userManager.UpdateAsync(user);
-            await _dbContext.SaveChangesAsync();
+        //    IdentityResult result = await _userManager.UpdateAsync(user);
+        //    await _dbContext.SaveChangesAsync();
 
-            if (result.Succeeded)
-            {
-                await Logout();
+        //    if (result.Succeeded)
+        //    {
+        //        await Logout();
 
-                //await _signInManager.SignInAsync(user, isPersistent: false);
-                return Ok(new { Message = "Profile updated successfully!" });
-            }
-            else
-            {
-                // Handle the case when the update fails
-                return BadRequest(new { Message = "Failed to update profile." });
-            }
-        }
+        //        //await _signInManager.SignInAsync(user, isPersistent: false);
+        //        return Ok(new { Message = "Profile updated successfully!" });
+        //    }
+        //    else
+        //    {
+        //        // Handle the case when the update fails
+        //        return BadRequest(new { Message = "Failed to update profile." });
+        //    }
+        //}
 
         [Authorize]
         [HttpPost]

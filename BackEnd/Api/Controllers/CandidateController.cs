@@ -116,7 +116,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("[action]/{userId}")]
-        [Authorize(Roles = "Candidate")]
+        [Authorize(Roles = "Candidate, Recruiter")]
         public async Task<IActionResult> UpdateCandidateProfile(string userId, UpdatePersonalProfile data)
         {
             System.Console.WriteLine(data.Dob);
