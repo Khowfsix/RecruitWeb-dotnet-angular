@@ -64,17 +64,15 @@ public class RecruiterService : IRecruiterService
         {
             return await Task.FromResult(false);
         }
-        if (await _roleManager.RoleExistsAsync(role))
-        {
-            await _userManager.AddToRoleAsync(userExist, role);
-        }
-        else
+        if (!await _roleManager.RoleExistsAsync(role))
         {
             return await Task.FromResult(false);
         }
 
         if (isActived && !isDeleted)
         {
+            await _userManager.AddToRoleAsync(userExist, role);
+
             var foundCompany = await _companyRepository.GetCompanyById(foundRecruiter.CompanyId);
             if (foundCompany == null)
             {
